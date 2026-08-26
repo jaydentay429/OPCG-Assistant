@@ -390,6 +390,7 @@ def _begin_turn(state: MatchState, seat: int, catalog: CatalogFn) -> None:
     player.leader_power_mod = 0
     player.leader_once_used = False
     player.leader_on_opp_ko_used = False
+    player.skipped_activate_iids = []
     skip = set(player.skip_untap_iids)
     player.skip_untap_iids.clear()
     for ch in player.characters:
@@ -4758,6 +4759,9 @@ def _finish_cleared_interactive(state: MatchState, catalog: CatalogFn) -> None:
     if state.status != "playing" or _pending_interactive(state):
         return
     _resume_board_timing(state, catalog)
+    if state.status != "playing" or _pending_interactive(state):
+        return
+    _resume_end_phase_if_needed(state, catalog)
 
 
 def _declare_attack(

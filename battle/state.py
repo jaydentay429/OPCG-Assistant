@@ -104,6 +104,8 @@ class PlayerState:
     mulligan_done: bool = False
     # Leader 【每回合1次】 Activate: Main used this turn
     leader_once_used: bool = False
+    # AI: Activate: Main sources skipped (declined optional cost) this turn — do not re-open.
+    skipped_activate_iids: list[str] = field(default_factory=list)
     # This-turn: character/leader iids that may attack active (non-rested) Characters.
     attack_active_iids: list[str] = field(default_factory=list)
     # This-turn: attackers that already declared an attack — attached DON!! locked (no free remove).
