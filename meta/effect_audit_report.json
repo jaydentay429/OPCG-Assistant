@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-08-09T03:02:20Z",
+  "totals": {
+    "cards_scanned": 2701,
+    "findings": 0,
+    "unique_bases": 0
+  },
+  "by_category": {},
+  "by_severity": {},
+  "findings": [],
+  "samples_by_category": {}
+}

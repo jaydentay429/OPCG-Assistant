@@ -1,0 +1,18 @@
+fastapi
+uvicorn[standard]
+websockets
+python-dotenv
+openai
+requests
+pdfplumber
+beautifulsoup4
+rapidocr_onnxruntime
+# Server/VPS: headless OpenCV (avoids libGL.so.1). Conflicts with opencv-python.
+opencv-python-headless>=4.8,<5
+qrcode
+pillow
+imagehash
+numpy
+torch
+transformers
+opencc-python-reimplemented

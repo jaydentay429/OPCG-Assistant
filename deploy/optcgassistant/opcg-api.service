@@ -1,0 +1,17 @@
+[Unit]
+Description=OPCG FastAPI (uvicorn)
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/opt/opcg/app
+Environment=PATH=/opt/opcg/app/.venv/bin
+EnvironmentFile=-/opt/opcg/app/.env
+ExecStart=/opt/opcg/app/.venv/bin/uvicorn app:app --host 127.0.0.1 --port 8000
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

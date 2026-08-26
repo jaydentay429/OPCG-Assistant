@@ -1,0 +1,14 @@
+{
+  "generated_at": "2026-08-10T06:45:46Z",
+  "totals": {
+    "items": 0,
+    "open": 0,
+    "ambiguous": 0,
+    "fixed": 0,
+    "wontfix": 0,
+    "compile_runnable": 3796
+  },
+  "by_severity": {},
+  "by_status": {},
+  "items": []
+}

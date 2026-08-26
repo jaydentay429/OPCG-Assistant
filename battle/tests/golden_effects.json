@@ -1,0 +1,10 @@
+{
+  "OP16-034": {
+    "abilities": [
+      {
+        "timing": "on_play",
+        "ops": [{ "op": "search_deck", "top_n": 3, "max_add": 1, "trait_contains": "Impel Down" }]
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "card_id": "OP15-002-P1",
+  "source": "yuyu-tei",
+  "currency": "JPY",
+  "current_price": 220,
+  "last_seen": "2026-04-30T08:35:02+00:00",
+  "last_checked": "2026-04-30T08:35:02+00:00",
+  "history": [
+    {
+      "ts": "2026-04-30T08:35:01+00:00",
+      "price": 220
+    }
+  ]
+}

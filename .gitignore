@@ -1,0 +1,81 @@
+# --- secrets & local env ---
+.env
+.env.*
+!.env.example
+frontend/.env*
+!frontend/.env*.example
+
+# --- Python ---
+.venv/
+.venv_*/
+.venv_disabled/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+.Python
+
+# --- Node / Next.js ---
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/tsconfig.tsbuildinfo
+frontend/next-env.d.ts
+
+# --- large / CDN-hosted assets (keep on VPS + R2, do not push) ---
+packs/
+preview/images/
+!preview/images/.gitkeep
+
+# --- tools / junk ---
+rclone*
+*.zip
+.DS_Store
+Documents.code-workspace
+.cursor/
+opcg_pages/
+
+# --- runtime DBs & private user data ---
+meta/*.db
+meta/*.db-*
+meta/analytics.db*
+meta/auth.db
+meta/rank.db
+meta/forum.db
+meta/topdecks_likes.db
+meta/card_comments.db
+meta/user_*.json
+meta/binder_shares.json
+meta/replays/
+meta/logs/
+meta/market_prices.json
+meta/photo_hash_index.json
+meta/photo_clip_index.npz
+meta/ai_advice_cache.json
+meta/cron_*.log
+meta/*.log
+
+# --- optional heavy generated indexes (regenerate on server) ---
+# topdecks_decks.json is ~18MB; include if you want tournament data in-repo.
+# Uncomment the next line to exclude it:
+# meta/topdecks_decks.json
+
+# --- cards raw sync dumps (keep curated index/ instead) ---
+cards/cards/
+cards/official_sync/
+
+# --- official rules scans / extracted images (keep .txt if needed) ---
+official_rules/
+official_rules.txt
+*.pdf
+*.PDF
+
+# --- logs ---
+*.log
+sync_limitless.log
+
+frontend/package-lock 2.json

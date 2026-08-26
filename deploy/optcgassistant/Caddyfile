@@ -1,0 +1,12 @@
+# Install: sudo cp Caddyfile /etc/caddy/Caddyfile && sudo caddy validate --config /etc/caddy/Caddyfile && sudo systemctl reload caddy
+# Requires DNS A records: @, www, api → VPS IP (DNS only).
+
+api.optcgassistant.com {
+	encode gzip zstd
+	reverse_proxy 127.0.0.1:8000
+}
+
+# Primary site: Next.js.
+optcgassistant.com, www.optcgassistant.com {
+	reverse_proxy 127.0.0.1:3000
+}

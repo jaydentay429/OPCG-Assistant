@@ -1,0 +1,502 @@
+{
+  "generated_from_report": "2026-08-18T19:07:03",
+  "totals": {
+    "unsupported_or_nonrunnable_abilities": 47,
+    "unique_gap_bases": 36,
+    "empty_with_text": 9,
+    "unique_empty_bases": 7,
+    "runnable_from_report": 6419
+  },
+  "by_reason": {
+    "complex_on_play": 28,
+    "complex_when_attacking": 6,
+    "complex_activate_main": 3,
+    "complex_your_turn": 3,
+    "complex_opponent_turn": 2,
+    "complex_on_ko": 2,
+    "complex_on_opponent_attack": 2,
+    "complex_end_of_your_turn": 1
+  },
+  "by_timing": {
+    "on_play": 28,
+    "when_attacking": 6,
+    "activate_main": 3,
+    "your_turn": 3,
+    "opponent_turn": 2,
+    "on_ko": 2,
+    "on_opponent_attack": 2,
+    "end_of_your_turn": 1
+  },
+  "top_gaps": [
+    {
+      "id": "OP17-002",
+      "name": "Atmos",
+      "timing": "opponent_turn",
+      "status": "unsupported",
+      "reason": "complex_opponent_turn",
+      "summary": "Needs review / unsupported (complex_opponent_turn)",
+      "effect": "[Opponent's Turn] This Character gains +3000 power.\n[Opponent's Turn] This Character gains +3000 power."
+    },
+    {
+      "id": "OP17-003",
+      "name": "Izo",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "[Rush: Character] [On Play] If your Leader is [Edward.Newgate] or has the {Land of Wano} type, give up to 1 of your opponent's rested Charac"
+    },
+    {
+      "id": "OP17-005",
+      "name": "Edward.Newgate",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "If your opponent has a Character with 10000 power or more, give this card in your hand −4 cost. [On Play] Your monocolored Leader's base pow"
+    },
+    {
+      "id": "OP17-005-P1",
+      "name": "Edward.Newgate",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "Edward.Newgate OP17-005 Character • Red • 10 Cost If your opponent has a Character with 10000 power or more, give this card in your hand −4 "
+    },
+    {
+      "id": "OP17-005-P2",
+      "name": "Edward.Newgate",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "Edward.Newgate OP17-005 Character • Red • 10 Cost If your opponent has a Character with 10000 power or more, give this card in your hand −4 "
+    },
+    {
+      "id": "OP17-008",
+      "name": "Jozu",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "[On Play] Your [Edward.Newgate] Leader's base power becomes 8000 until the end of your opponent's next End Phase.\n[On Play] Your [Edward.New"
+    },
+    {
+      "id": "OP17-009",
+      "name": "Haruta",
+      "timing": "opponent_turn",
+      "status": "unsupported",
+      "reason": "complex_opponent_turn",
+      "summary": "Needs review / unsupported (complex_opponent_turn)",
+      "effect": "[Opponent's Turn] This Character gains +3000 power. [On Play] K.O. up to 1 of your opponent's Characters with 2000 base power or less.\n[Oppo"
+    },
+    {
+      "id": "OP17-010",
+      "name": "Fossa",
+      "timing": "activate_main",
+      "status": "unsupported",
+      "reason": "complex_activate_main",
+      "summary": "Needs review / unsupported (complex_activate_main)",
+      "effect": "[Activate: Main] [Once Per Turn] If your opponent has a Character with 10000 power or more and you have no other [Fossa], this Character gai"
+    },
+    {
+      "id": "OP17-011",
+      "name": "Blamenco",
+      "timing": "when_attacking",
+      "status": "unsupported",
+      "reason": "complex_when_attacking",
+      "summary": "Needs review / unsupported (complex_when_attacking)",
+      "effect": "[DON!! x2] [When Attacking] Give up to 1 of your opponent's Characters −4000 power during this turn.\n[DON!! x2] [When Attacking] Give up to "
+    },
+    {
+      "id": "OP17-012",
+      "name": "Blenheim",
+      "timing": "on_ko",
+      "status": "unsupported",
+      "reason": "complex_on_ko",
+      "summary": "Needs review / unsupported (complex_on_ko)",
+      "effect": "[Blocker] (After your opponent declares an attack, you may rest this card to make it the new target of the attack.) [On K.O.] Play up to 1 c"
+    },
+    {
+      "id": "OP17-013",
+      "name": "Portgas.D.Ace",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "If your opponent has a Character with 10000 power or more, give this card in your hand −2 cost. [On Play] If your Leader is [Edward.Newgate]"
+    },
+    {
+      "id": "OP17-018",
+      "name": "The Power to Destroy the World",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "[Main] You may rest 2 of your DON!! cards: K.O. up to 1 of your opponent's Stages. [Counter] If you have 2 or more Characters with 8000 base"
+    },
+    {
+      "id": "OP17-019",
+      "name": "I Don't Have Time to Chat with Snot-Nosed Brats",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "[Main] Look at 5 cards from the top of your deck; reveal up to 1 card with a type including \"Whitebeard Pirates\" and add it to your hand. Th"
+    },
+    {
+      "id": "OP17-026",
+      "name": "Fugar",
+      "timing": "when_attacking",
+      "status": "unsupported",
+      "reason": "complex_when_attacking",
+      "summary": "Needs review / unsupported (complex_when_attacking)",
+      "effect": "[When Attacking] If your Leader has the {Red-Haired Pirates} type, rest up to 1 of your opponent's Characters with a cost of 2 or less. [On "
+    },
+    {
+      "id": "OP17-036",
+      "name": "Withdraw Now and Allow Me to Save Face",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "[Main] You may rest 6 of your DON!! cards: Rest up to 1 of your opponent's Characters. Then, K.O. up to 2 of your opponent's rested Characte"
+    },
+    {
+      "id": "OP17-037",
+      "name": "Are You That Afraid of the New Era?!!",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "[Main] Look at 5 cards from the top of your deck; reveal up to 1 card with a type including \"Red-Haired Pirates\" and add it to your hand. Th"
+    },
+    {
+      "id": "OP17-037-P1",
+      "name": "Are You That Afraid of the New Era?!!",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "Are You That Afraid of the New Era?!! OP17-037 Event • Green • 1 Cost [Main] Look at 5 cards from the top of your deck; reveal up to 1 card "
+    },
+    {
+      "id": "OP17-038",
+      "name": "I Think He's Seen an Ugly Future...",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "[Main] You may rest 4 of your cards: Rest up to 1 of your opponent's Characters. [Counter] You may trash 1 card from your hand: Up to 1 of y"
+    },
+    {
+      "id": "OP17-042",
+      "name": "Kaido",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "[Blocker] [On Play] You may reveal 3 cards with a type including \"Rocks Pirates\" from your hand: Give up to 1 of your opponent's Characters "
+    },
+    {
+      "id": "OP17-043",
+      "name": "Ganzui",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "If this Character would be removed from the field, you may trash 2 cards from your hand instead. [On Play] Your Leader's base power becomes "
+    },
+    {
+      "id": "OP17-047",
+      "name": "Shiki",
+      "timing": "end_of_your_turn",
+      "status": "unsupported",
+      "reason": "complex_end_of_your_turn",
+      "summary": "Needs review / unsupported (complex_end_of_your_turn)",
+      "effect": "[End of Your Turn] If you have 2 or less cards in your hand, your opponent places 1 card from their hand at the bottom of their deck.\n[End o"
+    },
+    {
+      "id": "OP17-048",
+      "name": "Shiki",
+      "timing": "on_opponent_attack",
+      "status": "unsupported",
+      "reason": "complex_on_opponent_attack",
+      "summary": "Needs review / unsupported (complex_on_opponent_attack)",
+      "effect": "[Rush: Character] [When Attacking]/[On Your Opponent's Attack] [Once Per Turn] You may trash 1 card with a type including \"Rocks Pirates\" fr"
+    },
+    {
+      "id": "OP17-048",
+      "name": "Shiki",
+      "timing": "when_attacking",
+      "status": "unsupported",
+      "reason": "complex_when_attacking",
+      "summary": "Needs review / unsupported (complex_when_attacking)",
+      "effect": "[Rush: Character] [When Attacking]/[On Your Opponent's Attack] [Once Per Turn] You may trash 1 card with a type including \"Rocks Pirates\" fr"
+    },
+    {
+      "id": "OP17-048-P1",
+      "name": "Shiki",
+      "timing": "on_opponent_attack",
+      "status": "unsupported",
+      "reason": "complex_on_opponent_attack",
+      "summary": "Needs review / unsupported (complex_on_opponent_attack)",
+      "effect": "Shiki OP17-048 Character • Blue • 7 Cost [Rush: Character] [When Attacking]/[On Your Opponent's Attack] [Once Per Turn] You may trash 1 card"
+    },
+    {
+      "id": "OP17-048-P1",
+      "name": "Shiki",
+      "timing": "when_attacking",
+      "status": "unsupported",
+      "reason": "complex_when_attacking",
+      "summary": "Needs review / unsupported (complex_when_attacking)",
+      "effect": "Shiki OP17-048 Character • Blue • 7 Cost [Rush: Character] [When Attacking]/[On Your Opponent's Attack] [Once Per Turn] You may trash 1 card"
+    },
+    {
+      "id": "OP17-052",
+      "name": "Don Marlon",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "[On Play] Add up to 1 blue Event with a cost of 0 from your trash to your hand.\n[On Play] Add up to 1 blue Event with a cost of 0 from your "
+    },
+    {
+      "id": "OP17-053",
+      "name": "Barbell",
+      "timing": "on_ko",
+      "status": "unsupported",
+      "reason": "complex_on_ko",
+      "summary": "Needs review / unsupported (complex_on_ko)",
+      "effect": "[On K.O.] Your opponent places 2 cards from their hand at the bottom of their deck in any order. [Activate: Main] [Once Per Turn] You may tr"
+    },
+    {
+      "id": "OP17-055",
+      "name": "There's No Authority in the World That Lasts Forever!!!",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "[Main] You may rest 1 of your DON!! cards: Up to 1 of your [Rocks.D.Xebec] gains [Unblockable] during this turn. [Counter] Up to 1 of your L"
+    },
+    {
+      "id": "OP17-056",
+      "name": "Rocks Pirates",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "[Main] You may rest 5 of your DON!! cards: Return up to 1 Character with a cost of 6 or less to the owner's hand. [Counter] Up to 1 of your "
+    },
+    {
+      "id": "OP17-058",
+      "name": "Kaido",
+      "timing": "when_attacking",
+      "status": "unsupported",
+      "reason": "complex_when_attacking",
+      "summary": "Needs review / unsupported (complex_when_attacking)",
+      "effect": "[When Attacking]/[On Your Opponent's Attack] [Once Per Turn] DON!! −1: Give up to 1 of your opponent's Characters −2000 power during this tu"
+    },
+    {
+      "id": "OP17-058-P1",
+      "name": "Kaido",
+      "timing": "when_attacking",
+      "status": "unsupported",
+      "reason": "complex_when_attacking",
+      "summary": "Needs review / unsupported (complex_when_attacking)",
+      "effect": "Kaido OP17-058 Leader • Purple • 5 Life [When Attacking]/[On Your Opponent's Attack] [Once Per Turn] DON!! −1: Give up to 1 of your opponent"
+    },
+    {
+      "id": "OP17-061",
+      "name": "Lead Performers",
+      "timing": "activate_main",
+      "status": "unsupported",
+      "reason": "complex_activate_main",
+      "summary": "Needs review / unsupported (complex_activate_main)",
+      "effect": "[On Play] DON!! −1: If your Leader has the {Animal Kingdom Pirates} type, add up to 1 card from the top of your deck to the top of your Life"
+    },
+    {
+      "id": "OP17-061-P1",
+      "name": "Lead Performers",
+      "timing": "activate_main",
+      "status": "unsupported",
+      "reason": "complex_activate_main",
+      "summary": "Needs review / unsupported (complex_activate_main)",
+      "effect": "Lead Performers OP17-061 Character • Purple • 9 Cost [On Play] DON!! −1: If your Leader has the {Animal Kingdom Pirates} type, add up to 1 c"
+    },
+    {
+      "id": "OP17-062",
+      "name": "Kaido",
+      "timing": "your_turn",
+      "status": "unsupported",
+      "reason": "complex_your_turn",
+      "summary": "Needs review / unsupported (complex_your_turn)",
+      "effect": "[Blocker] [Your Turn] [Once Per Turn] When a DON!! card on your field is returned to your DON!! deck, add up to 1 DON!! card as active from "
+    },
+    {
+      "id": "OP17-062-P1",
+      "name": "Kaido",
+      "timing": "your_turn",
+      "status": "unsupported",
+      "reason": "complex_your_turn",
+      "summary": "Needs review / unsupported (complex_your_turn)",
+      "effect": "Kaido OP17-062 Character • Purple • 10 Cost [Blocker] [Your Turn] [Once Per Turn] When a DON!! card on your field is returned to your DON!! "
+    },
+    {
+      "id": "OP17-062-P2",
+      "name": "Kaido",
+      "timing": "your_turn",
+      "status": "unsupported",
+      "reason": "complex_your_turn",
+      "summary": "Needs review / unsupported (complex_your_turn)",
+      "effect": "Kaido OP17-062 Character • Purple • 10 Cost [Blocker] [Your Turn] [Once Per Turn] When a DON!! card on your field is returned to your DON!! "
+    },
+    {
+      "id": "OP17-069",
+      "name": "Jack",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "[Rush: Character] (This card can attack Characters on the turn in which it is played.) [On Play] DON!! −1: If your Leader has the {Animal Ki"
+    },
+    {
+      "id": "OP17-075",
+      "name": "X.Drake",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "[On Play] DON!! −2: Trash 1 card from your opponent's hand.\n[On Play] DON!! −2: Trash 1 card from your opponent's hand."
+    },
+    {
+      "id": "OP17-077",
+      "name": "Kundali Dragon Swarm",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "[Main] You may rest 3 of your DON!! cards and trash 2 cards from your hand: If your Leader has the {Animal Kingdom Pirates} type, add up to "
+    },
+    {
+      "id": "OP17-078",
+      "name": "Drunken Dragon Bagua",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "[Main] You may rest 2 of your DON!! cards and trash 2 cards from your hand: If your Leader has the {Animal Kingdom Pirates} type, add up to "
+    },
+    {
+      "id": "OP17-087",
+      "name": "Nico Robin",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "If there is a Character with a cost of 12 or more, this Character gains +3000 power. [On Play] If there is a Character with a cost of 12 or "
+    },
+    {
+      "id": "OP17-087-P1",
+      "name": "Nico Robin",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "Nico Robin OP17-087 Character • Black • 2 Cost\nNico Robin OP17-087 Character • Black • 2 Cost"
+    },
+    {
+      "id": "OP17-091",
+      "name": "Brook",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "If there is a Character with a cost of 12 or more, this Character gains +3000 power. [On Play] If there is a Character with a cost of 12 or "
+    },
+    {
+      "id": "OP17-097",
+      "name": "I'll Feed on This Rage and Use It to Bring the World to Ruin!!!",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "[Main] Give all of your opponent's Characters −1 cost during this turn. [Counter] Your Leader gains +3000 power during this battle.\n[Main] G"
+    },
+    {
+      "id": "OP17-098",
+      "name": "Gum-Gum Kong Gun",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "[Main] You may rest 6 of your DON!! cards: If there is a Character with a cost of 12 or more, K.O. up to 2 of your opponent's Characters wit"
+    },
+    {
+      "id": "OP17-115",
+      "name": "Don't you know that even in the cruel world of pirates there's still a code of honor?!!",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "[Main] Your [Charlotte Linlin] Leader gains [Unblockable] during this turn. [Counter] Up to 1 of your [Charlotte Linlin] gains +4000 power d"
+    },
+    {
+      "id": "OP17-116",
+      "name": "Fulgora",
+      "timing": "on_play",
+      "status": "unsupported",
+      "reason": "complex_on_play",
+      "summary": "Needs review / unsupported (complex_on_play)",
+      "effect": "[Main] You may rest 2 of your DON!! cards: K.O. up to 1 of your opponent's Stages. [Counter] If you have 2 or more Characters with a [Trigge"
+    }
+  ],
+  "empty_samples": [
+    {
+      "id": "OP17-006-P1",
+      "name": "Kingdew",
+      "effect": "Kingdew OP17-006 Character • Red • 7 Cost\nKingdew OP17-006 Character • Red • 7 Cost"
+    },
+    {
+      "id": "OP17-070-P1",
+      "name": "Scratchmen Apoo",
+      "effect": "Scratchmen Apoo OP17-070 Character • Purple • 6 Cost\nScratchmen Apoo OP17-070 Character • Purple • 6 Cost"
+    },
+    {
+      "id": "OP17-079",
+      "name": "Monkey.D.Luffy",
+      "effect": "All of your Characters with a cost of 12 or more gain [Blocker]. (After your opponent declares an attack, you may rest this card to make it the new target of th"
+    },
+    {
+      "id": "OP17-079-P1",
+      "name": "Monkey.D.Luffy",
+      "effect": "Monkey.D.Luffy OP17-079 Leader • Black • 5 Life All of your Characters with a cost of 12 or more gain [Blocker]. (After your opponent declares an attack, you ma"
+    },
+    {
+      "id": "OP17-079-P2",
+      "name": "Monkey.D.Luffy",
+      "effect": "Monkey.D.Luffy OP17-079 Leader • Black • 5 Life All of your Characters with a cost of 12 or more gain [Blocker]. (After your opponent declares an attack, you ma"
+    },
+    {
+      "id": "OP17-083",
+      "name": "Jinbe",
+      "effect": "If there is a Character with a cost of 12 or more, this Character gains [Blocker] and +3000 power. (After your opponent declares an attack, you may rest this ca"
+    },
+    {
+      "id": "OP17-088-P1",
+      "name": "Hajrudin",
+      "effect": "Hajrudin OP17-088 Character • Black • 7 Cost\nHajrudin OP17-088 Character • Black • 7 Cost"
+    },
+    {
+      "id": "OP17-094",
+      "name": "Rodo",
+      "effect": "If your Leader has the {Elbaph} type, this Character gains +12 cost.\nIf your Leader has the {Elbaph} type, this Character gains +12 cost."
+    },
+    {
+      "id": "OP17-108",
+      "name": "Charlotte Brulee",
+      "effect": "[Blocker] (After your opponent declares an attack, you may rest this card to make it the new target of the attack.) [Trigger] Rest up to 1 of your opponent's Ch"
+    }
+  ]
+}

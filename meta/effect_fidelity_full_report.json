@@ -1,0 +1,14 @@
+{
+  "totals": {
+    "cards_scanned": 2367,
+    "pass_bases": 2367,
+    "fail_bases": 0,
+    "findings": 0,
+    "unique_fail_bases": 0
+  },
+  "by_category": {},
+  "by_severity": {},
+  "findings": [],
+  "unique_fail_bases": [],
+  "generated_at": "2026-08-10T14:49:43Z"
+}

@@ -1,0 +1,53 @@
+{
+  "generated_at": "2026-08-26T14:29:33+0800",
+  "pool": "/Users/jayden/Documents/OPCG_Project/Chinese HK/meta/ai_eval_pool.json",
+  "seed": 20260826,
+  "games_scheduled": 120,
+  "games_finished": 47,
+  "games_stuck": 73,
+  "games_error": 0,
+  "games_incomplete": 73,
+  "finish_rate": 0.3917,
+  "wall_sec": 99.59,
+  "cpu_user_sec": 157.89,
+  "cpu_sys_sec": 38.37,
+  "cpu_total_sec": 196.26,
+  "workers": 4,
+  "approx_max_rss_mb": 591.2,
+  "avg_steps": 257.1,
+  "avg_turns_finished": 5.0,
+  "avg_game_wall_sec": 1.917,
+  "mirror_finished": 35,
+  "mirror_seat0_winrate": 0.6571,
+  "leader_games": {
+    "OP08-058": 20,
+    "OP09-062": 26,
+    "OP13-004": 26,
+    "OP14-020": 26,
+    "OP09-061": 22,
+    "OP14-041": 20,
+    "OP14-079": 26,
+    "OP15-058": 26,
+    "OP16-001": 24,
+    "OP17-020": 24
+  },
+  "leader_wins": {
+    "OP08-058": 2,
+    "OP09-062": 5,
+    "OP14-020": 3,
+    "OP09-061": 4,
+    "OP14-041": 4,
+    "OP15-058": 6,
+    "OP16-001": 11,
+    "OP17-020": 12
+  },
+  "phase_counts": {
+    "main": 2083,
+    "block": 1322,
+    "counter": 1322,
+    "trigger": 104,
+    "end": 17,
+    "gameover": 47
+  },
+  "note": "This run measures stability of the CURRENT heuristic AI. It does not train or auto-improve the AI. Strength delta requires a before/after compare after editing battle/ai.py."
+}

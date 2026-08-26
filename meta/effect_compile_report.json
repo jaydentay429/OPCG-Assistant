@@ -1,0 +1,197 @@
+{
+  "generated_at": "2026-08-18T19:07:03",
+  "mode": "full",
+  "used_llm": false,
+  "totals": {
+    "cards": 4980,
+    "with_abilities": 4494,
+    "runnable": 6419,
+    "unsupported": 47,
+    "empty_with_text": 472,
+    "llm_calls": 0,
+    "recompiled": 157
+  },
+  "by_timing": {
+    "activate_main": {
+      "compiled": 717,
+      "needs_review": 0,
+      "unsupported": 3,
+      "verified": 17
+    },
+    "counter_event": {
+      "compiled": 319,
+      "needs_review": 0,
+      "unsupported": 0,
+      "verified": 1
+    },
+    "don_attached": {
+      "compiled": 22,
+      "needs_review": 0,
+      "unsupported": 0,
+      "verified": 0
+    },
+    "end_of_battle": {
+      "compiled": 1,
+      "needs_review": 0,
+      "unsupported": 0,
+      "verified": 0
+    },
+    "end_of_opponent_turn": {
+      "compiled": 0,
+      "needs_review": 0,
+      "unsupported": 0,
+      "verified": 0
+    },
+    "end_of_your_turn": {
+      "compiled": 118,
+      "needs_review": 0,
+      "unsupported": 1,
+      "verified": 0
+    },
+    "hand_cost": {
+      "compiled": 36,
+      "needs_review": 0,
+      "unsupported": 0,
+      "verified": 0
+    },
+    "main_start": {
+      "compiled": 4,
+      "needs_review": 0,
+      "unsupported": 0,
+      "verified": 0
+    },
+    "on_block": {
+      "compiled": 52,
+      "needs_review": 0,
+      "unsupported": 0,
+      "verified": 0
+    },
+    "on_don_attached": {
+      "compiled": 4,
+      "needs_review": 0,
+      "unsupported": 0,
+      "verified": 0
+    },
+    "on_don_returned": {
+      "compiled": 15,
+      "needs_review": 0,
+      "unsupported": 0,
+      "verified": 14
+    },
+    "on_event": {
+      "compiled": 3,
+      "needs_review": 0,
+      "unsupported": 0,
+      "verified": 0
+    },
+    "on_game_start": {
+      "compiled": 2,
+      "needs_review": 0,
+      "unsupported": 0,
+      "verified": 0
+    },
+    "on_ko": {
+      "compiled": 250,
+      "needs_review": 0,
+      "unsupported": 2,
+      "verified": 13
+    },
+    "on_life_damage": {
+      "compiled": 4,
+      "needs_review": 0,
+      "unsupported": 0,
+      "verified": 0
+    },
+    "on_opp_event": {
+      "compiled": 8,
+      "needs_review": 0,
+      "unsupported": 0,
+      "verified": 0
+    },
+    "on_opp_trigger": {
+      "compiled": 0,
+      "needs_review": 0,
+      "unsupported": 0,
+      "verified": 0
+    },
+    "on_opponent_attack": {
+      "compiled": 105,
+      "needs_review": 0,
+      "unsupported": 2,
+      "verified": 0
+    },
+    "on_opponent_play": {
+      "compiled": 2,
+      "needs_review": 0,
+      "unsupported": 0,
+      "verified": 0
+    },
+    "on_play": {
+      "compiled": 2253,
+      "needs_review": 0,
+      "unsupported": 28,
+      "verified": 27
+    },
+    "on_trigger": {
+      "compiled": 2,
+      "needs_review": 0,
+      "unsupported": 0,
+      "verified": 0
+    },
+    "opponent_turn": {
+      "compiled": 418,
+      "needs_review": 0,
+      "unsupported": 2,
+      "verified": 10
+    },
+    "trigger": {
+      "compiled": 829,
+      "needs_review": 0,
+      "unsupported": 0,
+      "verified": 2
+    },
+    "turn_start": {
+      "compiled": 2,
+      "needs_review": 0,
+      "unsupported": 0,
+      "verified": 0
+    },
+    "when_attacking": {
+      "compiled": 491,
+      "needs_review": 0,
+      "unsupported": 6,
+      "verified": 11
+    },
+    "your_turn": {
+      "compiled": 640,
+      "needs_review": 3,
+      "unsupported": 3,
+      "verified": 24
+    }
+  },
+  "by_reason": {
+    "complex_on_play": 28,
+    "complex_when_attacking": 6,
+    "complex_activate_main": 3,
+    "complex_your_turn": 3,
+    "complex_opponent_turn": 2,
+    "complex_on_ko": 2,
+    "complex_on_opponent_attack": 2,
+    "complex_end_of_your_turn": 1
+  },
+  "timing_gaps": {
+    "on_play": 51,
+    "when_attacking": 10,
+    "activate_main": 5,
+    "opponent_turn": 4,
+    "on_ko": 4,
+    "your_turn": 4,
+    "on_opponent_attack": 3,
+    "end_of_your_turn": 2
+  },
+  "needs_review_ids": [
+    "OP17-015",
+    "OP17-021",
+    "OP17-095"
+  ]
+}

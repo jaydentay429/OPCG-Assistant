@@ -1,0 +1,1397 @@
+{
+  "source": "https://onepiece.limitlesstcg.com/",
+  "fetched_at_utc": "2026-05-01T17:27:29.094248+00:00",
+  "top_decks": [
+    {
+      "leader_card": "",
+      "rank": 1,
+      "archetype": "Purple Enel",
+      "share_percent": 44.03
+    },
+    {
+      "leader_card": "",
+      "rank": 2,
+      "archetype": "Blue/Yellow Nami",
+      "share_percent": 23.9
+    },
+    {
+      "leader_card": "",
+      "rank": 3,
+      "archetype": "Red/Blue Lucy",
+      "share_percent": 14.47
+    },
+    {
+      "leader_card": "",
+      "rank": 4,
+      "archetype": "Green/Purple Luffy",
+      "share_percent": 4.4
+    },
+    {
+      "leader_card": "",
+      "rank": 5,
+      "archetype": "Red/Blue Ace",
+      "share_percent": 3.77
+    },
+    {
+      "leader_card": "",
+      "rank": 5,
+      "archetype": "Red/Green Luffy",
+      "share_percent": 3.77
+    },
+    {
+      "leader_card": "",
+      "rank": 7,
+      "archetype": "Yellow Enel",
+      "share_percent": 3.14
+    },
+    {
+      "leader_card": "",
+      "rank": 8,
+      "archetype": "Red/Blue Vivi",
+      "share_percent": 2.52
+    },
+    {
+      "leader_card": "",
+      "rank": 51,
+      "archetype": "Green Bonney",
+      "share_percent": 0.0,
+      "sample_count": 131,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 52,
+      "archetype": "Red Zoro",
+      "share_percent": 0.0,
+      "sample_count": 125,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 53,
+      "archetype": "Red Whitebeard",
+      "share_percent": 0.0,
+      "sample_count": 124,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 54,
+      "archetype": "Black Lucci",
+      "share_percent": 0.0,
+      "sample_count": 114,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 55,
+      "archetype": "Yellow Katakuri",
+      "share_percent": 0.0,
+      "sample_count": 111,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 56,
+      "archetype": "Black/Yellow Luffy",
+      "share_percent": 0.0,
+      "sample_count": 109,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 57,
+      "archetype": "Yellow Enel",
+      "share_percent": 0.0,
+      "sample_count": 107,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 58,
+      "archetype": "Blue Doflamingo",
+      "share_percent": 0.0,
+      "sample_count": 103,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 59,
+      "archetype": "Red/Green Law",
+      "share_percent": 0.0,
+      "sample_count": 97,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 60,
+      "archetype": "Purple Luffy",
+      "share_percent": 0.0,
+      "sample_count": 83,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 61,
+      "archetype": "Blue Nami",
+      "share_percent": 0.0,
+      "sample_count": 80,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 62,
+      "archetype": "Black Blackbeard",
+      "share_percent": 0.0,
+      "sample_count": 70,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 63,
+      "archetype": "Black Moria",
+      "share_percent": 0.0,
+      "sample_count": 70,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 64,
+      "archetype": "Blue/Black Sakazuki",
+      "share_percent": 0.0,
+      "sample_count": 58,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 65,
+      "archetype": "Green/Purple Luffy",
+      "share_percent": 0.0,
+      "sample_count": 55,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 66,
+      "archetype": "Blue/Purple Luffy",
+      "share_percent": 0.0,
+      "sample_count": 55,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 67,
+      "archetype": "Red/Purple Law",
+      "share_percent": 0.0,
+      "sample_count": 54,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 68,
+      "archetype": "Green Kid",
+      "share_percent": 0.0,
+      "sample_count": 53,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 69,
+      "archetype": "Red Shanks",
+      "share_percent": 0.0,
+      "sample_count": 49,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 70,
+      "archetype": "Green Zoro",
+      "share_percent": 0.0,
+      "sample_count": 48,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 71,
+      "archetype": "Blue/Purple Reiju",
+      "share_percent": 0.0,
+      "sample_count": 44,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 72,
+      "archetype": "Green/Yellow Yamato",
+      "share_percent": 0.0,
+      "sample_count": 38,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 73,
+      "archetype": "Red Rayleigh",
+      "share_percent": 0.0,
+      "sample_count": 34,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 74,
+      "archetype": "Black Smoker",
+      "share_percent": 0.0,
+      "sample_count": 34,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 75,
+      "archetype": "Green Kin'emon",
+      "share_percent": 0.0,
+      "sample_count": 34,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 76,
+      "archetype": "Red Luffy",
+      "share_percent": 0.0,
+      "sample_count": 32,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 77,
+      "archetype": "Red/Purple Luffy",
+      "share_percent": 0.0,
+      "sample_count": 31,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 78,
+      "archetype": "Red/Blue Ace",
+      "share_percent": 0.0,
+      "sample_count": 27,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 79,
+      "archetype": "Red/Yellow Betty",
+      "share_percent": 0.0,
+      "sample_count": 27,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 80,
+      "archetype": "Green Uta",
+      "share_percent": 0.0,
+      "sample_count": 27,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 81,
+      "archetype": "Black Imu",
+      "share_percent": 0.0,
+      "sample_count": 26,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 82,
+      "archetype": "Black Luffy",
+      "share_percent": 0.0,
+      "sample_count": 25,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 83,
+      "archetype": "Green/Purple Doflamingo",
+      "share_percent": 0.0,
+      "sample_count": 25,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 84,
+      "archetype": "Green/Purple Lim",
+      "share_percent": 0.0,
+      "sample_count": 23,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 85,
+      "archetype": "Red/Green Smoker",
+      "share_percent": 0.0,
+      "sample_count": 21,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 86,
+      "archetype": "Red Ace",
+      "share_percent": 0.0,
+      "sample_count": 21,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 87,
+      "archetype": "Black Lucci",
+      "share_percent": 0.0,
+      "sample_count": 21,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 88,
+      "archetype": "Yellow Kalgara",
+      "share_percent": 0.0,
+      "sample_count": 19,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 89,
+      "archetype": "Blue Crocodile",
+      "share_percent": 0.0,
+      "sample_count": 19,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 90,
+      "archetype": "Yellow Kid",
+      "share_percent": 0.0,
+      "sample_count": 18,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 91,
+      "archetype": "Purple Kaido",
+      "share_percent": 0.0,
+      "sample_count": 18,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 92,
+      "archetype": "Blue/Yellow Queen",
+      "share_percent": 0.0,
+      "sample_count": 17,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 93,
+      "archetype": "Red/Blue Marco",
+      "share_percent": 0.0,
+      "sample_count": 16,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 94,
+      "archetype": "Blue Buggy",
+      "share_percent": 0.0,
+      "sample_count": 15,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 95,
+      "archetype": "Blue/Black Rebecca",
+      "share_percent": 0.0,
+      "sample_count": 15,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 96,
+      "archetype": "Green/Black Perona",
+      "share_percent": 0.0,
+      "sample_count": 15,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 97,
+      "archetype": "Green/Yellow Law",
+      "share_percent": 0.0,
+      "sample_count": 13,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 98,
+      "archetype": "Blue/Black Usopp",
+      "share_percent": 0.0,
+      "sample_count": 13,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 99,
+      "archetype": "Purple/Black Luffy",
+      "share_percent": 0.0,
+      "sample_count": 10,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 100,
+      "archetype": "Blue Hancock",
+      "share_percent": 0.0,
+      "sample_count": 10,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 101,
+      "archetype": "Purple Magellan",
+      "share_percent": 0.0,
+      "sample_count": 10,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 102,
+      "archetype": "Blue Ivankov",
+      "share_percent": 0.0,
+      "sample_count": 10,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 103,
+      "archetype": "Blue/Yellow Nami",
+      "share_percent": 0.0,
+      "sample_count": 9,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 104,
+      "archetype": "Purple/Yellow Rosinante",
+      "share_percent": 0.0,
+      "sample_count": 7,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 105,
+      "archetype": "Blue/Purple Sanji",
+      "share_percent": 0.0,
+      "sample_count": 7,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 106,
+      "archetype": "Green Mihawk",
+      "share_percent": 0.0,
+      "sample_count": 7,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 107,
+      "archetype": "Purple/Yellow Pudding",
+      "share_percent": 0.0,
+      "sample_count": 7,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 108,
+      "archetype": "Purple Katakuri",
+      "share_percent": 0.0,
+      "sample_count": 7,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 109,
+      "archetype": "Red/Green Luffy",
+      "share_percent": 0.0,
+      "sample_count": 6,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 110,
+      "archetype": "Red/Purple Roger",
+      "share_percent": 0.0,
+      "sample_count": 6,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 111,
+      "archetype": "Blue/Yellow Hancock",
+      "share_percent": 0.0,
+      "sample_count": 5,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 112,
+      "archetype": "Red/Black Sabo",
+      "share_percent": 0.0,
+      "sample_count": 5,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 113,
+      "archetype": "Purple Doflamingo",
+      "share_percent": 0.0,
+      "sample_count": 5,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 114,
+      "archetype": "Black Luffy",
+      "share_percent": 0.0,
+      "sample_count": 5,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 115,
+      "archetype": "Yellow Yamato",
+      "share_percent": 0.0,
+      "sample_count": 5,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 116,
+      "archetype": "Yellow Big Mom",
+      "share_percent": 0.0,
+      "sample_count": 5,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 117,
+      "archetype": "Green/Blue Zoro & Sanji",
+      "share_percent": 0.0,
+      "sample_count": 4,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 118,
+      "archetype": "Yellow Vegapunk",
+      "share_percent": 0.0,
+      "sample_count": 4,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 119,
+      "archetype": "Purple/Black Zephyr",
+      "share_percent": 0.0,
+      "sample_count": 4,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 120,
+      "archetype": "Green Carrot",
+      "share_percent": 0.0,
+      "sample_count": 3,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 121,
+      "archetype": "Green Oden",
+      "share_percent": 0.0,
+      "sample_count": 3,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 122,
+      "archetype": "Red/Blue Vivi",
+      "share_percent": 0.0,
+      "sample_count": 2,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 123,
+      "archetype": "Blue Nami",
+      "share_percent": 0.0,
+      "sample_count": 2,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 124,
+      "archetype": "Yellow Luffy",
+      "share_percent": 0.0,
+      "sample_count": 2,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 125,
+      "archetype": "Black/Yellow Moria",
+      "share_percent": 0.0,
+      "sample_count": 2,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 126,
+      "archetype": "Purple Foxy",
+      "share_percent": 0.0,
+      "sample_count": 2,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 127,
+      "archetype": "Black/Yellow Koala",
+      "share_percent": 0.0,
+      "sample_count": 2,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 128,
+      "archetype": "Red/Black Koby",
+      "share_percent": 0.0,
+      "sample_count": 2,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 129,
+      "archetype": "Blue Kuzan",
+      "share_percent": 0.0,
+      "sample_count": 2,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 130,
+      "archetype": "Green Kuro",
+      "share_percent": 0.0,
+      "sample_count": 2,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 131,
+      "archetype": "Purple Enel",
+      "share_percent": 0.0,
+      "sample_count": 1,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 132,
+      "archetype": "Red/Blue Lucy",
+      "share_percent": 0.0,
+      "sample_count": 1,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 133,
+      "archetype": "Black Crocodile",
+      "share_percent": 0.0,
+      "sample_count": 1,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 134,
+      "archetype": "Green/Yellow Shirahoshi",
+      "share_percent": 0.0,
+      "sample_count": 1,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 135,
+      "archetype": "Blue Jinbe",
+      "share_percent": 0.0,
+      "sample_count": 1,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 136,
+      "archetype": "Red Sanji",
+      "share_percent": 0.0,
+      "sample_count": 1,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 137,
+      "archetype": "Blue Ace & Newgate",
+      "share_percent": 0.0,
+      "sample_count": 1,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 138,
+      "archetype": "Green/Blue Rosinante",
+      "share_percent": 0.0,
+      "sample_count": 1,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 139,
+      "archetype": "Red Luffy",
+      "share_percent": 0.0,
+      "sample_count": 1,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 140,
+      "archetype": "Green/Yellow Arlong",
+      "share_percent": 0.0,
+      "sample_count": 1,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 141,
+      "archetype": "Red/Purple Sugar",
+      "share_percent": 0.0,
+      "sample_count": 1,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 142,
+      "archetype": "Red/Yellow Sabo",
+      "share_percent": 0.0,
+      "sample_count": 1,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 143,
+      "archetype": "Purple/Yellow Robin",
+      "share_percent": 0.0,
+      "sample_count": 1,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 144,
+      "archetype": "Red/Black Sabo",
+      "share_percent": 0.0,
+      "sample_count": 1,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 145,
+      "archetype": "Red/Blue Vivi",
+      "share_percent": 0.0,
+      "sample_count": 1,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 146,
+      "archetype": "Red/Green Oden",
+      "share_percent": 0.0,
+      "sample_count": 1,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 147,
+      "archetype": "Purple/Yellow Crocodile",
+      "share_percent": 0.0,
+      "sample_count": 1,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 148,
+      "archetype": "Red/Black Garp",
+      "share_percent": 0.0,
+      "sample_count": 1,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 149,
+      "archetype": "Blue/Purple Kaido",
+      "share_percent": 0.0,
+      "sample_count": 1,
+      "from_tournaments": 388
+    },
+    {
+      "leader_card": "",
+      "rank": 909,
+      "archetype": "Decklists",
+      "share_percent": 0.0
+    },
+    {
+      "leader_card": "",
+      "rank": 1001,
+      "archetype": "Decklists",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1001,
+      "archetype": "Open detailed card breakdown",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1002,
+      "archetype": "Purple Enel",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1002,
+      "archetype": "Open complete tournament history",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1003,
+      "archetype": "Blue/Yellow Nami",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1003,
+      "archetype": "Open complete player ranking",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1004,
+      "archetype": "Red/Blue Lucy",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1005,
+      "archetype": "Green/Purple Luffy",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1006,
+      "archetype": "Red/Blue Ace",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1006,
+      "archetype": "Red/Green Luffy",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1007,
+      "archetype": "Red/Green Luffy",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1007,
+      "archetype": "Red/Blue Ace",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1008,
+      "archetype": "Yellow Enel",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1009,
+      "archetype": "Red/Blue Vivi",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 2001,
+      "archetype": "Purple Enel",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 2002,
+      "archetype": "Blue/Yellow Nami",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 2003,
+      "archetype": "Red/Blue Lucy",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 2004,
+      "archetype": "Green/Purple Luffy",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 2005,
+      "archetype": "Red/Blue Ace",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 2006,
+      "archetype": "Red/Green Luffy",
+      "share_percent": 0.0,
+      "sample_count": 0
+    }
+  ],
+  "leader_ranking_source": "https://onepiece.limitlesstcg.com/decks?format=OP15",
+  "leader_ranking_decks_count": 18,
+  "leader_ranking_parse_source": "parse_leader_ranking_dom",
+  "max_listing_pages": 320,
+  "max_archetype_pages": 700,
+  "max_tournament_pages": 700,
+  "max_archetype_fetch": 2500,
+  "max_decklist_pages": 4000,
+  "deck_listing_links_sample": [
+    "https://onepiece.limitlesstcg.com/decks",
+    "https://onepiece.limitlesstcg.com/decks/98",
+    "https://onepiece.limitlesstcg.com/decks/list/6233",
+    "https://onepiece.limitlesstcg.com/decks/74",
+    "https://onepiece.limitlesstcg.com/decks/list/6224",
+    "https://onepiece.limitlesstcg.com/decks/99",
+    "https://onepiece.limitlesstcg.com/decks/list/6229",
+    "https://onepiece.limitlesstcg.com/decks/65",
+    "https://onepiece.limitlesstcg.com/decks/list/6227",
+    "https://onepiece.limitlesstcg.com/decks/79",
+    "https://onepiece.limitlesstcg.com/decks/list/6228",
+    "https://onepiece.limitlesstcg.com/decks/92",
+    "https://onepiece.limitlesstcg.com/decks/list/6231",
+    "https://onepiece.limitlesstcg.com/decks?format=OP15",
+    "https://onepiece.limitlesstcg.com/decks?page=2",
+    "https://onepiece.limitlesstcg.com/decks?page=3",
+    "https://onepiece.limitlesstcg.com/decks?page=4",
+    "https://onepiece.limitlesstcg.com/decks?page=5",
+    "https://onepiece.limitlesstcg.com/decks?page=6",
+    "https://onepiece.limitlesstcg.com/decks?page=7"
+  ],
+  "listing_decks_count": 12,
+  "listing_decks_sample": [
+    {
+      "leader_card": "",
+      "rank": 1001,
+      "archetype": "Decklists",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1002,
+      "archetype": "Purple Enel",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1003,
+      "archetype": "Blue/Yellow Nami",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1004,
+      "archetype": "Red/Blue Lucy",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1005,
+      "archetype": "Green/Purple Luffy",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1006,
+      "archetype": "Red/Green Luffy",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1007,
+      "archetype": "Red/Blue Ace",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1008,
+      "archetype": "Yellow Enel",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1009,
+      "archetype": "Red/Blue Vivi",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1001,
+      "archetype": "Open detailed card breakdown",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1002,
+      "archetype": "Open complete tournament history",
+      "share_percent": 0.0,
+      "sample_count": 0
+    },
+    {
+      "leader_card": "",
+      "rank": 1003,
+      "archetype": "Open complete player ranking",
+      "share_percent": 0.0,
+      "sample_count": 0
+    }
+  ],
+  "archetype_links_sample": [
+    "https://onepiece.limitlesstcg.com/decks/98",
+    "https://onepiece.limitlesstcg.com/decks/74",
+    "https://onepiece.limitlesstcg.com/decks/99",
+    "https://onepiece.limitlesstcg.com/decks/65",
+    "https://onepiece.limitlesstcg.com/decks/79",
+    "https://onepiece.limitlesstcg.com/decks/92"
+  ],
+  "archetype_page_decks_count": 6,
+  "tournament_ranking_decks_count": 99,
+  "recent_tournaments": [
+    {
+      "name": "Regional Lille",
+      "date_text": "11th April 2026",
+      "players": 1536,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Treasure Cup Pomona, CA",
+      "date_text": "29th March 2026",
+      "players": 1024,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional Pomona, CA",
+      "date_text": "28th March 2026",
+      "players": 1336,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional Mesquite, TX",
+      "date_text": "21st March 2026",
+      "players": 1388,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional Bonn",
+      "date_text": "21st March 2026",
+      "players": 1024,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional Warsaw",
+      "date_text": "2nd May 2026",
+      "players": 0,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional São Paulo",
+      "date_text": "2nd May 2026",
+      "players": 0,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Treasure Cup Warsaw",
+      "date_text": "3rd May 2026",
+      "players": 0,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Treasure Cup São Paulo",
+      "date_text": "3rd May 2026",
+      "players": 0,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional Brisbane",
+      "date_text": "9th May 2026",
+      "players": 0,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional Melbourne",
+      "date_text": "21st March 2026",
+      "players": 712,
+      "region_format": "OP15"
+    },
+    {
+      "name": "World Finals 2026",
+      "date_text": "14th March 2026",
+      "players": 34,
+      "region_format": "OP15"
+    },
+    {
+      "name": "ChinoizeCup Season Qualifier #1",
+      "date_text": "14th March 2026",
+      "players": 171,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Championship Finals Las Vegas",
+      "date_text": "14th February 2026",
+      "players": 0,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Championship Finals Melbourne",
+      "date_text": "24th January 2026",
+      "players": 1064,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Championship Finals Mexico City",
+      "date_text": "17th January 2026",
+      "players": 1352,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional Peoria, IL",
+      "date_text": "13th December 2025",
+      "players": 832,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional Pasadena, CA",
+      "date_text": "13th December 2025",
+      "players": 512,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Championship Finals Düsseldorf",
+      "date_text": "13th December 2025",
+      "players": 0,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional Fort Worth, TX",
+      "date_text": "6th December 2025",
+      "players": 650,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional Toronto, ON",
+      "date_text": "6th December 2025",
+      "players": 512,
+      "region_format": "OP15"
+    },
+    {
+      "name": "ChinoizeCup Road to Finals",
+      "date_text": "30th November 2025",
+      "players": 209,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Treasure Cup Edinburgh",
+      "date_text": "23rd November 2025",
+      "players": 256,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Carta Magica Online Treasure Cup",
+      "date_text": "23rd November 2025",
+      "players": 512,
+      "region_format": "OP15"
+    },
+    {
+      "name": "TAK Games Online Treasure Cup",
+      "date_text": "23rd November 2025",
+      "players": 307,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional Edinburgh",
+      "date_text": "22nd November 2025",
+      "players": 0,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional Miami, FL",
+      "date_text": "22nd November 2025",
+      "players": 570,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Versus Games Online Treasure Cup",
+      "date_text": "16th November 2025",
+      "players": 512,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Treasure Cup Barcelona",
+      "date_text": "16th November 2025",
+      "players": 0,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional Bordeaux",
+      "date_text": "15th November 2025",
+      "players": 512,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional College Park, MD",
+      "date_text": "9th November 2025",
+      "players": 512,
+      "region_format": "OP15"
+    },
+    {
+      "name": "401 Games Online Treasure Cup",
+      "date_text": "9th November 2025",
+      "players": 500,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Treasure Cup Mexico City",
+      "date_text": "9th November 2025",
+      "players": 256,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional San Diego, CA",
+      "date_text": "8th November 2025",
+      "players": 0,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional Utrecht",
+      "date_text": "8th November 2025",
+      "players": 0,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional Mexico City",
+      "date_text": "8th November 2025",
+      "players": 0,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional Sydney",
+      "date_text": "8th November 2025",
+      "players": 0,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Top Cut Events Online Treasure Cup",
+      "date_text": "2nd November 2025",
+      "players": 512,
+      "region_format": "OP15"
+    },
+    {
+      "name": "Regional New Orleans, LA",
+      "date_text": "1st November 2025",
+      "players": 256,
+      "region_format": "OP15"
+    },
+    {
+      "name": "The Booster Box​​​ Online Regional",
+      "date_text": "25th October 2025",
+      "players": 1024,
+      "region_format": "OP15"
+    }
+  ],
+  "tournament_links_sample": [
+    "https://onepiece.limitlesstcg.com/tournaments/381",
+    "https://onepiece.limitlesstcg.com/tournaments/386",
+    "https://onepiece.limitlesstcg.com/tournaments/379",
+    "https://onepiece.limitlesstcg.com/tournaments/378",
+    "https://onepiece.limitlesstcg.com/tournaments/380",
+    "https://onepiece.limitlesstcg.com/tournaments/394",
+    "https://onepiece.limitlesstcg.com/tournaments/399",
+    "https://onepiece.limitlesstcg.com/tournaments/405",
+    "https://onepiece.limitlesstcg.com/tournaments/410",
+    "https://onepiece.limitlesstcg.com/tournaments/397",
+    "https://onepiece.limitlesstcg.com/tournaments/382",
+    "https://onepiece.limitlesstcg.com/tournaments/424",
+    "https://onepiece.limitlesstcg.com/tournaments/425",
+    "https://onepiece.limitlesstcg.com/tournaments/373",
+    "https://onepiece.limitlesstcg.com/tournaments/374",
+    "https://onepiece.limitlesstcg.com/tournaments/376",
+    "https://onepiece.limitlesstcg.com/tournaments/329",
+    "https://onepiece.limitlesstcg.com/tournaments/330",
+    "https://onepiece.limitlesstcg.com/tournaments/340",
+    "https://onepiece.limitlesstcg.com/tournaments/372",
+    "https://onepiece.limitlesstcg.com/tournaments/328",
+    "https://onepiece.limitlesstcg.com/tournaments/327",
+    "https://onepiece.limitlesstcg.com/tournaments/377",
+    "https://onepiece.limitlesstcg.com/tournaments/367",
+    "https://onepiece.limitlesstcg.com/tournaments/361",
+    "https://onepiece.limitlesstcg.com/tournaments/363",
+    "https://onepiece.limitlesstcg.com/tournaments/338",
+    "https://onepiece.limitlesstcg.com/tournaments/326",
+    "https://onepiece.limitlesstcg.com/tournaments/360",
+    "https://onepiece.limitlesstcg.com/tournaments/366"
+  ],
+  "tournament_links_discovered": 388,
+  "crawled_tournament_pages": 388,
+  "decklist_links_seeded": 68,
+  "context_for_ai": "Limitless OP TCG Meta Snapshot\nTop Decks:\n- #1 Purple Enel (, 44.03%)\n- #2 Blue/Yellow Nami (, 23.9%)\n- #3 Red/Blue Lucy (, 14.47%)\n- #4 Green/Purple Luffy (, 4.4%)\n- #5 Red/Blue Ace (, 3.77%)\n- #5 Red/Green Luffy (, 3.77%)\n- #7 Yellow Enel (, 3.14%)\n- #8 Red/Blue Vivi (, 2.52%)\n- #51 Green Bonney (, 0.0%)\n- #52 Red Zoro (, 0.0%)\nRecent Tournaments:\n- Regional Lille | 11th April 2026 | 1536 players | OP15\n- Treasure Cup Pomona, CA | 29th March 2026 | 1024 players | OP15\n- Regional Pomona, CA | 28th March 2026 | 1336 players | OP15\n- Regional Mesquite, TX | 21st March 2026 | 1388 players | OP15\n- Regional Bonn | 21st March 2026 | 1024 players | OP15\n- Regional Warsaw | 2nd May 2026 | 0 players | OP15\n- Regional São Paulo | 2nd May 2026 | 0 players | OP15\n- Treasure Cup Warsaw | 3rd May 2026 | 0 players | OP15\n- Treasure Cup São Paulo | 3rd May 2026 | 0 players | OP15\n- Regional Brisbane | 9th May 2026 | 0 players | OP15\n- Regional Melbourne | 21st March 2026 | 712 players | OP15\n- World Finals 2026 | 14th March 2026 | 34 players | OP15\n- ChinoizeCup Season Qualifier #1 | 14th March 2026 | 171 players | OP15\n- Championship Finals Las Vegas | 14th February 2026 | 0 players | OP15\n- Championship Finals Melbourne | 24th January 2026 | 1064 players | OP15\n- Championship Finals Mexico City | 17th January 2026 | 1352 players | OP15\n- Regional Peoria, IL | 13th December 2025 | 832 players | OP15\n- Regional Pasadena, CA | 13th December 2025 | 512 players | OP15\n- Championship Finals Düsseldorf | 13th December 2025 | 0 players | OP15\n- Regional Fort Worth, TX | 6th December 2025 | 650 players | OP15"
+}

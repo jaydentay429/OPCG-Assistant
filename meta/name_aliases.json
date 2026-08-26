@@ -1,0 +1,588 @@
+{
+  "Sakazuki": {
+    "display_hans": "赤犬",
+    "display_hant": "赤犬",
+    "aliases": [
+      "赤犬",
+      "萨卡斯基",
+      "薩卡斯基",
+      "盃",
+      "杯",
+      "Akainu"
+    ]
+  },
+  "Borsalino": {
+    "display_hans": "黄猿",
+    "display_hant": "黃猿",
+    "aliases": [
+      "黄猿",
+      "黃猿",
+      "黄辕",
+      "黃轅",
+      "波尔萨利诺",
+      "波爾薩利諾",
+      "波鲁萨利诺",
+      "波魯薩利諾",
+      "Kizaru"
+    ]
+  },
+  "Kuzan": {
+    "display_hans": "青雉",
+    "display_hant": "青雉",
+    "aliases": [
+      "青雉",
+      "库赞",
+      "庫贊",
+      "库山",
+      "庫山",
+      "Aokiji"
+    ]
+  },
+  "Issho": {
+    "display_hans": "藤虎",
+    "display_hant": "藤虎",
+    "aliases": [
+      "藤虎",
+      "一笑",
+      "Fujitora"
+    ]
+  },
+  "Aramaki": {
+    "display_hans": "绿牛",
+    "display_hant": "綠牛",
+    "aliases": [
+      "绿牛",
+      "綠牛",
+      "荒卷",
+      "荒巻",
+      "Ryokugyu"
+    ]
+  },
+  "Sengoku": {
+    "aliases": [
+      "战国",
+      "戰國",
+      "大佛",
+      "佛之战国",
+      "佛之戰國"
+    ]
+  },
+  "\"Buddha\" Sengoku": {
+    "aliases": [
+      "大佛",
+      "佛之战国",
+      "佛之戰國",
+      "战国",
+      "戰國",
+      "大佛・戰國"
+    ],
+    "display_hant": "大佛・戰國"
+  },
+  "Smoker": {
+    "aliases": [
+      "烟鬼",
+      "煙鬼",
+      "斯摩格"
+    ],
+    "display_hant": "煙鬼"
+  },
+  "Smoker & Tashigi": {
+    "aliases": [
+      "烟鬼",
+      "煙鬼",
+      "斯摩格",
+      "煙鬼＆達絲琪"
+    ],
+    "display_hant": "煙鬼＆達絲琪"
+  },
+  "Edward.Newgate": {
+    "aliases": [
+      "白胡子",
+      "白鬍子",
+      "白鬍子海賊",
+      "爱德华纽盖特",
+      "艾德華紐蓋特"
+    ],
+    "display_hant": "白鬍子"
+  },
+  "Ace & Newgate": {
+    "aliases": [
+      "白胡子",
+      "白鬍子",
+      "艾斯",
+      "艾斯＆白鬍子"
+    ],
+    "display_hant": "艾斯＆白鬍子"
+  },
+  "Marshall.D.Teach": {
+    "aliases": [
+      "黑胡子",
+      "黑鬍子",
+      "黑鬍子海賊",
+      "汀奇",
+      "蒂奇"
+    ],
+    "display_hant": "黑鬍子"
+  },
+  "Shanks": {
+    "aliases": [
+      "红发",
+      "紅髮",
+      "红发香克斯",
+      "紅髮香克斯",
+      "紅髮・香克斯"
+    ],
+    "display_hant": "紅髮・香克斯"
+  },
+  "Shiryu": {
+    "display_hans": "希留",
+    "display_hant": "希留",
+    "aliases": [
+      "希留",
+      "雨之希留",
+      "矢龙",
+      "矢龍",
+      "Shiryu"
+    ]
+  },
+  "Dracule Mihawk": {
+    "aliases": [
+      "鹰眼",
+      "鷹眼",
+      "米霍克",
+      "密佛格",
+      "乔拉可尔",
+      "鷹眼・密佛格"
+    ],
+    "display_hant": "鷹眼・密佛格"
+  },
+  "Crocodile & Mihawk": {
+    "aliases": [
+      "鹰眼",
+      "鷹眼",
+      "米霍克",
+      "沙鳄",
+      "沙鱷",
+      "克洛克達爾＆鷹眼"
+    ],
+    "display_hant": "克洛克達爾＆鷹眼"
+  },
+  "Boa Hancock": {
+    "aliases": [
+      "女帝",
+      "汉库克",
+      "漢庫克",
+      "汉考克",
+      "漢考克",
+      "女帝・漢考克"
+    ],
+    "display_hant": "女帝・漢考克"
+  },
+  "Monkey.D.Garp": {
+    "aliases": [
+      "卡普",
+      "卡普爷爷",
+      "卡普爺爺",
+      "铁拳",
+      "鐵拳"
+    ],
+    "display_hant": "卡普"
+  },
+  "Charlotte Linlin": {
+    "aliases": [
+      "大妈",
+      "大媽",
+      "四皇大妈",
+      "四皇大媽",
+      "琳琳"
+    ],
+    "display_hant": "大媽"
+  },
+  "Charlotte Katakuri": {
+    "aliases": [
+      "卡二",
+      "卡塔克利",
+      "卡塔库栗"
+    ]
+  },
+  "Kaido": {
+    "aliases": [
+      "凯多",
+      "凱多",
+      "海道",
+      "百兽凯多",
+      "百獸凱多"
+    ],
+    "display_hant": "凱多"
+  },
+  "Crocodile": {
+    "aliases": [
+      "沙鳄",
+      "沙鱷",
+      "克洛克达尔",
+      "克洛克達爾"
+    ]
+  },
+  "Jinbe": {
+    "aliases": [
+      "甚平",
+      "吉贝尔",
+      "吉貝爾",
+      "海侠",
+      "海俠"
+    ]
+  },
+  "Enel": {
+    "aliases": [
+      "艾尼路",
+      "艾涅尔",
+      "艾涅爾",
+      "神艾尼路"
+    ],
+    "display_hant": "艾尼路"
+  },
+  "Rob Lucci": {
+    "aliases": [
+      "路奇",
+      "卢奇",
+      "盧奇",
+      "路基"
+    ],
+    "display_hant": "路基"
+  },
+  "King": {
+    "aliases": [
+      "烬",
+      "燼",
+      "火灾KING",
+      "火災KING"
+    ],
+    "display_hant": "燼",
+    "display_hans": "烬"
+  },
+  "Queen": {
+    "aliases": [
+      "奎因",
+      "疫灾QUEEN",
+      "疫災QUEEN"
+    ],
+    "display_hant": "奎因",
+    "display_hans": "奎因"
+  },
+  "Jack": {
+    "aliases": [
+      "旱灾杰克",
+      "旱災傑克",
+      "杰克",
+      "傑克"
+    ],
+    "display_hant": "傑克",
+    "display_hans": "杰克"
+  },
+  "Magellan": {
+    "aliases": [
+      "毒人",
+      "麦哲伦",
+      "麥哲倫"
+    ],
+    "display_hant": "毒人"
+  },
+  "Uta": {
+    "aliases": [
+      "乌塔",
+      "烏塔",
+      "美音"
+    ]
+  },
+  "Perona": {
+    "aliases": [
+      "佩罗娜",
+      "佩羅娜",
+      "培罗娜",
+      "培羅娜",
+      "幽灵公主",
+      "幽靈公主"
+    ]
+  },
+  "Donquixote Doflamingo": {
+    "aliases": [
+      "明哥",
+      "天夜叉",
+      "多弗拉门戈",
+      "多弗拉門戈",
+      "多佛朗明哥"
+    ],
+    "display_hant": "多佛朗明哥"
+  },
+  "Bartholomew Kuma": {
+    "aliases": [
+      "大熊",
+      "熊",
+      "巴索罗米"
+    ],
+    "display_hant": "大熊"
+  },
+  "Portgas.D.Ace": {
+    "aliases": [
+      "艾斯",
+      "火拳"
+    ],
+    "display_hant": "艾斯"
+  },
+  "Monkey.D.Luffy": {
+    "aliases": [
+      "路飞",
+      "路飛",
+      "鲁夫",
+      "魯夫",
+      "草帽"
+    ],
+    "display_hant": "魯夫"
+  },
+  "Roronoa Zoro": {
+    "aliases": [
+      "索隆",
+      "罗罗诺亚",
+      "羅羅諾亞",
+      "罗罗亚"
+    ],
+    "display_hant": "索隆"
+  },
+  "Sanji": {
+    "aliases": [
+      "山治",
+      "香吉士",
+      "黑足"
+    ]
+  },
+  "Usopp": {
+    "aliases": [
+      "乌索普",
+      "烏索普",
+      "骗人布",
+      "騙人布"
+    ]
+  },
+  "Nami": {
+    "aliases": [
+      "娜美",
+      "小偷猫",
+      "小娜"
+    ]
+  },
+  "Nico Robin": {
+    "aliases": [
+      "罗宾",
+      "羅賓",
+      "妮可罗宾"
+    ],
+    "display_hant": "羅賓"
+  },
+  "Tony Tony.Chopper": {
+    "aliases": [
+      "乔巴",
+      "喬巴",
+      "乔巴君"
+    ],
+    "display_hant": "喬巴"
+  },
+  "Franky": {
+    "aliases": [
+      "弗兰奇",
+      "弗蘭奇",
+      "佛朗基",
+      "铁人"
+    ]
+  },
+  "Brook": {
+    "aliases": [
+      "布鲁克",
+      "布魯克",
+      "灵魂之王",
+      "靈魂之王"
+    ]
+  },
+  "Sabo": {
+    "aliases": [
+      "萨波",
+      "薩波"
+    ]
+  },
+  "Trafalgar Law": {
+    "aliases": [
+      "罗",
+      "羅",
+      "特拉男",
+      "托拉法尔加",
+      "特拉法尔加"
+    ],
+    "display_hant": "羅"
+  },
+  "Eustass\"Captain\"Kid": {
+    "aliases": [
+      "基德",
+      "キッド",
+      "尤斯塔斯"
+    ],
+    "display_hant": "基德"
+  },
+  "Jewelry Bonney": {
+    "aliases": [
+      "波妮",
+      "珠宝波妮"
+    ],
+    "display_hant": "波妮"
+  },
+  "Yamato": {
+    "aliases": [
+      "大和",
+      "小桃"
+    ]
+  },
+  "Carrot": {
+    "aliases": [
+      "凯洛特",
+      "凱洛特",
+      "萝卜",
+      "蘿蔔"
+    ]
+  },
+  "Buggy": {
+    "aliases": [
+      "巴基",
+      "巴其",
+      "小丑巴基"
+    ]
+  },
+  "Gecko Moria": {
+    "aliases": [
+      "莫利亚",
+      "摩利亚",
+      "摩利亞",
+      "月光莫利亚"
+    ],
+    "display_hant": "摩利亞"
+  },
+  "Koby": {
+    "aliases": [
+      "克比",
+      "柯比"
+    ]
+  },
+  "Tashigi": {
+    "aliases": [
+      "达斯琪",
+      "達斯琪",
+      "达丝琪",
+      "達絲琪"
+    ]
+  },
+  "Kaido & Linlin": {
+    "aliases": [
+      "凱多",
+      "大媽",
+      "海道",
+      "莉莉"
+    ],
+    "display_hant": "凱多＆大媽"
+  },
+  "O-Nami": {
+    "aliases": [
+      "阿娜",
+      "阿娜美",
+      "小娜",
+      "おナミ",
+      "O-Nami",
+      "和之国娜美",
+      "和之國娜美",
+      "娜美"
+    ]
+  },
+  "O-Robi": {
+    "aliases": [
+      "阿宾",
+      "阿賓",
+      "O-Robi",
+      "罗宾",
+      "羅賓"
+    ]
+  },
+  "Uso-Hachi": {
+    "aliases": [
+      "骗人八",
+      "騙人八",
+      "Uso-Hachi",
+      "乌索普",
+      "騙人布"
+    ]
+  },
+  "San-Gorou": {
+    "aliases": [
+      "香吉五郎",
+      "San-Gorou",
+      "山治",
+      "香吉士"
+    ]
+  },
+  "Zoro-Juurou": {
+    "aliases": [
+      "索隆十郎",
+      "Zoro-Juurou",
+      "索隆"
+    ]
+  },
+  "Chopa-Emon": {
+    "aliases": [
+      "乔巴卫门",
+      "喬巴衛門",
+      "Chopa-Emon",
+      "乔巴",
+      "喬巴"
+    ]
+  },
+  "Fra-Nosuke": {
+    "aliases": [
+      "佛朗之介",
+      "Fra-Nosuke",
+      "弗兰奇",
+      "佛朗基"
+    ]
+  },
+  "Hone-Kichi": {
+    "aliases": [
+      "骨吉",
+      "Hone-Kichi",
+      "布鲁克",
+      "布魯克"
+    ]
+  },
+  "Luffy-Tarou": {
+    "aliases": [
+      "鲁夫太郎",
+      "魯夫太郎",
+      "Luffy-Tarou",
+      "路飞太郎",
+      "路飞",
+      "魯夫"
+    ]
+  },
+  "Olin": {
+    "aliases": [
+      "阿莉",
+      "Olin",
+      "奥林",
+      "大妈",
+      "大媽"
+    ]
+  },
+  "Otama": {
+    "aliases": [
+      "玉儿",
+      "玉兒",
+      "阿玉",
+      "小玉",
+      "Otama",
+      "お玉"
+    ]
+  }
+}
