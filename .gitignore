@@ -25,6 +25,8 @@ frontend/out/
 frontend/build/
 frontend/tsconfig.tsbuildinfo
 frontend/next-env.d.ts
+frontend/package-lock*.json
+!frontend/package-lock.json
 
 # --- large / CDN-hosted assets (keep on VPS + R2, do not push) ---
 packs/
