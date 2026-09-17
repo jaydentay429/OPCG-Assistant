@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { cardImageUrl, recognizePhoto } from "@/lib/api";
+import { displayCardId } from "@/lib/cardId";
 import { useI18n } from "@/lib/i18n";
 import type { PhotoRecognizeResponse } from "@/lib/types";
 
@@ -336,7 +337,7 @@ export function PhotoPageClient() {
           className="secondary"
           onClick={() => router.push(`/cards/${encodeURIComponent(singleId)}`)}
         >
-          {singleId}
+          {displayCardId(singleId)}
         </button>
       ) : null}
       {candidateRows.length ? (
@@ -349,9 +350,9 @@ export function PhotoPageClient() {
               onClick={() => router.push(`/cards/${encodeURIComponent(row.id)}`)}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={cardImageUrl(row.id)} alt={row.id} />
+              <img src={cardImageUrl(row.id)} alt={displayCardId(row.id)} />
               <span className="photo-candidate-meta">
-                <strong>{row.id}</strong>
+                <strong>{displayCardId(row.id)}</strong>
                 {row.distance != null ? (
                   <span className="muted">
                     {t("photo.confidence")}: {String(row.distance)}

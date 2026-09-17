@@ -25,7 +25,8 @@ export PYTHONUNBUFFERED=1
 
 {
   echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] ======== DAILY TOPDECKS SYNC START ========"
-  "$PY" -u sync_topdecks.py --sleep 0.35
+  # Always re-check the newest metas; TablePress rows often change without page.modified.
+  "$PY" -u sync_topdecks.py --sleep 0.35 --always-refetch-newest 8
   rc=$?
   echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] ======== DAILY TOPDECKS SYNC END rc=$rc ========"
   exit $rc

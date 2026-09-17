@@ -102,6 +102,78 @@ def ensure_loaded() -> None:
     reload_effect_library(force=False)
 
 
+def _parallel_base_card_id(card_id: str) -> str:
+    """OP16-001-P2 / OP16-001-R1 → OP16-001. Illustrated DON ids have no -P siblings."""
+    cid = str(card_id or "").strip()
+    if cid.upper().startswith("DON"):
+        return cid
+    return re.sub(r"-(?:P|R)\d+$", "", cid, flags=re.IGNORECASE)
+
+
+def _entry_has_runnable(entry: dict[str, Any] | None) -> bool:
+    if not isinstance(entry, dict):
+        return False
+    return any(ability_is_runnable(a) for a in (entry.get("abilities") or []))
+
+
+def _get_card_entry_exact(card_id: str) -> dict[str, Any]:
+    """Merge library + override for this exact id. Caller must hold _lock and have loaded."""
+    lib = _library.get(card_id)
+    ovr = _overrides.get(card_id)
+    if not ovr or not ovr.get("abilities"):
+        return lib or normalize_card_entry(card_id, {})
+    if not lib or not lib.get("abilities"):
+        return ovr
+
+    def _group(abilities: list[dict[str, Any]]) -> tuple[list[str], dict[str, list[dict[str, Any]]]]:
+        order: list[str] = []
+        groups: dict[str, list[dict[str, Any]]] = {}
+        for a in abilities or []:
+            t = str(a.get("timing") or "")
+            if not t:
+                continue
+            if t not in groups:
+                groups[t] = []
+                order.append(t)
+            groups[t].append(a)
+        return order, groups
+
+    lib_order, lib_groups = _group(list(lib.get("abilities") or []))
+    ovr_order, ovr_groups = _group(list(ovr.get("abilities") or []))
+    order = list(lib_order)
+    for t in ovr_order:
+        if t not in order:
+            order.append(t)
+
+    merged: list[dict[str, Any]] = []
+    for t in order:
+        ovr_list = ovr_groups.get(t) or []
+        lib_list = lib_groups.get(t) or []
+        if ovr_list and any(ability_is_runnable(a) for a in ovr_list):
+            merged.extend(ovr_list)
+        elif lib_list:
+            merged.extend(lib_list)
+        else:
+            merged.extend(ovr_list)
+
+    return normalize_card_entry(
+        card_id,
+        {
+            "version": max(int(lib.get("version") or 1), int(ovr.get("version") or 1),),
+            "abilities": merged,
+            **(
+                {"deck_ban_event_cost_gte": ovr["deck_ban_event_cost_gte"]}
+                if ovr.get("deck_ban_event_cost_gte") is not None
+                else (
+                    {"deck_ban_event_cost_gte": lib["deck_ban_event_cost_gte"]}
+                    if lib.get("deck_ban_event_cost_gte") is not None
+                    else {}
+                )
+            ),
+        },
+    )
+
+
 def get_card_entry(card_id: str) -> dict[str, Any]:
     """Return merged card entry: per-timing override group wins, library fills the rest.
 
@@ -110,63 +182,21 @@ def get_card_entry(card_id: str) -> dict[str, Any]:
 
     Multiple abilities that share a timing (e.g. two ``your_turn`` clauses) are kept
     as a group — last-write-wins on a single timing key was collapsing them.
+
+    Parallel art ids (``-P1`` / ``-P2`` / ``-R1``) with no runnable abilities inherit
+    the base card's compiled effects. Variant-specific overrides still win.
     """
     ensure_loaded()
     with _lock:
-        lib = _library.get(card_id)
-        ovr = _overrides.get(card_id)
-        if not ovr or not ovr.get("abilities"):
-            return lib or normalize_card_entry(card_id, {})
-        if not lib or not lib.get("abilities"):
-            return ovr
-
-        def _group(abilities: list[dict[str, Any]]) -> tuple[list[str], dict[str, list[dict[str, Any]]]]:
-            order: list[str] = []
-            groups: dict[str, list[dict[str, Any]]] = {}
-            for a in abilities or []:
-                t = str(a.get("timing") or "")
-                if not t:
-                    continue
-                if t not in groups:
-                    groups[t] = []
-                    order.append(t)
-                groups[t].append(a)
-            return order, groups
-
-        lib_order, lib_groups = _group(list(lib.get("abilities") or []))
-        ovr_order, ovr_groups = _group(list(ovr.get("abilities") or []))
-        order = list(lib_order)
-        for t in ovr_order:
-            if t not in order:
-                order.append(t)
-
-        merged: list[dict[str, Any]] = []
-        for t in order:
-            ovr_list = ovr_groups.get(t) or []
-            lib_list = lib_groups.get(t) or []
-            if ovr_list and any(ability_is_runnable(a) for a in ovr_list):
-                merged.extend(ovr_list)
-            elif lib_list:
-                merged.extend(lib_list)
-            else:
-                merged.extend(ovr_list)
-
-        return normalize_card_entry(
-            card_id,
-            {
-                "version": max(int(lib.get("version") or 1), int(ovr.get("version") or 1),),
-                "abilities": merged,
-                **(
-                    {"deck_ban_event_cost_gte": ovr["deck_ban_event_cost_gte"]}
-                    if ovr.get("deck_ban_event_cost_gte") is not None
-                    else (
-                        {"deck_ban_event_cost_gte": lib["deck_ban_event_cost_gte"]}
-                        if lib.get("deck_ban_event_cost_gte") is not None
-                        else {}
-                    )
-                ),
-            },
-        )
+        entry = _get_card_entry_exact(card_id)
+        if _entry_has_runnable(entry):
+            return entry
+        base = _parallel_base_card_id(card_id)
+        if base != card_id:
+            base_entry = _get_card_entry_exact(base)
+            if _entry_has_runnable(base_entry):
+                return base_entry
+        return entry
 
 
 def get_abilities(card_id: str, timing: str | None = None) -> list[dict[str, Any]]:

@@ -353,8 +353,8 @@ export function CardDetailClient({
   if (!card) return <p className="muted">…</p>;
 
   const name = isDonCard
-    ? localizeDonCardName(card.name, card.name_en, lang) || card.id
-    : localizeCardName(card.name, card.name_en, lang) || card.id;
+    ? localizeDonCardName(card.name, card.name_en, lang) || displayCardId(card.id)
+    : localizeCardName(card.name, card.name_en, lang) || displayCardId(card.id);
   const rawEffect = localizeCardText(card.effect, lang, card.effect_en);
   const rawTrigger = localizeCardText(card.trigger || card.trigger_en, lang, card.trigger_en);
   const { body: effect, trigger } = (() => {
@@ -421,7 +421,7 @@ export function CardDetailClient({
           <CardImg
             className="detail-main-img"
             cardId={activeVariantId || selectedVariantId}
-            alt={name || card.id}
+            alt={name || displayCardId(card.id)}
             loading="eager"
           />
           {thumbVariantIds.length > 0 ? (
@@ -433,9 +433,9 @@ export function CardDetailClient({
                     type="button"
                     className={`detail-thumb ${(activeVariantId || selectedVariantId) === vid ? "active" : ""}`}
                     onClick={() => setActiveVariantId(vid)}
-                    title={vid}
+                    title={displayCardId(vid)}
                   >
-                    <CardImg cardId={vid} alt={vid} />
+                    <CardImg cardId={vid} alt={displayCardId(vid)} />
                   </button>
                 );
               })}

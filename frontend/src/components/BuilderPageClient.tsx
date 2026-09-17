@@ -647,7 +647,7 @@ export function BuilderPageClient() {
                     <div className="deck-card-art">
                       {d.leader_card_id ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={cardImageUrl(d.leader_card_id)} alt={d.leader_card_id} />
+                        <img src={cardImageUrl(d.leader_card_id)} alt={displayCardId(d.leader_card_id)} />
                       ) : (
                         <div className="deck-card-art-empty">{t("deck.no_leader")}</div>
                       )}
@@ -725,7 +725,7 @@ export function BuilderPageClient() {
           {draft.leader ? (
             <div className="deck-editor-leader">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={cardImageUrl(draft.leader)} alt={draft.leader} />
+              <img src={cardImageUrl(draft.leader)} alt={displayCardId(draft.leader)} />
               <div>
                 <div className="muted">{t("deck.leader_short")}</div>
                 <strong>{displayCardId(draft.leader)}</strong>
@@ -986,7 +986,7 @@ export function BuilderPageClient() {
                   onClick={() => flushCurrentScroll(draft.leader || undefined)}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={cardImageUrl(draft.leader)} alt={draft.leader} />
+                  <img src={cardImageUrl(draft.leader)} alt={displayCardId(draft.leader)} />
                 </Link>
                 <div className="cap">{displayCardId(draft.leader)}</div>
                 {showPrices ? (

@@ -34,6 +34,7 @@ BASE_DIR = Path(__file__).resolve().parent
 INDEX_PATH = BASE_DIR / "index" / "cards_by_id.json"
 PACKS_DIR = BASE_DIR / "packs"
 PRICE_PATH = BASE_DIR / "meta" / "market_prices.json"
+CURSOR_PATH = BASE_DIR / "meta" / "yuyu_sync_cursor.json"
 SEARCH_TEMPLATE = os.getenv(
     "YUYUTEI_SEARCH_URL_TEMPLATE",
     "https://yuyu-tei.jp/sell/opc/s/search?search_word={query}",
@@ -184,6 +185,7 @@ RETRY_SOON_STATUSES = {
     "request_error",
     "network_error",
     "error",
+    "two_pass_pending",
 }
 HARD_MISS_PREFIXES = (
     "variant_not_found",
@@ -193,7 +195,7 @@ HARD_MISS_PREFIXES = (
 
 def is_hard_miss_status(status: str) -> bool:
     s = str(status or "").strip().lower()
-    return any(s.startswith(p) for p in HARD_MISS_PREFIXES)
+    return any(p in s for p in HARD_MISS_PREFIXES)
 
 
 def base_card_id(card_id: str) -> str:
@@ -228,6 +230,8 @@ _CARD_ID_IN_TEXT_RE = re.compile(
 )
 _PROMO_CARD_ID_RE = re.compile(r"^P-\d{3}(?:-[A-Z0-9]+)?$", re.IGNORECASE)
 _YEN_RE = re.compile(r"([0-9]{1,3}(?:,[0-9]{3})*)\s*円")
+_SET_SLUG_HREF_RE = re.compile(r"/opc/card/([a-z0-9-]+)/", re.IGNORECASE)
+_SET_SLUG_IMG_RE = re.compile(r"/opc/(?:100_140|400_560|front)/([a-z0-9-]+)/", re.IGNORECASE)
 
 
 def classify_listing_name(name: str) -> str:
@@ -328,6 +332,13 @@ def parse_card_products(html: str) -> list[dict[str, Any]]:
         # like P-096 whose printed rarity is also "P".
         if rarity.startswith("P-") and kind == "base" and not _PROMO_CARD_ID_RE.match(card_id):
             kind = "parallel"
+        href = ""
+        for anchor in prod.select("a[href]"):
+            raw_href = str(anchor.get("href") or "").strip()
+            if "/opc/card/" in raw_href:
+                href = urljoin("https://yuyu-tei.jp/", raw_href)
+                break
+        set_slug = _set_slug_from_urls(href, img_url)
         out.append(
             {
                 "card_id": card_id,
@@ -338,9 +349,24 @@ def parse_card_products(html: str) -> list[dict[str, Any]]:
                 "rarity": rarity,
                 "in_stock": in_stock,
                 "image_url": img_url,
+                "href": href,
+                "set_slug": set_slug,
             }
         )
     return out
+
+
+def _set_slug_from_urls(*urls: str) -> str:
+    for raw in urls:
+        text = str(raw or "")
+        m = _SET_SLUG_HREF_RE.search(text) or _SET_SLUG_IMG_RE.search(text)
+        if m:
+            return m.group(1).lower()
+    return ""
+
+
+def _compact_set_token(text: str) -> str:
+    return re.sub(r"[^A-Z0-9]", "", str(text or "").upper())
 
 
 def _pick_best_price(rows: list[dict[str, Any]]) -> int | None:
@@ -349,6 +375,382 @@ def _pick_best_price(rows: list[dict[str, Any]]) -> int | None:
     stocked = [r for r in rows if r.get("in_stock")]
     pool = stocked or rows
     return min(int(r["price"]) for r in pool)
+
+
+def _is_reprint_variant(card_id: str) -> bool:
+    return bool(re.search(r"-R\d+$", normalize_card_id(card_id)))
+
+
+def _family_reprint_ids(base_id: str) -> list[str]:
+    return sorted(cid for cid in _known_family_ids(base_id) if _is_reprint_variant(cid))
+
+
+def _distinctive_set_needles(card_id: str) -> list[str]:
+    """Listing-title fragments unique to this printing (e.g. BASE SHOP limited)."""
+    row = _index_row(card_id)
+    needles: list[str] = []
+    for raw in row.get("card_sets") or []:
+        text = str(raw or "").strip()
+        if not text:
+            continue
+        needles.extend(re.findall(r"【([^】]+)】", text))
+        upper = text.upper()
+        if "BASE SHOP" in upper:
+            needles.append("BASE SHOP")
+        if "リミテッドカードコレクション" in text:
+            needles.append("リミテッドカードコレクション")
+        if "ANNIVERSARY" in upper:
+            needles.append("Anniversary")
+        needles.extend(_promo_listing_needles(text))
+    out: list[str] = []
+    seen: set[str] = set()
+    for needle in needles:
+        key = needle.strip().upper()
+        if len(key) < 3 or key in seen:
+            continue
+        seen.add(key)
+        out.append(needle.strip())
+    return out
+
+
+def _needles_unique_in_family(card_id: str) -> list[str]:
+    cid = normalize_card_id(card_id)
+    base = base_card_id(cid)
+    mine = _distinctive_set_needles(cid)
+    if not mine:
+        return []
+    my_sec = _expected_yuyu_section(cid)
+    unique: list[str] = []
+    for needle in mine:
+        key = needle.upper()
+        taken = False
+        for other in _known_family_ids(base):
+            if other == cid:
+                continue
+            # -R reprints share PRB-01 with -P3 but sit in a different yuyu bucket.
+            if _is_reprint_variant(cid) != _is_reprint_variant(other):
+                continue
+            other_sec = _expected_yuyu_section(other)
+            # SP / SEC / P-SEC sit in different yuyu buckets from booster alts.
+            # Do NOT treat every section as non-rival: P-SR and SR both carry
+            # 【OP-13】, and a unique OP-13 needle on the alt would pick the base price.
+            if my_sec in {"SP", "SEC", "P-SEC"} and other_sec != my_sec:
+                continue
+            blob = " ".join(str(x) for x in (_index_row(other).get("card_sets") or [])).upper()
+            if key in blob:
+                taken = True
+                break
+        if not taken:
+            unique.append(needle)
+    return unique
+
+
+def _has_unique_set_needles(card_id: str) -> bool:
+    return bool(_needles_unique_in_family(card_id))
+
+
+def _product_matches_set_needle(prod: dict[str, Any], needle: str) -> bool:
+    name = str(prod.get("name") or "")
+    name_u = name.upper()
+    needle_u = str(needle or "").upper()
+    if needle_u and (needle_u in name_u or needle in name):
+        return True
+    # yuyu titles often insert spaces: "Vol. 14" vs catalog "Vol.14".
+    name_c_ws = re.sub(r"\s+", "", name_u)
+    needle_c_ws = re.sub(r"\s+", "", needle_u)
+    if needle_c_ws and len(needle_c_ws) >= 3 and needle_c_ws in name_c_ws:
+        return True
+    compact = _compact_set_token(needle)
+    slug_c = _compact_set_token(prod.get("set_slug") or "")
+    if slug_c and compact and compact == slug_c:
+        return True
+    # yuyu writes PRB-01 as (PRB); PRB-02 as (PRB2). Never treat bare PRB as PRB2.
+    if compact == "PRB01" and re.search(r"\(PRB\)", name, flags=re.IGNORECASE):
+        return True
+    if compact == "PRB02" and re.search(r"\(PRB2\)", name, flags=re.IGNORECASE):
+        return True
+    aliases = {compact} if compact else set()
+    m = re.match(r"^([A-Z]+)0+(\d+)$", compact)
+    if m:
+        aliases.add(f"{m.group(1)}{int(m.group(2))}")
+    name_c = _compact_set_token(name)
+    for alias in aliases:
+        if len(alias) >= 3 and (alias in name_c or alias in name_u.replace("-", "")):
+            return True
+    return False
+
+
+def _resolve_by_unique_set_name(products: list[dict[str, Any]], card_id: str) -> int | None:
+    needles = _needles_unique_in_family(card_id)
+    if not needles:
+        return None
+    want = _expected_yuyu_section(card_id)
+    hits: list[dict[str, Any]] = []
+    for prod in products:
+        listing = str(prod.get("rarity") or "").strip().upper()
+        if want and listing and listing != want:
+            same_rarity_bucket = (want == "P-SEC" and listing == "SEC") or (
+                want.startswith("P-") and listing == want[2:]
+            )
+            if not same_rarity_bucket:
+                continue
+            # P-SR vs SR (etc.): never take the untitled base printing.
+            if str(prod.get("kind") or "") == "base":
+                continue
+        if any(_product_matches_set_needle(prod, needle) for needle in needles):
+            hits.append(prod)
+    return _pick_best_price(hits)
+
+
+def _promo_listing_needles(text: str) -> list[str]:
+    """Fragments that appear in yuyu-tei promo titles (25周年 / セブンイレブン / Fest)."""
+    blob = str(text or "")
+    if not blob:
+        return []
+    upper = blob.upper()
+    out: list[str] = []
+    if "25周年" in blob or re.search(r"25TH\s*ANNIVERSARY", blob, flags=re.IGNORECASE):
+        out.append("25周年")
+    if (
+        "セブンイレブン" in blob
+        or "SEVEN-ELEVEN" in upper
+        or "7-ELEVEN" in upper
+        or "補充包贈禮" in blob
+    ):
+        out.append("セブンイレブン")
+    if re.search(r"BANDAI\s*CARD\s*GAMES\s*FEST", blob, flags=re.IGNORECASE):
+        out.append("BANDAI CARD GAMES Fest")
+    if "チャンピオンシップ" in blob or "CHAMPIONSHIP" in upper or "錦標賽" in blob:
+        out.append("チャンピオンシップ")
+    if "プレミアムカードコレクション" in blob or "PREMIUM CARD COLLECTION" in upper:
+        out.append("プレミアムカードコレクション")
+    pack = re.search(r"プロモーションパック(?:EX)?(?:\d{4})?(?:\s*Vol\.?\s*\d+)?", blob, flags=re.IGNORECASE)
+    if pack:
+        out.append(pack.group(0))
+    for m in re.finditer(r"推廣卡包\s*(EX)?\s*(?:Vol\.?\s*)?(\d+)", blob, flags=re.IGNORECASE):
+        vol = int(m.group(2))
+        if m.group(1):
+            out.append(f"プロモーションパックEX Vol.{vol}")
+        else:
+            out.append(f"プロモーションパックVol.{vol}")
+    if "推廣卡套組" in blob or "プロモーションカードセット" in blob:
+        out.append("プロモーションカードセット")
+        year = re.search(r"(20\d{2})", blob)
+        if year:
+            out.append(f"プロモーションカードセット{year.group(1)}")
+    if "スタンダードバトル" in blob or "常規賽" in blob or "常规赛" in blob:
+        out.append("スタンダードバトル")
+    vol_pack = re.search(
+        r"(?:常規賽卡包|スタンダードバトルパック)\s*Vol\.?\s*(\d+)",
+        blob,
+        flags=re.IGNORECASE,
+    )
+    if vol_pack:
+        out.append("スタンダードバトルパック")
+        out.append(f"スタンダードバトルパックVol.{int(vol_pack.group(1))}")
+    if "ゲットキャンペーン" in blob:
+        out.append("ゲットキャンペーン")
+    if "家庭牌組" in blob or "ファミリーデッキ" in blob:
+        out.append("ファミリーデッキ")
+    if "交流會" in blob or "交流会" in blob:
+        out.append("交流会")
+    if "8包現開" in blob or "8パックバトル" in blob:
+        out.append("8パックバトル")
+    if "旗艦戰" in blob or "フラッグシップ" in blob:
+        out.append("フラッグシップバトル")
+    if "特規大獎賽" in blob or "エクストラグランドバトル" in blob:
+        out.append("エクストラグランドバトル")
+    if "安可卡包" in blob or "アンコールパック" in blob:
+        out.append("アンコールパック")
+    if "フィナーレセット" in blob:
+        out.append("フィナーレセット")
+    if "応募者全員" in blob:
+        out.append("応募者全員サービス")
+    if "迷你罐" in blob or "ミニ缶" in blob:
+        out.append("ミニ缶")
+    if "啟航活動" in blob or "始めよう" in blob:
+        out.append("始めようキャンペーン")
+    if re.search(r"CHINA\s*2ND", upper):
+        out.append("China 2nd")
+    if re.search(r"3RD\s*ANNIVERSARY\s*SET", upper):
+        out.append("3rd ANNIVERSARY SET")
+    return out
+
+
+def _expected_yuyu_section(card_id: str) -> str:
+    """Map catalog rarity to yuyu-tei search section (SR / P-SR / SP)."""
+    rarity = str(_index_row(card_id).get("rarity") or "").strip().upper()
+    if not rarity:
+        return ""
+    # Promo P is its own yuyu "P Card List" — never invent a P-P bucket.
+    if rarity == "P":
+        return "P"
+    if rarity.startswith("P-"):
+        return rarity
+    if not is_variant_card_id(card_id) or _is_reprint_variant(card_id):
+        return rarity
+    # Booster SEC/SR alts are P-SEC / P-SR. SP reprints stay in the SP section.
+    if rarity == "SP":
+        return "SP"
+    if rarity == "SEC":
+        return "P-SEC"
+    return f"P-{rarity}"
+
+
+def _resolve_by_unique_section_rarity(products: list[dict[str, Any]], card_id: str) -> int | None:
+    want = _expected_yuyu_section(card_id)
+    if not want:
+        return None
+    cid = normalize_card_id(card_id)
+    base = base_card_id(cid)
+    for other in _known_family_ids(base):
+        if other != cid and _expected_yuyu_section(other) == want:
+            return None
+    hits = [p for p in products if str(p.get("rarity") or "").strip().upper() == want]
+    return _pick_best_price(hits)
+
+
+def _resolve_manga_super_parallel(products: list[dict[str, Any]], card_id: str) -> int | None:
+    if not _is_likely_manga_variant(card_id):
+        return None
+    want = _expected_yuyu_section(card_id)
+    pool = [
+        p
+        for p in products
+        if str(p.get("rarity") or "").strip().upper() in {want, "P-SEC"}
+    ]
+    return _single_super_parallel_price(pool, red=False)
+
+
+def _resolve_plain_parallel_same_booster(products: list[dict[str, Any]], card_id: str) -> int | None:
+    cid = normalize_card_id(card_id)
+    if not is_variant_card_id(cid) or _is_reprint_variant(cid) or _is_likely_manga_variant(cid):
+        return None
+    want = _expected_yuyu_section(cid)
+    if not want.startswith("P-"):
+        return None
+    my_slugs = {_compact_set_token(n) for n in _distinctive_set_needles(cid) if _compact_set_token(n)}
+    if not my_slugs:
+        return None
+    base = base_card_id(cid)
+    for other in _known_family_ids(base):
+        if other == cid:
+            continue
+        if _expected_yuyu_section(other) != want:
+            continue
+        if _is_likely_manga_variant(other) or _is_reprint_variant(other):
+            continue
+        other_slugs = {_compact_set_token(n) for n in _distinctive_set_needles(other) if _compact_set_token(n)}
+        if my_slugs & other_slugs:
+            return None
+    hits = [
+        p
+        for p in products
+        if str(p.get("rarity") or "").strip().upper() == want
+        and p.get("kind") == "parallel"
+        and not _is_manga_special_name(str(p.get("name") or ""))
+        and _compact_set_token(p.get("set_slug") or "") in my_slugs
+    ]
+    return _pick_best_price(hits)
+
+
+def _listing_sp_metal(name: str) -> str | None:
+    text = str(name or "")
+    if "金パラレル" in text:
+        return "gold"
+    if "銀パラレル" in text:
+        return "silver"
+    return None
+
+
+def _variant_set_slugs(card_id: str) -> set[str]:
+    return {_compact_set_token(n) for n in _distinctive_set_needles(card_id) if _compact_set_token(n)}
+
+
+def _sp_same_set_pair(card_id: str) -> list[str] | None:
+    """Exactly two SP printings of the same set (gold + silver)."""
+    cid = normalize_card_id(card_id)
+    if _expected_yuyu_section(cid) != "SP" or _is_reprint_variant(cid):
+        return None
+    my_slugs = _variant_set_slugs(cid)
+    if not my_slugs:
+        return None
+    siblings: list[str] = []
+    for other in _known_family_ids(base_card_id(cid)):
+        if _expected_yuyu_section(other) != "SP" or _is_reprint_variant(other):
+            continue
+        if my_slugs & _variant_set_slugs(other):
+            siblings.append(other)
+    if len(siblings) != 2:
+        return None
+    return sorted(siblings)
+
+
+def _card_goldness_score(card_id: str) -> float | None:
+    """Share of yellow-gold pixels in the local pack art (金枠 ≫ 銀枠)."""
+    if Image is None:
+        return None
+    path = PACKS_DIR / f"{normalize_card_id(card_id)}.png"
+    if not path.is_file():
+        return None
+    try:
+        with Image.open(path) as im:
+            rgb = im.convert("RGB").resize((80, 112))
+            gold = 0
+            n = 0
+            for r, g, b in rgb.getdata():
+                n += 1
+                if r >= 150 and g >= 90 and b <= 110 and (r - b) >= 50 and (g - b) >= 15:
+                    gold += 1
+            return gold / n if n else None
+    except Exception:
+        return None
+
+
+def _gold_id_of_sp_pair(pair: list[str]) -> str | None:
+    scored: list[tuple[float, str]] = []
+    for cid in pair:
+        score = _card_goldness_score(cid)
+        if score is None:
+            return None
+        scored.append((score, cid))
+    scored.sort()
+    lo, hi = scored[0][0], scored[1][0]
+    if hi < 0.02:
+        return None
+    if hi < lo * 2 and (hi - lo) < 0.02:
+        return None
+    return scored[-1][1]
+
+
+def _resolve_gold_silver_sp_pair(products: list[dict[str, Any]], card_id: str) -> int | None:
+    pair = _sp_same_set_pair(card_id)
+    if not pair:
+        return None
+    cid = normalize_card_id(card_id)
+    gold_id = _gold_id_of_sp_pair(pair)
+    if not gold_id:
+        return None
+    silver_id = next(x for x in pair if x != gold_id)
+    if cid == gold_id:
+        want_metal = "gold"
+    elif cid == silver_id:
+        want_metal = "silver"
+    else:
+        return None
+    my_slugs = _variant_set_slugs(cid)
+    hits = [
+        p
+        for p in products
+        if str(p.get("rarity") or "").strip().upper() == "SP"
+        and _listing_sp_metal(str(p.get("name") or "")) == want_metal
+        and (
+            not my_slugs
+            or _compact_set_token(p.get("set_slug") or "") in my_slugs
+            or any(_product_matches_set_needle(p, n) for n in _distinctive_set_needles(cid))
+        )
+    ]
+    return _pick_best_price(hits)
 
 
 def _yuyu_image_candidates(url: str) -> list[str]:
@@ -418,27 +820,32 @@ def _is_manga_special_name(name: str) -> bool:
 
 
 def _is_likely_manga_variant(card_id: str) -> bool:
-    """Booster manga rare is usually the highest same-set 異圖 P-variant."""
+    """Booster manga rare is usually the highest same-set P-variant of that rarity."""
     cid = normalize_card_id(card_id)
     if not re.search(r"-P\d+$", cid) or _is_prize_or_event_variant(cid):
         return False
     row = _index_row(cid)
     name = str(row.get("name") or "")
-    rarity = str(row.get("rarity") or "")
+    rarity = str(row.get("rarity") or "").strip().upper()
     sets = [str(x) for x in (row.get("card_sets") or [])]
     blob = " ".join([name, rarity, *sets])
+    # Gold/silver SP reprints are not manga, even when two share a set.
+    if rarity == "SP":
+        return False
     if re.search(r"SP卡|ANNIVERSARY|THE BEST|PRB-|チャンピオン", blob, flags=re.IGNORECASE):
         return False
-    if "異圖" not in name and "異画" not in name:
-        return False
+    named_alt = "異圖" in name or "異画" in name
     my_sets = set(sets)
+    my_sec = _expected_yuyu_section(cid)
     same: list[str] = []
     for oid in _known_family_ids(base_card_id(cid)):
         if not re.search(r"-P\d+$", oid) or _is_prize_or_event_variant(oid):
             continue
         orow = _index_row(oid)
         oname = str(orow.get("name") or "")
-        if "異圖" not in oname and "異画" not in oname:
+        if named_alt and ("異圖" not in oname and "異画" not in oname):
+            continue
+        if _expected_yuyu_section(oid) != my_sec:
             continue
         osets = {str(x) for x in (orow.get("card_sets") or [])}
         if my_sets & osets:
@@ -447,6 +854,8 @@ def _is_likely_manga_variant(card_id: str) -> bool:
         return False
     same.sort(key=lambda x: int(re.search(r"-P(\d+)$", x).group(1)))
     if len(same) == 1:
+        if not named_alt:
+            return False
         sets_blob = " ".join(sets)
         promo_like = bool(re.search(r"プロモ|推廣|限定|PREMIUM|プレミアム|コレクション", sets_blob, flags=re.IGNORECASE))
         booster_like = bool(re.search(r"【OP-\d+】|【EB-\d+】|【ST-\d+】", sets_blob))
@@ -471,20 +880,49 @@ def _resolve_from_card_products(
     if not family:
         return None, "price_not_found"
 
+    set_price = _resolve_by_unique_set_name(family, normalized)
+    if set_price is not None:
+        return set_price, "ok_variant_set_name" if is_variant_card_id(normalized) else "ok_exact_set_name"
+
+    manga_price = _resolve_manga_super_parallel(family, normalized)
+    if manga_price is not None:
+        return manga_price, "ok_variant_manga_name"
+
+    booster_price = _resolve_plain_parallel_same_booster(family, normalized)
+    if booster_price is not None:
+        return booster_price, "ok_variant_booster_parallel"
+
+    metal_price = _resolve_gold_silver_sp_pair(family, normalized)
+    if metal_price is not None:
+        return metal_price, "ok_variant_gold_silver"
+
+    rarity_price = _resolve_by_unique_section_rarity(family, normalized)
+    if rarity_price is not None:
+        return rarity_price, (
+            "ok_variant_section_rarity" if is_variant_card_id(normalized) else "ok_exact_section_rarity"
+        )
+
+    reprint_ids = _family_reprint_ids(base)
+    base_rows = [p for p in family if p.get("kind") == "base"]
+    parallel_rows = [p for p in family if p.get("kind") in {"parallel", "special"}]
+
     if not is_variant_card_id(normalized):
-        base_rows = [p for p in family if p.get("kind") == "base"]
+        # Two different L arts (original vs -R reprint) are both labeled without パラレル.
+        # Never take min() across them — that assigned ST21-001-R1's 980 to the base kicking art.
+        mixed_reprints = bool(reprint_ids) and len(base_rows) > 1
+        if mixed_reprints:
+            if allow_image_hash:
+                by_hash = _resolve_variant_by_image_hash_from_products(session, family, normalized)
+                if by_hash is not None:
+                    return by_hash, "ok_exact_imagehash"
+            return None, "price_not_found"
         price = _pick_best_price(base_rows)
         if price is not None:
             return price, "ok_exact"
         return None, "price_not_found"
 
-    # Variants: never use base listings.
-    parallel_rows = [p for p in family if p.get("kind") in {"parallel", "special"}]
-    if not parallel_rows:
-        return None, "variant_not_found"
-
     # Exact id on listing (rare on yuyu-tei, but strongest).
-    exact_rows = [p for p in parallel_rows if p.get("card_id") == normalized]
+    exact_rows = [p for p in family if p.get("card_id") == normalized]
     price = _pick_best_price(exact_rows)
     if price is not None:
         return price, "ok_variant_id_exact"
@@ -497,14 +935,14 @@ def _resolve_from_card_products(
         for cid in _known_family_ids(base)
         if is_variant_card_id(cid) and not re.search(r"-(SP|TR|SEC)$", cid)
     )
-    # Prefer -P* style ids.
     p_ids = [cid for cid in known if re.search(r"-P\d+$", cid)]
     if len(non_special) == 1 and len(p_ids) == 1 and p_ids[0] == normalized:
         return int(non_special[0]["price"]), "ok_variant_single_parallel"
 
-    # Image-hash against local packs for P1/P2 disambiguation (slow; optional).
+    # Image-hash: reprints must see base-kind listings; P1/P2 still use parallel rows.
+    hash_pool = family if _is_reprint_variant(normalized) else parallel_rows
     if allow_image_hash:
-        by_hash = _resolve_variant_by_image_hash_from_products(session, parallel_rows, normalized)
+        by_hash = _resolve_variant_by_image_hash_from_products(session, hash_pool, normalized)
         if by_hash is not None:
             return by_hash, "ok_variant_imagehash"
         remainder = _resolve_unmatched_special_remainder(session, parallel_rows, normalized)
@@ -519,8 +957,6 @@ def _resolve_variant_by_image_hash_from_products(
     products: list[dict[str, Any]],
     normalized_variant: str,
 ) -> int | None:
-    if not is_variant_card_id(normalized_variant):
-        return None
     local_hashes = _local_variant_hashes(base_card_id(normalized_variant))
     if not local_hashes or normalized_variant not in local_hashes:
         _trace_debug(f"hash missing local image for {normalized_variant}")
@@ -911,29 +1347,44 @@ def _compute_phash_from_path(path: Path) -> Any | None:
         return None
 
 
+def _family_id_map() -> dict[str, list[str]]:
+    cached = getattr(_family_id_map, "_data", None)
+    if isinstance(cached, dict):
+        return cached
+    buckets: dict[str, list[str]] = {}
+    for raw in _card_index().keys():
+        cid = normalize_card_id(raw)
+        if not cid:
+            continue
+        buckets.setdefault(base_card_id(cid), []).append(cid)
+    setattr(_family_id_map, "_data", buckets)
+    return buckets
+
+
 def _known_family_ids(base_id: str) -> set[str]:
     base = normalize_card_id(base_id)
     if not base:
         return set()
-    cache = getattr(_known_family_ids, "_cache", None)
-    if not isinstance(cache, dict):
-        cache = {}
-        setattr(_known_family_ids, "_cache", cache)
-    if base in cache:
-        return set(cache[base])
+    return set(_family_id_map().get(base) or [])
 
-    data = load_json(INDEX_PATH, {})
-    known: set[str] = set()
-    if isinstance(data, dict):
-        prefix = f"{base}-"
-        for raw in data.keys():
-            cid = normalize_card_id(raw)
-            if not cid:
-                continue
-            if cid == base or cid.startswith(prefix):
-                known.add(cid)
-    cache[base] = sorted(known)
-    return known
+
+def expand_family_members(
+    families: dict[str, list[str]],
+    *,
+    enabled: bool = True,
+) -> dict[str, list[str]]:
+    """One search page per base should write every catalog id in that family."""
+    out: dict[str, list[str]] = {}
+    for base, members in families.items():
+        ordered = list(dict.fromkeys(normalize_card_id(x) for x in members if normalize_card_id(x)))
+        if enabled:
+            seen = set(ordered)
+            for cid in sorted(_known_family_ids(base)):
+                if cid not in seen:
+                    ordered.append(cid)
+                    seen.add(cid)
+        out[base] = ordered
+    return out
 
 
 def _local_variant_hashes(base_id: str) -> dict[str, Any]:
@@ -1598,26 +2049,58 @@ def fetch_family_prices_from_yuyutei(
         return out
     products = parse_card_products(html)
     allow_hash = bool(deep_variant_check)
-    for cid in ids:
-        if products:
-            price, st = _resolve_from_card_products(
-                session,
-                products,
-                cid,
-                allow_image_hash=allow_hash,
+
+    def _resolve_all(prod_rows: list[dict[str, Any]], seed_html: str) -> None:
+        for cid in ids:
+            if prod_rows:
+                price, st = _resolve_from_card_products(
+                    session,
+                    prod_rows,
+                    cid,
+                    allow_image_hash=allow_hash,
+                )
+            else:
+                price, st = resolve_price_from_html(
+                    session,
+                    seed_html,
+                    cid,
+                    allow_image_hash=allow_hash,
+                )
+            if price is None and deep_variant_check and is_variant_card_id(cid):
+                d_price, d_status = _resolve_variant_from_detail_pages(session, seed_html, cid)
+                if d_price is not None:
+                    price, st = d_price, d_status
+            out[cid] = (price, st)
+
+    _resolve_all(products, html)
+    # Buy-page fallback only when the sell search parsed zero cards.
+    # Hitting buy on every unmatched reprint doubles traffic and trips 429s.
+    if not products and len(DEFAULT_SEARCH_TEMPLATES) > 1:
+        buy_url = DEFAULT_SEARCH_TEMPLATES[1].format(query=quote_plus(base))
+        buy_html, _buy_st = request_html_cached(session, buy_url, timeout=25)
+        if buy_html:
+            buy_products = parse_card_products(buy_html)
+            if buy_products:
+                _resolve_all(buy_products, buy_html)
+    return out
+
+
+def _merge_card_products(*groups: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    out: list[dict[str, Any]] = []
+    seen: set[tuple[Any, ...]] = set()
+    for group in groups:
+        for prod in group:
+            key = (
+                str(prod.get("name") or ""),
+                int(prod.get("price") or 0),
+                str(prod.get("set_slug") or ""),
+                str(prod.get("rarity") or ""),
+                str(prod.get("kind") or ""),
             )
-        else:
-            price, st = resolve_price_from_html(
-                session,
-                html,
-                cid,
-                allow_image_hash=allow_hash,
-            )
-        if price is None and deep_variant_check and is_variant_card_id(cid):
-            d_price, d_status = _resolve_variant_from_detail_pages(session, html, cid)
-            if d_price is not None:
-                price, st = d_price, d_status
-        out[cid] = (price, st)
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append(prod)
     return out
 
 
@@ -1628,6 +2111,7 @@ def merge_price_record(
     source_url: str,
     *,
     reset_history: bool = False,
+    clear_price: bool = False,
 ) -> dict[str, Any]:
     row = {} if reset_history else (dict(old) if isinstance(old, dict) else {})
     row.setdefault("source", "yuyu-tei")
@@ -1642,8 +2126,147 @@ def merge_price_record(
         row["last_seen"] = ts
         if not history or history[-1].get("price") != price:
             history.append({"ts": ts, "price": price})
+    elif clear_price:
+        row["current_price"] = None
     row["history"] = history[-180:]
     return row
+
+
+def utc_date_str() -> str:
+    return datetime.now(timezone.utc).date().isoformat()
+
+
+def load_yuyu_cursor() -> dict[str, Any]:
+    data = load_json(CURSOR_PATH, {})
+    return data if isinstance(data, dict) else {}
+
+
+def save_yuyu_cursor(*, date: str, done: list[str], stopped_on_429: bool) -> None:
+    CURSOR_PATH.parent.mkdir(parents=True, exist_ok=True)
+    CURSOR_PATH.write_text(
+        json.dumps(
+            {
+                "date": date,
+                "done": list(dict.fromkeys(done)),
+                "stopped_on_429": bool(stopped_on_429),
+                "updated_at": now_iso(),
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+
+def select_sync_card_ids(
+    card_ids: list[str],
+    cards: dict[str, Any],
+    *,
+    priced_or_new: bool = False,
+    unpriced_only: bool = False,
+    rotate_families: bool = False,
+    miss_limit: int = 0,
+    priced_limit: int = 0,
+    unique_needle_miss_cap: int = 400,
+    done_bases: set[str] | None = None,
+) -> tuple[list[str], str]:
+    """
+    Daily / catch-up ordering.
+
+    rotate_families: all families, miss/ghost first, skip bases already done today.
+    """
+    new_ids: list[str] = []
+    retry_ids: list[str] = []
+    ghost_unique: list[tuple[str, str]] = []
+    ghost_other: list[tuple[str, str]] = []
+    sp_unpriced: list[str] = []
+    unique_miss: list[tuple[str, str]] = []
+    other_miss: list[tuple[str, str]] = []
+    priced_ids: list[tuple[str, str]] = []
+    skip_bases = {normalize_card_id(x) for x in (done_bases or set()) if normalize_card_id(x)}
+
+    def _checked(row: dict[str, Any] | None) -> str:
+        return str((row or {}).get("last_checked") or "")
+
+    for cid in card_ids:
+        if skip_bases and base_card_id(cid) in skip_bases:
+            continue
+        row = cards.get(cid) if isinstance(cards.get(cid), dict) else None
+        rarity = str(_index_row(cid).get("rarity") or "").strip().upper()
+        usable = has_usable_price(row)
+        status = price_status(row)
+        if row is None:
+            new_ids.append(cid)
+            continue
+        if unpriced_only and usable:
+            continue
+        if status in RETRY_SOON_STATUSES:
+            retry_ids.append(cid)
+            continue
+        if usable and is_hard_miss_status(status):
+            item = (_checked(row), cid)
+            if _has_unique_set_needles(cid):
+                ghost_unique.append(item)
+            else:
+                ghost_other.append(item)
+            continue
+        if not usable:
+            if rarity in {"SP", "P"}:
+                sp_unpriced.append(cid)
+            elif _has_unique_set_needles(cid):
+                unique_miss.append((_checked(row), cid))
+            else:
+                other_miss.append((_checked(row), cid))
+            continue
+        if unpriced_only:
+            continue
+        if priced_or_new or priced_limit or miss_limit or rotate_families:
+            priced_ids.append((_checked(row), cid))
+
+    if not priced_or_new and not unpriced_only and not rotate_families:
+        return list(card_ids), ""
+
+    ghost_unique.sort()
+    ghost_other.sort()
+    unique_miss.sort()
+    other_miss.sort()
+    priced_ids.sort()
+    unique_ids = [cid for _, cid in unique_miss]
+    if (not rotate_families) and unique_needle_miss_cap and unique_needle_miss_cap > 0:
+        unique_ids = unique_ids[: int(unique_needle_miss_cap)]
+    extra_miss = [cid for _, cid in other_miss]
+    if priced_or_new and not rotate_families:
+        if miss_limit and miss_limit > 0:
+            extra_miss = extra_miss[: int(miss_limit)]
+        else:
+            extra_miss = []
+    priced_keep = [cid for _, cid in priced_ids]
+    if (not rotate_families) and priced_limit and priced_limit > 0:
+        priced_keep = priced_keep[: int(priced_limit)]
+
+    ordered = list(
+        dict.fromkeys(
+            [
+                *new_ids,
+                *retry_ids,
+                *[cid for _, cid in ghost_unique],
+                *[cid for _, cid in ghost_other],
+                *sp_unpriced,
+                *unique_ids,
+                *extra_miss,
+                *priced_keep,
+            ]
+        )
+    )
+    skipped = len(card_ids) - len(ordered)
+    summary = (
+        f"筛选：总数 {len(card_ids)} → 待同步 {len(ordered)}"
+        f"（新卡 {len(new_ids)}，软错误 {len(retry_ids)}，"
+        f"幽灵价 {len(ghost_unique) + len(ghost_other)}，SP/P无价 {len(sp_unpriced)}，"
+        f"可对上套名miss {len(unique_ids)}，其他miss {len(extra_miss)}，"
+        f"刷新现价 {len(priced_keep)}，跳过已完成家族卡 {max(0, skipped)}）"
+    )
+    return ordered, summary
 
 
 def main() -> None:
@@ -1691,7 +2314,35 @@ def main() -> None:
     parser.add_argument(
         "--priced-or-new",
         action="store_true",
-        help="每日模式：只刷新已有现价的卡 + 目录里尚未建价的新卡；跳过已知无价/miss",
+        help="每日补漏模式：优先新卡/429/无价 SP·P/套名 miss，再刷新一部分现价",
+    )
+    parser.add_argument(
+        "--rotate-families",
+        action="store_true",
+        help="每日全库家族扫描：漏价与幽灵价优先，其余按最旧 last_checked；配合 checkpoint 断点续跑",
+    )
+    parser.add_argument(
+        "--expand-family",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="家族模式写入该基础号目录内全部成员（默认开启；--card-id 单卡除外）",
+    )
+    parser.add_argument(
+        "--stop-on-429",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="遇到 429 立即结束本轮并写下 checkpoint（--rotate-families 默认开启）",
+    )
+    parser.add_argument(
+        "--unpriced",
+        action="store_true",
+        help="只同步尚无现价的卡（套名可对上的 miss 优先）",
+    )
+    parser.add_argument(
+        "--priced-limit",
+        type=int,
+        default=0,
+        help="每日模式最多刷新多少张已有现价的卡（0=不限制；建议 500~800，避免把漏价排到后面）",
     )
     parser.add_argument(
         "--stale-hours",
@@ -1766,25 +2417,41 @@ def main() -> None:
     if not isinstance(cards, dict):
         cards = {}
 
-    if args.priced_or_new:
-        before = len(card_ids)
-        priced_ids: list[str] = []
-        new_ids: list[str] = []
-        for cid in card_ids:
-            row = cards.get(cid) if isinstance(cards.get(cid), dict) else None
-            if row is None:
-                new_ids.append(cid)
-            elif has_usable_price(row):
-                priced_ids.append(cid)
-        card_ids = list(dict.fromkeys([*priced_ids, *new_ids]))
-        skipped = before - len(card_ids)
+    if args.stop_on_429 is None:
+        args.stop_on_429 = bool(args.rotate_families)
+
+    cursor_date = utc_date_str()
+    done_bases: set[str] = set()
+
+    if args.rotate_families:
+        cursor = load_yuyu_cursor()
+        if str(cursor.get("date") or "") == cursor_date:
+            done_bases = {
+                normalize_card_id(str(x))
+                for x in (cursor.get("done") or [])
+                if normalize_card_id(str(x))
+            }
         print(
-            f"每日筛选（priced-or-new）：总数 {before} → 待同步 {len(card_ids)}"
-            f"（已有现价 {len(priced_ids)}，新卡 {len(new_ids)}，跳过无价 {skipped}）",
+            f"checkpoint：日期 {cursor_date}，已完成家族 {len(done_bases)}",
             flush=True,
         )
+
+    if args.priced_or_new or args.unpriced or args.rotate_families:
+        card_ids, summary = select_sync_card_ids(
+            card_ids,
+            cards,
+            priced_or_new=bool(args.priced_or_new),
+            unpriced_only=bool(args.unpriced),
+            rotate_families=bool(args.rotate_families),
+            miss_limit=int(args.miss_limit or 0),
+            priced_limit=int(args.priced_limit or 0),
+            done_bases=done_bases if args.rotate_families else None,
+        )
+        print(summary, flush=True)
         if not card_ids:
             print("没有需要同步的卡号。")
+            if args.rotate_families:
+                save_yuyu_cursor(date=cursor_date, done=sorted(done_bases), stopped_on_429=False)
             return
 
     if args.skip_ok or args.stale_hours > 0:
@@ -1898,17 +2565,34 @@ def main() -> None:
 
     miss_ids: list[str] = []
 
-    def _record(card_id: str, price: int | None, status: str, ts: str) -> None:
+    def _record(card_id: str, price: int | None, status: str, ts: str, *, deep: bool = True) -> None:
         nonlocal found, not_found, errors, network_errors, hit_429, consecutive_429
         source_url = DEFAULT_SEARCH_TEMPLATES[0].format(query=quote_plus(base_card_id(card_id)))
         final_price, final_status = price, status
-        if args.strict_variant and is_variant_card_id(card_id):
+        # Pass-1 of two-pass must not freeze a miss as strict; the job is often killed
+        # before hash pass 2, and the next daily run used to skip those forever.
+        if (
+            args.two_pass
+            and not deep
+            and is_variant_card_id(card_id)
+            and final_price is None
+            and str(final_status) not in RETRY_SOON_STATUSES
+            and not str(final_status).startswith("http")
+            and not str(final_status).startswith("request")
+        ):
+            final_status = "two_pass_pending"
+        elif args.strict_variant and is_variant_card_id(card_id):
             allowed = {
                 "ok_variant_imagehash",
                 "ok_variant_id_exact",
                 "ok_variant_detail",
                 "ok_variant_single_parallel",
                 "ok_variant_remainder_single",
+                "ok_variant_set_name",
+                "ok_variant_section_rarity",
+                "ok_variant_manga_name",
+                "ok_variant_booster_parallel",
+                "ok_variant_gold_silver",
             }
             # stamp-unstamped manga uses the same remainder status
             if args.allow_variant_heuristic:
@@ -1922,12 +2606,18 @@ def main() -> None:
             ts,
             source_url,
             reset_history=args.reset_history,
+            clear_price=final_price is None and is_hard_miss_status(final_status),
         )
         cards[card_id]["status"] = final_status
         if final_status.startswith("ok"):
             found += 1
             consecutive_429 = 0
-        elif final_status in {"price_not_found", "variant_not_found", "variant_not_found_strict"}:
+        elif final_status in {
+            "price_not_found",
+            "variant_not_found",
+            "variant_not_found_strict",
+            "two_pass_pending",
+        }:
             not_found += 1
             miss_ids.append(card_id)
         elif final_status.startswith("request_error"):
@@ -1955,7 +2645,20 @@ def main() -> None:
     families: dict[str, list[str]] = {}
     for cid in card_ids:
         families.setdefault(base_card_id(cid), []).append(cid)
-    family_keys = sorted(families.keys())
+    expand_family = bool(args.expand_family) and not bool(target_id)
+    if args.by_family and expand_family:
+        families = expand_family_members(families, enabled=True)
+        extra_n = sum(len(v) for v in families.values()) - len(card_ids)
+        if extra_n > 0:
+            print(f"家族展開：同一搜尋頁額外寫入 {extra_n} 張同號成員", flush=True)
+    # Keep first-seen family order so miss-first daily runs actually hit leaks
+    # before the alphabetical OP01 priced refresh.
+    if args.priced_or_new or args.unpriced or args.rotate_families:
+        family_keys = list(families.keys())
+    else:
+        family_keys = sorted(families.keys())
+    if args.by_family and expand_family:
+        card_ids = list(dict.fromkeys(cid for base in family_keys for cid in families[base]))
 
     def _persist(label: str) -> None:
         # Long runs can race with other writers (e.g. sync_don_cards). Re-read disk and
@@ -1974,10 +2677,12 @@ def main() -> None:
         PRICE_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
         print(label)
 
+    stopped_on_429 = False
     if args.by_family:
         print(f"家族模式：{len(family_keys)} 个基础卡号 / {len(card_ids)} 张卡", flush=True)
         print(
-            f"限速：基础 sleep={request_sleep:.2f}s，429 冷却={cooldown_on_429:.0f}s",
+            f"限速：基础 sleep={request_sleep:.2f}s，429 冷却={cooldown_on_429:.0f}s"
+            + ("，遇 429 立即停并写 checkpoint" if args.stop_on_429 else ""),
             flush=True,
         )
         for start in range(0, len(family_keys), batch_size):
@@ -1993,7 +2698,7 @@ def main() -> None:
                 for cid in members:
                     checked += 1
                     price, status = results.get(cid, (None, "price_not_found"))
-                    _record(cid, price, status, ts)
+                    _record(cid, price, status, ts, deep=not args.two_pass)
                     if checked % progress_every == 0:
                         notify_progress(
                             f"进度: {checked}/{len(card_ids)} "
@@ -2004,6 +2709,23 @@ def main() -> None:
                 if any_429:
                     consecutive_429 += 1
                     hit_429 += 1
+                    if args.stop_on_429:
+                        stopped_on_429 = True
+                        print(
+                            f"[429] {base} → 结束本轮（不叠冷却），下午 cron 从 checkpoint 续跑",
+                            flush=True,
+                        )
+                        _persist(
+                            f"429 中断: {base} / 卡 {checked}/{len(card_ids)} "
+                            f"(ok={found}, miss={not_found}, err={errors}, http_429={hit_429})"
+                        )
+                        if args.rotate_families:
+                            save_yuyu_cursor(
+                                date=cursor_date,
+                                done=sorted(done_bases),
+                                stopped_on_429=True,
+                            )
+                        break
                     adaptive_sleep = min(2.5, max(adaptive_sleep * 1.35, request_sleep + 0.15))
                     cool = min(
                         YUYUTEI_429_BACKOFF_CAP_SEC,
@@ -2016,10 +2738,19 @@ def main() -> None:
                     time.sleep(cool)
                 else:
                     consecutive_429 = 0
+                    if args.rotate_families:
+                        done_bases.add(base)
+                        save_yuyu_cursor(
+                            date=cursor_date,
+                            done=sorted(done_bases),
+                            stopped_on_429=False,
+                        )
                     # slowly relax after clean responses
                     adaptive_sleep = max(request_sleep, adaptive_sleep * 0.97)
                     time.sleep(adaptive_sleep)
 
+            if stopped_on_429:
+                break
             _persist(
                 f"批次完成: {min(start + batch_size, len(family_keys))}/{len(family_keys)} 家族 "
                 f"/ 卡 {checked}/{len(card_ids)} "
@@ -2047,7 +2778,7 @@ def main() -> None:
                     print(f"[debug] {card_id} final_status={status} price={price}")
                     for row in trace:
                         print(f"[debug] {row}")
-                _record(card_id, price, status, ts)
+                _record(card_id, price, status, ts, deep=not args.two_pass)
                 time.sleep(request_sleep if str(status).startswith("ok") else max(request_sleep, 0.25))
                 if checked % progress_every == 0:
                     notify_progress(
@@ -2062,7 +2793,7 @@ def main() -> None:
             if start + batch_size < len(card_ids) and batch_sleep > 0:
                 time.sleep(batch_sleep)
 
-    if args.two_pass and miss_ids:
+    if args.two_pass and miss_ids and not stopped_on_429:
         retry_ids = [cid for cid in dict.fromkeys(miss_ids) if is_variant_card_id(cid)]
         print(f"二阶段重试开始: {len(retry_ids)} 张 miss 异图卡")
         retry_families: dict[str, list[str]] = {}
@@ -2082,11 +2813,16 @@ def main() -> None:
                 old_status = str((cards.get(cid) or {}).get("status") or "")
                 if old_status.startswith("ok"):
                     found = max(0, found - 1)
-                elif old_status in {"price_not_found", "variant_not_found", "variant_not_found_strict"}:
+                elif old_status in {
+                    "price_not_found",
+                    "variant_not_found",
+                    "variant_not_found_strict",
+                    "two_pass_pending",
+                }:
                     not_found = max(0, not_found - 1)
                 else:
                     errors = max(0, errors - 1)
-                _record(cid, price, status, ts)
+                _record(cid, price, status, ts, deep=True)
                 if done % progress_every == 0 or done == len(retry_ids):
                     notify_progress(f"二阶段细进度: {done}/{len(retry_ids)}")
             time.sleep(request_sleep)
@@ -2115,7 +2851,12 @@ def main() -> None:
         st = str(cards.get(cid, {}).get("status") or "")
         if st.startswith("ok"):
             final_found += 1
-        elif st in {"price_not_found", "variant_not_found_strict"}:
+        elif st in {
+            "price_not_found",
+            "variant_not_found",
+            "variant_not_found_strict",
+            "two_pass_pending",
+        }:
             final_not_found += 1
         else:
             final_errors += 1
@@ -2127,6 +2868,16 @@ def main() -> None:
     print(f"网络错误: {network_errors}")
     print(f"429 次数: {hit_429}")
     print(f"输出文件: {PRICE_PATH}")
+    if args.rotate_families:
+        save_yuyu_cursor(
+            date=cursor_date,
+            done=sorted(done_bases),
+            stopped_on_429=stopped_on_429,
+        )
+        if stopped_on_429:
+            print("本轮因 429 提前结束，checkpoint 已写入，下一班 cron 续跑。")
+        else:
+            print(f"checkpoint 完成：今日已扫家族 {len(done_bases)}")
 
 
 if __name__ == "__main__":

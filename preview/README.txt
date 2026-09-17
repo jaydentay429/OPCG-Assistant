@@ -6,7 +6,7 @@ OP17 等未上 cardlist 的预览卡图
   preview/images/OP17-001.png
   preview/images/OP17-079-P1.png
 
-然后在「Chinese HK」目录跑：
+然后在项目根目录跑：
 
   python sync_preview_cards.py --set OP17
 

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
+import { CoverUpdates } from "@/components/CoverUpdates";
 import { useI18n } from "@/lib/i18n";
 import { markTabNavScrollReset } from "@/lib/scrollRestore";
 
@@ -57,6 +58,7 @@ export function CoverLanding() {
           <p className="cover-unofficial">
             <Link href="/legal/disclaimer">{t("cover.unofficial")}</Link>
           </p>
+          <CoverUpdates />
         </div>
       </div>
     </section>

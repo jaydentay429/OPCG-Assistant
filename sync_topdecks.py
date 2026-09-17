@@ -318,6 +318,12 @@ def main() -> None:
     parser.add_argument("--sleep", type=float, default=0.4, help="Delay between meta fetches")
     parser.add_argument("--limit-metas", type=int, default=0, help="Debug: only first N metas")
     parser.add_argument(
+        "--always-refetch-newest",
+        type=int,
+        default=8,
+        help="Always re-fetch the N most recently modified metas (TablePress can change without page.modified)",
+    )
+    parser.add_argument(
         "--full",
         action="store_true",
         help="Re-fetch every meta page (ignore stored modified stamps)",
@@ -365,6 +371,14 @@ def main() -> None:
     if args.limit_metas > 0:
         metas_sorted = metas_sorted[: args.limit_metas]
 
+    # TablePress/Elementor rows can change without WordPress bumping page.modified.
+    # Always re-fetch the newest N metas so current-format lists do not go stale.
+    always_refetch_slugs = {
+        str(p.get("slug") or "")
+        for p in metas_sorted[: max(0, args.always_refetch_newest)]
+        if str(p.get("slug") or "").strip()
+    }
+
     for i, page in enumerate(metas_sorted, 1):
         slug = str(page.get("slug") or "")
         title = strip_html_title((page.get("title") or {}).get("rendered") or "")
@@ -379,7 +393,13 @@ def main() -> None:
 
         modified = str(page.get("modified") or "").strip()
         meta_mods[slug] = modified
-        need_fetch = args.full or prev_mods.get(slug) != modified or slug not in prev_by_slug
+        always_newest = slug in always_refetch_slugs
+        need_fetch = (
+            args.full
+            or always_newest
+            or prev_mods.get(slug) != modified
+            or slug not in prev_by_slug
+        )
 
         if not need_fetch:
             decks = list(prev_by_slug.get(slug) or [])
@@ -394,7 +414,8 @@ def main() -> None:
                 flush=True,
             )
         else:
-            print(f"[{i}/{len(metas_sorted)}] {fmt} {slug} (fetch)", flush=True)
+            why = "always-newest" if always_newest and prev_mods.get(slug) == modified else "modified"
+            print(f"[{i}/{len(metas_sorted)}] {fmt} {slug} (fetch, {why})", flush=True)
             try:
                 body = fetch_page_content(session, page_id)
             except requests.RequestException as exc:
@@ -453,6 +474,29 @@ def main() -> None:
         prev_mods,
     )
 
+    prev_count = len([d for d in prev_decks if isinstance(d, dict)])
+    # --limit-metas is for debugging; never replace the full library unless forced.
+    if args.limit_metas > 0 and not args.force_write and prev_count > 0:
+        print(
+            f"Refusing to write: --limit-metas={args.limit_metas} would replace "
+            f"{prev_count} stored decks with {len(decks_out)}. Re-run with --force-write "
+            f"only if intentional.",
+            flush=True,
+        )
+        return
+    # Guard against wiping the library when WP returns a partial/empty page set.
+    if (
+        not args.force_write
+        and prev_count >= 200
+        and len(decks_out) < max(50, int(prev_count * 0.5))
+    ):
+        print(
+            f"Refusing to write: new deck count {len(decks_out)} is far below "
+            f"stored {prev_count} (possible upstream/API failure). Use --force-write to override.",
+            flush=True,
+        )
+        return
+
     if not args.force_write and existing and new_fp == old_fp and fetched == 0:
         print(
             f"No updates (decks={len(decks_out)} metas_jp={len(formats['jp']['metas'])} "
@@ -462,12 +506,12 @@ def main() -> None:
         return
 
     if not args.force_write and existing and new_fp == old_fp:
+        # Still refresh synced_at / stats so ops and UI show the check ran.
         print(
-            f"Fetched {fetched} meta(s) but content unchanged; skip write "
+            f"Fetched {fetched} meta(s); decks unchanged — refreshing synced_at "
             f"(decks={len(decks_out)} reused={reused})",
             flush=True,
         )
-        return
 
     payload = write_payload(
         formats=formats,

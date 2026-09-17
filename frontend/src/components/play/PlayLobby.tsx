@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { fetchDeckStatsBatch, type AiBattleDeck, type BattleInlineDeck } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { isLeaderType } from "@/lib/deck";
+import { displayCardId } from "@/lib/cardId";
 import { parseDeckListText } from "@/lib/deckShare";
 import { useI18n } from "@/lib/i18n";
 import type { Deck } from "@/lib/types";
@@ -144,7 +145,7 @@ export function PlayLobby({
         setImportError(t("play.import_invalid"));
         return;
       }
-      const label = `${deck.name || t("play.imported_deck")} · ${deck.leader_card_id} · 50/50`;
+      const label = `${deck.name || t("play.imported_deck")} · ${displayCardId(deck.leader_card_id)} · 50/50`;
       if (which === "p1") {
         setImported(deck);
         setDeckId(IMPORT_ID);
@@ -280,19 +281,19 @@ export function PlayLobby({
                       <select value={selected} onChange={(e) => setDeckId(e.target.value)} disabled={busy}>
                         {ready.map((d) => (
                           <option key={d.id} value={d.id}>
-                            {d.name} · {d.leader_card_id} · {d.non_leader_count}/50
+                            {d.name} · {displayCardId(d.leader_card_id)} · {d.non_leader_count}/50
                           </option>
                         ))}
                         {imported ? (
                           <option value={IMPORT_ID}>
-                            {imported.name || t("play.imported_deck")} · {imported.leader_card_id} · 50/50
+                            {imported.name || t("play.imported_deck")} · {displayCardId(imported.leader_card_id)} · 50/50
                           </option>
                         ) : null}
                       </select>
                     </label>
                   ) : imported ? (
                     <p className="muted">
-                      {t("play.imported_deck")}: {imported.name || imported.leader_card_id} · 50/50
+                      {t("play.imported_deck")}: {imported.name || displayCardId(imported.leader_card_id)} · 50/50
                     </p>
                   ) : null}
                   <DeckImportBlock
@@ -303,7 +304,7 @@ export function PlayLobby({
                     busy={busy}
                     importing={importing}
                     appliedLabel={
-                      imported ? `${t("play.imported_ok")} · ${imported.leader_card_id} · 50/50` : null
+                      imported ? `${t("play.imported_ok")} · ${displayCardId(imported.leader_card_id)} · 50/50` : null
                     }
                   />
                 </PlaySetupBlock>
@@ -346,19 +347,19 @@ export function PlayLobby({
                     <select value={selected} onChange={(e) => setDeckId(e.target.value)} disabled={busy}>
                       {ready.map((d) => (
                         <option key={d.id} value={d.id}>
-                          {d.name} · {d.leader_card_id} · {d.non_leader_count}/50
+                          {d.name} · {displayCardId(d.leader_card_id)} · {d.non_leader_count}/50
                         </option>
                       ))}
                       {imported ? (
                         <option value={IMPORT_ID}>
-                          {imported.name || t("play.imported_deck")} · {imported.leader_card_id} · 50/50
+                          {imported.name || t("play.imported_deck")} · {displayCardId(imported.leader_card_id)} · 50/50
                         </option>
                       ) : null}
                     </select>
                   </label>
                 ) : imported ? (
                   <p className="muted">
-                    {t("play.imported_deck")}: {imported.name || imported.leader_card_id} · 50/50
+                    {t("play.imported_deck")}: {imported.name || displayCardId(imported.leader_card_id)} · 50/50
                   </p>
                 ) : null}
                 <DeckImportBlock
@@ -369,7 +370,7 @@ export function PlayLobby({
                   busy={busy}
                   importing={importing}
                   appliedLabel={
-                    imported ? `${t("play.imported_ok")} · ${imported.leader_card_id} · 50/50` : null
+                    imported ? `${t("play.imported_ok")} · ${displayCardId(imported.leader_card_id)} · 50/50` : null
                   }
                 />
               </PlaySetupBlock>
@@ -468,19 +469,19 @@ export function PlayLobby({
                     >
                       {ready.map((d) => (
                         <option key={d.id} value={d.id}>
-                          {d.name} · {d.leader_card_id} · {d.non_leader_count}/50
+                          {d.name} · {displayCardId(d.leader_card_id)} · {d.non_leader_count}/50
                         </option>
                       ))}
                       {imported ? (
                         <option value={IMPORT_ID}>
-                          {imported.name || t("play.imported_deck")} · {imported.leader_card_id} · 50/50
+                          {imported.name || t("play.imported_deck")} · {displayCardId(imported.leader_card_id)} · 50/50
                         </option>
                       ) : null}
                     </select>
                   </label>
                 ) : imported ? (
                   <p className="muted">
-                    {t("play.imported_deck")}: {imported.name || imported.leader_card_id} · 50/50
+                    {t("play.imported_deck")}: {imported.name || displayCardId(imported.leader_card_id)} · 50/50
                   </p>
                 ) : null}
                 <DeckImportBlock
@@ -492,7 +493,7 @@ export function PlayLobby({
                   importing={importing}
                   appliedLabel={
                     imported
-                      ? `${t("play.imported_ok")} · ${imported.leader_card_id} · 50/50`
+                      ? `${t("play.imported_ok")} · ${displayCardId(imported.leader_card_id)} · 50/50`
                       : null
                   }
                 />
@@ -508,7 +509,7 @@ export function PlayLobby({
                     ) : (
                       aiDecks.map((d) => (
                         <option key={d.id} value={d.id}>
-                          {d.name} · {d.leader_card_id} · {d.non_leader_count}/50
+                          {d.name} · {displayCardId(d.leader_card_id)} · {d.non_leader_count}/50
                         </option>
                       ))
                     )}
@@ -553,19 +554,19 @@ export function PlayLobby({
                     <select value={selected} onChange={(e) => setDeckId(e.target.value)} disabled={busy}>
                       {ready.map((d) => (
                         <option key={d.id} value={d.id}>
-                          {d.name} · {d.leader_card_id} · {d.non_leader_count}/50
+                          {d.name} · {displayCardId(d.leader_card_id)} · {d.non_leader_count}/50
                         </option>
                       ))}
                       {imported ? (
                         <option value={IMPORT_ID}>
-                          {imported.name || t("play.imported_deck")} · {imported.leader_card_id} · 50/50
+                          {imported.name || t("play.imported_deck")} · {displayCardId(imported.leader_card_id)} · 50/50
                         </option>
                       ) : null}
                     </select>
                   </label>
                 ) : imported ? (
                   <p className="muted">
-                    {t("play.choose_deck_p1")}: {imported.name || imported.leader_card_id} · 50/50
+                    {t("play.choose_deck_p1")}: {imported.name || displayCardId(imported.leader_card_id)} · 50/50
                   </p>
                 ) : null}
                 <DeckImportBlock
@@ -576,7 +577,7 @@ export function PlayLobby({
                   busy={busy}
                   importing={importing}
                   appliedLabel={
-                    imported ? `${t("play.imported_ok")} · ${imported.leader_card_id} · 50/50` : null
+                    imported ? `${t("play.imported_ok")} · ${displayCardId(imported.leader_card_id)} · 50/50` : null
                   }
                 />
               </PlaySetupBlock>
@@ -587,19 +588,19 @@ export function PlayLobby({
                     <select value={selectedOpp} onChange={(e) => setOppDeckId(e.target.value)} disabled={busy}>
                       {ready.map((d) => (
                         <option key={d.id} value={d.id}>
-                          {d.name} · {d.leader_card_id} · {d.non_leader_count}/50
+                          {d.name} · {displayCardId(d.leader_card_id)} · {d.non_leader_count}/50
                         </option>
                       ))}
                       {importedOpp ? (
                         <option value={IMPORT_OPP_ID}>
-                          {importedOpp.name || t("play.imported_deck")} · {importedOpp.leader_card_id} · 50/50
+                          {importedOpp.name || t("play.imported_deck")} · {displayCardId(importedOpp.leader_card_id)} · 50/50
                         </option>
                       ) : null}
                     </select>
                   </label>
                 ) : importedOpp ? (
                   <p className="muted">
-                    {t("play.choose_deck_p2")}: {importedOpp.name || importedOpp.leader_card_id} · 50/50
+                    {t("play.choose_deck_p2")}: {importedOpp.name || displayCardId(importedOpp.leader_card_id)} · 50/50
                   </p>
                 ) : null}
                 <DeckImportBlock
@@ -610,7 +611,7 @@ export function PlayLobby({
                   busy={busy}
                   importing={importingOpp}
                   appliedLabel={
-                    importedOpp ? `${t("play.imported_ok")} · ${importedOpp.leader_card_id} · 50/50` : null
+                    importedOpp ? `${t("play.imported_ok")} · ${displayCardId(importedOpp.leader_card_id)} · 50/50` : null
                   }
                 />
               </PlaySetupBlock>

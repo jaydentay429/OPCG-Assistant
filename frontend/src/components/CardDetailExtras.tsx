@@ -211,7 +211,7 @@ export function CardDetailExtras({
               const leaderName =
                 localizeCardName(row.leader_name, row.leader_name_en, lang) ||
                 row.leader_name ||
-                row.leader ||
+                displayCardId(row.leader) ||
                 "—";
               const metaLine = [
                 row.date,

@@ -170,6 +170,7 @@ TARGET_KINDS = frozenset(
         "life_position",
         "own_leader_or_character",
         "opponent_leader_or_character",
+        "opponent_leader",
         "self",
     }
 )
@@ -996,6 +997,8 @@ def sanitize_op(raw: Any) -> dict[str, Any] | None:
                 op["include_leader_if_name"] = str(raw.get("include_leader_if_name"))[:80]
             if raw.get("trait_contains"):
                 op["trait_contains"] = str(raw.get("trait_contains"))[:80]
+            if raw.get("require_trigger"):
+                op["require_trigger"] = True
             if raw.get("trait_includes"):
                 op["trait_includes"] = str(raw.get("trait_includes"))[:40]
             trait_any = raw.get("trait_any")
@@ -1617,6 +1620,11 @@ def sanitize_op(raw: Any) -> dict[str, Any] | None:
             op["name_contains"] = str(raw.get("name_contains"))[:60]
         if raw.get("trait_contains"):
             op["trait_contains"] = str(raw.get("trait_contains"))[:80]
+        if raw.get("attr_contains"):
+            op["attr_contains"] = str(raw.get("attr_contains")).strip()[:80]
+        elif raw.get("attribute"):
+            op["attr_contains"] = str(raw.get("attribute")).strip()[:80]
+            op["attribute"] = op["attr_contains"]
         if raw.get("target_iid"):
             op["target_iid"] = str(raw.get("target_iid"))[:40]
         if raw.get("source_iid"):

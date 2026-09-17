@@ -112,7 +112,7 @@ export type BattleState = {
     seat: number;
     card_id: string;
     source_iid?: string;
-    phase?: "pick" | "order" | string;
+    phase?: "pick" | "order" | "choose_dest" | string;
     revealed: Array<string | null>;
     eligible: number[];
     /** Indices currently toggled for multi-add searches (viewer only). */
@@ -125,6 +125,8 @@ export type BattleState = {
     exclude_name?: string;
     summary?: string;
     order_bottom?: boolean;
+    to_top_or_bottom?: boolean;
+    order_dest?: "top" | "bottom" | string;
   } | null;
   pending_choice?: {
     seat: number;

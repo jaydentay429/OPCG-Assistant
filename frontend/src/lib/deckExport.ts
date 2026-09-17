@@ -506,7 +506,7 @@ async function renderDeckCanvas(input: ExportInput): Promise<{ blob: Blob; title
   ctx.font = "800 36px system-ui, sans-serif";
   ctx.fillStyle = "#fbbf24";
   const leaderLine = leaderId
-    ? `${input.labels.leader}  ${leaderName}  ${normalizeCardId(leaderId)}`
+    ? `${input.labels.leader}  ${leaderName}  ${displayCardId(leaderId)}`
     : `${input.labels.leader}  ${input.labels.noLeader}`;
   ctx.fillText(fitText(ctx, leaderLine, textW), textX, ty + 12);
   let dotX = textX + ctx.measureText(fitText(ctx, leaderLine, textW)).width + 24;
@@ -621,7 +621,7 @@ async function renderDeckCanvas(input: ExportInput): Promise<{ blob: Blob; title
     ctx.fillStyle = fade;
     ctx.fillRect(x, y + cardH - fadeH, cardW, fadeH);
 
-    const idLabel = normalizeCardId(card.id);
+    const idLabel = displayCardId(card.id);
     ctx.textAlign = "left";
     ctx.fillStyle = "#cbd5e1";
     ctx.font = "700 26px system-ui, sans-serif";

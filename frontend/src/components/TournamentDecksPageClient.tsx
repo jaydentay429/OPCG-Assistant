@@ -734,7 +734,7 @@ export function TournamentDecksPageClient({ hideTitle = false }: { hideTitle?: b
                 const leaderName =
                   localizeCardName(row.leader_name, row.leader_name_en, lang) ||
                   row.leader_name ||
-                  row.leader ||
+                  displayCardId(row.leader) ||
                   "—";
                 return (
                   <tr key={row.id} className="tournament-row" onClick={() => void openDetail(row.id)}>
@@ -845,7 +845,7 @@ export function TournamentDecksPageClient({ hideTitle = false }: { hideTitle?: b
                   <div className="tournament-preview-fallback">
                     {detail.leader ? (
                       <div className="tournament-preview-leader">
-                        <CardImg cardId={detail.leader} alt={detail.leader_name || detail.leader} loading="eager" />
+                        <CardImg cardId={detail.leader} alt={detail.leader_name || displayCardId(detail.leader)} loading="eager" />
                       </div>
                     ) : null}
                     <div className="tournament-preview-grid">
@@ -853,8 +853,8 @@ export function TournamentDecksPageClient({ hideTitle = false }: { hideTitle?: b
                         .filter((c) => c?.id && !c.is_leader && c.id !== detail.leader)
                         .slice(0, 30)
                         .map((c) => (
-                          <div key={c.id} className="tournament-preview-tile" title={`${c.id}×${c.qty}`}>
-                            <CardImg cardId={c.id} alt={c.id} />
+                          <div key={c.id} className="tournament-preview-tile" title={`${displayCardId(c.id)}×${c.qty}`}>
+                            <CardImg cardId={c.id} alt={displayCardId(c.id)} />
                             <span>×{c.qty}</span>
                           </div>
                         ))}

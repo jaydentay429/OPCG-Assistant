@@ -14,6 +14,9 @@ export function toBaseCardId(cardId: string): string {
   // Illustrated DON cards use 3–5 digit tails (DON17-10163); do not truncate to 3 digits.
   const don = id.match(/^(DON[A-Z0-9]*-\d{3,5})(?:-[A-Z0-9]+)?$/);
   if (don) return don[1];
+  // Promo P-084 / P-084-P1: series letter is a single P.
+  const promo = id.match(/^(P-\d{3})(?:-[A-Z0-9]+)?$/);
+  if (promo) return promo[1];
   // Strip parallel / alternate suffixes like -P1, -SP, -AA
   const m = id.match(/^([A-Z]{2,4}\d{0,2}-\d{3})/);
   return m ? m[1] : id;

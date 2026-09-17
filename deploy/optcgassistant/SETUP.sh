@@ -4,7 +4,7 @@ set -euo pipefail
 
 APP_ROOT=/opt/opcg/app
 
-echo "Expects full 'Chinese HK' tree at $APP_ROOT (app.py, frontend/, deploy/, …)."
+echo "Expects full app tree at $APP_ROOT (app.py, frontend/, deploy/, …)."
 echo ""
 if [[ ! -f "$APP_ROOT/app.py" ]]; then
   echo "Missing $APP_ROOT/app.py — copy your project first."

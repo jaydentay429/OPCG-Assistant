@@ -32,6 +32,7 @@ import {
 import { readBattleSpectatorPrefs } from "@/lib/battleSpectatorPrefs";
 import { collectCardIdsFromLogs } from "@/lib/battleLogCards";
 import { useAuth } from "@/lib/auth";
+import { displayCardId } from "@/lib/cardId";
 import { isLeaderType } from "@/lib/deck";
 import { parseDeckListText } from "@/lib/deckShare";
 import { connectBattleWs, type BattleAction, type BattleChatMessage, type BattleState, type WaitingRoom } from "@/lib/battleWs";
@@ -1006,7 +1007,7 @@ export function PlayPageClient() {
                   >
                     {validDecks.map((d) => (
                       <option key={d.id} value={d.id}>
-                        {d.name} · {d.leader_card_id} · {d.non_leader_count}/50
+                        {d.name} · {displayCardId(d.leader_card_id)} · {d.non_leader_count}/50
                       </option>
                     ))}
                   </select>
@@ -1022,7 +1023,7 @@ export function PlayPageClient() {
                 busy={busy || myReady}
                 importing={lobbyImporting}
                 appliedLabel={
-                  lobbyInline ? `${t("play.imported_ok")} · ${lobbyInline.leader_card_id} · 50/50` : null
+                  lobbyInline ? `${t("play.imported_ok")} · ${displayCardId(lobbyInline.leader_card_id)} · 50/50` : null
                 }
               />
               <div className="play-actions">

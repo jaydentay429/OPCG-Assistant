@@ -64,7 +64,7 @@ meta/*.log
 # --- optional heavy generated indexes (regenerate on server) ---
 # topdecks_decks.json is ~18MB; include if you want tournament data in-repo.
 # Uncomment the next line to exclude it:
-# meta/topdecks_decks.json
+meta/topdecks_decks.json
 
 # --- cards raw sync dumps (keep curated index/ instead) ---
 cards/cards/
@@ -81,3 +81,6 @@ official_rules.txt
 sync_limitless.log
 
 frontend/package-lock 2.json
+
+# --- Cowork-managed GitHub deploy key (never commit) ---
+.cowork_deploy/

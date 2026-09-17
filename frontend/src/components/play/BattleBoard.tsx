@@ -6,6 +6,7 @@ import { CardImg } from "@/components/CardImg";
 import { fetchCardBrief } from "@/lib/api";
 import type { BattleAction, BattleChar, BattleChatMessage, BattleLogEntry, BattlePlayerView, BattleState } from "@/lib/battleWs";
 import { BATTLE_CARD_ID_ONE, BATTLE_CARD_ID_RE } from "@/lib/battleLogCards";
+import { displayCardId } from "@/lib/cardId";
 import { hasCjk, localizeCardName, localizeCardText, preferLangText } from "@/lib/cardLocale";
 import { localizeFilterToken } from "@/lib/filterLabels";
 import { formatEffectLines } from "@/lib/formatEffect";
@@ -104,6 +105,23 @@ function actionMatch(actions: BattleAction[], type: string, extra: Record<string
     if (a.type !== type) return false;
     return Object.entries(extra).every(([k, v]) => a[k] === v || (v == null && (a[k] == null || a[k] === "")));
   });
+}
+
+/** Engine uses iid "leader" for both seats; infer which board from pending target_kind. */
+function leaderChoiceToken(
+  legal: BattleAction[],
+  pendingKind: string | undefined,
+  playerSeat: number,
+  mine: boolean,
+): string | null {
+  if (actionMatch(legal, "select_choice", { target_iid: `leader-${playerSeat}` })) {
+    return `leader-${playerSeat}`;
+  }
+  if (!actionMatch(legal, "select_choice", { target_iid: "leader" })) return null;
+  const tk = String(pendingKind || "").toLowerCase();
+  if (tk.includes("opponent")) return mine ? null : "leader";
+  if (tk.startsWith("own") || tk === "leader") return mine ? "leader" : null;
+  return "leader";
 }
 
 /** Optional 「可以發動」window: activate via the source card menu, not a modal. */
@@ -245,7 +263,7 @@ function skipEffectLabel(
   if (me?.stages?.some((s) => s.iid === src)) return t("play.effect_skip_stage");
   if (me?.characters?.some((c) => c.iid === src)) return t("play.effect_skip_character");
   if (cid) {
-    const nm = localizeCardName(names[cid]?.name, names[cid]?.name_en, lang) || cid;
+    const nm = localizeCardName(names[cid]?.name, names[cid]?.name_en, lang) || displayCardId(cid);
     return t("play.effect_skip_named", { name: nm });
   }
   return t("play.effect_skip");
@@ -306,7 +324,7 @@ function localizeLogCardId(
 ): string {
   const cid = String(raw || "").trim();
   if (BATTLE_CARD_ID_ONE.test(cid)) {
-    return localizeCardName(names[cid]?.name, names[cid]?.name_en, lang) || cid;
+    return localizeCardName(names[cid]?.name, names[cid]?.name_en, lang) || displayCardId(cid);
   }
   return cid;
 }
@@ -385,7 +403,7 @@ function LogCardChip({
             style={{ left: previewPos.left, top: previewPos.top }}
           >
             <CardImg cardId={cardId} className="ux-log-card-preview-img" loading="eager" alt={label} />
-            <span className="ux-log-card-preview-meta">{cardId}</span>
+            <span className="ux-log-card-preview-meta">{displayCardId(cardId)}</span>
           </span>,
           document.body,
         )
@@ -760,7 +778,7 @@ function unitLabel(
   }
   const ch = player.characters.find((c) => c.iid === iid) || player.stages.find((c) => c.iid === iid);
   if (!ch) return iid;
-  return localizeCardName(names[ch.card_id]?.name, names[ch.card_id]?.name_en, lang) || ch.card_id;
+  return localizeCardName(names[ch.card_id]?.name, names[ch.card_id]?.name_en, lang) || displayCardId(ch.card_id);
 }
 
 type AttackLine = { x1: number; y1: number; x2: number; y2: number; w: number; h: number };
@@ -1107,8 +1125,10 @@ function SideBoard({
 }) {
   const { t } = useI18n();
   const legal = state.legal_actions;
+  const leaderPick = leaderChoiceToken(legal, state.pending_choice?.target_kind, player.seat, mine);
   const [donDropIid, setDonDropIid] = useState<string | null>(null);
-  const nameOf = (id: string) => localizeCardName(names[id]?.name, names[id]?.name_en, lang) || id;
+  const nameOf = (id: string) =>
+    localizeCardName(names[id]?.name, names[id]?.name_en, lang) || displayCardId(id);
   const costOf = (id: string, inst?: { cost_mod?: number; cost?: number }) => {
     if (typeof inst?.cost === "number") return inst.cost;
     const base = names[id]?.cost;
@@ -1188,8 +1208,11 @@ function SideBoard({
   const lifeFaces = player.life_faces || [];
   const lifeZone = (
     <ZoneSlot label={t("play.life")} tone="life" className="is-board">
-      {lifeCount > 0 ? (
-        <div className={`ux-life-rail ${mine ? "is-mine" : "is-foe"}`} title={`${lifeCount}`}>
+      <div
+        className={`ux-life-rail ${mine ? "is-mine" : "is-foe"}${lifeCount <= 0 ? " is-empty" : ""}`}
+        title={`${t("play.life")} ${lifeCount}`}
+      >
+        {lifeCount > 0 ? (
           <div className="ux-life-stack" aria-label={`${t("play.life")} ${lifeCount}`}>
             {Array.from({ length: lifeCount }).map((_, i) => {
               const face = lifeFaces[i];
@@ -1202,11 +1225,13 @@ function SideBoard({
               );
             })}
           </div>
-          {lifeCount > 5 ? <span className="ux-life-count">{lifeCount}</span> : null}
-        </div>
-      ) : (
-        <div className="ux-slot-empty" />
-      )}
+        ) : (
+          <div className="ux-slot-empty" />
+        )}
+        <span className="ux-life-count" aria-hidden>
+          {lifeCount}
+        </span>
+      </div>
     </ZoneSlot>
   );
 
@@ -1397,9 +1422,9 @@ function SideBoard({
             keywords: player.leader_keywords,
             cannot_attack: player.leader_cannot_attack,
           })}
-          selected={attacker === "leader" || choiceHoverIid === "leader"}
+          selected={attacker === "leader" || choiceHoverIid === "leader" || choiceHoverIid === `leader-${player.seat}`}
           legal={
-            actionMatch(legal, "select_choice", { target_iid: "leader" })
+            leaderPick
               ? true
               : mine
                 ? actionMatch(legal, "attack", { attacker_iid: "leader" }) ||
@@ -1410,8 +1435,8 @@ function SideBoard({
                 : Boolean(attacker && actionMatch(legal, "attack", { attacker_iid: attacker, target_iid: "leader" }))
           }
           onClick={
-            actionMatch(legal, "select_choice", { target_iid: "leader" })
-              ? (event) => openFieldMenu("leader", player.leader_card_id, player.leader_don, mine, event)
+            leaderPick
+              ? (event) => openFieldMenu(leaderPick, player.leader_card_id, player.leader_don, mine, event)
               : donArmed && canAttachLeader
               ? () => attachIfArmed("leader")
               : mine
@@ -1851,14 +1876,23 @@ export function BattleBoard({
 
   const resolveFieldChoice = useCallback(
     (iid: string) => {
-      if (iid === "leader") {
+      if (iid === "leader" || /^leader-\d+$/.test(iid)) {
+        const seatFromIid = /^leader-(\d+)$/.exec(iid);
+        const tk = String(state.pending_choice?.target_kind || "").toLowerCase();
+        const controller = state.pending_choice?.seat;
+        let ownerSeat =
+          seatFromIid != null
+            ? Number(seatFromIid[1])
+            : tk.includes("opponent") && controller != null
+              ? state.players.find((p) => p.seat !== controller)?.seat
+              : controller ?? state.viewer_seat;
         const owner =
-          state.players.find((p) => p.seat === state.pending_choice?.seat) ||
+          state.players.find((p) => p.seat === ownerSeat) ||
           state.players.find((p) => p.seat === state.viewer_seat) ||
           me;
         if (!owner?.leader_card_id) return null;
         return {
-          iid: "leader",
+          iid,
           cardId: owner.leader_card_id,
           rested: owner.leader_rested,
           power: owner.leader_power,
@@ -3054,9 +3088,9 @@ export function BattleBoard({
                   <div className="ux-card-detail-meta">
                     <strong>
                       {localizeCardName(cardDetail.card.name, cardDetail.card.name_en, lang) ||
-                        cardDetail.cardId}
+                        displayCardId(cardDetail.cardId)}
                     </strong>
-                    <span className="muted">{cardDetail.cardId}</span>
+                    <span className="muted">{displayCardId(cardDetail.cardId)}</span>
                   </div>
                   <div className="ux-card-detail-body">
                     <h3>{t("detail.effect")}</h3>
@@ -3111,7 +3145,7 @@ export function BattleBoard({
                   type="button"
                   className="ux-search-card is-eligible"
                   onClick={() => void openCardDetail(cid)}
-                  title={localizeCardName(names[cid]?.name, names[cid]?.name_en, lang) || cid}
+                  title={localizeCardName(names[cid]?.name, names[cid]?.name_en, lang) || displayCardId(cid)}
                 >
                   <CardImg cardId={cid} className="ux-search-card-img" loading="eager" />
                 </button>
@@ -3221,7 +3255,7 @@ export function BattleBoard({
             {(() => {
               const summary = displayEffectSummary(state.pending_trigger.summary, lang);
               if (summary) return formatEffectForPanel(summary);
-              return t("play.trigger_hint", { id: state.pending_trigger.card_id });
+              return t("play.trigger_hint", { id: displayCardId(state.pending_trigger.card_id) });
             })()}
           </p>
           <div className="play-actions">
@@ -3365,10 +3399,60 @@ export function BattleBoard({
 
       {showSearchPrompt ? (
         <BattleModal layerClassName="is-topmost" modalClassName="is-mulligan is-search-prompt">
-          {state.pending_search!.phase === "order" ? (
+          {state.pending_search!.phase === "choose_dest" ? (
             <>
-              <h3>{t("play.search_order_title")}</h3>
-              <p className="muted">{t("play.search_order_hint")}</p>
+              <h3>{t("play.search_dest_title")}</h3>
+              <p className="muted">{t("play.search_dest_hint")}</p>
+              <div className="ux-search-reveal">
+                {(state.pending_search!.revealed || []).map((cid, i) => {
+                  if (!cid) {
+                    return <div key={`hid-${i}`} className="ux-search-card is-hidden" />;
+                  }
+                  return (
+                    <button
+                      key={`${cid}-${i}`}
+                      type="button"
+                      className="ux-search-card"
+                      onClick={() => void openCardDetail(cid)}
+                      title={localizeCardName(names[cid]?.name, names[cid]?.name_en, lang) || displayCardId(cid)}
+                    >
+                      <CardImg cardId={cid} className="ux-search-card-img" loading="eager" />
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="play-actions">
+                <button
+                  type="button"
+                  className="primary"
+                  onClick={() => onAction({ type: "select_choice", target_iid: "deck:top" })}
+                >
+                  {t("play.search_dest_top")}
+                </button>
+                <button
+                  type="button"
+                  className="primary"
+                  onClick={() => onAction({ type: "select_choice", target_iid: "deck:bottom" })}
+                >
+                  {t("play.search_dest_bottom")}
+                </button>
+                <button type="button" className="ghost" onClick={() => setSearchViewBoard(true)}>
+                  {t("play.view_board")}
+                </button>
+              </div>
+            </>
+          ) : state.pending_search!.phase === "order" ? (
+            <>
+              <h3>
+                {state.pending_search!.order_dest === "top"
+                  ? t("play.search_order_title_top")
+                  : t("play.search_order_title")}
+              </h3>
+              <p className="muted">
+                {state.pending_search!.order_dest === "top"
+                  ? t("play.search_order_hint_top")
+                  : t("play.search_order_hint")}
+              </p>
               {(state.pending_search!.bottom_order || []).length > 0 ? (
                 <div className="ux-search-order-row" aria-label={t("play.search_order_chosen")}>
                   {(state.pending_search!.bottom_order || []).map((cid, i) =>
@@ -3394,7 +3478,7 @@ export function BattleBoard({
                       type="button"
                       className="ux-search-card is-eligible"
                       onClick={() => onAction({ type: "order_search_bottom", index: i })}
-                      title={`${localizeCardName(names[cid]?.name, names[cid]?.name_en, lang) || cid} · ${t("play.search_order_pick")}`}
+                      title={`${localizeCardName(names[cid]?.name, names[cid]?.name_en, lang) || displayCardId(cid)} · ${t("play.search_order_pick")}`}
                     >
                       <CardImg cardId={cid} className="ux-search-card-img" loading="eager" />
                     </button>
@@ -3467,7 +3551,7 @@ export function BattleBoard({
                       }}
                       title={
                         eligible
-                          ? `${localizeCardName(names[cid]?.name, names[cid]?.name_en, lang) || cid} · ${t("play.search_detail_hint")}`
+                          ? `${localizeCardName(names[cid]?.name, names[cid]?.name_en, lang) || displayCardId(cid)} · ${t("play.search_detail_hint")}`
                           : t("play.search_ineligible")
                       }
                     >
@@ -3529,7 +3613,7 @@ export function BattleBoard({
                 ) : null}
                 {actionMatch(state.legal_actions, "skip_search") ? (
                   <button type="button" className="secondary" onClick={() => onAction({ type: "skip_search" })}>
-                    {t("play.search_skip")}
+                    {state.pending_search!.to_top_or_bottom ? t("play.search_skip_no_add") : t("play.search_skip")}
                   </button>
                 ) : null}
               </div>
@@ -3633,7 +3717,7 @@ export function BattleBoard({
                       }
                       setChoiceCardMenu((prev) => (prev === iid ? null : iid));
                     }}
-                    title={localizeCardName(names[cid]?.name, names[cid]?.name_en, lang) || cid}
+                    title={localizeCardName(names[cid]?.name, names[cid]?.name_en, lang) || displayCardId(cid)}
                   >
                     <CardImg cardId={cid} className="ux-choice-card-img" loading="eager" />
                     <span className="ux-choice-meta">
@@ -3729,7 +3813,7 @@ export function BattleBoard({
                   const n = m ? Number(m[1]) : 1;
                   const cid = m?.[2] || "";
                   const nm =
-                    localizeCardName(names[cid]?.name, names[cid]?.name_en, lang) || cid || t("play.zone_character");
+                    localizeCardName(names[cid]?.name, names[cid]?.name_en, lang) || displayCardId(cid) || t("play.zone_character");
                   label = t("play.choice_don_character_named", { n, name: nm });
                 }
                 return (
@@ -3751,13 +3835,17 @@ export function BattleBoard({
                 if (!target) {
                   return (
                     <button key={iid} type="button" onClick={() => onAction({ type: "select_choice", target_iid: iid })}>
-                      {iid === "leader" ? t("play.zone_leader") : iid === "don" ? "DON!!" : iid}
+                      {iid === "leader" || /^leader-\d+$/.test(iid)
+                        ? t("play.zone_leader")
+                        : iid === "don"
+                          ? "DON!!"
+                          : iid}
                     </button>
                   );
                 }
                 const powerText = formatPower(target.power);
                 const name =
-                  iid === "leader"
+                  iid === "leader" || /^leader-\d+$/.test(iid)
                     ? t("play.zone_leader")
                     : localizeCardName(names[target.cardId]?.name, names[target.cardId]?.name_en, lang) ||
                       target.cardId;
@@ -3794,7 +3882,7 @@ export function BattleBoard({
                       <span className={`ux-choice-chip ${target.mine ? "is-mine" : "is-foe"}`}>
                         {target.mine ? t("play.choice_mine") : t("play.choice_foe")}
                       </span>
-                      {iid === "leader" ? (
+                      {iid === "leader" || /^leader-\d+$/.test(iid) ? (
                         <span className="ux-choice-chip">{t("play.zone_leader")}</span>
                       ) : target.slot > 0 ? (
                         <span className="ux-choice-chip">{t("play.choice_slot", { n: target.slot })}</span>

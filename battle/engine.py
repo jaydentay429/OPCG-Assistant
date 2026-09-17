@@ -365,21 +365,36 @@ def _finish_mulligan_and_start(state: MatchState, catalog: CatalogFn) -> None:
     _begin_turn(state, state.first_seat, catalog)
 
 
+def _clear_once_per_turn_flags(player: PlayerState) -> None:
+    """【每回合1次】is once during the current turn, not once until the owner's refresh.
+
+    Dual-timing leaders (e.g. OP17-058 [When Attacking]/[On Opponent's Attack]) must
+    be usable again on the opponent's turn after firing on the owner's attack.
+    """
+    player.leader_once_used = False
+    player.leader_on_opp_ko_used = False
+    player.skipped_activate_iids = []
+    for ch in player.characters:
+        ch.once_used = False
+        if hasattr(ch, "on_opp_ko_used"):
+            ch.on_opp_ko_used = False
+    for stg in player.stages:
+        stg.once_used = False
+
+
 def _begin_turn(state: MatchState, seat: int, catalog: CatalogFn) -> None:
     player = state.player(seat)
-    # New turn: clear prior-turn hand-trash flags for both seats.
+    # New turn: Once Per Turn + hand-trash flags reset for both seats.
     for p in state.players:
         p.hand_trashed_by_effect_this_turn = False
         p.opp_life_left_this_turn = False
+        _clear_once_per_turn_flags(p)
     # 6-2-3: return attached DON!! to cost area as rested
     returned = player.leader_don
     player.leader_don = 0
     for ch in player.characters:
         returned += ch.don_attached
         ch.don_attached = 0
-        ch.once_used = False
-        if hasattr(ch, "on_opp_ko_used"):
-            ch.on_opp_ko_used = False
     player.don_rested += returned
     # 6-2-4: rest → active
     if getattr(player, "leader_skip_untap", False):
@@ -388,9 +403,6 @@ def _begin_turn(state: MatchState, seat: int, catalog: CatalogFn) -> None:
     else:
         player.leader_rested = False
     player.leader_power_mod = 0
-    player.leader_once_used = False
-    player.leader_on_opp_ko_used = False
-    player.skipped_activate_iids = []
     skip = set(player.skip_untap_iids)
     player.skip_untap_iids.clear()
     for ch in player.characters:
@@ -6171,6 +6183,8 @@ def public_view(state: MatchState, viewer_seat: int | None, catalog: CatalogFn) 
             "exclude_name": state.pending_search.exclude_name,
             "summary": state.pending_search.summary,
             "order_bottom": state.pending_search.order_bottom,
+            "to_top_or_bottom": bool(getattr(state.pending_search, "to_top_or_bottom", False)),
+            "order_dest": str(getattr(state.pending_search, "order_dest", None) or ""),
             "trash_rest": bool(getattr(state.pending_search, "trash_rest", False)),
             "reveal_adds": bool(state.pending_search.reveal_adds),
             "destination": state.pending_search.destination,

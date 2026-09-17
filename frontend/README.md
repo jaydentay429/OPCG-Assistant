@@ -5,7 +5,7 @@
 Terminal 1 (API):
 
 ```bash
-cd "/Users/jayden/Documents/OPCG_Project/Chinese HK"
+cd "/Users/jayden/Documents/OPCG_Project"
 # Prefer no --reload while playing: rooms are in-memory and a reload wipes them.
 # (.venv / transformers file churn can also trigger endless reloads if you watch `.`)
 .venv/bin/uvicorn app:app --host 127.0.0.1 --port 8000
@@ -20,7 +20,7 @@ If you need auto-reload for Python edits only:
 Terminal 2 (web):
 
 ```bash
-cd "/Users/jayden/Documents/OPCG_Project/Chinese HK/frontend"
+cd "/Users/jayden/Documents/OPCG_Project/frontend"
 export NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000
 npm run dev
 ```

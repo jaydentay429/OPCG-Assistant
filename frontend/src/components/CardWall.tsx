@@ -71,8 +71,8 @@ export function CardWall({ cards }: { cards: FilterCard[] }) {
         const colQty = Math.max(0, Math.floor(Number(owned[c.id]) || 0));
         const isDon = isDonCardId(c.id) || String(c.card_type || "").toLowerCase() === "don";
         const displayName = isDon
-          ? localizeDonCardName(c.name, c.name_en, lang) || c.id
-          : localizeCardName(c.name, c.name_en, lang) || c.id;
+          ? localizeDonCardName(c.name, c.name_en, lang) || displayCardId(c.id)
+          : localizeCardName(c.name, c.name_en, lang) || displayCardId(c.id);
         return (
           <article key={c.id} className="card-tile" data-scroll-anchor={c.id}>
             <Link
@@ -85,7 +85,7 @@ export function CardWall({ cards }: { cards: FilterCard[] }) {
               <CardImg cardId={c.id} alt={displayName} localUrl={c.img_local_url} />
             </Link>
             {isDon ? null : (
-              <div className="id" title={c.id}>
+              <div className="id" title={displayCardId(c.id)}>
                 {displayCardId(c.id)}
               </div>
             )}

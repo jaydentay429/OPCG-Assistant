@@ -1887,6 +1887,35 @@ def ensure_market_price_data_fresh() -> None:
         load_market_price_data()
 
 
+def _is_hard_miss_price_status(status: str) -> bool:
+    s = str(status or "").strip().lower()
+    return "variant_not_found" in s or "price_not_found" in s
+
+
+def visible_market_current_price(info: dict[str, Any] | None) -> Any:
+    """Hard matcher misses must not keep showing a leftover yen price. 429 keeps it."""
+    if not isinstance(info, dict):
+        return None
+    if _is_hard_miss_price_status(str(info.get("status") or "")):
+        return None
+    return info.get("current_price")
+
+
+def _count_visible_priced_entries() -> int:
+    priced = 0
+    for info in market_price_map.values():
+        if not isinstance(info, dict):
+            continue
+        raw = visible_market_current_price(info)
+        try:
+            n = int(raw) if raw is not None else None
+        except (TypeError, ValueError):
+            n = None
+        if n is not None and n > 0:
+            priced += 1
+    return priced
+
+
 def get_market_price_info(card_id: str, exact: bool = False) -> dict[str, Any] | None:
     ensure_market_price_data_fresh()
     card_key = normalize_card_id(card_id)
@@ -1925,7 +1954,7 @@ def get_market_price_info(card_id: str, exact: bool = False) -> dict[str, Any] |
     return {
         "source": str(info.get("source") or "yuyu-tei"),
         "currency": str(info.get("currency") or "JPY"),
-        "current_price": info.get("current_price"),
+        "current_price": visible_market_current_price(info),
         "last_seen": str(info.get("last_seen") or ""),
         "last_checked": str(info.get("last_checked") or ""),
         "history": cleaned_history,
@@ -6761,22 +6790,11 @@ async def http_exception_handler_zh(
 
 @app.get("/")
 def health() -> dict[str, Any]:
-    priced = 0
-    for info in market_price_map.values():
-        if not isinstance(info, dict):
-            continue
-        raw = info.get("current_price")
-        try:
-            n = int(raw) if raw is not None else None
-        except (TypeError, ValueError):
-            n = None
-        if n is not None and n > 0:
-            priced += 1
     return {
         "status": "ok",
         "message": "OPCG API 运行正常",
         "opencc": bool(_opencc_s2t and _opencc_t2s),
-        "priced_count": priced,
+        "priced_count": _count_visible_priced_entries(),
         "price_entries": len(market_price_map),
         "price_updated_at": market_price_updated_at or None,
     }
@@ -9129,22 +9147,11 @@ def card_comment_delete(comment_id: int, request: Request) -> dict[str, Any]:
 def prices_meta() -> dict[str, Any]:
     """市价库摘要：更新时间与有价卡数量。"""
     ensure_market_price_data_fresh()
-    priced = 0
-    for info in market_price_map.values():
-        if not isinstance(info, dict):
-            continue
-        raw = info.get("current_price")
-        try:
-            n = int(raw) if raw is not None else None
-        except (TypeError, ValueError):
-            n = None
-        if n is not None and n > 0:
-            priced += 1
     return {
         "source": "yuyu-tei",
         "currency": "JPY",
         "updated_at": market_price_updated_at or None,
-        "priced_count": priced,
+        "priced_count": _count_visible_priced_entries(),
         "total_entries": len(market_price_map),
     }
 

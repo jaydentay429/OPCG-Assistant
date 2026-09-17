@@ -1,6 +1,6 @@
 {
   "generated_at": "2026-08-26T15:25:26+0800",
-  "pool": "/Users/jayden/Documents/OPCG_Project/Chinese HK/meta/ai_eval_pool.json",
+  "pool": "/Users/jayden/Documents/OPCG_Project/meta/ai_eval_pool.json",
   "seed": 20260826,
   "games_scheduled": 120,
   "games_finished": 90,

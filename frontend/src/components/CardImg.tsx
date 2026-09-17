@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { cardImagePacksUrl, cardImageSources } from "@/lib/api";
+import { displayCardId } from "@/lib/cardId";
 
 type Props = {
   cardId: string;
@@ -31,7 +32,7 @@ export function CardImg({ cardId, alt, className, localUrl, loading = "lazy" }: 
     <img
       className={className}
       src={src}
-      alt={alt || cardId}
+      alt={alt || displayCardId(cardId)}
       loading={loading}
       decoding="async"
       onError={() => {

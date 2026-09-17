@@ -102,7 +102,7 @@ class PlayerState:
     # How many of this player's turns have fully ended. 0 = currently their first turn (or not started).
     turns_completed: int = 0
     mulligan_done: bool = False
-    # Leader 【每回合1次】 Activate: Main used this turn
+    # Leader 【每回合1次】 used this turn (Activate: Main, When Attacking, On Opponent's Attack, …)
     leader_once_used: bool = False
     # AI: Activate: Main sources skipped (declined optional cost) this turn — do not re-open.
     skipped_activate_iids: list[str] = field(default_factory=list)
@@ -232,7 +232,8 @@ class PendingSearch:
 
     phase:
       - pick: choose cards to add to hand (or play, when destination=play)
-      - order: arrange leftovers onto the bottom of the deck
+      - choose_dest: paper「卡組上面或下面」— pick top vs bottom before ordering
+      - order: arrange leftovers onto the top or bottom of the deck
     """
 
     seat: int
@@ -248,7 +249,7 @@ class PendingSearch:
     summary: str = ""
     # Ops to resume after the search resolves (e.g. then play-from-hand).
     remaining_ops: list[dict[str, Any]] = field(default_factory=list)
-    phase: str = "pick"  # pick | order
+    phase: str = "pick"  # pick | choose_dest | order
     # During order phase: cards already chosen (first = nearer deck / drawn sooner).
     bottom_order: list[str] = field(default_factory=list)
     # Whether leftovers (≥2) require player-chosen bottom order.

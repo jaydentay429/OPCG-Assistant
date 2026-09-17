@@ -1386,6 +1386,8 @@ def _victim_on_ko_ops(state, owner_seat: int, ko_cid: str, ko_iid: str, catalog)
         oo = dict(o)
         oo.setdefault("source_iid", ko_iid)
         oo.setdefault("card_id", ko_cid)
+        # Victim [On K.O.] must resolve as the KO'd card's owner, not the KO controller.
+        oo["_as_seat"] = owner_seat
         out.append(oo)
     return out
 
@@ -6337,8 +6339,16 @@ def parse_activate_main(info: dict[str, Any]) -> dict[str, Any] | None:
 
 
 def card_has_trigger(info: dict[str, Any]) -> bool:
+    """True if the card has a printed [Trigger] ability.
+
+    Mentions like 「持有【觸發器】」 / "with a [Trigger]" in another effect do not count.
+    """
+    for key in ("trigger", "trigger_en"):
+        blob = str(info.get(key) or "").strip()
+        if blob and re.search(r"【觸發器】|【触发】|\[trigger\]", blob, re.I):
+            return True
     text = effect_blob(info)
-    return bool(re.search(r"【觸發器】|【触发】|\[trigger\]", text, re.I))
+    return bool(re.search(r"(?:^|[。．!\n])\s*(?:【觸發器】|【触发】|\[Trigger\])", text, re.I))
 
 
 def _don_room(player: PlayerState) -> int:
@@ -6377,6 +6387,14 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
 
     while queue:
         op = queue.pop(0)
+        as_seat = op.get("_as_seat")
+        if as_seat is not None and int(as_seat) != int(seat):
+            nested = dict(op)
+            nested.pop("_as_seat", None)
+            logs.extend(apply_ops(state, int(as_seat), [nested], catalog))
+            if _pause_if_nested_prompt():
+                return logs
+            continue
         kind = str(op.get("op") or "")
         if kind == "unsupported":
             logs.append({"key": "play.log.effect_unsupported", "id": str(op.get("reason") or "")})
@@ -8346,6 +8364,8 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                     "include_leader",
                     "include_stage",
                     "include_leader_if_name",
+                    "require_trigger",
+                    "exclude_iids",
                 ):
                     if op.get(key) is None:
                         continue
@@ -8388,6 +8408,8 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                     "include_leader",
                     "include_stage",
                     "include_leader_if_name",
+                    "require_trigger",
+                    "exclude_iids",
                 ):
                     if op.get(key) is None:
                         continue
@@ -8454,6 +8476,16 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                     break
                 if not applied:
                     continue
+            if target:
+                for later in queue:
+                    if later.get("op") != "buff":
+                        continue
+                    if str(later.get("target_kind") or "") != str(op.get("target_kind") or ""):
+                        continue
+                    excl = list(later.get("exclude_iids") or [])
+                    if target not in excl:
+                        excl.append(target)
+                    later["exclude_iids"] = excl
             if op.get("also_deny_blocker_when_attacks"):
                 atk_iid = "leader" if str(getattr(player, "_last_buff_target_iid", "") or "").startswith("leader") else str(
                     getattr(player, "_last_buff_target_iid", "") or ""
@@ -10683,6 +10715,12 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
             def _attach_char_ok(info: dict[str, Any], inst: CardInst | None = None) -> bool:
                 if trait and not _info_has_trait(info, trait):
                     return False
+                needle_attr = str(op.get("attr_contains") or op.get("attribute") or "").strip()
+                if needle_attr:
+                    attrs = card_attr_blob(info, inst).lower()
+                    opts = [x.strip() for x in needle_attr.split("|") if x.strip()]
+                    if not any(any(k.lower() in attrs for k in attr_alias_keys(opt)) for opt in opts):
+                        return False
                 if name_needle:
                     opts = [x.strip() for x in name_needle.split("|") if x.strip()] or [name_needle]
                     if not any(_card_has_name(info, x) for x in opts):
@@ -12072,6 +12110,8 @@ def _choice_options(state: MatchState, seat: int, target_kind: str, catalog: Cat
         cands = list(player.characters) + list(foe.characters)
     elif kind == "leader":
         return ["leader"]
+    elif kind == "opponent_leader":
+        return ["leader"]
     elif kind in {"self", "source"}:
         # Self rest costs are resolved via source_iid — never opponent board.
         return []
@@ -12127,6 +12167,11 @@ def _choice_options(state: MatchState, seat: int, target_kind: str, catalog: Cat
         if excl and _card_excluded_by_name(info, excl):
             continue
         if filters.get("require_no_effect") and has_meaningful_effect_text(info):
+            continue
+        if filters.get("require_trigger") and not card_has_trigger(info):
+            continue
+        excluded = {str(x) for x in (filters.get("exclude_iids") or [])}
+        if excluded and c.iid in excluded:
             continue
         try:
             raw = info.get("power") if info else 0

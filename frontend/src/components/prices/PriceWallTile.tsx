@@ -39,8 +39,8 @@ export function PriceWallTile({ card, price, lastChecked, watched, onToggleWatch
   const yen = formatYen(price);
   const isDon = isDonCardId(card.id);
   let name = isDon
-    ? localizeDonCardName(card.name, card.name_en, lang) || card.id
-    : localizeCardName(card.name, card.name_en, lang) || card.id;
+    ? localizeDonCardName(card.name, card.name_en, lang) || displayCardId(card.id)
+    : localizeCardName(card.name, card.name_en, lang) || displayCardId(card.id);
   // Belt-and-suspenders: Chinese UI must never show Loki/Gloriosa when API has 洛基/嘉蘭.
   if (!isDon && lang !== "en") {
     const official = String(card.name || "").trim();

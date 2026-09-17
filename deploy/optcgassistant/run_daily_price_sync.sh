@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Daily VPS job: refresh prices for cards that already have a price,
-# plus fetch newly added cards. Skip known no-price / miss cards.
+# Daily VPS job: sweep every yuyu family (miss/ghost first), checkpoint on 429.
+# Official cardlist + images are a separate cron (run_daily_official_sync.sh).
 set -uo pipefail
 
 APP_ROOT=/opt/opcg/app
@@ -24,27 +24,23 @@ export PYTHONUNBUFFERED=1
 
 {
   echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] ======== DAILY PRICE SYNC START ========"
-  echo "Daily: refresh all priced cards + new cards; skip known no-price."
+  echo "Daily: rotate all families, expand members, stop+checkpoint on 429 (no two-pass)."
 
-  echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] STEP1: official cards + limited variants + images"
-  "$PY" -u sync_official_cards.py --with-images
-  rc1=$?
-  echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] STEP1 rc=$rc1"
-
-  echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] STEP2: yuyutei priced-or-new two-pass"
+  echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] STEP1: yuyutei rotate-families"
   "$PY" -u sync_yuyutei_prices.py \
+    --rotate-families \
     --strict-variant \
-    --two-pass \
     --by-family \
-    --priced-or-new \
-    --batch-size 80 \
-    --batch-sleep 8 \
-    --request-sleep 0.4 \
+    --expand-family \
+    --stop-on-429 \
+    --batch-size 40 \
+    --batch-sleep 2 \
+    --request-sleep 0.9 \
     --cooldown-on-429 120 \
     --retry-sleep-on-429 60 \
-    --progress-every 50
-  rc2=$?
-  echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] STEP2 rc=$rc2"
+    --progress-every 25
+  rc=$?
+  echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] STEP1 rc=$rc"
 
   "$PY" - <<'PY'
 import json
@@ -57,8 +53,18 @@ st = Counter(str((v or {}).get("status") or "none") for v in cards.values() if i
 print(f"price_updated_at={obj.get('updated_at')}")
 print(f"price_entries={len(cards)} priced={priced}")
 print("status=" + json.dumps(dict(st.most_common()), ensure_ascii=False))
+cur_path = Path("meta/yuyu_sync_cursor.json")
+if cur_path.exists():
+    cur = json.loads(cur_path.read_text(encoding="utf-8"))
+    print(
+        "cursor date={date} done={done} stopped_on_429={stopped}".format(
+            date=cur.get("date"),
+            done=len(cur.get("done") or []),
+            stopped=cur.get("stopped_on_429"),
+        )
+    )
 PY
 
-  echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] ======== DAILY PRICE SYNC END rc_official=$rc1 rc_prices=$rc2 ========"
-  exit $rc2
+  echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] ======== DAILY PRICE SYNC END rc=$rc ========"
+  exit $rc
 } >>"$LOG" 2>&1

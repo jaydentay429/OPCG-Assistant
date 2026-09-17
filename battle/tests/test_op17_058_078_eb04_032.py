@@ -15,7 +15,14 @@ from battle.effect_library import (  # noqa: E402
     reload_effect_library,
     resolve_ability,
 )
-from battle.engine import _confirm_effect, _run_pending_effect, apply_action, legal_actions  # noqa: E402
+from battle.engine import (  # noqa: E402
+    _begin_turn,
+    _confirm_effect,
+    _run_pending_effect,
+    apply_action,
+    inst_power,
+    legal_actions,
+)
 from battle.state import CardInst, MatchState, PlayerState  # noqa: E402
 
 _CARDS = json.loads((ROOT / "index" / "cards_by_id.json").read_text(encoding="utf-8"))
@@ -81,6 +88,59 @@ def test_op17_058_attack_effect_is_optional():
     _confirm_effect(st, 0, False, catalog)
     assert st.pending_effect is None
     assert st.players[0].don_active == 4
+
+
+def _atk_catalog(cid: str):
+    if cid == "ATK":
+        return {"card_id": cid, "card_type": "CHARACTER", "cost": 4, "power": 6000, "name": "Atk"}
+    return catalog(cid)
+
+
+def test_op17_058_once_resets_when_opponent_turn_starts():
+    """【每回合1次】clears for the non-turn player at the next turn (OP17-058 dual timing)."""
+    reload_effect_library(force=True)
+    st = _state(don_active=4)
+    st.players[0].leader_once_used = True
+    st.players[0].turns_completed = 1
+    st.players[1].turns_completed = 1
+    _begin_turn(st, 1, catalog)
+    assert st.players[0].leader_once_used is False
+    assert st.players[1].leader_once_used is False
+
+
+def test_op17_058_on_opponent_character_attack_minus_power():
+    """Opponent Character attack: Kaido may DON!! −1 to give that Character −2000 this turn."""
+    reload_effect_library(force=True)
+    st = _state(don_active=4)
+    st.players[0].leader_once_used = True  # used [When Attacking] on Kaido's previous turn
+    st.players[0].turns_completed = 1
+    st.players[1].turns_completed = 1
+    st.players[1].deck = ["Y"] * 30
+    st.turn_seat = 1
+    _begin_turn(st, 1, _atk_catalog)
+    assert st.players[0].leader_once_used is False
+    st.players[1].characters = [CardInst(iid="atk", card_id="ATK", rested=False, summoning_sick=False)]
+    r = apply_action(st, 1, {"type": "attack", "attacker_iid": "atk", "target_iid": "leader"}, _atk_catalog)
+    assert r.get("ok"), r
+    pe = st.pending_effect
+    assert pe is not None
+    assert pe.seat == 0
+    assert pe.card_id == "OP17-058"
+    assert pe.source_iid == "leader"
+    assert pe.uncertain is True
+    kinds = [a["type"] for a in legal_actions(st, 0, _atk_catalog)]
+    assert "confirm_effect" in kinds
+    assert apply_action(st, 0, {"type": "confirm_effect", "accept": True}, _atk_catalog)["ok"]
+    ch = st.pending_choice
+    assert ch is not None and ch.target_kind == "return_don"
+    assert apply_action(st, 0, {"type": "select_choice", "target_iid": ch.options[0]}, _atk_catalog)["ok"]
+    ch = st.pending_choice
+    assert ch is not None and ch.target_kind == "opponent_character"
+    assert "atk" in ch.options
+    assert apply_action(st, 0, {"type": "select_choice", "target_iid": "atk"}, _atk_catalog)["ok"]
+    assert inst_power(st, 1, "atk", _atk_catalog) == 4000
+    assert st.players[0].leader_once_used is True
+    assert st.pending_effect is None
 
 
 def test_op17_078_event_main_is_on_play():

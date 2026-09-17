@@ -159,6 +159,27 @@ def test_enel_don_cap_and_turn_gate():
     reload_effect_library(force=True)
     spec = next(a for a in get_card_entry("OP15-058")["abilities"] if a["timing"] == "activate_main")
     assert spec.get("require_turn_gte") == 2
+    gains = [o for o in spec["ops"] if o.get("op") == "gain_don"]
+    assert len(gains) >= 2
+    assert not gains[0].get("as_rested")
+    assert gains[1].get("as_rested") is True
+
+    cat = {
+        "OP15-058": {
+            "name": "艾涅爾",
+            "name_en": "Enel",
+            "card_type": "LEADER",
+            "life": 5,
+            "power": "5000",
+        },
+        "OP01-001": {"name": "F", "card_type": "LEADER", "power": "5000"},
+        "A": {"name": "A", "card_type": "CHARACTER"},
+    }.get
+    st_gain = _state(don_deck_size0=6, don_given0=5, don_active0=5, don_rested0=0, turns_completed0=1)
+    apply_ops(st_gain, 0, [gains[0]], cat)
+    assert st_gain.players[0].don_active == 6
+    assert st_gain.players[0].don_rested == 0
+    assert st_gain.players[0].don_given == 6
 
     st = _state(don_deck_size0=6, don_given0=5, don_active0=5, turns_completed0=0)
     catalog = {
