@@ -1,0 +1,98 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+env:
+  NEXT_PUBLIC_API_BASE_URL: https://api.optcgassistant.com
+  NEXT_PUBLIC_PACKS_CDN_URL: https://img.optcgassistant.com
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend deps
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: frontend
+        run: |
+          npm run build
+          mkdir -p .next/standalone/.next
+          rm -rf .next/standalone/.next/static .next/standalone/public
+          cp -R .next/static .next/standalone/.next/static
+          cp -R public .next/standalone/public
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: "Sync backend code (no --delete, keeps server-only files like packs/, .env, dbs)"
+        run: |
+          rsync -avz \
+            --exclude '.git' --exclude '.github' \
+            --exclude '.env' --exclude '.env.*' \
+            --exclude 'packs/' --exclude 'preview/images/' \
+            --exclude 'frontend/node_modules/' --exclude 'frontend/.next/' \
+            --exclude 'meta/*.db' --exclude 'meta/*.db-*' \
+            --exclude 'meta/user_*.json' --exclude 'meta/binder_shares.json' \
+            --exclude 'meta/replays/' --exclude 'meta/logs/' \
+            --exclude 'meta/market_prices.json' --exclude 'meta/yuyu_sync_cursor.json' \
+            --exclude 'meta/photo_hash_index.json' --exclude 'meta/photo_clip_index.npz' \
+            --exclude 'meta/*.log' \
+            --exclude 'cards/cards/' --exclude 'cards/official_sync/' \
+            --exclude '.venv' --exclude '__pycache__/' --exclude '*.pyc' \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes" \
+            ./ "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/opt/opcg/app/"
+
+      - name: "Sync frontend build output (--delete OK, fully-generated dirs)"
+        run: |
+          for d in frontend/.next/standalone frontend/.next/static frontend/public; do
+            rsync -avz --delete \
+              -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes" \
+              "$d/" "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/opt/opcg/app/$d/"
+          done
+
+      - name: Install backend deps + restart services
+        run: |
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" '
+              set -e
+              cd /opt/opcg/app
+              .venv/bin/pip install -q -r requirements.txt
+              cp deploy/optcgassistant/opcg-api.service /etc/systemd/system/opcg-api.service
+              cp deploy/optcgassistant/opcg-web.service /etc/systemd/system/opcg-web.service
+              systemctl daemon-reload
+              systemctl restart opcg-api opcg-web
+            '
+
+      - name: Smoke test
+        run: |
+          sleep 3
+          curl -sSf https://api.optcgassistant.com/ | head -c 500
+          echo
+          curl -sSf -o /dev/null -w "frontend: %{http_code}\n" https://optcgassistant.com
+
+      - name: Clean up key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
