@@ -5,6 +5,7 @@ import { TopBar } from "@/components/TopBar";
 import { BottomNav } from "@/components/BottomNav";
 import { FooterNote } from "@/components/FooterNote";
 import { SITE_NAME, SITE_URL, defaultOgImage, jsonLdScript, rootJsonLd } from "@/lib/seo";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 
 const syne = Syne({
@@ -114,6 +115,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <BottomNav />
           </div>
         </Providers>
+        <GoogleAnalytics gaId="G-RWWB3EW28N" />
       </body>
     </html>
   );

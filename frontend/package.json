@@ -11,6 +11,7 @@
     "generate:hans-names": "node scripts/generate-hans-names.mjs"
   },
   "dependencies": {
+    "@next/third-parties": "^16.3.5",
     "next": "^15.5.9",
     "opencc-js": "^1.4.1",
     "qrcode": "^1.5.4",
