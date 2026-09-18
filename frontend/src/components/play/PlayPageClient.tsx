@@ -834,7 +834,14 @@ export function PlayPageClient() {
     return waiting.players.find((p) => p && !p.is_ai) || null;
   }, [waiting, displayName, username, guestUserId, guestUsername]);
 
-  if (!ready) return <p className="muted">…</p>;
+  if (!ready) {
+    return (
+      <section className="play-lobby">
+        <h1 className="page-title">{t("play.seo_title")}</h1>
+        <p className="muted">…</p>
+      </section>
+    );
+  }
 
   const betaModal = showBetaNotice ? (
     <div className="play-beta-layer" role="dialog" aria-modal="true">

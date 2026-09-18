@@ -3,6 +3,11 @@ import { Suspense } from "react";
 import { BuilderPageClient } from "@/components/BuilderPageClient";
 import { buildPageMetadata } from "@/lib/seo";
 
+// useSearchParams() inside BuilderPageClient forces the Suspense fallback into
+// the static HTML shell otherwise — force per-request rendering so crawlers see
+// the real <h1>/content instead of the "…" fallback.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = buildPageMetadata({
   title: "卡組構築 | OPCG 卡牌助手 - 打造你的最強牌組",
   description:

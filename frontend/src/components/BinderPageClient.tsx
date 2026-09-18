@@ -434,7 +434,14 @@ export function BinderPageClient() {
     );
   }
 
-  if (!ready) return <p className="muted">…</p>;
+  if (!ready) {
+    return (
+      <div className="stack">
+        <h1 className="page-title">{t("page.binder")}</h1>
+        <p className="muted">…</p>
+      </div>
+    );
+  }
   if (!isLoggedIn) {
     return (
       <div className="stack">

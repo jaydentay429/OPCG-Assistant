@@ -89,7 +89,19 @@ export function BattleRankClient() {
       .catch(() => setHistory([]));
   }, [token]);
 
-  if (!ready) return <p className="muted">…</p>;
+  if (!ready) {
+    return (
+      <section className="play-lobby play-rank-page">
+        <div className="play-lobby-head">
+          <div className="play-lobby-titles">
+            <h1 className="page-title">{t("play.rank_page_title")}</h1>
+            <p className="muted play-lobby-sub">{t("play.rank_page_sub")}</p>
+          </div>
+        </div>
+        <p className="muted">…</p>
+      </section>
+    );
+  }
 
   const meEliteCls = profile?.elite_title ? eliteTitleClass(profile.elite_title) : null;
 
