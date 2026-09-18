@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { forgotPassword } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { useI18n } from "@/lib/i18n";
@@ -15,6 +15,11 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
   const [busy, setBusy] = useState(false);
+  const firstFieldRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    firstFieldRef.current?.focus();
+  }, [tab]);
 
   function switchTab(next: AuthTab) {
     setTab(next);
@@ -100,7 +105,13 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
 
         {tab === "login" ? (
           <form className="fields" onSubmit={onLogin}>
-            <input name="login" placeholder={t("auth.email_or_user")} required autoComplete="username" />
+            <input
+              ref={firstFieldRef}
+              name="login"
+              placeholder={t("auth.email_or_user")}
+              required
+              autoComplete="username"
+            />
             <PasswordField
               name="password"
               placeholder={t("auth.password")}
@@ -118,7 +129,14 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
 
         {tab === "register" ? (
           <form className="fields" onSubmit={onRegister}>
-            <input name="email" type="email" placeholder={t("auth.email")} required autoComplete="email" />
+            <input
+              ref={firstFieldRef}
+              name="email"
+              type="email"
+              placeholder={t("auth.email")}
+              required
+              autoComplete="email"
+            />
             <input name="username" placeholder={t("auth.username")} required autoComplete="username" />
             <PasswordField
               name="password"
@@ -143,7 +161,14 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
         {tab === "forgot" ? (
           <form className="fields" onSubmit={onForgot}>
             <p className="muted auth-forgot-hint">{t("auth.forgot_hint")}</p>
-            <input name="email" type="email" placeholder={t("auth.email")} required autoComplete="email" />
+            <input
+              ref={firstFieldRef}
+              name="email"
+              type="email"
+              placeholder={t("auth.email")}
+              required
+              autoComplete="email"
+            />
             <button type="submit" disabled={busy}>
               {busy ? t("auth.forgot_sending") : t("auth.forgot_submit")}
             </button>
