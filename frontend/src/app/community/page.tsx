@@ -1,20 +1,25 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { CommunityHome } from "@/components/community/CommunityClient";
+import { CommunitySeoIntro } from "@/components/SeoIntro";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "社區 | OPCG 卡牌助手",
-  description: "OPCG 社區論壇：組卡討論、卡牌交易與閒聊，與玩家交流航海王卡牌情報。",
+  title: "社區論壇 | OPCG 卡牌助手 - 組卡討論、賽制規則與卡牌交易",
+  description:
+    "OPCG 卡牌助手社區論壇：依分區瀏覽或發帖，涵蓋組卡討論、賽制規則、卡牌交易與閒聊，可用標籤與熱門／最新排序找討論串，發帖可選擇匿名。",
   path: "/community",
   absoluteTitle: true,
-  keywords: ["OPCG 社區", "卡牌論壇", "組卡討論"],
+  keywords: ["OPCG 社區", "卡牌論壇", "組卡討論", "卡牌交易", "賽制規則"],
 });
 
 export default function CommunityPage() {
   return (
-    <Suspense fallback={<p className="muted">…</p>}>
-      <CommunityHome />
-    </Suspense>
+    <>
+      <CommunitySeoIntro />
+      <Suspense fallback={<p className="muted">…</p>}>
+        <CommunityHome />
+      </Suspense>
+    </>
   );
 }

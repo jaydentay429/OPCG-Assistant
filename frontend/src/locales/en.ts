@@ -73,6 +73,8 @@ const dict: Record<string, string> = {
   "search.photo_btn": "Scan card",
   "search.photo_btn_short": "Scan",
   "photo.title": "Scan card",
+  "photo.seo_intro":
+    "OPCG photo card scanner: use your phone camera or upload a photo to automatically recognize a ONE PIECE Card Game card's ID and artwork. Once identified, jump straight to that card's effect text, market price, or add it to a deck or your collection — no manual ID typing needed.",
   "photo.back": "Back to search",
   "photo.mode_upload": "Upload or drag photo",
   "photo.mode_camera": "Camera",
@@ -942,6 +944,8 @@ const dict: Record<string, string> = {
 
   "community.title": "Community",
   "community.subtitle": "Discuss decks, rules, and cards. Optional anonymity.",
+  "community.seo_intro":
+    "OPCG Card Assistant community forum: browse or post across categories covering deck-building discussion, format rules, card trading, and casual chat. Filter by tag and sort by newest or hottest. Posting can be anonymous, and browsing needs no login.",
   "community.admin": "Moderation",
   "community.staff_name": "Admin",
   "community.admin_title": "Community admin",

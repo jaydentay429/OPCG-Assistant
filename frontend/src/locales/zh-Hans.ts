@@ -73,6 +73,8 @@ const dict: Record<string, string> = {
   "search.photo_btn": "拍照识卡",
   "search.photo_btn_short": "识卡",
   "photo.title": "拍照识卡",
+  "photo.seo_intro":
+    "OPCG 拍照识卡：用手机镜头或上传照片，自动识别航海王卡牌的卡号与卡面。识别后可直接查看该卡效果、市场价格，或加入卡组与收藏，免去手动输入卡号的麻烦。",
   "photo.back": "返回搜索页",
   "photo.mode_upload": "上传或拖拽照片",
   "photo.mode_camera": "拍照",
@@ -942,6 +944,8 @@ const dict: Record<string, string> = {
 
   "community.title": "社区论坛",
   "community.subtitle": "发帖讨论组卡、规则与卡牌；可选择匿名。",
+  "community.seo_intro":
+    "OPCG 卡牌助手社区论坛：按分区浏览或发帖，涵盖组卡讨论、赛制规则、卡牌交易与闲聊，可用标签与热门／最新排序找讨论串。发帖可选择匿名，不需登录也能浏览内容。",
   "community.admin": "版务",
   "community.staff_name": "管理员",
   "community.admin_title": "社区管理",

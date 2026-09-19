@@ -33,3 +33,21 @@ export function PlaySeoIntro() {
     </section>
   );
 }
+
+export function CommunitySeoIntro() {
+  const { t } = useI18n();
+  return (
+    <p className="community-seo-intro seo-only" aria-hidden="true">
+      {t("community.seo_intro")}
+    </p>
+  );
+}
+
+export function PhotoSeoIntro() {
+  const { t } = useI18n();
+  return (
+    <p className="photo-seo-intro seo-only" aria-hidden="true">
+      {t("photo.seo_intro")}
+    </p>
+  );
+}
