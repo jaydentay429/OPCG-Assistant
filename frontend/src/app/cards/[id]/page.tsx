@@ -56,7 +56,7 @@ export async function generateMetadata({
   if (!card) {
     return buildPageMetadata({
       title: `${displayCardId(cardId)} | OPCG 卡牌助手`,
-      description: `查看 OPCG 卡牌 ${displayCardId(cardId)} 的資料、效果與市场价格。`,
+      description: `查看 OPCG 卡牌 ${displayCardId(cardId)} 的資料、效果與市場價格。`,
       path,
       absoluteTitle: true,
       images: ogImage ? [ogImage] : undefined,

@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    "航海王卡牌（OPCG）一站式助手：卡牌搜索、卡組構築、收藏與卡冊、市场价格，以及瀏覽器即時對戰（房間 PvP / AI）。",
+    "航海王卡牌（OPCG）一站式助手：卡牌搜索、卡組構築、收藏與卡冊、市場價格，以及瀏覽器即時對戰（房間 PvP / AI）。",
   applicationName: SITE_NAME,
   keywords: [
     "OPCG",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     "卡牌搜索",
     "收藏管理",
     "卡冊",
-    "市场价格",
+    "市場價格",
     "賽事卡組",
     "AI 對戰",
   ],
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     type: "website",
     title: SITE_NAME,
     description:
-      "航海王 OPCG 工具站：搜索、構築、收藏、市场价格與即時對戰（房間 / AI）。",
+      "航海王 OPCG 工具站：搜索、構築、收藏、市場價格與即時對戰（房間 / AI）。",
     url: SITE_URL,
     images: [og],
   },
