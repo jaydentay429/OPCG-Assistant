@@ -27,7 +27,7 @@ const dict: Record<string, string> = {
   "landing.brand_aliases":
     "也稱為 OPCG Assistant、OPCG Card Assistant、optcg assistant、opcg assistant。網址：optcgassistant.com。",
   "landing.intro":
-    "OPCG 卡牌助手（optcgassistant.com）是一個航海王集換式卡牌（ONE PIECE CARD GAME / OPCG / OPTCG）工具網站，提供完整卡牌資料庫查詢，可依卡號、卡名、顏色、費用、系列與效果關鍵字快速篩選。除了查卡，你還能在線構築與檢查牌組、瀏覽 OP17／OP16 等賽事卡組 deck list、追蹤個人收藏進度、規劃實體卡冊排版，並查看市场价格與關注清單作為補牌參考。新增瀏覽器即時對戰：可開房間與好友對戰，或挑戰 AI，載入自己的卡組練習回合、效果與賽前備牌。無論你是剛入坑整理卡池，還是賽前備牌與研究環境，這裡都能一次完成查詢、構築、收藏管理與對戰練習。",
+    "OPCG 卡牌助手（optcgassistant.com）是一個航海王集換式卡牌（ONE PIECE CARD GAME / OPCG / OPTCG）工具網站，提供完整卡牌資料庫查詢，可依卡號、卡名、顏色、費用、系列與效果關鍵字快速篩選。除了查卡，你還能在線構築與檢查牌組、瀏覽 OP17／OP16 等賽事卡組 deck list、追蹤個人收藏進度、規劃實體卡冊排版，並查看市場價格與關注清單作為補牌參考。新增瀏覽器即時對戰：可開房間與好友對戰，或挑戰 AI，載入自己的卡組練習回合、效果與賽前備牌。無論你是剛入坑整理卡池，還是賽前備牌與研究環境，這裡都能一次完成查詢、構築、收藏管理與對戰練習。",
   "cover.aria": "歡迎頁",
   "cover.kicker": "非官方粉絲工具",
   "cover.tagline": "搜卡、組牌、收藏與規則練習——非官方粉絲工具箱。",
@@ -74,7 +74,7 @@ const dict: Record<string, string> = {
   "search.photo_btn_short": "識卡",
   "photo.title": "拍照識卡",
   "photo.seo_intro":
-    "OPCG 拍照識卡：用手機鏡頭或上傳照片，自動辨識航海王卡牌的卡號與卡面。辨識後可直接查看該卡效果、市场价格，或加入卡組與收藏，免去手動輸入卡號的麻煩。",
+    "OPCG 拍照識卡：用手機鏡頭或上傳照片，自動辨識航海王卡牌的卡號與卡面。辨識後可直接查看該卡效果、市場價格，或加入卡組與收藏，免去手動輸入卡號的麻煩。",
   "photo.back": "返回搜索頁",
   "photo.mode_upload": "上傳或拖拽照片",
   "photo.mode_camera": "拍照",
@@ -467,7 +467,7 @@ const dict: Record<string, string> = {
   "legal.disclaimer.p2":
     "所有商標、卡名、卡圖、標誌與遊戲用語仍屬各自權利人所有。本站僅供粉絲查卡、組牌、收藏管理與規則練習參考。",
   "legal.disclaimer.p3":
-    "所顯示的市场价格（如有）來自第三方參考來源（例如 Yuyu-tei），可能不完整或過時；買賣前請以原始來源為準。",
+    "所顯示的市場價格（如有）來自第三方參考來源（例如 Yuyu-tei），可能不完整或過時；買賣前請以原始來源為準。",
   "legal.disclaimer.p4":
     "即時對戰功能是社群規則練習沙盒，用於熟悉回合與效果，並非官方數字客戶端，可能與賽事或紙牌裁定不同。",
   "legal.disclaimer.p5":
