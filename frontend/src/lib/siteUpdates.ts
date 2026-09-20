@@ -14,6 +14,22 @@ export type SiteUpdate = {
 /** Newest first. Keep this list short — homepage shows the latest few. */
 export const SITE_UPDATES: SiteUpdate[] = [
   {
+    id: "st32-002-deny-rest-blocker-fix",
+    date: "2026-09-19",
+    kind: "fix",
+    href: "/cards/ST32-002",
+    title: {
+      "zh-Hant": "修正光月御田「無法置為休息」未擋下阻擋者",
+      "zh-Hans": "修正光月御田「无法置为休息」未挡下阻挡者",
+      en: "Fixed Kouzuki Oden's rest-lock not blocking Blocker",
+    },
+    body: {
+      "zh-Hant": "ST32-002 指定的角色（例如 OP16-045）先前仍可發動【防禦】阻擋；現在「無法置為休息」期間會正確排除阻擋選項。",
+      "zh-Hans": "ST32-002 指定的角色（例如 OP16-045）先前仍可发动【防御】阻挡；现在「无法置为休息」期间会正确排除阻挡选项。",
+      en: "A character targeted by ST32-002 (e.g. OP16-045) could still activate Blocker; it's now correctly excluded from block options while the rest-lock is active.",
+    },
+  },
+  {
     id: "eb05-037-black-maria",
     date: "2026-09-17",
     kind: "feature",

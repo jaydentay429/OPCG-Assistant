@@ -3820,6 +3820,8 @@ def legal_actions(state: MatchState, seat: int, catalog: CatalogFn) -> list[dict
                 continue
             info = catalog(ch.card_id)
             if (not ch.rested) and has_blocker(info, ch, state=state, owner_seat=seat, catalog=catalog):
+                if _character_denied_rest(player, ch.iid):
+                    continue
                 if _blocker_denied(state, state.attack.attacker_seat, ch, catalog):
                     continue
                 actions.append({"type": "block", "blocker_iid": ch.iid})
