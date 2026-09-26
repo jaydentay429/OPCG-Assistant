@@ -10,6 +10,8 @@ type Props = {
   className?: string;
   localUrl?: string | null;
   loading?: "lazy" | "eager";
+  width?: number;
+  height?: number;
 };
 
 /**
@@ -18,7 +20,7 @@ type Props = {
  * 2) api.../packs/{id}.png
  * 3) api.../images/card/{id} proxy
  */
-export function CardImg({ cardId, alt, className, localUrl, loading = "lazy" }: Props) {
+export function CardImg({ cardId, alt, className, localUrl, loading = "lazy", width, height }: Props) {
   const sources = useMemo(() => cardImageSources(cardId, localUrl), [cardId, localUrl]);
   const [idx, setIdx] = useState(0);
   const src = sources[idx] ?? sources[0] ?? cardImagePacksUrl(cardId);
@@ -33,6 +35,8 @@ export function CardImg({ cardId, alt, className, localUrl, loading = "lazy" }: 
       className={className}
       src={src}
       alt={alt || displayCardId(cardId)}
+      width={width}
+      height={height}
       loading={loading}
       decoding="async"
       onError={() => {

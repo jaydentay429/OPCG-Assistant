@@ -135,6 +135,7 @@ const dict: Record<string, string> = {
   "detail.color": "颜色",
   "detail.type": "类型",
   "detail.cost": "费用",
+  "detail.life": "生命",
   "detail.power": "战力",
   "detail.counter": "反击值",
   "detail.block": "扩张记号",

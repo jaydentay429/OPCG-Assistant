@@ -1,13 +1,32 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { collectionAdd, collectionRemove, fetchCard, fetchCardPrice, fetchCollection } from "@/lib/api";
+import {
+  collectionAdd,
+  collectionRemove,
+  fetchCard,
+  fetchCardPrice,
+  fetchCollection,
+  type CardTournamentAppearance,
+} from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { useDeck } from "@/lib/deck";
 import { useI18n } from "@/lib/i18n";
 import { displayCardId, isDonCardId, normalizeCardId, toBaseCardId } from "@/lib/cardId";
 import { isParallelArtId } from "@/lib/parallelArts";
+import {
+  cardDocumentTitle,
+  cardIdFromPathname,
+  cardVariantHref,
+  isLeaderCardType,
+  isSameCardFamily,
+  leaderLifeValue,
+  marketPriceToResponse,
+  shouldDeferVariantClick,
+  variantMainAlt,
+  variantThumbAlt,
+} from "@/lib/cardPageView";
 import { localizeCardList, localizeCardName, localizeCardSources, localizeCardText, localizeDonCardName, preferLangText } from "@/lib/cardLocale";
 import { localizeFilterToken, localizeFilterTokens } from "@/lib/filterLabels";
 import { formatEffectLines } from "@/lib/formatEffect";
@@ -28,7 +47,20 @@ type VariantMeta = {
 };
 
 function formatYen(value: number): string {
-  return `¥${Math.round(value).toLocaleString("ja-JP")}`;
+  const rounded = Math.round(value);
+  const body = String(Math.abs(rounded)).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return `${rounded < 0 ? "-" : ""}¥${body}`;
+}
+
+/** Hong Kong calendar date, identical on the server and in the browser. */
+function formatChartDate(date: Date, lang: string): string {
+  const hk = new Date(date.getTime() + 8 * 60 * 60 * 1000);
+  const y = String(hk.getUTCFullYear() % 100).padStart(2, "0");
+  const m = String(hk.getUTCMonth() + 1).padStart(2, "0");
+  const d = String(hk.getUTCDate()).padStart(2, "0");
+  if (lang === "en") return `${m}/${d}/${y}`;
+  if (lang === "zh-Hans") return `${y}/${m}/${d}`;
+  return `${d}/${m}/${y}`;
 }
 
 function PriceChart({ history, lang }: { history: PriceHistoryPoint[]; lang: string }) {
@@ -53,9 +85,7 @@ function PriceChart({ history, lang }: { history: PriceHistoryPoint[]; lang: str
   const yFor = (price: number) =>
     margin.top + plotHeight - ((price - yMin) / Math.max(1, yMax - yMin)) * plotHeight;
   const line = points.map((point, index) => `${xFor(index)},${yFor(point.price)}`).join(" ");
-  const locale = lang === "en" ? "en-US" : lang === "zh-Hant" ? "zh-HK" : "zh-CN";
-  const dateText = (date: Date) =>
-    new Intl.DateTimeFormat(locale, { year: "2-digit", month: "2-digit", day: "2-digit" }).format(date);
+  const dateText = (date: Date) => formatChartDate(date, lang);
   const yTicks = Array.from({ length: 5 }, (_, index) => yMin + ((yMax - yMin) * index) / 4);
   const xTickIndexes = Array.from(
     new Set([0, Math.floor((points.length - 1) / 2), points.length - 1]),
@@ -171,7 +201,10 @@ export function CardDetailClient({
   pickedVariant,
   cardTitle,
   afterDetails,
-  variantLinks,
+  initialCard = null,
+  initialMarketPrice = null,
+  initialPriceCardId = "",
+  initialTournaments,
 }: {
   cardId: string;
   picked?: string;
@@ -180,23 +213,32 @@ export function CardDetailClient({
   cardTitle?: ReactNode;
   /** Summary, attributes, and collapsed FAQ. Rendered after the detail panel. */
   afterDetails?: ReactNode;
-  /**
-   * Server-rendered `<a href>` thumbnails for alternate-art pages.
-   * Shown in the initial HTML, including the loading state, so crawlers
-   * do not depend on the client variant switch.
-   */
-  variantLinks?: ReactNode;
+  /** Base-card payload so the first HTML already contains art, text, and thumbnails. */
+  initialCard?: Card | null;
+  /** Price for the printing this URL opened on (not the base card, when they differ). */
+  initialMarketPrice?: Record<string, unknown> | null;
+  initialPriceCardId?: string;
+  initialTournaments?: { items: CardTournamentAppearance[]; total: number };
 }) {
   const { t, lang } = useI18n();
   const router = useRouter();
   const { token, isLoggedIn, ready, requestLogin } = useAuth();
   const deck = useDeck();
-  const [card, setCard] = useState<Card | null>(null);
+  const [card, setCard] = useState<Card | null>(initialCard);
   const [error, setError] = useState("");
-  const [activeVariantId, setActiveVariantId] = useState("");
-  const [price, setPrice] = useState<CardPriceResponse | null>(null);
-  const [priceLoading, setPriceLoading] = useState(false);
+  const [activeVariantId, setActiveVariantId] = useState(
+    () =>
+      extractVariantId(pickedVariant || "") ||
+      extractVariantId(picked || "") ||
+      extractVariantId(cardId) ||
+      toBaseCardId(cardId),
+  );
+  const seededPrice = marketPriceToResponse(initialPriceCardId || cardId, initialMarketPrice);
+  const [price, setPrice] = useState<CardPriceResponse | null>(seededPrice);
+  const [priceLoading, setPriceLoading] = useState(!seededPrice);
   const [ownedQty, setOwnedQty] = useState(0);
+  const seededPriceIdRef = useRef(seededPrice ? normalizeCardId(initialPriceCardId || cardId) : "");
+  const titleNameRef = useRef("");
 
   const baseId = useMemo(() => toBaseCardId(cardId), [cardId]);
   const selectedVariantId = useMemo(() => {
@@ -231,12 +273,20 @@ export function CardDetailClient({
   }, [cardId]);
 
   useEffect(() => {
-    let cancelled = false;
-    setError("");
-    setActiveVariantId(selectedVariantId);
     // DON cards: load by full id (base truncation would break DON17-10163 → DON17-101).
     // Other cards: load by base id so sibling variants are complete.
     const loadId = isDonCardId(cardId) ? normalizeCardId(cardId) || selectedVariantId : baseId;
+    const seeded = initialCard;
+    const seedMatches = Boolean(
+      seeded &&
+        (isDonCardId(cardId)
+          ? normalizeCardId(seeded.id) === loadId
+          : toBaseCardId(seeded.id) === baseId),
+    );
+    if (seedMatches) return;
+
+    let cancelled = false;
+    setError("");
     const fallbackId = normalizeCardId(cardId) || selectedVariantId;
     fetchCard(loadId, false)
       .catch(() => fetchCard(loadId, false))
@@ -254,7 +304,7 @@ export function CardDetailClient({
     return () => {
       cancelled = true;
     };
-  }, [baseId, cardId, selectedVariantId]);
+  }, [baseId, cardId, initialCard, selectedVariantId]);
 
   const isDonCard = useMemo(() => {
     const id = card?.id || cardId || "";
@@ -278,17 +328,20 @@ export function CardDetailClient({
   }, [activeVariantId, selectedVariantId, card?.id, card?.card_sets, card?.variant_card_sets]);
 
   useEffect(() => {
-    const priceCardId = activeVariantId || selectedVariantId;
+    const priceCardId = normalizeCardId(activeVariantId || selectedVariantId);
     if (!priceCardId) return;
     let cancelled = false;
-    setPrice(null);
-    setPriceLoading(true);
+    const keepSeed = seededPriceIdRef.current === priceCardId;
+    if (!keepSeed) {
+      setPrice(null);
+      setPriceLoading(true);
+    }
     fetchCardPrice(priceCardId)
       .then((result) => {
         if (!cancelled) setPrice(result);
       })
       .catch(() => {
-        if (!cancelled) setPrice(null);
+        if (!cancelled && !keepSeed) setPrice(null);
       })
       .finally(() => {
         if (!cancelled) setPriceLoading(false);
@@ -297,6 +350,20 @@ export function CardDetailClient({
       cancelled = true;
     };
   }, [activeVariantId, selectedVariantId]);
+
+  titleNameRef.current = String(card?.name || card?.name_en || "").trim();
+  useLayoutEffect(() => {
+    function onPop(event: PopStateEvent) {
+      const id = cardIdFromPathname(window.location.pathname);
+      if (!id || !isSameCardFamily(id, cardId)) return;
+      // Next.js also listens for popstate and would soft-navigate (and scroll).
+      event.stopImmediatePropagation();
+      setActiveVariantId(id);
+      document.title = cardDocumentTitle(titleNameRef.current, id);
+    }
+    window.addEventListener("popstate", onPop, true);
+    return () => window.removeEventListener("popstate", onPop, true);
+  }, [cardId]);
 
   useEffect(() => {
     const id = card?.id || "";
@@ -367,11 +434,6 @@ export function CardDetailClient({
         </button>
         <p style={{ color: "#fca5a5" }}>{error}</p>
         {cardTitle}
-        {variantLinks ? (
-          <nav className="detail-thumbs" aria-label="異畫版本">
-            {variantLinks}
-          </nav>
-        ) : null}
         {afterDetails}
       </div>
     );
@@ -380,12 +442,6 @@ export function CardDetailClient({
     return (
       <div className="stack">
         {cardTitle}
-        {variantLinks ? (
-          <nav className="detail-thumbs" aria-label="異畫版本">
-            {variantLinks}
-          </nav>
-        ) : null}
-        <p className="muted">…</p>
         {afterDetails}
       </div>
     );
@@ -449,6 +505,24 @@ export function CardDetailClient({
     }
   }
 
+  const shownId = normalizeCardId(activeVariantId || selectedVariantId || card.id);
+  const leaderCard = isLeaderCardType(card.card_type, card.card_type_en);
+
+  function onVariantClick(event: { button?: number; metaKey?: boolean; ctrlKey?: boolean; shiftKey?: boolean; altKey?: boolean; defaultPrevented?: boolean; preventDefault: () => void }, id: string) {
+    if (shouldDeferVariantClick(event)) return;
+    event.preventDefault();
+    const next = normalizeCardId(id);
+    if (!next) return;
+    setActiveVariantId(next);
+    document.title = cardDocumentTitle(String(card?.name || card?.name_en || "").trim(), next);
+    const href = cardVariantHref(next);
+    if (window.location.pathname !== href) {
+      // `__NA` makes Next.js leave this pushState alone. Without it, Next
+      // soft-navigates to the new URL and scrolls to the top.
+      window.history.pushState({ __NA: true, optcgCardVariant: next }, "", href);
+    }
+  }
+
   return (
     <div className="stack">
       <button type="button" className="ghost" onClick={goBack} style={{ alignSelf: "flex-start" }}>
@@ -456,48 +530,61 @@ export function CardDetailClient({
       </button>
       <div className="detail-grid">
         <div className="detail-lead">
-          {cardTitle}
+          <div>
+            {cardTitle}
+            {isParallelArtId(shownId) ? (
+              <p className="detail-base-link">
+                <a
+                  href={cardVariantHref(baseId)}
+                  onClick={(event) => onVariantClick(event, baseId)}
+                  onKeyDown={(event) => {
+                    if (event.key !== "Enter") return;
+                    onVariantClick(event, baseId);
+                  }}
+                >
+                  基礎卡 {baseId}
+                </a>
+              </p>
+            ) : null}
+          </div>
           <div className="detail-img">
           <h2 style={{ marginBottom: 8 }}>{t("detail.images")}</h2>
           <CardImg
             className="detail-main-img"
-            cardId={activeVariantId || selectedVariantId}
-            alt={name || displayCardId(card.id)}
+            cardId={shownId}
+            alt={variantMainAlt(name, shownId)}
             loading="eager"
+            width={733}
+            height={1024}
           />
-          {thumbVariantIds.some((vid) => !isParallelArtId(vid)) || variantLinks ? (
+          {thumbVariantIds.length > 0 ? (
             <div className="detail-thumbs">
-              {thumbVariantIds
-                .filter((vid) => !isParallelArtId(vid) && toBaseCardId(vid) === vid)
-                .map((vid) => {
-                  return (
-                    <button
-                      key={vid}
-                      type="button"
-                      className={`detail-thumb ${(activeVariantId || selectedVariantId) === vid ? "active" : ""}`}
-                      onClick={() => setActiveVariantId(vid)}
-                      title={displayCardId(vid)}
-                    >
-                      <CardImg cardId={vid} alt={displayCardId(vid)} />
-                    </button>
-                  );
-                })}
-              {variantLinks}
-              {thumbVariantIds
-                .filter((vid) => !isParallelArtId(vid) && toBaseCardId(vid) !== vid)
-                .map((vid) => {
-                  return (
-                    <button
-                      key={vid}
-                      type="button"
-                      className={`detail-thumb ${(activeVariantId || selectedVariantId) === vid ? "active" : ""}`}
-                      onClick={() => setActiveVariantId(vid)}
-                      title={displayCardId(vid)}
-                    >
-                      <CardImg cardId={vid} alt={displayCardId(vid)} />
-                    </button>
-                  );
-                })}
+              {thumbVariantIds.map((vid) => {
+                const id = normalizeCardId(vid);
+                const selected = shownId === id;
+                const parallel = isParallelArtId(id);
+                return (
+                  <a
+                    key={id}
+                    href={cardVariantHref(id)}
+                    className={`detail-thumb${selected ? " active" : ""}`}
+                    aria-current={selected ? "true" : undefined}
+                    title={id}
+                    onClick={(event) => onVariantClick(event, id)}
+                    onKeyDown={(event) => {
+                      if (event.key !== "Enter") return;
+                      onVariantClick(event, id);
+                    }}
+                  >
+                    <CardImg cardId={id} alt={variantThumbAlt(name, id)} width={120} height={168} />
+                    {parallel ? (
+                      <span className="detail-thumb-label" aria-hidden="true">
+                        {id}
+                      </span>
+                    ) : null}
+                  </a>
+                );
+              })}
             </div>
           ) : null}
           </div>
@@ -521,8 +608,8 @@ export function CardDetailClient({
               <>
                 <dt>{t("detail.color")}</dt>
                 <dd>{(colors || []).join(", ") || "-"}</dd>
-                <dt>{t("detail.cost")}</dt>
-                <dd>{card.cost ?? "-"}</dd>
+                <dt>{leaderCard ? t("detail.life") : t("detail.cost")}</dt>
+                <dd>{leaderCard ? (leaderLifeValue(card) ?? "-") : (card.cost ?? "-")}</dd>
                 <dt>{t("detail.power")}</dt>
                 <dd>{card.power ?? "-"}</dd>
                 <dt>{t("detail.counter")}</dt>
@@ -630,8 +717,9 @@ export function CardDetailClient({
       </div>
       {!isDonCard ? (
         <CardDetailExtras
-          cardId={toBaseCardId(activeVariantId || selectedVariantId || card.id)}
+          cardId={toBaseCardId(shownId || card.id)}
           sections="tournaments"
+          initialTournaments={initialTournaments}
         />
       ) : null}
     </div>
