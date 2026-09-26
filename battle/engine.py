@@ -1379,12 +1379,24 @@ def _leader_denied_attack(player: PlayerState) -> bool:
 
 
 def _character_denied_rest(player: PlayerState, iid: str) -> bool:
-    return iid in player.deny_rest_iids or iid in player.deny_rest_until_opp_end_iids
+    if iid in player.deny_rest_iids or iid in player.deny_rest_until_opp_end_iids:
+        return True
+    inst = next((c for c in player.characters if c.iid == iid), None)
+    if inst is None:
+        inst = next((s for s in (getattr(player, "stages", None) or []) if s.iid == iid), None)
+    return bool(inst is not None and getattr(inst, "cannot_be_rested", False))
 
 
 def _clear_battle_deny_blocker(state: MatchState) -> None:
     for p in state.players:
         p.deny_blocker = [d for d in p.deny_blocker if str(d.get("duration")) != "battle"]
+        p.leader_power_until_end = [
+            e for e in (p.leader_power_until_end or []) if str(e.get("expire_kind") or "") != "battle"
+        ]
+        for ch in p.characters:
+            ch.power_until_end = [
+                e for e in (ch.power_until_end or []) if str(e.get("expire_kind") or "") != "battle"
+            ]
 
 
 def _blocker_denied(state: MatchState, attacker_seat: int, blocker: CardInst, catalog: CatalogFn) -> bool:
@@ -1837,6 +1849,8 @@ def _board_power_aura_bonus(
                         or op.get("name_contains")
                         or op.get("trait_contains")
                         or op.get("trait_includes")
+                        or op.get("trait_all")
+                        or op.get("trait_any")
                     )
                     if src_iid == target_iid:
                         if kind == "buff_all_own":
@@ -1851,12 +1865,10 @@ def _board_power_aura_bonus(
                         if target_iid == "leader":
                             if not op.get("include_leader", True):
                                 continue
-                            trait = str(op.get("trait_contains") or "").strip()
-                            if trait and not _info_has_trait(target_info, trait):
+                            if not _op_traits_ok(target_info, op):
                                 continue
                         else:
-                            trait = str(op.get("trait_contains") or "").strip()
-                            if trait and not _info_has_trait(target_info, trait):
+                            if not _op_traits_ok(target_info, op):
                                 continue
                             if op.get("exclude_self") and src_iid == target_iid:
                                 continue
@@ -1880,7 +1892,9 @@ def _board_power_aura_bonus(
                         ):
                             continue
                         trait = str(op.get("trait_contains") or op.get("trait_includes") or "").strip()
-                        if trait and not _info_has_trait(target_info, trait):
+                        if (trait or op.get("trait_all") or op.get("trait_any")) and not _op_traits_ok(
+                            target_info, op
+                        ):
                             continue
                         if not _aura_cost_ok(state, seat, target_iid, target_info, op, catalog, player):
                             continue
@@ -2640,6 +2654,10 @@ def _ability_board_conditions_ok(
         lead_pow = printed_power(catalog(foe.leader_card_id))
         if lead_pow < need and not any(printed_power(catalog(c.card_id)) >= need for c in foe.characters):
             return False
+    if ability.get("require_opp_field_char_base_power_gte") is not None:
+        need = int(ability["require_opp_field_char_base_power_gte"])
+        if not any(printed_power(catalog(c.card_id)) >= need for c in foe.characters):
+            return False
     if ability.get("require_opp_char_cost_eq") is not None:
         need = int(ability["require_opp_char_cost_eq"])
         if not any(effective_character_cost(state, state.other(seat), c, catalog) == need for c in foe.characters):
@@ -3389,7 +3407,10 @@ def _trait_aliases(needle: str) -> tuple[str, ...]:
         "百獣海賊団": ("animal kingdom pirates", "百獣海賊団", "百獸海賊團", "百兽海贼团"),
         "百獸海賊團": ("animal kingdom pirates", "百獣海賊団", "百獸海賊團", "百兽海贼团"),
         "百兽海贼团": ("animal kingdom pirates", "百獣海賊団", "百獸海賊團", "百兽海贼团"),
-        "w7": ("w7", "W7"),
+        "w7": ("w7", "W7", "water seven", "水之七島", "水之七岛"),
+        "water seven": ("w7", "W7", "water seven", "水之七島", "水之七岛"),
+        "水之七島": ("w7", "W7", "water seven", "水之七島", "水之七岛"),
+        "水之七岛": ("w7", "W7", "water seven", "水之七島", "水之七岛"),
         "film": ("film", "FILM"),
         "foxy pirates": ("foxy pirates", "弗克西海賊團", "弗克西海贼团"),
         "弗克西海賊團": ("foxy pirates", "弗克西海賊團", "弗克西海贼团"),
@@ -3465,6 +3486,19 @@ def _trait_aliases(needle: str) -> tuple[str, ...]:
         "fish-man": ("fish-man", "fish man", "魚人族", "鱼人族"),
         "魚人族": ("fish-man", "fish man", "魚人族", "鱼人族"),
         "鱼人族": ("fish-man", "fish man", "魚人族", "鱼人族"),
+        "rocks pirates": ("rocks pirates", "洛克斯海賊團", "洛克斯海贼团"),
+        "洛克斯海賊團": ("rocks pirates", "洛克斯海賊團", "洛克斯海贼团"),
+        "洛克斯海贼团": ("rocks pirates", "洛克斯海賊團", "洛克斯海贼团"),
+        "bonney pirates": ("bonney pirates", "波妮海賊團", "波妮海贼团"),
+        "波妮海賊團": ("bonney pirates", "波妮海賊團", "波妮海贼团"),
+        "波妮海贼团": ("bonney pirates", "波妮海賊團", "波妮海贼团"),
+        "cross guild": ("cross guild", "十字公會", "十字公会"),
+        "十字公會": ("cross guild", "十字公會", "十字公会"),
+        "十字公会": ("cross guild", "十字公會", "十字公会"),
+        "punk hazard": ("punk hazard", "龐克哈薩特", "庞克哈萨特", "パンクハザード"),
+        "龐克哈薩特": ("punk hazard", "龐克哈薩特", "庞克哈萨特", "パンクハザード"),
+        "庞克哈萨特": ("punk hazard", "龐克哈薩特", "庞克哈萨特", "パンクハザード"),
+        "パンクハザード": ("punk hazard", "龐克哈薩特", "庞克哈萨特", "パンクハザード"),
     }
     return aliases.get(key, (needle,))
 
@@ -3513,6 +3547,22 @@ def _info_has_trait(info: dict[str, Any], trait: str) -> bool:
         if any(k.lower() in traits for k in keys):
             return True
     return False
+
+
+def _op_traits_ok(info: dict[str, Any], op: dict[str, Any]) -> bool:
+    """AND-all (`trait_all`) then OR (`trait_contains` / `trait_any`)."""
+    ta = op.get("trait_all")
+    if isinstance(ta, list) and ta:
+        if not all(_info_has_trait(info, str(t)) for t in ta):
+            return False
+    trait = str(op.get("trait_contains") or op.get("trait_includes") or "").strip()
+    if trait and not _info_has_trait(info, trait):
+        return False
+    trait_any = op.get("trait_any")
+    if isinstance(trait_any, list) and trait_any:
+        if not any(_info_has_trait(info, str(t)) for t in trait_any):
+            return False
+    return True
 
 
 def _chars_all_have_trait(player: PlayerState, trait: str, catalog: CatalogFn) -> bool:
@@ -3911,6 +3961,8 @@ def legal_actions(state: MatchState, seat: int, catalog: CatalogFn) -> list[dict
         spec = resolve_activate_spec(ch.card_id, info)
         if not spec:
             continue
+        if spec.get("rest_self") and _character_denied_rest(player, ch.iid):
+            continue
         if not _activate_spec_legal(
             player,
             spec,
@@ -4032,6 +4084,10 @@ def legal_actions(state: MatchState, seat: int, catalog: CatalogFn) -> list[dict
         for ch in player.characters:
             info = catalog(ch.card_id)
             if ch.rested:
+                continue
+            # Attack declaration rests the attacker (7-1-1). Rest-lock (Hancock OP16-032,
+            # ST32-002, etc.) therefore also bars declaring an attack.
+            if _character_denied_rest(player, ch.iid):
                 continue
             if _character_denied_attack(player, ch.iid):
                 continue
@@ -4516,6 +4572,8 @@ def _activate_main(state: MatchState, seat: int, source_iid: str, catalog: Catal
     if cost and not _spend_don(player, cost):
         return {"ok": False, "error": "Not enough DON!!."}
     if spec.get("rest_self"):
+        if inst is not None and _character_denied_rest(player, src.iid):
+            return {"ok": False, "error": "This Character cannot be rested."}
         was_active = not src.rested
         src.rested = True
         if was_active:
@@ -4817,6 +4875,8 @@ def _declare_attack(
         inst = next((c for c in player.characters if c.iid == attacker_iid), None)
         if not inst or inst.rested:
             return {"ok": False, "error": "Invalid attacker."}
+        if _character_denied_rest(player, attacker_iid):
+            return {"ok": False, "error": "This Character cannot be rested."}
         if _character_denied_attack(player, attacker_iid):
             return {"ok": False, "error": "This Character cannot attack."}
         info = catalog(inst.card_id)
@@ -4898,6 +4958,8 @@ def _choose_block(state: MatchState, seat: int, blocker_iid: str | None, catalog
         inst = next((c for c in player.characters if c.iid == blocker_iid), None)
         if not inst:
             return {"ok": False, "error": "Invalid blocker."}
+        if _character_denied_rest(player, blocker_iid):
+            return {"ok": False, "error": "This Character cannot be rested."}
         inst.rested = True
         state.attack.blocker_iid = blocker_iid
         state.attack.target_iid = blocker_iid
@@ -5102,17 +5164,77 @@ def _deal_leader_damage_batch(
     return False
 
 
+def _offer_replace_life_damage(
+    state: MatchState,
+    seat: int,
+    catalog: CatalogFn,
+    *,
+    banish: bool,
+    remaining_hits: int,
+) -> bool:
+    """Optional 「即將受到傷害時，可廢棄這張角色卡代替」. True if paused for a choice."""
+    if state.pending_choice or state.pending_trigger or state.pending_search or state.pending_effect:
+        return False
+    from battle.effect_library import ability_is_runnable, get_abilities
+
+    player = state.player(seat)
+    options: list[str] = []
+    card_id = ""
+    for ch in list(player.characters):
+        hit = False
+        for timing in ("your_turn", "opponent_turn"):
+            for ab in get_abilities(ch.card_id, timing):
+                if not ability_is_runnable(ab):
+                    continue
+                if any(str(o.get("op") or "") == "replace_life_damage" for o in (ab.get("ops") or [])):
+                    hit = True
+                    card_id = ch.card_id
+                    break
+            if hit:
+                break
+        if hit:
+            options.append(ch.iid)
+    if not options:
+        return False
+    state.pending_choice = PendingChoice(
+        seat=seat,
+        card_id=card_id,
+        source_iid=options[0],
+        target_kind="own_character",
+        options=options,
+        remaining_ops=[
+            {
+                "op": "_life_damage_resume",
+                "seat": seat,
+                "banish": banish,
+                "remaining_hits": int(remaining_hits or 0),
+            }
+        ],
+        optional=True,
+        summary="You may trash this Character instead of taking damage",
+        purpose="replace_life_damage",
+    )
+    state.add_log({"key": "play.log.choice_offer", "name": player.username})
+    state.touch()
+    return True
+
+
 def _deal_one_life_damage(
     state: MatchState,
     seat: int,
     catalog: CatalogFn,
     banish: bool = False,
     remaining_hits: int = 0,
+    skip_replace: bool = False,
 ) -> bool:
     """
     Returns True if the game paused for optional Trigger (10-1-5).
     """
     player = state.player(seat)
+    if not skip_replace and _offer_replace_life_damage(
+        state, seat, catalog, banish=banish, remaining_hits=remaining_hits
+    ):
+        return True
     if not player.life:
         # 1-2-1-1-1: life already 0 and Leader takes damage → defeat at rule processing
         mark_pending_defeat(state, seat, "play.log.damage_at_zero", name=player.username)
@@ -5325,6 +5447,62 @@ def _resolve_choice(state: MatchState, seat: int, target_iid: str | None, catalo
     pending = state.pending_choice
     if not pending or pending.seat != seat:
         return {"ok": False, "error": "No pending choice."}
+    if pending.purpose == "replace_life_damage":
+        if target_iid is not None and target_iid not in pending.options:
+            return {"ok": False, "error": "Invalid choice target."}
+        resume = (pending.remaining_ops or [{}])[0] if pending.remaining_ops else {}
+        try:
+            remaining = int(resume.get("remaining_hits") or 0)
+        except (TypeError, ValueError):
+            remaining = 0
+        banish = bool(resume.get("banish"))
+        try:
+            dmg_seat = int(resume.get("seat", seat))
+        except (TypeError, ValueError):
+            dmg_seat = seat
+        player = state.player(dmg_seat)
+        state.pending_choice = None
+        if target_iid is not None:
+            inst = next((c for c in player.characters if c.iid == target_iid), None)
+            if inst is not None:
+                if inst.don_attached:
+                    player.don_rested = int(player.don_rested or 0) + int(inst.don_attached or 0)
+                    inst.don_attached = 0
+                player.characters = [c for c in player.characters if c.iid != inst.iid]
+                player.trash.append(inst.card_id)
+                state.add_log(
+                    {"key": "play.log.effect_applied", "summary": "replace_life_damage", "id": inst.card_id}
+                )
+            if remaining > 0 and state.status == "playing":
+                paused = _deal_leader_damage_batch(
+                    state, dmg_seat, catalog, hits=remaining, banish=banish
+                )
+                if paused:
+                    state.touch()
+                    return {"ok": True}
+        else:
+            paused = _deal_one_life_damage(
+                state,
+                dmg_seat,
+                catalog,
+                banish=banish,
+                remaining_hits=remaining,
+                skip_replace=True,
+            )
+            if paused:
+                state.touch()
+                return {"ok": True}
+            if remaining > 0 and state.status == "playing":
+                paused = _deal_leader_damage_batch(
+                    state, dmg_seat, catalog, hits=remaining, banish=banish
+                )
+                if paused:
+                    state.touch()
+                    return {"ok": True}
+        state.touch()
+        if state.status == "playing" and not _pending_interactive(state):
+            _finish_cleared_interactive(state, catalog)
+        return {"ok": True}
     if pending.purpose == "replace_leave":
         if target_iid is not None and target_iid not in pending.options:
             return {"ok": False, "error": "Invalid choice target."}
@@ -6061,7 +6239,11 @@ def public_view(state: MatchState, viewer_seat: int | None, catalog: CatalogFn) 
         pub["keywords"] = keys
         pub["power"] = inst_power(state, p.seat, c.iid, catalog)
         pub["cost"] = effective_character_cost(state, p.seat, c, catalog)
-        pub["cannot_attack"] = _character_cannot_attack(state, p.seat, c, catalog) or _character_denied_attack(p, c.iid)
+        pub["cannot_attack"] = (
+            _character_cannot_attack(state, p.seat, c, catalog)
+            or _character_denied_attack(p, c.iid)
+            or _character_denied_rest(p, c.iid)
+        )
         pub["cannot_rest"] = _character_denied_rest(p, c.iid)
         return pub
 

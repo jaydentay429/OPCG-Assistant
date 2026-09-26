@@ -59,7 +59,7 @@ function EliteBlock({
 
 export function BattleRankClient() {
   const { t } = useI18n();
-  const { token, isLoggedIn, ready } = useAuth();
+  const { token, isLoggedIn, ready, requestLogin } = useAuth();
   const [profile, setProfile] = useState<BattleRankProfile | null>(null);
   const [board, setBoard] = useState<BattleRankLeaderboardEntry[]>([]);
   const [elite, setElite] = useState<Record<string, BattleRankLeaderboardEntry[]>>({});
@@ -136,7 +136,12 @@ export function BattleRankClient() {
           {profile.elite_pending ? <p className="muted">{t("play.rank_elite_pending")}</p> : null}
         </div>
       ) : (
-        <p className="muted">{t("play.rank_need_login")}</p>
+        <p className="muted deck-login-hint">
+          <span>{t("play.rank_need_login")}</span>
+          <button type="button" onClick={() => requestLogin()}>
+            {t("auth.login")}
+          </button>
+        </p>
       )}
 
       <div className="play-rank-elite-grid">

@@ -874,6 +874,7 @@ def _from_templates(card_id: str, timing: str, info: dict[str, Any]) -> dict[str
             "hand_to_life",
             "place_on_life",
             "replace_leave",
+            "replace_life_damage",
             "replace_rest",
             "replace_battle_ko",
             "redirect_attack",
@@ -1439,10 +1440,10 @@ def _from_templates(card_id: str, timing: str, info: dict[str, Any]) -> dict[str
         )
 
         blob = effect_blob(info)
-        if not _re.search(r"\[counter\]|【反撃】|【反击】", blob, _re.I):
+        if not _re.search(r"\[counter\]|【反撃】|【反击】|【反擊】", blob, _re.I):
             return None
         m = _re.search(
-            r"(?:\[counter\]|【反撃】|【反击】)"
+            r"(?:\[counter\]|【反撃】|【反击】|【反擊】)"
             r"((?:(?!(?:^|[\n\r/])\s*\[(?:on\s+play|when\s+attacking|activate|trigger|main)|"
             r"(?:^|[\n\r/])\s*【(?:登場時|登场时|攻擊時|攻击时|啟動主要|启动主要|觸發器|触发器|主要)】).){0,400})",
             blob,
@@ -1453,7 +1454,7 @@ def _from_templates(card_id: str, timing: str, info: dict[str, Any]) -> dict[str
         chunk = m.group(0)
         # Shared [Main]/[Counter] body — Counter marker has little/no unique body.
         if len(chunk.strip()) < 24 or _re.fullmatch(
-            r"(?:\[counter\]|【反撃】|【反击】)\s*", chunk.strip(), _re.I
+            r"(?:\[counter\]|【反撃】|【反击】|【反擊】)\s*", chunk.strip(), _re.I
         ):
             main_ops = _parse_main_event_for_counter(info)
             if main_ops:

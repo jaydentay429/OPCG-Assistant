@@ -12,6 +12,23 @@ import type { FilterCard } from "@/lib/types";
 import { flushCurrentScroll } from "@/lib/scrollRestore";
 import { CardImg } from "./CardImg";
 
+export function CardWallSkeleton({ n = 10 }: { n?: number }) {
+  return (
+    <div className="card-wall" aria-hidden="true">
+      {Array.from({ length: n }, (_, i) => (
+        <article key={i} className="card-tile card-tile-skeleton">
+          <div className="thumb" />
+          <div className="id">&nbsp;</div>
+          <div className="actions">
+            <span />
+            <span />
+          </div>
+        </article>
+      ))}
+    </div>
+  );
+}
+
 export function CardWall({ cards }: { cards: FilterCard[] }) {
   const { t, lang } = useI18n();
   const { token, isLoggedIn, ready, requestLogin } = useAuth();

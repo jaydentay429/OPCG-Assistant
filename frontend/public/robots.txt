@@ -1,0 +1,109 @@
+# Search / citation crawlers are allowed. Private paths stay disallowed for everyone.
+#
+# GPTBot = OpenAI fetching pages to train models (not the same as ChatGPT search citations).
+# Google-Extended = Google training Gemini and similar products (not the blue-link Googlebot).
+# If you later want to stay searchable but not used for training: disallow only GPTBot and
+# Google-Extended, and keep Googlebot, OAI-SearchBot, ChatGPT-User, Bingbot, PerplexityBot,
+# and ClaudeBot allowed.
+
+User-agent: *
+Allow: /
+Disallow: /community/admin
+Disallow: /community/me
+Disallow: /community/new
+Disallow: /reset-password
+Disallow: /play/history
+Disallow: /play/spectate
+Disallow: /binder/s/
+Disallow: /api/
+
+User-agent: Googlebot
+Allow: /
+Disallow: /community/admin
+Disallow: /community/me
+Disallow: /community/new
+Disallow: /reset-password
+Disallow: /play/history
+Disallow: /play/spectate
+Disallow: /binder/s/
+Disallow: /api/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /community/admin
+Disallow: /community/me
+Disallow: /community/new
+Disallow: /reset-password
+Disallow: /play/history
+Disallow: /play/spectate
+Disallow: /binder/s/
+Disallow: /api/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /community/admin
+Disallow: /community/me
+Disallow: /community/new
+Disallow: /reset-password
+Disallow: /play/history
+Disallow: /play/spectate
+Disallow: /binder/s/
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /community/admin
+Disallow: /community/me
+Disallow: /community/new
+Disallow: /reset-password
+Disallow: /play/history
+Disallow: /play/spectate
+Disallow: /binder/s/
+Disallow: /api/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /community/admin
+Disallow: /community/me
+Disallow: /community/new
+Disallow: /reset-password
+Disallow: /play/history
+Disallow: /play/spectate
+Disallow: /binder/s/
+Disallow: /api/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /community/admin
+Disallow: /community/me
+Disallow: /community/new
+Disallow: /reset-password
+Disallow: /play/history
+Disallow: /play/spectate
+Disallow: /binder/s/
+Disallow: /api/
+
+User-agent: GPTBot
+Allow: /
+Disallow: /community/admin
+Disallow: /community/me
+Disallow: /community/new
+Disallow: /reset-password
+Disallow: /play/history
+Disallow: /play/spectate
+Disallow: /binder/s/
+Disallow: /api/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /community/admin
+Disallow: /community/me
+Disallow: /community/new
+Disallow: /reset-password
+Disallow: /play/history
+Disallow: /play/spectate
+Disallow: /binder/s/
+Disallow: /api/
+
+Sitemap: https://optcgassistant.com/sitemap.xml
+Host: https://optcgassistant.com

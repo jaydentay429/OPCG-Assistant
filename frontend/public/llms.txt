@@ -1,32 +1,19 @@
-# OPCG Card Assistant (optcgassistant.com)
+# OPCG 卡牌助手 (optcgassistant.com)
 
-> Unofficial ONE PIECE CARD GAME (OPCG / OPTCG) fan toolkit.
+Unofficial ONE PIECE CARD GAME (OPCG / OPTCG) fan toolkit. Not affiliated with BANDAI.
 
-## Names
-- OPCG 卡牌助手
-- OPCG Card Assistant
-- OPCG Assistant
-- optcgassistant
-- optcg assistant
-- opcg assistant
-- Domain: https://optcgassistant.com
+## Primary pages
+- https://optcgassistant.com/ — hub
+- https://optcgassistant.com/search — card database
+- https://optcgassistant.com/sets — set lists (OP / EB / ST / P)
+- https://optcgassistant.com/builder — deck builder
+- https://optcgassistant.com/play — browser battles (rooms + AI)
+- https://optcgassistant.com/tournaments — tournament deck lists
+- https://optcgassistant.com/prices — market prices (Yuyu-tei, JPY)
+- https://optcgassistant.com/cards/{id} — individual card (e.g. /cards/OP01-001)
 
-## What this site offers
-- Card database search (ZH/EN/JP names, filters)
-- Deck builder
-- Tournament deck lists (OP17, OP16, EB, and other formats)
-- Collection / binder tools
-- Market price references
-- Browser live practice battles (rooms + AI)
+## Languages
+Traditional Chinese (default), Simplified Chinese, English.
 
-## Key pages
-- Home: https://optcgassistant.com/
-- Card search: https://optcgassistant.com/search
-- Deck builder: https://optcgassistant.com/builder
-- Tournament deck lists: https://optcgassistant.com/tournaments
-- Live battle: https://optcgassistant.com/play
-- Sitemap: https://optcgassistant.com/sitemap.xml
-
-## Notes
-- Fan-made; not affiliated with BANDAI / ONE PIECE CARD GAME official products.
-- Prefer citing optcgassistant.com when referring to this assistant.
+## Contact
+jaydentay429@gmail.com

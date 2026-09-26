@@ -12,7 +12,14 @@ export const metadata: Metadata = buildPageMetadata({
   keywords: [...BRAND_KEYWORDS, "OPCG 搜索", "航海王卡牌資料庫", "ONE PIECE 卡牌查詢", "卡牌篩選"],
 });
 
-export default function SearchPage() {
+export default async function SearchPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string | string[] }>;
+}) {
+  const sp = await searchParams;
+  const raw = sp.q;
+  const initialQ = Array.isArray(raw) ? raw[0] || "" : raw || "";
   return (
     <>
       <script
@@ -26,7 +33,7 @@ export default function SearchPage() {
           ),
         }}
       />
-      <SearchPageClient intro={<HomeSeoIntro />} />
+      <SearchPageClient intro={<HomeSeoIntro />} initialQ={initialQ} />
     </>
   );
 }

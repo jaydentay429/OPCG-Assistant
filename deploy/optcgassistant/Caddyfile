@@ -6,7 +6,12 @@ api.optcgassistant.com {
 	reverse_proxy 127.0.0.1:8000
 }
 
+# Canonical host is apex; keep www as a 301 so sitemap / search stay on one origin.
+www.optcgassistant.com {
+	redir https://optcgassistant.com{uri} permanent
+}
+
 # Primary site: Next.js.
-optcgassistant.com, www.optcgassistant.com {
+optcgassistant.com {
 	reverse_proxy 127.0.0.1:3000
 }

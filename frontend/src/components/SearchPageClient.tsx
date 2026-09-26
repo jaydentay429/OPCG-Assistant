@@ -10,12 +10,13 @@ import {
   scrollYForPersist,
 } from "@/lib/scrollRestore";
 import type { FilterCard, FilterOptions, FilterState } from "@/lib/types";
-import { CardWall } from "./CardWall";
+import { CardWall, CardWallSkeleton } from "./CardWall";
 import { EMPTY_FILTERS, FilterBar } from "./FilterBar";
 import { SearchBar } from "./SearchBar";
 
 const PAGE_SIZE = 70;
 const STORAGE_KEY = "opcg_search_state_v1";
+const EMBED_STORAGE_KEY = "opcg_embed_search_v1";
 
 type SavedSearchState = {
   q: string;
@@ -25,12 +26,12 @@ type SavedSearchState = {
   anchor?: string;
 };
 
-function loadSavedSearch(): SavedSearchState {
+function loadSavedSearch(key: string): SavedSearchState {
   if (typeof window === "undefined") {
     return { q: "", filters: EMPTY_FILTERS, page: 1, y: 0, anchor: "" };
   }
   try {
-    const raw = sessionStorage.getItem(STORAGE_KEY);
+    const raw = sessionStorage.getItem(key);
     if (!raw) return { q: "", filters: EMPTY_FILTERS, page: 1, y: 0, anchor: "" };
     const parsed = JSON.parse(raw) as Partial<SavedSearchState>;
     return {
@@ -66,9 +67,11 @@ function filtersToQuery(f: FilterState, q: string, page: number) {
 export function SearchPageClient({
   hideHeader = false,
   intro = null,
+  initialQ = "",
 }: {
   hideHeader?: boolean;
   intro?: ReactNode;
+  initialQ?: string;
 } = {}) {
   const { t } = useI18n();
   const [q, setQ] = useState("");
@@ -79,19 +82,22 @@ export function SearchPageClient({
   const [cards, setCards] = useState<FilterCard[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [fetchedOnce, setFetchedOnce] = useState(false);
   const [error, setError] = useState("");
   const [restored, setRestored] = useState(false);
+  const storageKey = hideHeader ? EMBED_STORAGE_KEY : STORAGE_KEY;
   const skipPageResetRef = useRef(false);
   const pendingRestoreYRef = useRef(0);
   const pendingAnchorRef = useRef("");
   const restoreOnceRef = useRef(false);
 
   useLayoutEffect(() => {
-    const saved = loadSavedSearch();
+    const saved = loadSavedSearch(storageKey);
     const pathTarget = readPathScrollTarget("/");
-    setQ(saved.q);
-    setDebouncedQ(saved.q);
+    const q0 = !hideHeader && initialQ.trim() ? initialQ.trim() : saved.q;
+    setQ(q0);
+    setDebouncedQ(q0);
     setFilters(saved.filters);
     setPage(saved.page);
     restoreOnceRef.current = false;
@@ -106,41 +112,24 @@ export function SearchPageClient({
     }
     skipPageResetRef.current = true;
     setRestored(true);
-  }, [hideHeader]);
+  }, [hideHeader, storageKey, initialQ]);
 
   const persistSearchState = (scrollY?: number) => {
-    if (hideHeader) {
-      // Nested wall shares query state but must not overwrite main-search scroll/anchor.
-      try {
-        const prev = loadSavedSearch();
-        sessionStorage.setItem(
-          STORAGE_KEY,
-          JSON.stringify({
-            q: debouncedQ,
-            filters,
-            page,
-            y: prev.y || 0,
-            anchor: prev.anchor || "",
-          } satisfies SavedSearchState),
-        );
-      } catch {
-        /* ignore */
-      }
-      return;
-    }
     try {
-      const prev = loadSavedSearch();
+      const prev = loadSavedSearch(storageKey);
       const payload: SavedSearchState = {
         q: debouncedQ,
         filters,
         page,
-        y: scrollYForPersist(
-          pendingRestoreYRef.current,
-          scrollY ?? (typeof window !== "undefined" ? window.scrollY || 0 : 0),
-        ),
-        anchor: pendingAnchorRef.current || prev.anchor || "",
+        y: hideHeader
+          ? 0
+          : scrollYForPersist(
+              pendingRestoreYRef.current,
+              scrollY ?? (typeof window !== "undefined" ? window.scrollY || 0 : 0),
+            ),
+        anchor: hideHeader ? "" : pendingAnchorRef.current || prev.anchor || "",
       };
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      sessionStorage.setItem(storageKey, JSON.stringify(payload));
     } catch {
       /* ignore quota / private mode */
     }
@@ -209,6 +198,7 @@ export function SearchPageClient({
         if (cancelled) return;
         setCards(res.cards);
         setTotal(res.total);
+        setFetchedOnce(true);
       })
       .catch((e) => {
         if (cancelled) return;
@@ -217,6 +207,7 @@ export function SearchPageClient({
         setError(e instanceof Error ? e.message : String(e));
         setCards([]);
         setTotal(0);
+        setFetchedOnce(true);
         setLoading(false);
       })
       .finally(() => {
@@ -272,8 +263,10 @@ export function SearchPageClient({
       <FilterBar options={options} value={filters} onChange={setFilters} />
 
       <p className="muted search-result-hint">
-        {t("filter.filter_result", { total, size: PAGE_SIZE })}
-        {loading ? " …" : ""}
+        {!fetchedOnce
+          ? t("filter.loading")
+          : t("filter.filter_result", { total, size: PAGE_SIZE })}
+        {fetchedOnce && loading ? " …" : ""}
       </p>
 
       {error ? (
@@ -282,37 +275,41 @@ export function SearchPageClient({
         </p>
       ) : null}
 
-      <div className="pager">
-        <button type="button" className="secondary" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
-          {t("filter.prev")}
-        </button>
-        <div className="center">{t("filter.page", { page, total: totalPages })}</div>
-        <button
-          type="button"
-          className="secondary"
-          disabled={page >= totalPages}
-          onClick={() => setPage((p) => p + 1)}
-        >
-          {t("filter.next")}
-        </button>
-      </div>
+      {fetchedOnce && totalPages > 1 ? (
+        <div className="pager">
+          <button type="button" className="secondary" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
+            {t("filter.prev")}
+          </button>
+          <div className="center">{t("filter.page", { page, total: totalPages })}</div>
+          <button
+            type="button"
+            className="secondary"
+            disabled={page >= totalPages}
+            onClick={() => setPage((p) => p + 1)}
+          >
+            {t("filter.next")}
+          </button>
+        </div>
+      ) : null}
 
-      <CardWall cards={cards} />
+      {loading && !cards.length ? <CardWallSkeleton /> : <CardWall cards={cards} />}
 
-      <div className="pager">
-        <button type="button" className="secondary" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
-          {t("filter.prev")}
-        </button>
-        <div className="center">{t("filter.page", { page, total: totalPages })}</div>
-        <button
-          type="button"
-          className="secondary"
-          disabled={page >= totalPages}
-          onClick={() => setPage((p) => p + 1)}
-        >
-          {t("filter.next")}
-        </button>
-      </div>
+      {fetchedOnce && totalPages > 1 ? (
+        <div className="pager">
+          <button type="button" className="secondary" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
+            {t("filter.prev")}
+          </button>
+          <div className="center">{t("filter.page", { page, total: totalPages })}</div>
+          <button
+            type="button"
+            className="secondary"
+            disabled={page >= totalPages}
+            onClick={() => setPage((p) => p + 1)}
+          >
+            {t("filter.next")}
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }

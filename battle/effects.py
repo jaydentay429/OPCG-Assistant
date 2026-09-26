@@ -188,14 +188,12 @@ def _grant_keyword_char_ok(
         return False
     name_ok = (not name_needle) or _card_matches_name_contains(info, name_needle)
     trait_ok = True
-    if trait_needle:
-        from battle.engine import _info_has_trait
+    if trait_needle or (isinstance(op.get("trait_any"), list) and op.get("trait_any")) or (
+        isinstance(op.get("trait_all"), list) and op.get("trait_all")
+    ):
+        from battle.engine import _op_traits_ok
 
-        trait_ok = _info_has_trait(info, trait_needle)
-    if isinstance(op.get("trait_any"), list) and op.get("trait_any"):
-        from battle.engine import _info_has_trait
-
-        trait_ok = any(_info_has_trait(info, str(t)) for t in op["trait_any"])
+        trait_ok = _op_traits_ok(info, op)
 
     def _text_flags_ok() -> bool:
         if op.get("require_no_on_play") or op.get("require_no_when_attacking"):
@@ -240,7 +238,7 @@ def _grant_keyword_char_ok(
         return identity_ok and _numeric_ok()
     if name_needle and not name_ok:
         return False
-    if (trait_needle or (isinstance(op.get("trait_any"), list) and op.get("trait_any"))) and not trait_ok:
+    if (trait_needle or (isinstance(op.get("trait_any"), list) and op.get("trait_any")) or (isinstance(op.get("trait_all"), list) and op.get("trait_all"))) and not trait_ok:
         return False
     return _numeric_ok()
 
@@ -1266,7 +1264,7 @@ def parse_main_event(info: dict[str, Any]) -> list[dict[str, Any]]:
 
 def has_counter_timing(info: dict[str, Any]) -> bool:
     text = effect_blob(info)
-    if re.search(r"【反撃】|【反击】|\[counter\]", text, re.I):
+    if re.search(r"【反撃】|【反击】|【反擊】|\[counter\]", text, re.I):
         return True
     return False
 
@@ -1401,9 +1399,16 @@ def _apply_timed_power_mod(
     on_leader: bool,
     inst=None,
 ) -> None:
-    """Route power into this-turn mod or until-opp-end bucket."""
+    """Route power into this-turn mod, this-battle bucket, or until-opp-end bucket."""
     if _duration_is_until_opp_end(duration):
         entry = {"amount": int(amount), "expire_seat": _opp_end_expire_seat(controller_seat)}
+        if on_leader:
+            owner.leader_power_until_end.append(entry)
+        elif inst is not None:
+            inst.power_until_end.append(entry)
+        return
+    if str(duration or "").strip().lower() == "battle":
+        entry = {"amount": int(amount), "expire_kind": "battle"}
         if on_leader:
             owner.leader_power_until_end.append(entry)
         elif inst is not None:
@@ -1433,7 +1438,8 @@ def _annotate_buff_duration_from_text(op: dict, blob: str) -> dict:
         return out
     if re.search(
         r"until the end of (?:your )?opponent'?s next end phase|"
-        r"下一個對手結束階段結束前|下一个对手结束阶段结束前|"
+        r"下一個對手的?結束階段結束(?:時)?前|下一个对手的?结束阶段结束(?:时)?前|"
+        r"次の相手のエンドフェイズ終了時まで|"
         r"until the end of your opponent'?s turn",
         blob,
         re.I,
@@ -1549,7 +1555,7 @@ def _merge_continuous_self_keyword_grants(
                 return None
             tk = str(o.get("target_kind") or "self").strip().lower()
             trait = str(o.get("trait_contains") or o.get("trait_includes") or "").strip()
-            board_wide = bool(o.get("all") or trait or o.get("name_contains"))
+            board_wide = bool(o.get("all") or trait or o.get("name_contains") or o.get("trait_all") or o.get("trait_any"))
             if tk in {"", "self"}:
                 if src_iid != inst.iid:
                     return None
@@ -1558,18 +1564,11 @@ def _merge_continuous_self_keyword_grants(
                     return None
             else:
                 return None
-            if trait:
-                from battle.engine import _info_has_trait
+            if trait or o.get("trait_all") or o.get("trait_any"):
+                from battle.engine import _op_traits_ok
 
                 victim = catalog(inst.card_id) if catalog else info
-                if not _info_has_trait(victim or {}, trait):
-                    return None
-            trait_any = o.get("trait_any")
-            if isinstance(trait_any, list) and trait_any:
-                from battle.engine import _info_has_trait
-
-                victim = catalog(inst.card_id) if catalog else info
-                if not any(_info_has_trait(victim or {}, str(t)) for t in trait_any):
+                if not _op_traits_ok(victim or {}, o):
                     return None
             return kw
 
@@ -1964,6 +1963,22 @@ def _parse_replace_leave_ops(chunk: str) -> list[dict[str, Any]]:
     - OP12-027: rest this Character instead of allied KO
     - EB04-031: return 1 DON!! instead of KO
     """
+    # If you would take damage, you may trash this Character instead (EB05-052)
+    if re.search(
+        r"if you would take damage.{0,80}trash this Character instead|"
+        r"即將受到傷害時.{0,60}可以替換成將這張角色卡|"
+        r"即将受到伤害时.{0,60}可以替换成将这张角色卡",
+        chunk,
+        re.I,
+    ):
+        return [
+            {
+                "op": "replace_life_damage",
+                "optional": True,
+                "cost": "trash_self",
+                "summary": "You may trash this Character instead of taking damage",
+            }
+        ]
     # Self KO → return DON!! to DON deck
     if re.search(
         r"if this Character would be k\.?o\.?'?d.{0,100}"
@@ -7702,13 +7717,34 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                     return logs
                 else:
                     continue
-            # Stage KO
-            if tk == "opponent_stage" or any(s.iid == target for s in foe.stages):
-                hit = next((s for s in foe.stages if s.iid == target), None)
-                if hit:
-                    foe.stages = [s for s in foe.stages if s.iid != hit.iid]
-                    foe.trash.append(hit.card_id)
+            # Stage KO (own / opponent / either)
+            if tk in {"opponent_stage", "own_stage", "any_stage"} or (
+                target
+                and (
+                    any(s.iid == target for s in foe.stages)
+                    or any(s.iid == target for s in player.stages)
+                )
+            ):
+                pools: list[tuple[Any, list]] = []
+                if tk == "own_stage":
+                    pools = [(player, player.stages)]
+                elif tk == "opponent_stage":
+                    pools = [(foe, foe.stages)]
+                else:
+                    pools = [(player, player.stages), (foe, foe.stages)]
+                hit = None
+                hit_owner = None
+                for owner, stages in pools:
+                    hit = next((s for s in stages if s.iid == target), None)
+                    if hit:
+                        hit_owner = owner
+                        break
+                if hit and hit_owner:
+                    hit_owner.stages = [s for s in hit_owner.stages if s.iid != hit.iid]
+                    hit_owner.trash.append(hit.card_id)
                     logs.append({"key": "play.log.ko", "id": hit.card_id})
+                elif op.get("as_cost"):
+                    return logs
                 continue
             for owner in (foe, player):
                 hit = next((c for c in owner.characters if c.iid == target), None)
@@ -8591,6 +8627,10 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                     if getattr(hit, "cannot_be_removed", False) and owner_seat != seat:
                         logs.append({"key": "play.log.effect_unsupported", "id": "cannot_be_removed"})
                         break
+                    if op.get("negate_this_turn") or op.get("negate_effects"):
+                        _apply_negate_to_target(
+                            owner, hit.iid, str(op.get("duration") or "turn"), seat
+                        )
                     from battle.leave_replace import try_replace_leave
 
                     if try_replace_leave(
@@ -8967,6 +9007,8 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
         elif kind == "replace_leave":
             # Continuous shield — enforced at KO/leave time via try_replace_leave.
             logs.append({"key": "play.log.effect_applied", "summary": "replace_leave"})
+        elif kind == "replace_life_damage":
+            logs.append({"key": "play.log.effect_applied", "summary": "replace_life_damage"})
         elif kind == "replace_rest":
             # Continuous shield — enforced when rested via try_replace_rest.
             logs.append({"key": "play.log.effect_applied", "summary": "replace_rest"})
@@ -9001,11 +9043,20 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                     player.skip_untap_iids.append(src)
                     logs.append({"key": "play.log.effect_applied", "summary": "skip_untap"})
                 continue
-            if tk in {"leader"} or (op.get("include_leader") and not op.get("count") and tk == "leader"):
-                if op.get("require_rested") and not foe.leader_rested:
+            own_leader = tk in {"own_leader", "self_leader"} or (
+                tk in {"leader"} and str(op.get("owner") or "").strip().lower() in {"self", "own"}
+            )
+            if own_leader or tk in {"leader"} or (op.get("include_leader") and not op.get("count") and tk == "leader"):
+                marked = player if own_leader else foe
+                if op.get("require_rested") and not marked.leader_rested:
                     continue
-                foe.leader_skip_untap = True
-                logs.append({"key": "play.log.effect_applied", "summary": "skip_untap:leader"})
+                marked.leader_skip_untap = True
+                logs.append(
+                    {
+                        "key": "play.log.effect_applied",
+                        "summary": "skip_untap:own_leader" if own_leader else "skip_untap:leader",
+                    }
+                )
                 continue
             cost_lte = op.get("cost_lte")
             cost_eq = op.get("cost_eq")
@@ -9895,14 +9946,22 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
             def _reveal_ok(cid: str) -> bool:
                 info = catalog(cid) if callable(catalog) else {}
                 want_type = str(op.get("card_type") or "").strip().lower()
+                type_ok = True
                 if want_type:
                     ctype = card_type_of(info or {})
-                    if ctype != want_type:
-                        return False
+                    type_ok = ctype == want_type
+                trait_ok = True
                 if trait:
                     from battle.engine import _info_has_trait
 
-                    if not _info_has_trait(info or {}, trait):
+                    trait_ok = _info_has_trait(info or {}, trait)
+                if op.get("type_or_trait") and (want_type or trait):
+                    if not ((want_type and type_ok) or (trait and trait_ok)):
+                        return False
+                else:
+                    if want_type and not type_ok:
+                        return False
+                    if trait and not trait_ok:
                         return False
                 for key, getter in (
                     ("cost_lte", _printed_cost),
@@ -10574,7 +10633,17 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                     continue
                 target = prior
             filters: dict[str, Any] = {}
-            for key in ("cost_lte", "power_lte", "base_power_lte", "base_cost_lte", "exclude_name", "require_no_effect", "name_contains", "trait_contains"):
+            for key in (
+                "cost_lte",
+                "power_lte",
+                "base_power_lte",
+                "base_cost_lte",
+                "exclude_name",
+                "require_no_effect",
+                "name_contains",
+                "trait_contains",
+                "exclude_iids",
+            ):
                 if op.get(key) is not None:
                     filters[key] = op[key]
             if kind == "deny_attack":
@@ -10600,6 +10669,7 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                 options = _choice_options(state, seat, tk, catalog, filters or None)
                 if op.get("active_only"):
                     options = [iid for iid in options if any(c.iid == iid and not c.rested for c in foe.characters)]
+                options = [iid for iid in options if iid == "leader" or iid not in bucket]
                 if op.get("include_leader") and kind == "deny_attack":
                     if op.get("rested_only") and not foe.leader_rested:
                         pass
@@ -10619,18 +10689,22 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                             bucket.append(iid)
                     logs.append({"key": "play.log.effect_applied", "summary": f"{kind}:all"})
                     continue
-                if len(options) > count and not state.pending_choice and op.get("optional", True):
+                # Up-to-N (e.g. OP14-033 count=2): ask whenever more than one eligible
+                # remains, not only when len(options) > count. With exactly 2 eligible
+                # and count=2 the old check auto-took options[0] and never re-queued.
+                if len(options) > 1 and not state.pending_choice:
+                    rem = {k: v for k, v in op.items() if k != "target_iid"}
                     state.pending_choice = PendingChoice(
                         seat=seat,
                         card_id=str(op.get("card_id") or ""),
                         source_iid=str(op.get("source_iid") or ""),
                         target_kind=tk,
                         options=options,
-                        remaining_ops=[dict(op), *queue],
-                        optional=True,
+                        remaining_ops=[rem, *queue],
+                        optional=bool(op.get("optional", True)),
                         summary=str(op.get("summary") or f"Choose target for {kind}"),
-                purpose=purpose_from_op(op),
-            )
+                        purpose=purpose_from_op(op),
+                    )
                     logs.append({"key": "play.log.choice_offer", "name": player.username})
                     return logs
                 target = options[0]
@@ -10640,6 +10714,15 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
             elif target and target not in bucket:
                 bucket.append(target)
                 logs.append({"key": "play.log.effect_applied", "summary": kind})
+            left = count - 1
+            if left > 0 and target:
+                cont = {k: v for k, v in op.items() if k != "target_iid"}
+                cont["count"] = left
+                excl = list(cont.get("exclude_iids") or [])
+                if target not in excl:
+                    excl.append(target)
+                cont["exclude_iids"] = excl
+                queue.insert(0, cont)
         elif kind == "set_cost":
             target = str(op.get("target_iid") or "")
             amt = int(op.get("amount") or 0)
@@ -11125,6 +11208,7 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                     or op.get("all")
                     or op.get("name_or_trait")
                     or op.get("trait_any")
+                    or op.get("trait_all")
                 )
                 if filtered:
                     for ch in player.characters:
@@ -11603,6 +11687,10 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                         filters["power_lte"] = op["power_lte"]
                     if op.get("base_power_lte") is not None:
                         filters["base_power_lte"] = op["base_power_lte"]
+                    if op.get("trait_contains"):
+                        filters["trait_contains"] = op["trait_contains"]
+                    if op.get("name_contains"):
+                        filters["name_contains"] = op["name_contains"]
                     options = _choice_options(state, seat, tk, catalog, filters or None)
                     if op.get("exclude_self"):
                         src = str(op.get("source_iid") or "")
@@ -12214,6 +12302,18 @@ def _choice_options(state: MatchState, seat: int, target_kind: str, catalog: Cat
                 else:
                     lead_info = catalog(player.leader_card_id)
                 lead_ok = _info_has_trait(lead_info or {}, needle_trait)
+            if lead_ok:
+                lead_seat = state.other(seat) if kind.startswith("opponent") else seat
+                try:
+                    from battle.engine import inst_power
+
+                    live_lead = inst_power(state, lead_seat, "leader", catalog) if catalog else 0
+                except Exception:
+                    live_lead = 0
+                if filters.get("power_lte") is not None and live_lead > int(filters["power_lte"]):
+                    lead_ok = False
+                if filters.get("power_gte") is not None and live_lead < int(filters["power_gte"]):
+                    lead_ok = False
             if lead_ok:
                 out = ["leader", *out]
     if filters.get("include_stage"):

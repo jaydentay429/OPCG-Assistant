@@ -622,6 +622,7 @@ export type AiBattleDeck = {
   name: string;
   leader_card_id: string;
   non_leader_count: number;
+  cards?: Record<string, number>;
 };
 
 export async function fetchBattleGuestToken(): Promise<{

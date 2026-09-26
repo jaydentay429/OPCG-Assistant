@@ -18,7 +18,7 @@ from typing import Any
 from dataclasses import dataclass
 
 import requests
-from fastapi import FastAPI, HTTPException, Query, Request, Response
+from fastapi import BackgroundTasks, FastAPI, HTTPException, Query, Request, Response
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -509,6 +509,21 @@ class AnalyticsEventIn(BaseModel):
     session_id: str
     language: str | None = None
     screen: str | None = None
+
+
+class AnalyticsAiCrawlIn(BaseModel):
+    bot: str
+    path: str
+
+
+_AI_CRAWL_BOTS = {
+    "GPTBot",
+    "ChatGPT-User",
+    "OAI-SearchBot",
+    "PerplexityBot",
+    "ClaudeBot",
+    "Google-Extended",
+}
 
 
 cards_by_id: dict[str, dict[str, Any]] = {}
@@ -6858,6 +6873,28 @@ def analytics_event(body: AnalyticsEventIn, request: Request) -> dict[str, Any]:
         "visitor_id": result.get("visitor_id"),
         "ip_hash": result.get("ip_hash"),
     }
+
+
+@app.post("/analytics/ai-crawl")
+def analytics_ai_crawl(body: AnalyticsAiCrawlIn, background_tasks: BackgroundTasks) -> dict[str, Any]:
+    """Log GPTBot / citation crawlers. Failures are dropped; never block the site."""
+    bot = str(body.bot or "").strip()[:64]
+    if bot not in _AI_CRAWL_BOTS:
+        return {"ok": False, "skipped": True}
+    path = str(body.path or "/").strip()[:300] or "/"
+
+    def _write() -> None:
+        try:
+            from analytics import analytics_enabled, insert_ai_crawl
+
+            if not analytics_enabled():
+                return
+            insert_ai_crawl(bot=bot, path=path)
+        except Exception:
+            return
+
+    background_tasks.add_task(_write)
+    return {"ok": True}
 
 
 @app.get("/analytics/report/preview")

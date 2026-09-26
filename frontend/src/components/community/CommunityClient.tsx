@@ -72,20 +72,28 @@ function isEditExpiredError(err: unknown): boolean {
   return m.includes("403") || m.includes("24") || m.includes("编辑") || m.includes("編輯") || m.includes("edit");
 }
 
-export function CommunityHome() {
+export function CommunityHome({
+  initialThreads,
+  initialTotal,
+  initialHasMore,
+}: {
+  initialThreads?: CommunityThread[];
+  initialTotal?: number;
+  initialHasMore?: boolean;
+} = {}) {
   const { t, lang } = useI18n();
   const { token, isLoggedIn, isAdmin, requestLogin } = useAuth();
   const [categories, setCategories] = useState<CommunityCategory[]>([]);
-  const [threads, setThreads] = useState<CommunityThread[]>([]);
-  const [total, setTotal] = useState(0);
-  const [hasMore, setHasMore] = useState(false);
+  const [threads, setThreads] = useState<CommunityThread[]>(initialThreads ?? []);
+  const [total, setTotal] = useState(initialTotal ?? 0);
+  const [hasMore, setHasMore] = useState(Boolean(initialHasMore));
   const [offset, setOffset] = useState(0);
   const [categoryId, setCategoryId] = useState<number | null>(null);
   const [sort, setSort] = useState("new");
   const [searchInput, setSearchInput] = useState("");
   const [searchQ, setSearchQ] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!initialThreads?.length);
   const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
@@ -692,13 +700,21 @@ function PostNode({
   );
 }
 
-export function CommunityThreadDetail({ threadId }: { threadId: number }) {
+export function CommunityThreadDetail({
+  threadId,
+  initialThread,
+  initialPosts,
+}: {
+  threadId: number;
+  initialThread?: CommunityThread | null;
+  initialPosts?: CommunityPost[];
+}) {
   const { t, lang } = useI18n();
   const router = useRouter();
   const { token, isLoggedIn, isAdmin, requestLogin } = useAuth();
-  const [thread, setThread] = useState<CommunityThread | null>(null);
-  const [posts, setPosts] = useState<CommunityPost[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [thread, setThread] = useState<CommunityThread | null>(initialThread ?? null);
+  const [posts, setPosts] = useState<CommunityPost[]>(initialPosts ?? []);
+  const [loading, setLoading] = useState(!initialThread);
   const [error, setError] = useState<string | null>(null);
   const [body, setBody] = useState("");
   const [anonymous, setAnonymous] = useState(false);

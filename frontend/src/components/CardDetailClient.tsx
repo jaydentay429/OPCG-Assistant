@@ -223,8 +223,13 @@ export function CardDetailClient({
     // DON cards: load by full id (base truncation would break DON17-10163 → DON17-101).
     // Other cards: load by base id so sibling variants are complete.
     const loadId = isDonCardId(cardId) ? normalizeCardId(cardId) || selectedVariantId : baseId;
+    const fallbackId = normalizeCardId(cardId) || selectedVariantId;
     fetchCard(loadId, false)
       .catch(() => fetchCard(loadId, false))
+      .catch((e) => {
+        if (fallbackId && fallbackId !== loadId) return fetchCard(fallbackId, false);
+        throw e;
+      })
       .then((res) => {
         if (cancelled) return;
         setCard(res.card);
@@ -441,12 +446,6 @@ export function CardDetailClient({
               })}
             </div>
           ) : null}
-          {!isDonCard ? (
-            <CardDetailExtras
-              cardId={normalizeCardId(activeVariantId || selectedVariantId || card.id) || card.id}
-              sections="comments"
-            />
-          ) : null}
         </div>
         <div className="detail-info">
           <h2 style={{ marginBottom: 8 }}>{t("detail.info")}</h2>
@@ -534,6 +533,12 @@ export function CardDetailClient({
               <h3 style={{ margin: "0.5rem 0" }}>{t("detail.trigger")}</h3>
               <p style={{ whiteSpace: "pre-wrap", lineHeight: 1.45, color: "#fde68a" }}>{trigger}</p>
             </div>
+          ) : null}
+          {!isDonCard ? (
+            <CardDetailExtras
+              cardId={normalizeCardId(activeVariantId || selectedVariantId || card.id) || card.id}
+              sections="comments"
+            />
           ) : null}
           <section className="price-panel">
             <div className="price-panel-head">

@@ -1015,6 +1015,10 @@ def _feeds_blocker(
         if not has_blocker(binfo, ch, state=state, owner_seat=foe.seat, catalog=catalog):
             continue
         try:
+            from battle.engine import _character_denied_rest
+
+            if _character_denied_rest(foe, ch.iid):
+                continue
             if _blocker_denied(state, seat, ch, catalog):
                 continue
         except Exception:
@@ -1043,10 +1047,15 @@ def _is_own_blocker(
 
 
 def _ready_blocker_iids(state: MatchState, seat: int, catalog: CatalogFn) -> list[str]:
+    from battle.engine import _character_denied_rest
+
+    player = state.player(seat)
     return [
         ch.iid
-        for ch in state.player(seat).characters
-        if (not ch.rested) and _is_own_blocker(state, seat, ch, catalog)
+        for ch in player.characters
+        if (not ch.rested)
+        and _is_own_blocker(state, seat, ch, catalog)
+        and not _character_denied_rest(player, ch.iid)
     ]
 
 

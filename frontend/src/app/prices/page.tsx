@@ -12,5 +12,17 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default function PricesPage() {
-  return <PricesPageClient />;
+  return (
+    <>
+      <section className="page-seo-intro seo-only" aria-hidden="true">
+        <p>
+          本頁提供 ONE PIECE CARD GAME（OPCG）卡牌的市場行情參考，可搜尋卡號或卡名、加入關注清單，並對照日圓參考價。數字會隨市況更新，請以頁面上即時列表為準。
+        </p>
+        <p>
+          價格來源為 Yuyu-tei 等公開店舖參考價，僅供補牌與比價，不是即時成交價或官方定價。
+        </p>
+      </section>
+      <PricesPageClient />
+    </>
+  );
 }

@@ -125,6 +125,7 @@ ALLOWED_OPS = frozenset(
         "flip_life",
         "place_on_life",
         "replace_leave",
+        "replace_life_damage",
         "replace_rest",
         "play_characters_rested",
         "cannot_attack_leader",
@@ -195,6 +196,7 @@ _ABILITY_GATE_INTS = (
     ("require_own_char_power_gte", 0, 20000),
     ("require_own_char_base_power_gte", 0, 20000),
     ("require_opp_char_base_power_gte", 0, 20000),
+    ("require_opp_field_char_base_power_gte", 0, 20000),
     ("require_victim_base_power_gte", 0, 20000),
     ("require_leader_power_lte", -20000, 20000),
     ("require_don_field_deficit_gte", 0, 10),
@@ -923,6 +925,11 @@ def sanitize_op(raw: Any) -> dict[str, Any] | None:
             elif int(op.get("amount") or 0) < 0 and not raw.get("target_iid"):
                 op["target_kind"] = "opponent_character"
             op["optional"] = bool(raw.get("optional", False))
+            if raw.get("require_don_field_gte") is not None:
+                try:
+                    op["require_don_field_gte"] = max(0, min(20, int(raw.get("require_don_field_gte") or 0)))
+                except (TypeError, ValueError):
+                    pass
             if raw.get("always_choose"):
                 op["always_choose"] = True
             if raw.get("as_cost"):
@@ -1004,6 +1011,9 @@ def sanitize_op(raw: Any) -> dict[str, Any] | None:
             trait_any = raw.get("trait_any")
             if isinstance(trait_any, list):
                 op["trait_any"] = [str(t)[:40] for t in trait_any if str(t).strip()][:4]
+            trait_all = raw.get("trait_all")
+            if isinstance(trait_all, list):
+                op["trait_all"] = [str(t)[:80] for t in trait_all if str(t).strip()][:4]
             if raw.get("attribute"):
                 op["attribute"] = str(raw.get("attribute"))[:40]
             if raw.get("color"):
@@ -1248,6 +1258,8 @@ def sanitize_op(raw: Any) -> dict[str, Any] | None:
                 chooser = str(raw.get("chooser") or "").strip().lower()
                 if chooser in {"opponent", "self"}:
                     op["chooser"] = chooser
+                if raw.get("negate_this_turn") or raw.get("negate_effects"):
+                    op["negate_this_turn"] = True
             if raw.get("summary"):
                 op["summary"] = str(raw.get("summary"))[:160]
             if raw.get("card_id"):
@@ -1662,6 +1674,8 @@ def sanitize_op(raw: Any) -> dict[str, Any] | None:
         if raw.get("source_iid"):
             op["source_iid"] = str(raw.get("source_iid"))[:40]
         op["optional"] = bool(raw.get("optional", True))
+        if raw.get("as_cost"):
+            op["as_cost"] = True
         if raw.get("all"):
             op["all"] = True
         if raw.get("color"):
@@ -1775,6 +1789,9 @@ def sanitize_op(raw: Any) -> dict[str, Any] | None:
         trait_any = raw.get("trait_any")
         if isinstance(trait_any, list):
             op["trait_any"] = [str(t)[:40] for t in trait_any if str(t).strip()][:4]
+        trait_all = raw.get("trait_all")
+        if isinstance(trait_all, list):
+            op["trait_all"] = [str(t)[:80] for t in trait_all if str(t).strip()][:4]
         if raw.get("name_or_trait"):
             op["name_or_trait"] = True
         for key, lo, hi in (("cost_lte", 0, 10), ("cost_eq", 0, 10), ("power_gte", 0, 20000), ("power_lte", 0, 20000)):
@@ -2202,6 +2219,12 @@ def sanitize_op(raw: Any) -> dict[str, Any] | None:
         op["optional"] = bool(raw.get("optional", True))
         if raw.get("summary"):
             op["summary"] = str(raw.get("summary"))[:160]
+    if kind == "replace_life_damage":
+        op["optional"] = bool(raw.get("optional", True))
+        cost = str(raw.get("cost") or "trash_self").strip().lower()
+        op["cost"] = cost if cost == "trash_self" else "trash_self"
+        if raw.get("summary"):
+            op["summary"] = str(raw.get("summary"))[:160]
     if kind == "cannot_take_life":
         op["duration"] = "turn"
         if raw.get("summary"):
@@ -2209,8 +2232,11 @@ def sanitize_op(raw: Any) -> dict[str, Any] | None:
     if kind == "skip_untap":
         op["count"] = max(1, min(5, int(raw.get("count") or 1)))
         tk = str(raw.get("target_kind") or "opponent_character_rested").strip()
-        if tk in TARGET_KINDS or tk.endswith("_rested") or tk in {"self", "own_character", "any_character", "all", "all_characters", "leader"}:
+        if tk in TARGET_KINDS or tk.endswith("_rested") or tk in {"self", "own_character", "any_character", "all", "all_characters", "leader", "own_leader", "self_leader"}:
             op["target_kind"] = tk
+        owner = str(raw.get("owner") or "").strip().lower()
+        if owner in {"self", "own", "opponent"}:
+            op["owner"] = "self" if owner in {"self", "own"} else "opponent"
         for key, lo, hi in (("cost_lte", 0, 10), ("cost_eq", 0, 10), ("power_lte", 0, 20000), ("base_power_lte", 0, 20000), ("don_attached_gte", 0, 10)):
             if raw.get(key) is not None:
                 try:
@@ -2424,6 +2450,8 @@ def sanitize_op(raw: Any) -> dict[str, Any] | None:
             op["from_zone"] = "hand"
         if raw.get("exclude_self"):
             op["exclude_self"] = True
+        if raw.get("trait_contains"):
+            op["trait_contains"] = str(raw.get("trait_contains"))[:80]
         if raw.get("at_end_of_battle"):
             op["at_end_of_battle"] = True
         if raw.get("at_end_of_turn"):
@@ -2725,6 +2753,8 @@ def sanitize_op(raw: Any) -> dict[str, Any] | None:
             op["trait_contains"] = str(raw.get("trait_contains"))[:80]
         if raw.get("trait_includes"):
             op["trait_includes"] = str(raw.get("trait_includes"))[:80]
+        if raw.get("type_or_trait"):
+            op["type_or_trait"] = True
         trait_any = raw.get("trait_any")
         if isinstance(trait_any, list):
             op["trait_any"] = [str(t)[:40] for t in trait_any if str(t).strip()][:4]

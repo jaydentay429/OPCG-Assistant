@@ -2324,6 +2324,7 @@ export function BattleBoard({
   function confirmBlock(blockerIid: string | null | undefined) {
     const iid = String(blockerIid || "").trim();
     if (!iid || state.phase !== "block") return;
+    if (!actionMatch(state.legal_actions, "block", { blocker_iid: iid })) return;
     if (blockSubmitRef.current || actionBusy) return;
     blockSubmitRef.current = true;
     setCardMenu(null);
@@ -3102,7 +3103,9 @@ export function BattleBoard({
                     </p>
                   </div>
                   <div className="ux-card-detail-actions">
-                    {cardDetail.blockIid && state.phase === "block" ? (
+                    {cardDetail.blockIid &&
+                    state.phase === "block" &&
+                    actionMatch(state.legal_actions, "block", { blocker_iid: cardDetail.blockIid }) ? (
                       <button
                         type="button"
                         className="success"

@@ -22,7 +22,15 @@ export function toBaseCardId(cardId: string): string {
   return m ? m[1] : id;
 }
 
-/** UI label: show base id only (no -P1 / -R1 suffix). DON keeps full 5-digit id. */
+/** Set / pack code from a catalog id (OP18-001-P1 → OP18, P-082 → P). */
+export function setCodeFromCardId(cardId: string): string | null {
+  const id = normalizeCardId(cardId);
+  if (!id) return null;
+  if (id.startsWith("DON")) return "DON";
+  if (/^P-\d{3}/.test(id)) return "P";
+  const m = id.match(/^([A-Z]{2,4}\d{0,2})-\d{3}/);
+  return m ? m[1] : null;
+}
 export function displayCardId(cardId: string): string {
   return toBaseCardId(cardId);
 }

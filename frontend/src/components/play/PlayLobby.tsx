@@ -43,6 +43,16 @@ type Props = {
 
 const IMPORT_ID = "__imported__";
 const IMPORT_OPP_ID = "__imported_opp__";
+const SAMPLE_ID = "__sample__";
+
+function sampleFromAi(deck: AiBattleDeck | undefined): BattleInlineDeck | null {
+  if (!deck?.leader_card_id || !deck.cards || !Object.keys(deck.cards).length) return null;
+  return {
+    leader_card_id: deck.leader_card_id,
+    cards: deck.cards,
+    name: deck.name,
+  };
+}
 
 async function resolveImportedDeck(raw: string): Promise<BattleInlineDeck | null> {
   const initial = parseDeckListText(raw);
@@ -116,7 +126,8 @@ export function PlayLobby({
   const [importingOpp, setImportingOpp] = useState(false);
   const [importError, setImportError] = useState<string | null>(null);
 
-  const selected = deckId || (imported ? IMPORT_ID : ready[0]?.id || "");
+  const sampleDeck = useMemo(() => sampleFromAi(aiDecks[0]), [aiDecks]);
+  const selected = deckId || (imported ? IMPORT_ID : ready[0]?.id || (sampleDeck ? SAMPLE_ID : ""));
   const selectedAi = aiDeckId || aiDecks[0]?.id || "";
   const selectedOpp = oppDeckId || (importedOpp ? IMPORT_OPP_ID : ready[1]?.id || ready[0]?.id || "");
 
@@ -163,6 +174,7 @@ export function PlayLobby({
 
   function pickFromSelect(id: string, which: "p1" | "p2"): PlayDeckPick | null {
     if (which === "p1") {
+      if (id === SAMPLE_ID) return sampleDeck ? { kind: "inline", deck: sampleDeck } : null;
       if (id === IMPORT_ID) return imported ? { kind: "inline", deck: imported } : null;
       return id ? { kind: "saved", deckId: id } : null;
     }
@@ -174,6 +186,12 @@ export function PlayLobby({
   const canStartAi = Boolean(pickFromSelect(selected, "p1") && selectedAi);
   const canStartSelf = Boolean(pickFromSelect(selected, "p1") && pickFromSelect(selectedOpp, "p2"));
   const hasAnyDeckSource = ready.length > 0 || Boolean(imported);
+  const canQuickSample = Boolean(sampleDeck && selectedAi);
+
+  function startQuickSample() {
+    if (!sampleDeck || !selectedAi) return;
+    onStartAi({ kind: "inline", deck: sampleDeck }, selectedAi);
+  }
 
   const heading =
     mode === "match"
@@ -238,7 +256,8 @@ export function PlayLobby({
             <strong>{t("play.mode_room")}</strong>
             <span className="muted">{t("play.mode_room_hint")}</span>
           </button>
-          <button type="button" className="play-mode-card" disabled={busy} onClick={() => setMode("ai")}>
+          <button type="button" className="play-mode-card is-featured" disabled={busy} onClick={() => setMode("ai")}>
+            <span className="play-mode-kicker">{t("play.sample_kicker")}</span>
             <strong>{t("play.mode_ai")}</strong>
             <span className="muted">{t("play.mode_ai_hint")}</span>
           </button>
@@ -259,7 +278,12 @@ export function PlayLobby({
             {t("play.back")}
           </button>
           {!isLoggedIn ? (
-            <p className="muted">{t("play.rank_need_login")}</p>
+            <p className="muted deck-login-hint">
+              <span>{t("play.rank_need_login")}</span>
+              <button type="button" onClick={() => requestLogin()}>
+                {t("auth.login")}
+              </button>
+            </p>
           ) : !hasAnyDeckSource ? (
             <p className="muted">{t("play.need_deck_or_import")}</p>
           ) : (
@@ -448,13 +472,19 @@ export function PlayLobby({
           <button type="button" className="ghost play-back" disabled={busy} onClick={() => setMode("pick")}>
             {t("play.back")}
           </button>
-          {!hasAnyDeckSource ? (
+          {!hasAnyDeckSource && !sampleDeck ? (
             <p className="muted">{t("play.need_deck_or_import")}</p>
           ) : null}
           <>
+            <div className="play-actions play-actions-primary">
+              <button type="button" className="success" disabled={busy || !canQuickSample} onClick={startQuickSample}>
+                {t("play.start_sample")}
+              </button>
+            </div>
+            <p className="muted play-setup-note">{t("play.start_sample_hint")}</p>
             <PlaySetupCard>
               <PlaySetupBlock>
-                {ready.length ? (
+                {ready.length || sampleDeck || imported ? (
                   <label className="play-field">
                     <span>{t("play.choose_deck")}</span>
                     <select
@@ -467,6 +497,11 @@ export function PlayLobby({
                       }}
                       disabled={busy}
                     >
+                      {sampleDeck ? (
+                        <option value={SAMPLE_ID}>
+                          {t("play.sample_deck")} · {displayCardId(sampleDeck.leader_card_id)} · 50/50
+                        </option>
+                      ) : null}
                       {ready.map((d) => (
                         <option key={d.id} value={d.id}>
                           {d.name} · {displayCardId(d.leader_card_id)} · {d.non_leader_count}/50
@@ -479,10 +514,6 @@ export function PlayLobby({
                       ) : null}
                     </select>
                   </label>
-                ) : imported ? (
-                  <p className="muted">
-                    {t("play.imported_deck")}: {imported.name || displayCardId(imported.leader_card_id)} · 50/50
-                  </p>
                 ) : null}
                 <DeckImportBlock
                   label={t("play.import_deck")}

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { CommunityThreadDetail } from "@/components/community/CommunityClient";
+import { JsonLd } from "@/components/JsonLd";
 import { fetchCommunityThread } from "@/lib/api";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildPageMetadata, discussionForumPostingJsonLd } from "@/lib/seo";
+import type { CommunityPost, CommunityThread } from "@/lib/types";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -50,12 +52,46 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
+function publicAuthorName(thread: CommunityThread): string | undefined {
+  if (thread.anonymous) return undefined;
+  const name = String(thread.author_display || thread.username || "").trim();
+  return name || undefined;
+}
+
 export default async function CommunityThreadPage({ params }: Props) {
   const { id } = await params;
   const threadId = Number(id);
+  let thread: CommunityThread | null = null;
+  let posts: CommunityPost[] = [];
+  if (Number.isFinite(threadId) && threadId > 0) {
+    try {
+      const data = await fetchCommunityThread(threadId);
+      thread = data.thread;
+      posts = data.posts || [];
+    } catch {
+      thread = null;
+    }
+  }
+
+  const showPosting = Boolean(thread && !thread.deleted);
+  const posting =
+    showPosting && thread
+      ? discussionForumPostingJsonLd({
+          id: thread.id,
+          title: thread.title,
+          body: thread.body || thread.excerpt,
+          datePublished: thread.created_at,
+          dateModified: thread.edited_at || thread.updated_at,
+          authorName: publicAuthorName(thread),
+        })
+      : null;
+
   return (
-    <Suspense fallback={<p className="muted">…</p>}>
-      <CommunityThreadDetail threadId={threadId} />
-    </Suspense>
+    <>
+      <JsonLd data={posting} />
+      <Suspense fallback={<p className="muted">…</p>}>
+        <CommunityThreadDetail threadId={threadId} initialThread={thread} initialPosts={posts} />
+      </Suspense>
+    </>
   );
 }

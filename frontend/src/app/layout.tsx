@@ -4,7 +4,8 @@ import { Providers } from "@/components/Providers";
 import { TopBar } from "@/components/TopBar";
 import { BottomNav } from "@/components/BottomNav";
 import { FooterNote } from "@/components/FooterNote";
-import { SITE_NAME, SITE_URL, defaultOgImage, jsonLdScript, rootJsonLd } from "@/lib/seo";
+import { JsonLd } from "@/components/JsonLd";
+import { SITE_NAME, SITE_URL, defaultOgImage, rootJsonLd } from "@/lib/seo";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 
@@ -103,10 +104,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="dns-prefetch" href="https://api.optcgassistant.com" />
       </head>
       <body>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: jsonLdScript(rootJsonLd()) }}
-        />
+        <JsonLd data={rootJsonLd()} />
         <Providers>
           <div className="app-shell">
             <TopBar />

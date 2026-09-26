@@ -51,7 +51,8 @@ export function CardDetailExtras({
   const [tourneyLoading, setTourneyLoading] = useState(true);
   const [comments, setComments] = useState<CardComment[]>([]);
   const [commentTotal, setCommentTotal] = useState(0);
-  const [commentLoading, setCommentLoading] = useState(true);
+  const [commentLoading, setCommentLoading] = useState(false);
+  const [commentsOpen, setCommentsOpen] = useState(false);
   const [draft, setDraft] = useState("");
   const [anonymous, setAnonymous] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -79,13 +80,20 @@ export function CardDetailExtras({
 
   useEffect(() => {
     if (!showComments) return;
+    setCommentsOpen(false);
     setDraft("");
     setAnonymous(false);
     setReportId(null);
     setReportReason("");
     setReportConfirmId(null);
+    setComments([]);
+    setCommentTotal(0);
+    setError("");
+  }, [cardId, showComments]);
+  useEffect(() => {
+    if (!showComments || !commentsOpen) return;
     void loadComments();
-  }, [cardId, showComments, loadComments]);
+  }, [cardId, showComments, commentsOpen, loadComments]);
   useEffect(() => {
     if (!showTournaments) return;
     let cancelled = false;
@@ -272,9 +280,19 @@ export function CardDetailExtras({
       <section className="card-detail-section card-detail-comments">
         <div className="card-detail-section-head">
           <h3>{t("detail.comments_title")}</h3>
-          <p className="muted">{t("detail.comments_count", { n: commentTotal })}</p>
+          {commentsOpen ? <p className="muted">{t("detail.comments_count", { n: commentTotal })}</p> : null}
         </div>
+        <button
+          type="button"
+          className="secondary card-comments-toggle"
+          aria-expanded={commentsOpen}
+          onClick={() => setCommentsOpen((v) => !v)}
+        >
+          {commentsOpen ? t("detail.comments_hide") : t("detail.comments_show")}
+        </button>
 
+        {commentsOpen ? (
+        <>
         <div className="card-comment-compose">
           <textarea
             value={draft}
@@ -368,6 +386,8 @@ export function CardDetailExtras({
             </li>
           ))}
         </ul>
+        </>
+        ) : null}
       </section>
       ) : null}
 

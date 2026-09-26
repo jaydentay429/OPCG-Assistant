@@ -84,3 +84,6 @@ frontend/package-lock 2.json
 
 # --- Cowork-managed GitHub deploy key (never commit) ---
 .cowork_deploy/
+
+# --- personal Claude Code overrides (not team-wide) ---
+.claude/settings.local.json

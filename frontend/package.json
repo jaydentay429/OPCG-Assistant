@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "bash ../scripts/frontend-dev-from-tmp.sh",
     "dev:turbopack": "next dev --turbopack",
-    "build": "next build && node scripts/sync-standalone-assets.mjs",
+    "build": "node scripts/generate-card-ids.mjs && next build && node scripts/sync-standalone-assets.mjs",
     "start": "next start",
     "lint": "next lint",
     "generate:hans-names": "node scripts/generate-hans-names.mjs"

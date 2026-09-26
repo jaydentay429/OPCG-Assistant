@@ -361,6 +361,7 @@ def mount_battle(
                     "name": d["name"],
                     "leader_card_id": d["leader_card_id"],
                     "non_leader_count": d["non_leader_count"],
+                    "cards": d.get("cards") or {},
                 }
                 for d in decks
             ]

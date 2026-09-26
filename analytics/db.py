@@ -58,6 +58,19 @@ def init_analytics_db() -> None:
             conn.execute(
                 "CREATE INDEX IF NOT EXISTS idx_pv_path_ts ON pageviews(path, ts)"
             )
+            conn.execute(
+                """
+                CREATE TABLE IF NOT EXISTS ai_crawl_logs (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    ts TEXT NOT NULL,
+                    bot TEXT NOT NULL,
+                    path TEXT NOT NULL
+                )
+                """
+            )
+            conn.execute(
+                "CREATE INDEX IF NOT EXISTS idx_ai_crawl_ts ON ai_crawl_logs(ts)"
+            )
             conn.commit()
         finally:
             conn.close()
@@ -177,6 +190,31 @@ def insert_pageview(
         "visitor_id": visitor_id,
         "ip_hash": ip_h,
     }
+
+
+def insert_ai_crawl(*, bot: str, path: str, ts: datetime | None = None) -> None:
+    """Record an AI / citation crawler hit. No cookies, no identity."""
+    bot_s = (bot or "").strip()[:64]
+    path_s = (path or "/").strip()[:300] or "/"
+    path_s = path_s.split("?", 1)[0].split("#", 1)[0].strip()[:300] or "/"
+    if not path_s.startswith("/"):
+        path_s = "/" + path_s
+    if not bot_s:
+        return
+    when = ts or datetime.now(timezone.utc)
+    if when.tzinfo is None:
+        when = when.replace(tzinfo=timezone.utc)
+    ts_s = when.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    with _lock:
+        conn = _connect()
+        try:
+            conn.execute(
+                "INSERT INTO ai_crawl_logs (ts, bot, path) VALUES (?, ?, ?)",
+                (ts_s, bot_s, path_s),
+            )
+            conn.commit()
+        finally:
+            conn.close()
 
 
 def fetch_pageviews(

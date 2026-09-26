@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CardDetailClient } from "@/components/CardDetailClient";
-import { fetchCard } from "@/lib/api";
-import { displayCardId } from "@/lib/cardId";
+import { JsonLd } from "@/components/JsonLd";
+import { fetchCard, fetchCardTournaments, type CardTournamentAppearance } from "@/lib/api";
+import { cardEditorNote } from "@/lib/cardEditorNotes";
+import { displayCardId, setCodeFromCardId } from "@/lib/cardId";
 import {
-  absoluteUrl,
   breadcrumbJsonLd,
   buildPageMetadata,
   cardJsonLd,
   cardOgImage,
-  jsonLdScript,
+  faqPageJsonLd,
 } from "@/lib/seo";
 import type { Card } from "@/lib/types";
 
@@ -18,6 +20,12 @@ function pickText(...values: Array<string | null | undefined>): string {
     if (text) return text;
   }
   return "";
+}
+
+function firstSentence(text: string): string {
+  const compact = text.replace(/\s+/g, " ").trim();
+  const m = compact.match(/^.{8,160}?[。．.!?！？]/);
+  return (m ? m[0] : compact).slice(0, 180);
 }
 
 function cardSeoFields(card: Card, fallbackId: string) {
@@ -30,7 +38,8 @@ function cardSeoFields(card: Card, fallbackId: string) {
   const effect = pickText(card.effect, card.effect_en, "（暫無效果文本）");
   const trigger = pickText(card.trigger, card.trigger_en);
   const colors = (card.colors?.length ? card.colors : card.colors_en || []).join(" / ") || "-";
-  return { id, name, nameEn, rarity, series, cardType, effect, trigger, colors };
+  const traits = (card.traits?.length ? card.traits : card.traits_en || []).join(" / ");
+  return { id, name, nameEn, rarity, series, cardType, effect, trigger, colors, traits };
 }
 
 async function loadCard(cardId: string): Promise<Card | null> {
@@ -105,45 +114,130 @@ export default async function CardPage({
   const card = await loadCard(cardId);
   const seo = card ? cardSeoFields(card, cardId) : null;
   const ogImage = cardOgImage(cardId);
+  const editorNote = cardEditorNote(cardId);
 
-  const structured =
-    seo &&
-    [
-      cardJsonLd({
-        id: seo.id,
-        name: seo.name,
-        nameEn: seo.nameEn,
-        description: seo.effect.replace(/\s+/g, " ").slice(0, 240),
-        imageUrl: ogImage?.url,
-        rarity: seo.rarity,
-        series: seo.series,
-      }),
-      breadcrumbJsonLd([
-        { name: "首頁", path: "/" },
-        { name: "卡牌搜索", path: "/search" },
-        { name: `${seo.name}（${seo.id}）`, path: `/cards/${encodeURIComponent(cardId)}` },
-      ]),
-    ];
+  let appearances: CardTournamentAppearance[] = [];
+  try {
+    const tour = await fetchCardTournaments(cardId, 5);
+    appearances = tour.items || [];
+  } catch {
+    appearances = [];
+  }
+
+  const faqItems: Array<{ question: string; answer: string }> = [];
+  if (seo) {
+    faqItems.push({
+      question: `這張卡的卡號是什麼？`,
+      answer: seo.id,
+    });
+    if (seo.effect && seo.effect !== "（暫無效果文本）") {
+      faqItems.push({
+        question: `${seo.name}（${seo.id}）的效果原文寫了什麼？`,
+        answer: seo.effect.replace(/\s+/g, " ").trim().slice(0, 500),
+      });
+    }
+    if (appearances.length) {
+      const bits = appearances.slice(0, 3).map((row) => {
+        const meta = row.meta_title || row.format || "賽事";
+        const leader = row.leader_name || row.leader || "";
+        return leader ? `${meta}（${leader}）` : meta;
+      });
+      faqItems.push({
+        question: `${seo.name}（${seo.id}）常見於哪些賽事卡組？`,
+        answer: `本站公開賽事資料中出現於：${bits.join("、")}。`,
+      });
+    }
+  }
+
+  const faqLd = faqPageJsonLd(faqItems);
+  const structured = seo
+    ? [
+        cardJsonLd({
+          id: seo.id,
+          name: seo.name,
+          nameEn: seo.nameEn,
+          description: seo.effect.replace(/\s+/g, " ").slice(0, 240),
+          imageUrl: ogImage?.url,
+          rarity: seo.rarity,
+          series: seo.series,
+        }),
+        breadcrumbJsonLd([
+          { name: "首頁", path: "/" },
+          { name: "卡牌搜索", path: "/search" },
+          { name: `${seo.name}（${seo.id}）`, path: `/cards/${encodeURIComponent(cardId)}` },
+        ]),
+        ...(faqLd ? [faqLd] : []),
+      ]
+    : null;
+
+  const summary = seo
+    ? [
+        `${seo.id} ${seo.name} 是${seo.colors !== "-" ? ` ${seo.colors} 色、` : ""}${card?.cost != null ? `費用 ${card.cost} 的` : ""}${seo.cardType}。`,
+        card?.power != null && String(card.power) !== ""
+          ? `力量 ${card.power}。效果：${firstSentence(seo.effect)}`
+          : `效果：${firstSentence(seo.effect)}`,
+      ].join(" ")
+    : "";
 
   return (
     <div className="stack">
-      {structured ? (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: jsonLdScript(structured) }}
-        />
-      ) : null}
+      <JsonLd data={structured} />
       {seo ? (
         <header className="card-seo-header seo-only" aria-hidden="true">
+          <nav className="set-page-nav muted">
+            <Link href="/">首頁</Link>
+            {" / "}
+            <Link href="/search">卡牌搜索</Link>
+            {setCodeFromCardId(seo.id) ? (
+              <>
+                {" / "}
+                <Link href={`/sets/${encodeURIComponent(setCodeFromCardId(seo.id) || "")}`}>
+                  {setCodeFromCardId(seo.id)}
+                </Link>
+              </>
+            ) : null}
+          </nav>
           <h1>
             {seo.name}
             {seo.nameEn && seo.nameEn !== seo.name ? ` / ${seo.nameEn}` : ""} {seo.id}
           </h1>
-          <p>
-            系列 {seo.series} · 稀有度 {seo.rarity} · 類型 {seo.cardType} · 顏色 {seo.colors}
-            {card?.cost != null ? ` · 費用 ${card.cost}` : ""}
-            {card?.power != null && card.power !== "" ? ` · 力量 ${card.power}` : ""}
-          </p>
+          <p className="card-seo-summary">{summary}</p>
+          <dl className="card-seo-facts">
+            {card?.cost != null ? (
+              <>
+                <dt>費用</dt>
+                <dd>{card.cost}</dd>
+              </>
+            ) : null}
+            {card?.power != null && String(card.power) !== "" ? (
+              <>
+                <dt>力量</dt>
+                <dd>{card.power}</dd>
+              </>
+            ) : null}
+            {card?.counter != null && String(card.counter) !== "" ? (
+              <>
+                <dt>反擊</dt>
+                <dd>{card.counter}</dd>
+              </>
+            ) : null}
+            {seo.colors !== "-" ? (
+              <>
+                <dt>顏色</dt>
+                <dd>{seo.colors}</dd>
+              </>
+            ) : null}
+            {seo.traits ? (
+              <>
+                <dt>特徵</dt>
+                <dd>{seo.traits}</dd>
+              </>
+            ) : null}
+            <dt>系列</dt>
+            <dd>{seo.series}</dd>
+            <dt>稀有度</dt>
+            <dd>{seo.rarity}</dd>
+          </dl>
           <section>
             <h2>效果文本</h2>
             <p>{seo.effect}</p>
@@ -153,8 +247,24 @@ export default async function CardPage({
                 <p>{seo.trigger}</p>
               </>
             ) : null}
-            <p>完整卡牌頁面：{absoluteUrl(`/cards/${encodeURIComponent(cardId)}`)}</p>
           </section>
+          {editorNote ? (
+            <section>
+              <h2>編輯說明</h2>
+              <p>{editorNote}</p>
+            </section>
+          ) : null}
+          {faqItems.length ? (
+            <section>
+              <h2>常見問題</h2>
+              {faqItems.map((item) => (
+                <div key={item.question}>
+                  <h3>{item.question}</h3>
+                  <p>{item.answer}</p>
+                </div>
+              ))}
+            </section>
+          ) : null}
         </header>
       ) : null}
       <CardDetailClient

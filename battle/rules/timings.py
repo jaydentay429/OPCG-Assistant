@@ -78,7 +78,7 @@ TIMING_DETECT_PATTERNS: dict[str, str] = {
         r"【對方攻擊時】|【对方攻击时】"
     ),
     ON_KO: r"\[on\s*k\.?o\.?\]|【KO時】|【KO时】",
-    END_OF_YOUR_TURN: r"\[end of your turn\]|【我方的?回合結束時】|【我方的?回合结束时】",
+    END_OF_YOUR_TURN: r"\[end of your turn\]|【我方的?回合結束時】|【我方的?回合结束时】|【自己的回合結束時】|【自己的回合结束时】",
     END_OF_OPPONENT_TURN: r"\[end of your opponent'?s turn\]|【對方的?回合結束時】|【对方的?回合结束时】",
     TURN_START: r"\[start of your turn\]|【我方的?回合開始時】|【我方的?回合开始时】",
     ACTIVATE_MAIN: r"\[activate:\s*main\]|【啟動主要】|【启动主要】",

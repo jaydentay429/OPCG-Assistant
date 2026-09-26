@@ -19,6 +19,10 @@ export function HomeSeoIntro() {
         <Link href="/tournaments">{t("nav.tournaments")}</Link>
         {" · "}
         <Link href="/play">{t("nav.play")}</Link>
+        {" · "}
+        <Link href="/sets">{t("nav.sets")}</Link>
+        {" · "}
+        <Link href="/prices">{t("nav.prices")}</Link>
       </p>
     </section>
   );

@@ -5522,7 +5522,7 @@
               "duration": "until_opp_turn_end"
             }
           ],
-          "status": "compiled",
+          "status": "verified",
           "confidence": 0.95
         },
         {
@@ -7168,7 +7168,7 @@
               "duration": "until_opp_turn_end"
             }
           ],
-          "status": "compiled",
+          "status": "verified",
           "confidence": 0.95
         },
         {
@@ -7579,7 +7579,7 @@
               "duration": "until_opp_turn_end"
             }
           ],
-          "status": "compiled",
+          "status": "verified",
           "confidence": 0.95
         },
         {
@@ -62080,7 +62080,9 @@
             }
           ],
           "status": "compiled",
-          "confidence": 0.85
+          "confidence": 0.95,
+          "require_leader_trait": "Cross Guild|Baroque Works",
+          "require_your_turn": true
         }
       ]
     },
@@ -123189,57 +123191,46 @@
       "version": 1,
       "abilities": [
         {
-          "timing": "opponent_turn",
-          "summary": "[Opp Turn] When you play a Character, draw 1",
+          "on_own_char_ko": true,
+          "on_own_trait_ko": "Baroque Works|B・W",
+          "require_victim_base_power_gte": 3000,
+          "summary": "When own {Baroque Works} Character with 3000+ base power is K.O.'d: draw 1, opponent trashes 1",
           "ops": [
             {
               "op": "draw",
               "count": 1
+            },
+            {
+              "op": "trash_hand",
+              "count": 1,
+              "owner": "opponent",
+              "optional": false
             }
           ],
           "status": "compiled",
-          "confidence": 0.95,
-          "on_own_play_character": true
+          "confidence": 0.9,
+          "timing": "your_turn"
         },
         {
-          "timing": "your_turn",
-          "summary": "[DON!!×1][Once] When own Amazon/Kuja base≥5000 KO'd: take opp Life top",
+          "on_own_char_ko": true,
+          "on_own_trait_ko": "Baroque Works|B・W",
+          "require_victim_base_power_gte": 3000,
+          "summary": "When own {Baroque Works} Character with 3000+ base power is K.O.'d: draw 1, opponent trashes 1",
           "ops": [
             {
-              "op": "life_to_hand",
+              "op": "draw",
+              "count": 1
+            },
+            {
+              "op": "trash_hand",
               "count": 1,
-              "position": "top",
-              "optional": true,
               "owner": "opponent",
-              "hand_owner": "life_owner"
+              "optional": false
             }
           ],
           "status": "compiled",
-          "confidence": 0.95,
-          "once": true,
-          "require_don_attached_gte": 1,
-          "require_victim_base_power_gte": 5000,
-          "on_own_trait_ko": "Amazon Lily|亞馬遜百合|Kuja Pirates|九蛇海賊團"
-        },
-        {
-          "timing": "opponent_turn",
-          "summary": "[DON!!×1][Once] When own Amazon/Kuja base≥5000 KO'd: take opp Life top",
-          "ops": [
-            {
-              "op": "life_to_hand",
-              "count": 1,
-              "position": "top",
-              "optional": true,
-              "owner": "opponent",
-              "hand_owner": "life_owner"
-            }
-          ],
-          "status": "compiled",
-          "confidence": 0.95,
-          "once": true,
-          "require_don_attached_gte": 1,
-          "require_victim_base_power_gte": 5000,
-          "on_own_trait_ko": "Amazon Lily|亞馬遜百合|Kuja Pirates|九蛇海賊團"
+          "confidence": 0.9,
+          "timing": "opponent_turn"
         }
       ]
     },
@@ -124191,6 +124182,1015 @@
           "confidence": 0.95
         }
       ]
+    },
+    "EB05-020": {
+      "card_id": "EB05-020",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "You may rest your Leader Shirahoshi: draw 2",
+          "ops": [
+            {
+              "op": "rest_character",
+              "count": 1,
+              "optional": true,
+              "as_cost": true,
+              "target_kind": "leader",
+              "include_leader": true,
+              "name_contains": "Shirahoshi|白星"
+            },
+            {
+              "op": "draw",
+              "count": 2
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95,
+          "require_leader_name": "Shirahoshi|白星"
+        }
+      ]
+    },
+    "EB05-029": {
+      "card_id": "EB05-029",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "You may trash 1 from hand: negate up to 1 opp cost≤6 Character this turn and return it to owner's hand",
+          "ops": [
+            {
+              "op": "trash_hand",
+              "count": 1,
+              "optional": true,
+              "as_cost": true,
+              "owner": "self"
+            },
+            {
+              "op": "return_to_hand",
+              "count": 1,
+              "optional": true,
+              "target_kind": "opponent_character",
+              "cost_lte": 6,
+              "negate_this_turn": true
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95
+        },
+        {
+          "timing": "trigger",
+          "summary": "Draw 2, then trash 1 from your hand",
+          "ops": [
+            {
+              "op": "draw",
+              "count": 2
+            },
+            {
+              "op": "trash_hand",
+              "count": 1,
+              "optional": false,
+              "owner": "self"
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "EB05-007": {
+      "card_id": "EB05-007",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "You may reveal a total of 3 Event or {Punk Hazard} cards from your hand: draw 1",
+          "ops": [
+            {
+              "op": "reveal_hand",
+              "count": 3,
+              "optional": true,
+              "as_cost": true,
+              "owner": "self",
+              "card_type": "event",
+              "type_or_trait": true,
+              "trait_contains": "Punk Hazard|龐克哈薩特|パンクハザード"
+            },
+            {
+              "op": "draw",
+              "count": 1
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95
+        },
+        {
+          "timing": "end_of_your_turn",
+          "summary": "This Character +5000 until opponent's next End Phase",
+          "ops": [
+            {
+              "op": "buff_self",
+              "amount": 5000,
+              "duration": "until_opp_turn_end"
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "EB05-001": {
+      "card_id": "EB05-001",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "If Leader has {Supernovas}: draw 2 and play up to 2 Characters power≤2000 from hand",
+          "ops": [
+            {
+              "op": "draw",
+              "count": 2
+            },
+            {
+              "op": "play_from_hand",
+              "count": 2,
+              "card_type": "character",
+              "optional": true,
+              "power_lte": 2000,
+              "from_zone": "hand"
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95,
+          "require_leader_trait": "Supernovas|超新星"
+        },
+        {
+          "timing": "activate_main",
+          "summary": "Once: up to 1 opp Leader or Character power≥6000 −1000 until opp End Phase",
+          "ops": [
+            {
+              "op": "buff",
+              "amount": -1000,
+              "count": 1,
+              "optional": true,
+              "target_kind": "opponent_leader_or_character",
+              "power_gte": 6000,
+              "duration": "until_opp_turn_end"
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95,
+          "once": true,
+          "cost_don": 0,
+          "rest_self": false
+        }
+      ]
+    },
+    "EB05-006": {
+      "card_id": "EB05-006",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "activate_main",
+          "summary": "Once: you may Life top to hand: choose +3000 or −4000 on up to 1 Character this turn",
+          "ops": [
+            {
+              "op": "life_to_hand",
+              "count": 1,
+              "position": "top",
+              "optional": true,
+              "as_cost": true,
+              "owner": "self"
+            },
+            {
+              "op": "choose_one",
+              "chooser": "self",
+              "options": [
+                {
+                  "id": "plus",
+                  "label": "Up to 1 Character +3000 this turn",
+                  "ops": [
+                    {
+                      "op": "buff",
+                      "amount": 3000,
+                      "count": 1,
+                      "optional": true,
+                      "target_kind": "any_character",
+                      "duration": "turn"
+                    }
+                  ]
+                },
+                {
+                  "id": "minus",
+                  "label": "Up to 1 Character −4000 this turn",
+                  "ops": [
+                    {
+                      "op": "buff",
+                      "amount": -4000,
+                      "count": 1,
+                      "optional": true,
+                      "target_kind": "any_character",
+                      "duration": "turn"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95,
+          "once": true,
+          "cost_don": 0,
+          "rest_self": false
+        }
+      ]
+    },
+    "EB05-014": {
+      "card_id": "EB05-014",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "Look top 5; add up to 2 [Megalo] or {Neptunian}; trash the rest",
+          "ops": [
+            {
+              "op": "search_deck",
+              "name_contains": "Megalo|梅加羅",
+              "trait_contains": "Neptunian|海王類",
+              "name_or_trait": true,
+              "top_n": 5,
+              "max_add": 2,
+              "trash_rest": true,
+              "destination": "hand"
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95
+        },
+        {
+          "timing": "activate_main",
+          "summary": "You may rest this Character: up to 1 own {Neptunian} power≤6000 gains Rush this turn",
+          "ops": [
+            {
+              "op": "grant_keyword",
+              "keyword": "rush",
+              "target_kind": "own_character",
+              "optional": true,
+              "count": 1,
+              "trait_contains": "Neptunian|海王類",
+              "power_lte": 6000,
+              "duration": "turn"
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95,
+          "rest_self": true,
+          "once": false,
+          "cost_don": 0
+        }
+      ]
+    },
+    "EB05-021": {
+      "card_id": "EB05-021",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "Draw 2; play up to 1 {Cross Guild} cost≤8 from hand; then cannot play Characters this turn",
+          "ops": [
+            {
+              "op": "draw",
+              "count": 2
+            },
+            {
+              "op": "play_from_hand",
+              "count": 1,
+              "card_type": "character",
+              "optional": true,
+              "cost_lte": 8,
+              "trait_contains": "Cross Guild|十字公會",
+              "from_zone": "hand"
+            },
+            {
+              "op": "cannot_play_from_hand",
+              "duration": "turn",
+              "card_type": "character"
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95
+        },
+        {
+          "timing": "when_attacking",
+          "summary": "Negate up to 1 opp Character this turn",
+          "ops": [
+            {
+              "op": "negate_effects",
+              "count": 1,
+              "optional": true,
+              "target_kind": "opponent_character",
+              "duration": "turn"
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "EB05-034": {
+      "card_id": "EB05-034",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "DON!! −2: if you have 7+ DON!! on your field, up to 1 opp Character −4000 this turn",
+          "ops": [
+            {
+              "op": "return_don",
+              "count": 2,
+              "owner": "self",
+              "as_cost": true
+            },
+            {
+              "op": "buff",
+              "amount": -4000,
+              "count": 1,
+              "optional": true,
+              "target_kind": "opponent_character",
+              "duration": "turn",
+              "require_don_field_gte": 7
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "EB05-046": {
+      "card_id": "EB05-046",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "Rest 1 DON!! and KO 1 own B・W Character: opponent cost-0 Characters cannot activate Blocker this turn",
+          "ops": [
+            {
+              "op": "rest_don",
+              "count": 1,
+              "owner": "self",
+              "as_cost": true,
+              "optional": true,
+              "summary": "Rest 1 DON!!"
+            },
+            {
+              "op": "ko",
+              "target_kind": "own_character",
+              "optional": true,
+              "as_cost": true,
+              "trait_contains": "B・W|Baroque Works|巴洛克工作社",
+              "summary": "KO 1 own B・W Character"
+            },
+            {
+              "op": "deny_blocker",
+              "duration": "turn",
+              "cost_eq": 0,
+              "summary": "Opponent cost-0 Characters cannot Blocker this turn"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        },
+        {
+          "timing": "counter_event",
+          "summary": "Own Leader +3000 this battle",
+          "ops": [
+            {
+              "op": "buff",
+              "amount": 3000,
+              "target_kind": "leader",
+              "duration": "battle",
+              "optional": false
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        }
+      ],
+      "status": "verified"
+    },
+    "EB05-052": {
+      "card_id": "EB05-052",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "your_turn",
+          "summary": "If you would take damage, you may trash this Character instead",
+          "ops": [
+            {
+              "op": "replace_life_damage",
+              "optional": true,
+              "cost": "trash_self"
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95
+        },
+        {
+          "timing": "opponent_turn",
+          "summary": "If you would take damage, you may trash this Character instead",
+          "ops": [
+            {
+              "op": "replace_life_damage",
+              "optional": true,
+              "cost": "trash_self"
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95
+        },
+        {
+          "timing": "trigger",
+          "summary": "Draw 2, then trash 1 from your hand",
+          "ops": [
+            {
+              "op": "draw",
+              "count": 2
+            },
+            {
+              "op": "trash_hand",
+              "count": 1,
+              "optional": false,
+              "owner": "self"
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "EB05-055": {
+      "card_id": "EB05-055",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "If Leader has <Wisdom>: add up to 1 deck-top to Life top",
+          "ops": [
+            {
+              "op": "add_life",
+              "count": 1,
+              "optional": true,
+              "position": "top"
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95,
+          "require_leader_attribute": "Wisdom|知",
+          "require_your_turn": true
+        },
+        {
+          "timing": "trigger",
+          "summary": "You may trash 1 from hand: if you have 2 or less Life, play this card",
+          "ops": [
+            {
+              "op": "trash_hand",
+              "count": 1,
+              "optional": true,
+              "as_cost": true,
+              "owner": "self"
+            },
+            {
+              "op": "play_from_hand",
+              "count": 1,
+              "card_type": "character",
+              "optional": false,
+              "self_card": true,
+              "from_zone": "hand",
+              "require_life_lte": 2
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "EB05-014-P1": {
+      "card_id": "EB05-014-P1",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "Look top 5; add up to 2 [Megalo] or {Neptunian}; trash the rest",
+          "ops": [
+            {
+              "op": "search_deck",
+              "name_contains": "Megalo|梅加羅",
+              "trait_contains": "Neptunian|海王類",
+              "name_or_trait": true,
+              "top_n": 5,
+              "max_add": 2,
+              "trash_rest": true,
+              "destination": "hand"
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95
+        },
+        {
+          "timing": "activate_main",
+          "summary": "You may rest this Character: up to 1 own {Neptunian} power≤6000 gains Rush this turn",
+          "ops": [
+            {
+              "op": "grant_keyword",
+              "keyword": "rush",
+              "target_kind": "own_character",
+              "optional": true,
+              "count": 1,
+              "trait_contains": "Neptunian|海王類",
+              "power_lte": 6000,
+              "duration": "turn"
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95,
+          "rest_self": true,
+          "once": false,
+          "cost_don": 0
+        }
+      ]
+    },
+    "OP18-001": {
+      "card_id": "OP18-001",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "your_turn",
+          "summary": "Own Characters with both {Animal} and {Alabasta} gain Rush and +1000",
+          "ops": [
+            {
+              "op": "grant_keyword",
+              "keyword": "rush",
+              "target_kind": "own_character",
+              "all": true,
+              "trait_all": [
+                "Animal|動物|动物",
+                "Alabasta|阿拉巴斯坦王國|阿拉巴斯坦王国"
+              ],
+              "duration": "permanent",
+              "optional": false
+            },
+            {
+              "op": "buff",
+              "amount": 1000,
+              "target_kind": "own_character",
+              "all": true,
+              "trait_all": [
+                "Animal|動物|动物",
+                "Alabasta|阿拉巴斯坦王國|阿拉巴斯坦王国"
+              ],
+              "duration": "permanent",
+              "optional": false
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.9
+        },
+        {
+          "timing": "opponent_turn",
+          "summary": "Own Characters with both {Animal} and {Alabasta} gain Rush and +1000",
+          "ops": [
+            {
+              "op": "grant_keyword",
+              "keyword": "rush",
+              "target_kind": "own_character",
+              "all": true,
+              "trait_all": [
+                "Animal|動物|动物",
+                "Alabasta|阿拉巴斯坦王國|阿拉巴斯坦王国"
+              ],
+              "duration": "permanent",
+              "optional": false
+            },
+            {
+              "op": "buff",
+              "amount": 1000,
+              "target_kind": "own_character",
+              "all": true,
+              "trait_all": [
+                "Animal|動物|动物",
+                "Alabasta|阿拉巴斯坦王國|阿拉巴斯坦王国"
+              ],
+              "duration": "permanent",
+              "optional": false
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.9
+        },
+        {
+          "once": true,
+          "on_own_char_ko": true,
+          "on_own_trait_ko": "Alabasta|阿拉巴斯坦王國|阿拉巴斯坦王国",
+          "summary": "Once: when own {Alabasta} Character is K.O.'d, draw 1",
+          "ops": [
+            {
+              "op": "draw",
+              "count": 1
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.9,
+          "timing": "your_turn"
+        },
+        {
+          "once": true,
+          "on_own_char_ko": true,
+          "on_own_trait_ko": "Alabasta|阿拉巴斯坦王國|阿拉巴斯坦王国",
+          "summary": "Once: when own {Alabasta} Character is K.O.'d, draw 1",
+          "ops": [
+            {
+              "op": "draw",
+              "count": 1
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.9,
+          "timing": "opponent_turn"
+        }
+      ]
+    },
+    "OP18-022": {
+      "card_id": "OP18-022",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "when_attacking",
+          "once": true,
+          "optional": true,
+          "may_activate": true,
+          "require_don_attached_gte": 3,
+          "summary": "[DON!! x3][Once] You may set this Leader active; if you do, skip next own Refresh",
+          "ops": [
+            {
+              "op": "set_character_active",
+              "target_kind": "leader",
+              "optional": false
+            },
+            {
+              "op": "skip_untap",
+              "target_kind": "own_leader",
+              "owner": "self",
+              "optional": false
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.9
+        }
+      ]
+    },
+    "OP18-079": {
+      "card_id": "OP18-079",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "activate_main",
+          "summary": "Rest 2 DON!! and this Leader and trash 1 {CP} from hand: add deck-top to Life top",
+          "ops": [
+            {
+              "op": "trash_hand",
+              "count": 1,
+              "trait_contains": "CP",
+              "as_cost": true,
+              "optional": false,
+              "owner": "self"
+            },
+            {
+              "op": "rest_don",
+              "count": 2,
+              "owner": "self",
+              "as_cost": true
+            },
+            {
+              "op": "rest_character",
+              "target_kind": "leader",
+              "target_iid": "leader",
+              "as_cost": true,
+              "optional": false
+            },
+            {
+              "op": "add_life",
+              "count": 1,
+              "position": "top",
+              "optional": true
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.9,
+          "rest_self": false,
+          "cost_don": 0
+        }
+      ]
+    },
+    "P-082": {
+      "card_id": "P-082",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "【我方回合中】【登場時】若自己的領航卡擁有《十字公會》特徵或包含『B・W』特徵時，將最多1張對手力量值2000以下的角色卡放置在持有者的卡組下面。",
+          "ops": [
+            {
+              "op": "return_to_bottom",
+              "count": 1,
+              "optional": true,
+              "target_kind": "opponent_character",
+              "power_lte": 2000
+            }
+          ],
+          "status": "compiled",
+          "confidence": 0.95,
+          "require_leader_trait": "Cross Guild|Baroque Works",
+          "require_your_turn": true
+        }
+      ]
+    },
+    "EB05-009": {
+      "card_id": "EB05-009",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "All own Characters with printed power ≤4000 gain +1000 until opponent's next End Phase",
+          "ops": [
+            {
+              "op": "buff",
+              "amount": 1000,
+              "all": true,
+              "target_kind": "own_character",
+              "base_power_lte": 4000,
+              "duration": "until_opp_turn_end"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        },
+        {
+          "timing": "counter_event",
+          "summary": "Own Leader +3000 this battle",
+          "ops": [
+            {
+              "op": "buff",
+              "amount": 3000,
+              "target_kind": "leader",
+              "duration": "battle"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "EB05-060": {
+      "card_id": "EB05-060",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "Trash 1 own cost≥5 Egghead Character (as cost): add deck top to Life",
+          "ops": [
+            {
+              "op": "trash",
+              "target_kind": "own_character",
+              "optional": true,
+              "as_cost": true,
+              "cost_gte": 5,
+              "trait_contains": "Egghead|蛋頭|蛋头",
+              "summary": "Trash 1 own cost≥5 Egghead Character"
+            },
+            {
+              "op": "add_life",
+              "count": 1,
+              "optional": false,
+              "position": "top"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        },
+        {
+          "timing": "counter_event",
+          "summary": "Flip Life top face-up (as cost): up to 1 own Leader or Character +4000 this battle",
+          "ops": [
+            {
+              "op": "flip_life",
+              "face": "up",
+              "position": "top",
+              "optional": true,
+              "as_cost": true
+            },
+            {
+              "op": "buff",
+              "amount": 4000,
+              "optional": true,
+              "target_kind": "own_leader_or_character",
+              "duration": "battle",
+              "include_leader": true
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "OP18-003": {
+      "card_id": "OP18-003",
+      "version": 1,
+      "abilities": [],
+      "status": "verified",
+      "notes": "Vanilla Character; printed Counter +2000 only"
+    },
+    "OP18-026": {
+      "card_id": "OP18-026",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "activate_main",
+          "summary": "Rest 1 own Gonbe and this Character: set Leader Monkey.D.Luffy active",
+          "ops": [
+            {
+              "op": "rest_character",
+              "target_kind": "own_character",
+              "optional": true,
+              "as_cost": true,
+              "count": 1,
+              "name_contains": "貢貝|ゴンベ|Gonbe",
+              "exclude_self": true,
+              "summary": "Rest 1 own Gonbe"
+            },
+            {
+              "op": "rest_character",
+              "target_kind": "self",
+              "optional": false,
+              "as_cost": true,
+              "summary": "Rest this Character"
+            },
+            {
+              "op": "set_character_active",
+              "target_kind": "leader",
+              "optional": false,
+              "name_contains": "モンキー・D・ルフィ|蒙其・D・魯夫|Monkey.D.Luffy",
+              "summary": "Set Leader Monkey.D.Luffy active"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95,
+          "cost_don": 0
+        }
+      ],
+      "status": "verified"
+    },
+    "OP18-056": {
+      "card_id": "OP18-056",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "your_turn",
+          "summary": "【咚‼×1】這張角色卡力量值+1000。",
+          "ops": [
+            {
+              "op": "buff_self",
+              "amount": 1000
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95,
+          "require_don_attached_gte": 1
+        },
+        {
+          "timing": "opponent_turn",
+          "summary": "【咚‼×1】這張角色卡力量值+1000。",
+          "ops": [
+            {
+              "op": "buff_self",
+              "amount": 1000
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95,
+          "require_don_attached_gte": 1
+        },
+        {
+          "timing": "on_play",
+          "summary": "【登場時】可將1張這張角色卡以外自己的《B・W》放到卡組下面：對手廢棄自身手牌1張。",
+          "ops": [
+            {
+              "op": "return_to_bottom",
+              "count": 1,
+              "optional": true,
+              "as_cost": true,
+              "exclude_self": true,
+              "target_kind": "own_character",
+              "trait_contains": "B・W",
+              "summary": "Place 1 other own Baroque Works Character on deck bottom"
+            },
+            {
+              "op": "trash_hand",
+              "count": 1,
+              "optional": false,
+              "owner": "opponent",
+              "summary": "Opponent trashes 1 card from their hand"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        }
+      ],
+      "status": "verified"
+    },
+    "OP18-066": {
+      "card_id": "OP18-066",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "activate_main",
+          "summary": "【啟動主要】可將1張自己費用5以下的舞台卡KO：這張角色卡在這個回合獲得【速攻】。",
+          "ops": [
+            {
+              "op": "ko",
+              "count": 1,
+              "optional": true,
+              "as_cost": true,
+              "target_kind": "own_stage",
+              "cost_lte": 5,
+              "summary": "K.O. 1 own Stage with cost 5 or less"
+            },
+            {
+              "op": "grant_keyword",
+              "keyword": "rush",
+              "target_kind": "self",
+              "duration": "turn",
+              "optional": false,
+              "summary": "This Character gains Rush this turn"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95,
+          "cost_don": 0,
+          "rest_self": false
+        }
+      ],
+      "status": "verified"
+    },
+    "OP18-086": {
+      "card_id": "OP18-086",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "your_turn",
+          "summary": "這張角色卡的費用+12。",
+          "ops": [
+            {
+              "op": "grant_cost",
+              "amount": 12,
+              "target_kind": "self",
+              "duration": "permanent"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        },
+        {
+          "timing": "opponent_turn",
+          "summary": "這張角色卡的費用+12。",
+          "ops": [
+            {
+              "op": "grant_cost",
+              "amount": 12,
+              "target_kind": "self",
+              "duration": "permanent"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        },
+        {
+          "timing": "on_ko",
+          "summary": "【KO時】KO最多1張對手費用4以下的角色卡。",
+          "ops": [
+            {
+              "op": "ko",
+              "count": 1,
+              "optional": true,
+              "target_kind": "opponent_character",
+              "cost_lte": 4,
+              "summary": "K.O. up to 1 opponent Character with cost 4 or less"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        }
+      ],
+      "status": "verified"
     }
   }
 }

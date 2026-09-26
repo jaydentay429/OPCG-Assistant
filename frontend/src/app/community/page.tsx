@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { CommunityHome } from "@/components/community/CommunityClient";
 import { CommunitySeoIntro } from "@/components/SeoIntro";
+import { fetchCommunityThreads } from "@/lib/api";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -13,12 +14,28 @@ export const metadata: Metadata = buildPageMetadata({
   keywords: ["OPCG 社區", "卡牌論壇", "組卡討論", "卡牌交易", "賽制規則"],
 });
 
-export default function CommunityPage() {
+export default async function CommunityPage() {
+  let initialThreads = undefined;
+  let initialTotal = undefined;
+  let initialHasMore = undefined;
+  try {
+    const res = await fetchCommunityThreads({ sort: "new", limit: 30, offset: 0 });
+    initialThreads = res.threads;
+    initialTotal = res.total;
+    initialHasMore = res.has_more;
+  } catch {
+    /* list still loads on the client */
+  }
+
   return (
     <>
       <CommunitySeoIntro />
       <Suspense fallback={<p className="muted">…</p>}>
-        <CommunityHome />
+        <CommunityHome
+          initialThreads={initialThreads}
+          initialTotal={initialTotal}
+          initialHasMore={initialHasMore}
+        />
       </Suspense>
     </>
   );

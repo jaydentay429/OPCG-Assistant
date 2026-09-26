@@ -41,6 +41,13 @@ export function CoverLanding() {
               {t("cover.cta_search")}
             </Link>
             <Link
+              href="/builder"
+              className="cover-cta cover-cta-secondary"
+              onClick={() => markTabNavScrollReset()}
+            >
+              {t("cover.cta_builder")}
+            </Link>
+            <Link
               href="/play"
               className="cover-cta cover-cta-secondary"
               onClick={() => markTabNavScrollReset()}

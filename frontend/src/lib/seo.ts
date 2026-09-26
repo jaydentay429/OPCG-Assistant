@@ -102,6 +102,12 @@ export function buildPageMetadata(input: PageMetaInput): Metadata {
     keywords: input.keywords,
     alternates: {
       canonical,
+      languages: {
+        "zh-HK": canonical,
+        "zh-CN": canonical,
+        en: canonical,
+        "x-default": canonical,
+      },
     },
     openGraph: {
       title: input.title,
@@ -190,6 +196,44 @@ export function rootJsonLd(): Record<string, unknown> {
           priceCurrency: "HKD",
         },
       },
+      {
+        "@type": "FAQPage",
+        "@id": `${SITE_URL}/#faq`,
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "OPCG 卡牌助手是官方網站嗎？",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "不是。optcgassistant.com 是非官方粉絲工具，與 BANDAI / 東映動畫無關聯。卡名、效果與卡圖屬權利人所有。",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "怎麼查航海王卡牌效果與卡號？",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "打開卡牌搜索，輸入卡號（如 OP01-001）或中文／英文卡名即可篩選顏色、費用、系列與效果關鍵字。",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "可以在瀏覽器練牌或對戰嗎？",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "可以。即時對戰支援房間對戰與 AI 對戰，訪客可用範例卡組一鍵開始，無需先組好 50 張。",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "哪裡看 OP18、EB05 等系列全卡表？",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "系列卡表在 /sets，例如 /sets/OP18、/sets/EB05，可點進每張卡查看效果與價格。",
+            },
+          },
+        ],
+      },
     ],
   };
 }
@@ -248,4 +292,57 @@ export function breadcrumbJsonLd(
       item: absoluteUrl(item.path),
     })),
   };
+}
+
+export function faqPageJsonLd(
+  items: Array<{ question: string; answer: string }>,
+): Record<string, unknown> | null {
+  const mainEntity = items
+    .map((item) => {
+      const question = item.question.trim();
+      const answer = item.answer.trim();
+      if (!question || !answer) return null;
+      return {
+        "@type": "Question",
+        name: question,
+        acceptedAnswer: { "@type": "Answer", text: answer },
+      };
+    })
+    .filter((row): row is NonNullable<typeof row> => row != null);
+  if (!mainEntity.length) return null;
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity,
+  };
+}
+
+/** Forum post JSON-LD. Only include fields we actually fetched. */
+export function discussionForumPostingJsonLd(input: {
+  id: number;
+  title: string;
+  body?: string;
+  datePublished?: string;
+  dateModified?: string;
+  authorName?: string;
+}): Record<string, unknown> | null {
+  const title = String(input.title || "").trim();
+  if (!title) return null;
+  const text = String(input.body || "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 5000);
+  const node: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "DiscussionForumPosting",
+    headline: title,
+    url: absoluteUrl(`/community/${input.id}`),
+  };
+  if (text) node.text = text;
+  if (input.datePublished) node.datePublished = input.datePublished;
+  if (input.dateModified) node.dateModified = input.dateModified;
+  if (input.authorName) {
+    node.author = { "@type": "Person", name: input.authorName };
+  }
+  return node;
 }

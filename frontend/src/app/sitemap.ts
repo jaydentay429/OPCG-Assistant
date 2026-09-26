@@ -1,9 +1,15 @@
 import fs from "fs";
 import path from "path";
 import type { MetadataRoute } from "next";
-import { SITE_URL } from "@/lib/seo";
+import bundledCardIds from "@/generated/card-ids.json";
+import { toBaseCardId } from "@/lib/cardId";
+import { SITE_URL, cardOgImage } from "@/lib/seo";
+import { allSets } from "@/lib/sets";
 
 function loadCardIds(): string[] {
+  if (Array.isArray(bundledCardIds) && bundledCardIds.length) {
+    return bundledCardIds.filter(Boolean);
+  }
   const candidates = [
     path.join(process.cwd(), "..", "index", "cards_by_id.json"),
     path.join(process.cwd(), "index", "cards_by_id.json"),
@@ -39,6 +45,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/prices", priority: 0.9, changeFrequency: "daily" },
     { path: "/community", priority: 0.85, changeFrequency: "daily" },
     { path: "/photo", priority: 0.6, changeFrequency: "monthly" },
+    { path: "/sets", priority: 0.92, changeFrequency: "weekly" },
     { path: "/legal/privacy", priority: 0.2, changeFrequency: "yearly" },
     { path: "/legal/terms", priority: 0.2, changeFrequency: "yearly" },
     { path: "/legal/disclaimer", priority: 0.2, changeFrequency: "yearly" },
@@ -51,12 +58,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority,
   }));
 
+  for (const set of allSets()) {
+    entries.push({
+      url: new URL(`/sets/${encodeURIComponent(set.code)}`, `${SITE_URL}/`).toString(),
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.85,
+    });
+  }
+
   for (const cardId of loadCardIds()) {
+    const img = cardOgImage(cardId);
+    const base = toBaseCardId(cardId);
+    const isParallel = base !== cardId;
     entries.push({
       url: new URL(`/cards/${encodeURIComponent(cardId)}`, `${SITE_URL}/`).toString(),
       lastModified,
       changeFrequency: "weekly",
-      priority: 0.7,
+      priority: isParallel ? 0.55 : 0.72,
+      ...(img ? { images: [img.url] } : {}),
     });
   }
 
