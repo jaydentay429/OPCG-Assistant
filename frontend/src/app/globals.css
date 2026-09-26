@@ -268,10 +268,11 @@ img {
   flex-shrink: 0;
 }
 
-/* Default padding fits every label on one line from 359px up. Narrower than
-   that, the nowrap bug button would squeeze the brand and login label onto
-   extra lines. Tighten the bar so they stay one line without overflowing. */
-@media (max-width: 358px) {
+/* Default padding fits every label on one line from 376px up. A 360px desktop
+   window still reports 360px to the media query while a classic scrollbar
+   leaves only ~345px for the bar, so compact spacing has to include 375px.
+   Mobile 375px uses this compact bar; 376–390px keep the default padding. */
+@media (max-width: 375px) {
   .top-bar {
     gap: 0.35rem;
     padding-left: 0.4rem;
@@ -334,7 +335,11 @@ img {
   color: var(--amber);
   text-decoration: underline;
   text-underline-offset: 2px;
-  word-break: break-all;
+  /* break-all split the address mid-word (ja / ydentay429@gmail.com).
+     Keep the address intact and move the whole link to the next line. */
+  white-space: nowrap;
+  word-break: normal;
+  overflow-wrap: normal;
 }
 
 .main {
