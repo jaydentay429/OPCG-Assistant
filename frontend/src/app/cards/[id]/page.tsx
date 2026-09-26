@@ -7,6 +7,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { ApiError, fetchCard, fetchCardTournaments, type CardTournamentAppearance } from "@/lib/api";
 import { catalogHasCard, missingCardShould404 } from "@/lib/cardCatalog";
 import { cardNotFoundMetadata } from "@/lib/cardNotFoundMetadata";
+import { tournamentFaqAnswer } from "@/lib/cardTournamentFaq";
 import { cardEditorNote } from "@/lib/cardEditorNotes";
 import { displayCardId, setCodeFromCardId } from "@/lib/cardId";
 import {
@@ -145,14 +146,9 @@ export default async function CardPage({
       });
     }
     if (appearances.length) {
-      const bits = appearances.slice(0, 3).map((row) => {
-        const meta = row.meta_title || row.format || "賽事";
-        const leader = row.leader_name || row.leader || "";
-        return leader ? `${meta}（${leader}）` : meta;
-      });
       faqItems.push({
         question: `${seo.name}（${seo.id}）常見於哪些賽事卡組？`,
-        answer: `本站公開賽事資料中出現於：${bits.join("、")}。`,
+        answer: tournamentFaqAnswer(appearances),
       });
     }
   }
