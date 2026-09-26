@@ -105,9 +105,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="dns-prefetch" href="https://api.optcgassistant.com" />
       </head>
       <body>
-        <ChunkLoadRecovery />
         <JsonLd data={rootJsonLd()} />
         <Providers>
+          <ChunkLoadRecovery />
           <div className="app-shell">
             <TopBar />
             <main className="main">{children}</main>
