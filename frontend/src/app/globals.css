@@ -262,6 +262,40 @@ img {
 .topbar-bug-btn {
   color: #fbbf24 !important;
   border-color: rgba(251, 191, 36, 0.35) !important;
+  /* CJK labels wrap per character when this flex item shrinks, which stacks
+     「回報問題」and stretches the bar. Keep the label on one line. */
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Default padding fits every label on one line from 359px up. Narrower than
+   that, the nowrap bug button would squeeze the brand and login label onto
+   extra lines. Tighten the bar so they stay one line without overflowing. */
+@media (max-width: 358px) {
+  .top-bar {
+    gap: 0.35rem;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+  }
+
+  .top-bar .brand {
+    white-space: nowrap;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .top-bar .actions {
+    flex-shrink: 0;
+    gap: 0.25rem;
+  }
+
+  .top-bar .actions button {
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+  }
 }
 
 .topbar-bug-backdrop {
