@@ -124,9 +124,13 @@ function PriceChart({ history, lang }: { history: PriceHistoryPoint[]; lang: str
         ))}
         {points.length > 1 ? <polyline points={line} className="price-line" /> : null}
         {points.map((point, index) => (
-          <circle key={`${point.ts.toISOString()}-${index}`} cx={xFor(index)} cy={yFor(point.price)} r="5">
-            <title>{`${dateText(point.ts)} · ${formatYen(point.price)}`}</title>
-          </circle>
+          <circle
+            key={`${point.ts.toISOString()}-${index}`}
+            cx={xFor(index)}
+            cy={yFor(point.price)}
+            r="5"
+            aria-label={`${dateText(point.ts)} · ${formatYen(point.price)}`}
+          />
         ))}
       </svg>
     </div>
