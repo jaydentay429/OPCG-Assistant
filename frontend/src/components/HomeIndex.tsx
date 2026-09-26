@@ -1,6 +1,22 @@
 import Link from "next/link";
-import { SITE_URL, jsonLdScript } from "@/lib/seo";
+import { SITE_URL, faqPageJsonLd, jsonLdScript } from "@/lib/seo";
 import { allSets, setLabel } from "@/lib/sets";
+
+/** Visible homepage FAQ. JSON-LD must use these strings verbatim. */
+const HOME_FAQ = [
+  {
+    question: "這是官方網站嗎？",
+    answer: "不是。本站是粉絲工具，卡名、效果與卡圖屬權利人所有。",
+  },
+  {
+    question: "怎麼查卡？",
+    answer: "到 卡牌搜索 輸入卡號或卡名，也可 拍照識卡。",
+  },
+  {
+    question: "可以練牌嗎？",
+    answer: "可以。到 即時對戰 用範例卡組對 AI，或開房間。",
+  },
+] as const;
 
 const HUBS = [
   { href: "/search", title: "卡牌搜索", body: "以卡號、卡名、顏色、費用與效果關鍵字查詢全卡表。" },
@@ -31,9 +47,17 @@ export function HomeIndex() {
     })),
   };
 
+  const homeFaqLd = faqPageJsonLd(HOME_FAQ.map((item) => ({ question: item.question, answer: item.answer })));
+
   return (
     <section className="home-index">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(itemList) }} />
+      {homeFaqLd ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLdScript(homeFaqLd, { allowFaq: true }) }}
+        />
+      ) : null}
       <h2>航海王卡牌工具箱</h2>
       <p>
         OPCG 卡牌助手（optcgassistant.com）提供非官方的 ONE PIECE CARD GAME
@@ -67,14 +91,13 @@ export function HomeIndex() {
       </ul>
       <h2>常見問題</h2>
       <dl className="home-index-faq">
-        <dt>這是官方網站嗎？</dt>
-        <dd>不是。本站是粉絲工具，卡名、效果與卡圖屬權利人所有。</dd>
-        <dt>怎麼查卡？</dt>
+        <dt>{HOME_FAQ[0].question}</dt>
+        <dd>{HOME_FAQ[0].answer}</dd>
+        <dt>{HOME_FAQ[1].question}</dt>
         <dd>
-          到 <Link href="/search">卡牌搜索</Link> 輸入卡號或卡名，也可{" "}
-          <Link href="/photo">拍照識卡</Link>。
+          到 <Link href="/search">卡牌搜索</Link> 輸入卡號或卡名，也可 <Link href="/photo">拍照識卡</Link>。
         </dd>
-        <dt>可以練牌嗎？</dt>
+        <dt>{HOME_FAQ[2].question}</dt>
         <dd>
           可以。到 <Link href="/play">即時對戰</Link> 用範例卡組對 AI，或開房間。
         </dd>

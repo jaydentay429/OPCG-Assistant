@@ -506,16 +506,19 @@ body.battle-active .play-seo-intro {
 }
 
 .card-seo-header {
-  margin: 0 0 0.85rem;
-  padding: 0.75rem 0.85rem;
+  margin: 0;
+  padding: 0.85rem 0.95rem 1rem;
   border-radius: 12px;
   border: 1px solid rgba(148, 163, 184, 0.22);
   background: rgba(15, 23, 42, 0.45);
+  min-width: 0;
 }
 
 .card-seo-header h1 {
-  margin: 0.35rem 0 0.35rem;
-  font-size: 1.15rem;
+  margin: 0.35rem 0 0.4rem;
+  font-size: 1.35rem;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
 .card-seo-summary {
@@ -549,8 +552,27 @@ body.battle-active .play-seo-intro {
 }
 
 .card-seo-header h2 {
-  margin: 0.65rem 0 0.25rem;
+  margin: 0.85rem 0 0.3rem;
   font-size: 0.95rem;
+}
+
+.card-seo-header h3 {
+  margin: 0.65rem 0 0.15rem;
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.card-seo-header section p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.card-seo-faq p {
+  color: var(--text-muted);
+  white-space: pre-wrap;
 }
 
 .set-page-nav a {
@@ -1716,7 +1738,22 @@ input[type="search"]::-webkit-search-cancel-button {
 .detail-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  grid-template-areas:
+    "art info"
+    "seo info";
   gap: 1rem;
+}
+
+.detail-grid > .detail-img {
+  grid-area: art;
+}
+
+.detail-grid > .detail-info {
+  grid-area: info;
+}
+
+.detail-grid > .card-seo-header {
+  grid-area: seo;
 }
 
 .detail-img {
@@ -3686,6 +3723,10 @@ input[type="search"]::-webkit-search-cancel-button {
     /* minmax(0, …): plain `1fr` lets the price chart's min-width blow the
        column past the viewport and clip the card art. */
     grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "art"
+      "seo"
+      "info";
   }
 
   .price-wall {

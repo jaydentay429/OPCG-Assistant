@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { collectionAdd, collectionRemove, fetchCard, fetchCardPrice, fetchCollection } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
@@ -168,10 +168,13 @@ export function CardDetailClient({
   cardId,
   picked,
   pickedVariant,
+  belowArt,
 }: {
   cardId: string;
   picked?: string;
   pickedVariant?: string;
+  /** Server-rendered card title, facts, and FAQ. Shown under the card image once loaded. */
+  belowArt?: ReactNode;
 }) {
   const { t, lang } = useI18n();
   const router = useRouter();
@@ -352,10 +355,18 @@ export function CardDetailClient({
           {t("detail.back")}
         </button>
         <p style={{ color: "#fca5a5" }}>{error}</p>
+        {belowArt}
       </div>
     );
   }
-  if (!card) return <p className="muted">…</p>;
+  if (!card) {
+    return (
+      <div className="stack">
+        {belowArt}
+        <p className="muted">…</p>
+      </div>
+    );
+  }
 
   const name = isDonCard
     ? localizeDonCardName(card.name, card.name_en, lang) || displayCardId(card.id)
@@ -447,6 +458,7 @@ export function CardDetailClient({
             </div>
           ) : null}
         </div>
+        {belowArt}
         <div className="detail-info">
           <h2 style={{ marginBottom: 8 }}>{t("detail.info")}</h2>
           <dl>
