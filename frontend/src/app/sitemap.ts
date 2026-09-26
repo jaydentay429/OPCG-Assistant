@@ -3,6 +3,7 @@ import path from "path";
 import type { MetadataRoute } from "next";
 import bundledCardIds from "@/generated/card-ids.json";
 import { toBaseCardId } from "@/lib/cardId";
+import { sitemapCardIds } from "@/lib/parallelArts";
 import { SITE_URL, cardOgImage } from "@/lib/seo";
 import { allSets } from "@/lib/sets";
 
@@ -67,7 +68,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   }
 
-  for (const cardId of loadCardIds()) {
+  for (const cardId of sitemapCardIds(loadCardIds())) {
     const img = cardOgImage(cardId);
     const base = toBaseCardId(cardId);
     const isParallel = base !== cardId;
