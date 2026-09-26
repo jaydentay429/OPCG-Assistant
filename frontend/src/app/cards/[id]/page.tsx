@@ -4,13 +4,21 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import { CardDetailClient } from "@/components/CardDetailClient";
 import { JsonLd } from "@/components/JsonLd";
-import { ApiError, type CardTournamentAppearance } from "@/lib/api";
+import { ApiError, CARD_IMAGE_CACHE_BUST, type CardTournamentAppearance } from "@/lib/api";
 import { getCachedCardDetail, getCachedCardTournaments } from "@/lib/cardPageData";
 import { catalogHasCard, missingCardShould404 } from "@/lib/cardCatalog";
 import { cardNotFoundMetadata } from "@/lib/cardNotFoundMetadata";
 import { tournamentFaqAnswer } from "@/lib/cardTournamentFaq";
 import { cardEditorNote } from "@/lib/cardEditorNotes";
-import { displayCardId, setCodeFromCardId } from "@/lib/cardId";
+import bundledCardIds from "@/generated/card-ids.json";
+import { displayCardId, normalizeCardId, setCodeFromCardId, toBaseCardId } from "@/lib/cardId";
+import {
+  cardCanonicalUrl,
+  cardMetaDescription,
+  isParallelArtId,
+  parallelArtIdsAmong,
+  presentMetaText,
+} from "@/lib/parallelArts";
 import {
   breadcrumbJsonLd,
   buildPageMetadata,
@@ -20,6 +28,8 @@ import {
   visibleCardEffect,
 } from "@/lib/seo";
 import type { Card } from "@/lib/types";
+
+const CATALOG_IDS = bundledCardIds as string[];
 
 function pickText(...values: Array<string | null | undefined>): string {
   for (const value of values) {
@@ -31,7 +41,7 @@ function pickText(...values: Array<string | null | undefined>): string {
 
 function cardSeoFields(card: Card, fallbackId: string) {
   const id = displayCardId(card.id || fallbackId);
-  const name = pickText(card.name, card.name_en, id);
+  const name = presentMetaText(pickText(card.name, card.name_en)) || id;
   const nameEn = pickText(card.name_en);
   const rarity = pickText(card.rarity, "-");
   const series = setCodeFromCardId(id) || "-";
@@ -70,27 +80,27 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id: rawId } = await params;
-  const cardId = decodeURIComponent(rawId);
-  const path = `/cards/${encodeURIComponent(cardId)}`;
+  const cardId = normalizeCardId(decodeURIComponent(rawId));
+  const canonicalUrl = cardCanonicalUrl(cardId);
   const ogImage = cardOgImage(cardId);
   const card = await loadCard(cardId);
 
   if (!card) return cardNotFoundMetadata;
 
   const seo = cardSeoFields(card, cardId);
-  const effectSnippet = seo.effect.replace(/\s+/g, " ").slice(0, 110);
-  const seriesBit = seo.series !== "-" ? `系列 ${seo.series}，` : "";
-  const effectBit = seo.effect
-    ? `效果：${effectSnippet}${seo.effect.length > 110 ? "…" : ""}`
-    : "";
-  const description =
-    `${seo.name}（${seo.id}）是《ONE PIECE 卡牌對戰》卡牌，${seriesBit}稀有度 ${seo.rarity}，類型 ${seo.cardType}。` +
-    effectBit;
+  const description = cardMetaDescription({
+    name: seo.name,
+    id: seo.id,
+    series: seo.series,
+    rarity: seo.rarity,
+    cardType: seo.cardType,
+    effect: seo.effect,
+  });
 
   return buildPageMetadata({
     title: `${seo.name}（${seo.id}）| OPCG 卡牌資料`,
     description,
-    path,
+    path: canonicalUrl,
     absoluteTitle: true,
     type: "article",
     keywords: [
@@ -99,8 +109,8 @@ export async function generateMetadata({
       seo.id,
       "OPCG",
       "ONE PIECE CARD GAME",
-      seo.rarity,
-      seo.series,
+      presentMetaText(seo.rarity),
+      presentMetaText(seo.series),
     ].filter(Boolean) as string[],
     images: ogImage ? [ogImage] : undefined,
   });
@@ -114,7 +124,7 @@ export default async function CardPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { id: rawId } = await params;
-  const cardId = decodeURIComponent(rawId);
+  const cardId = normalizeCardId(decodeURIComponent(rawId));
   const qp = await searchParams;
   const pickedRaw = qp.picked;
   const pickedVariantRaw = qp.pickedVariant;
@@ -155,6 +165,7 @@ export default async function CardPage({
   }
 
   const faqLd = faqPageJsonLd(faqItems);
+  const canonicalUrl = cardCanonicalUrl(cardId);
   const structured = seo
     ? [
         cardJsonLd({
@@ -163,13 +174,14 @@ export default async function CardPage({
           nameEn: seo.nameEn,
           description: (seo.effect || seo.name).replace(/\s+/g, " ").slice(0, 240),
           imageUrl: ogImage?.url,
-          rarity: seo.rarity,
-          series: seo.series !== "-" ? seo.series : undefined,
+          rarity: presentMetaText(seo.rarity) || undefined,
+          series: presentMetaText(seo.series) || undefined,
+          url: canonicalUrl,
         }),
         breadcrumbJsonLd([
           { name: "首頁", path: "/" },
           { name: "卡牌搜索", path: "/search" },
-          { name: `${seo.name}（${seo.id}）`, path: `/cards/${encodeURIComponent(cardId)}` },
+          { name: `${seo.name}（${seo.id}）`, path: canonicalUrl },
         ]),
         ...(faqLd ? [faqLd] : []),
       ]
@@ -203,7 +215,34 @@ export default async function CardPage({
         {seo.name}
         {seo.nameEn && seo.nameEn !== seo.name ? ` / ${seo.nameEn}` : ""} {seo.id}
       </h1>
+      {isParallelArtId(cardId) ? (
+        <p className="detail-base-link">
+          <Link href={`/cards/${encodeURIComponent(toBaseCardId(cardId))}`}>
+            基礎卡 {toBaseCardId(cardId)}
+          </Link>
+        </p>
+      ) : null}
     </div>
+  ) : null;
+
+  const parallelIds = parallelArtIdsAmong(cardId, CATALOG_IDS);
+  const variantLinks = parallelIds.length ? (
+    <>
+      {parallelIds.map((id) => (
+        <Link key={id} href={`/cards/${encodeURIComponent(id)}`} className="detail-thumb">
+          {/* CDN host is fixed. CardImg's API fallback can point at 127.0.0.1 during local SSR. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`https://img.optcgassistant.com/${encodeURIComponent(id)}.png?v=${CARD_IMAGE_CACHE_BUST}`}
+            alt={id}
+            width={120}
+            height={168}
+            decoding="async"
+          />
+          <span className="detail-thumb-label">{id}</span>
+        </Link>
+      ))}
+    </>
   ) : null;
 
   const cardSupplement = seo ? (
@@ -280,6 +319,7 @@ export default async function CardPage({
         pickedVariant={pickedVariant ? decodeURIComponent(pickedVariant) : undefined}
         cardTitle={cardTitle}
         afterDetails={cardSupplement}
+        variantLinks={variantLinks}
       />
     </div>
   );

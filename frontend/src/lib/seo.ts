@@ -294,8 +294,10 @@ export function cardJsonLd(input: {
   imageUrl?: string | null;
   rarity?: string;
   series?: string;
+  /** Absolute page URL. When set, this is the Product `url` (must match canonical). */
+  url?: string;
 }): Record<string, unknown> {
-  const url = absoluteUrl(`/cards/${encodeURIComponent(input.id)}`);
+  const url = input.url || absoluteUrl(`/cards/${encodeURIComponent(input.id)}`);
   return {
     "@context": "https://schema.org",
     "@type": "Product",
