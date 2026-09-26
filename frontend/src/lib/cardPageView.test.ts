@@ -3,12 +3,14 @@ import { describe, it } from "node:test";
 import { resolvePacksCdnBase } from "./api.ts";
 import {
   cardDocumentTitle,
+  cardHeadingText,
   cardIdFromPathname,
   isSameCardFamily,
   leaderLifeValue,
   marketPriceToResponse,
   printedCostOrLife,
   shouldDeferVariantClick,
+  shownCardId,
   variantMainAlt,
   variantThumbAlt,
 } from "./cardPageView.ts";
@@ -50,15 +52,67 @@ describe("alternate-art labels", () => {
     assert.equal(variantMainAlt("戈爾德伯格", "OP18-086"), "戈爾德伯格");
   });
 
-  it("uses the same document title as the base card page", () => {
+  it("adds one alternate-art suffix from the id, in the page language", () => {
     assert.equal(
-      cardDocumentTitle("羅布・路基", "OP05-093-P2"),
-      "羅布・路基（OP05-093）| OPCG 卡牌資料",
+      cardDocumentTitle("騙人布", "ST01-002-P2"),
+      "騙人布(異圖卡)（ST01-002）| OPCG 卡牌資料",
+    );
+    assert.equal(
+      cardDocumentTitle("羅布・路基(異圖卡)", "OP05-093-P1"),
+      "羅布・路基(異圖卡)（OP05-093）| OPCG 卡牌資料",
+    );
+    assert.equal(
+      cardDocumentTitle("骗人布", "ST01-002-P2", "zh-Hans"),
+      "骗人布(异图卡)（ST01-002）| OPCG 卡牌資料",
+    );
+    assert.equal(
+      cardDocumentTitle("Usopp", "ST01-002-P2", "en"),
+      "Usopp (Parallel)（ST01-002）| OPCG 卡牌資料",
+    );
+    assert.equal(
+      cardDocumentTitle("Rob Lucci (Parallel)", "OP05-093-P1", "en"),
+      "Rob Lucci (Parallel)（OP05-093）| OPCG 卡牌資料",
     );
     assert.equal(
       cardDocumentTitle("羅布・路基", "OP05-093"),
-      cardDocumentTitle("羅布・路基", "OP05-093-P3"),
+      "羅布・路基（OP05-093）| OPCG 卡牌資料",
     );
+    assert.equal(
+      cardDocumentTitle("騙人布", "ST01-002-R1"),
+      "騙人布（ST01-002）| OPCG 卡牌資料",
+    );
+  });
+
+  it("writes the same suffix into the H1 and keeps a reprint thumb distinct", () => {
+    assert.equal(
+      cardHeadingText("騙人布", "Usopp", "ST01-002-P2"),
+      "騙人布(異圖卡) / Usopp (Parallel) ST01-002",
+    );
+    assert.equal(
+      cardHeadingText("羅布・路基(異圖卡)", "Rob Lucci (Parallel)", "OP05-093-P1"),
+      "羅布・路基(異圖卡) / Rob Lucci (Parallel) OP05-093",
+    );
+    assert.equal(
+      cardHeadingText("骗人布", "Usopp", "ST01-002-P2", "zh-Hans"),
+      "骗人布(异图卡) / Usopp (Parallel) ST01-002",
+    );
+    assert.equal(
+      cardHeadingText("騙人布", "Usopp", "ST01-002-P2", "en"),
+      "Usopp (Parallel) / 騙人布(異圖卡) ST01-002",
+    );
+    assert.equal(cardHeadingText("騙人布", "Usopp", "ST01-002"), "騙人布 / Usopp ST01-002");
+    const reprint = variantThumbAlt("騙人布", "ST01-002-R1");
+    const base = variantThumbAlt("騙人布", "ST01-002");
+    assert.notEqual(reprint, base);
+    assert.match(reprint, /R1/);
+    assert.equal(reprint, "騙人布（ST01-002-R1）");
+  });
+
+  it("selects the query variant before the path id", () => {
+    assert.equal(shownCardId("OP05-093", "", "OP05-093-P1"), "OP05-093-P1");
+    assert.equal(shownCardId("OP05-093", "OP05-093-P2", ""), "OP05-093-P2");
+    assert.equal(shownCardId("OP05-093-P1"), "OP05-093-P1");
+    assert.equal(shownCardId("OP05-093", "ST01-002-P1"), "OP05-093");
   });
 });
 

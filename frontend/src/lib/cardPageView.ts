@@ -39,14 +39,89 @@ export function printedCostOrLife(card: {
   return { kind: "cost", value: card.cost };
 }
 
+export type CardTitleLang = "zh-Hant" | "zh-Hans" | "en";
+
+/** Suffix written into `<title>` and the H1 when the id ends in `-P` plus digits. */
+export function parallelArtSuffix(lang: CardTitleLang = "zh-Hant"): string {
+  if (lang === "en") return "(Parallel)";
+  if (lang === "zh-Hans") return "(异图卡)";
+  return "(異圖卡)";
+}
+
+/** Drop a trailing alternate-art suffix so it can be reapplied once for the active id. */
+export function stripParallelArtSuffix(name: string): string {
+  return String(name || "")
+    .replace(/\s*[（(]\s*(?:異圖卡|异图卡)\s*[)）]\s*$/g, "")
+    .replace(/\s*(?:異圖卡|异图卡)\s*$/g, "")
+    .replace(/\s*\(\s*Parallel\s*\)\s*$/i, "")
+    .trim();
+}
+
+/**
+ * Parallel art is decided by the id (`-P` + digits), not by whatever the name
+ * field happens to contain. A name that already ends with the suffix is not
+ * given a second one. Reprint ids such as `-R1` are left unchanged.
+ */
+export function withParallelArtSuffix(
+  name: string,
+  cardId: string,
+  lang: CardTitleLang = "zh-Hant",
+): string {
+  const label = stripParallelArtSuffix(name);
+  if (!isParallelArtId(cardId)) return label;
+  const suffix = parallelArtSuffix(lang);
+  if (!label) return suffix;
+  return lang === "en" ? `${label} ${suffix}` : `${label}${suffix}`;
+}
+
 /**
  * Same string `generateMetadata` puts in `<title>`.
- * `displayCardId` strips `-P` / `-R`, so an alternate-art URL keeps the base card title.
+ * The parenthetical number stays the base id. `-P` printings add the
+ * language's alternate-art suffix on the name.
  */
-export function cardDocumentTitle(name: string, cardId: string): string {
+export function cardDocumentTitle(
+  name: string,
+  cardId: string,
+  lang: CardTitleLang = "zh-Hant",
+): string {
   const id = displayCardId(cardId);
-  const label = String(name || "").trim() || id;
+  const label = withParallelArtSuffix(name, cardId, lang) || id;
   return `${label}（${id}）| OPCG 卡牌資料`;
+}
+
+/** Visible H1. Chinese and English each get their own suffix; `-R` ids do not. */
+export function cardHeadingText(
+  name: string,
+  nameEn: string,
+  cardId: string,
+  lang: CardTitleLang = "zh-Hant",
+): string {
+  const id = displayCardId(cardId);
+  const zhLang: CardTitleLang = lang === "zh-Hans" ? "zh-Hans" : "zh-Hant";
+  const zh = withParallelArtSuffix(name, cardId, zhLang);
+  const en = withParallelArtSuffix(nameEn, cardId, "en");
+  if (lang === "en") {
+    const primary = en || zh || id;
+    const secondary = zh && en && zh !== en ? ` / ${zh}` : "";
+    return `${primary}${secondary} ${id}`.replace(/\s+/g, " ").trim();
+  }
+  const primary = zh || en || id;
+  const secondary = en && primary !== en ? ` / ${en}` : "";
+  return `${primary}${secondary} ${id}`.replace(/\s+/g, " ").trim();
+}
+
+/** Id shown on first paint: `pickedVariant`, then `picked`, then the path. */
+export function shownCardId(
+  cardId: string,
+  picked?: string | null,
+  pickedVariant?: string | null,
+): string {
+  const fromPath = normalizeCardId(cardId);
+  const fromVariant = normalizeCardId(pickedVariant || "");
+  const fromPicked = normalizeCardId(picked || "");
+  const candidate = fromVariant || fromPicked || fromPath;
+  if (candidate && isSameCardFamily(candidate, fromPath || cardId)) return candidate;
+  return fromPath;
 }
 
 /** Main image alt. Alternate art names the printing; the base card keeps the card name. */
@@ -57,7 +132,11 @@ export function variantMainAlt(name: string, cardId: string): string {
   return label;
 }
 
-/** Thumbnail alt. Alternate art uses 「卡名（卡號）異畫」; the base card omits 異畫. */
+/**
+ * Thumbnail title and alt. The full catalog id stays in the string so a
+ * reprint such as ST01-002-R1 is distinct from the base card (the R1 marker).
+ * Alternate art still uses 「卡名（卡號）異畫」.
+ */
 export function variantThumbAlt(name: string, cardId: string): string {
   const id = normalizeCardId(cardId);
   const label = String(name || "").trim() || id;

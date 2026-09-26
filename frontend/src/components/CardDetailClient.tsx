@@ -17,6 +17,7 @@ import { displayCardId, isDonCardId, normalizeCardId, toBaseCardId } from "@/lib
 import { isParallelArtId } from "@/lib/parallelArts";
 import {
   cardDocumentTitle,
+  cardHeadingText,
   cardIdFromPathname,
   cardVariantHref,
   isLeaderCardType,
@@ -26,8 +27,9 @@ import {
   shouldDeferVariantClick,
   variantMainAlt,
   variantThumbAlt,
+  type CardTitleLang,
 } from "@/lib/cardPageView";
-import { localizeCardList, localizeCardName, localizeCardSources, localizeCardText, localizeDonCardName, preferLangText } from "@/lib/cardLocale";
+import { localizeCardList, localizeCardName, localizeCardSources, localizeCardText, localizeDonCardName, preferLangText, toSimplifiedText } from "@/lib/cardLocale";
 import { localizeFilterToken, localizeFilterTokens } from "@/lib/filterLabels";
 import { formatEffectLines } from "@/lib/formatEffect";
 import type { Card, CardPriceResponse, PriceHistoryPoint } from "@/lib/types";
@@ -243,6 +245,7 @@ export function CardDetailClient({
   const [ownedQty, setOwnedQty] = useState(0);
   const seededPriceIdRef = useRef(seededPrice ? normalizeCardId(initialPriceCardId || cardId) : "");
   const titleNameRef = useRef("");
+  const titleLangRef = useRef<CardTitleLang>("zh-Hant");
 
   const baseId = useMemo(() => toBaseCardId(cardId), [cardId]);
   const selectedVariantId = useMemo(() => {
@@ -355,7 +358,17 @@ export function CardDetailClient({
     };
   }, [activeVariantId, selectedVariantId]);
 
-  titleNameRef.current = String(card?.name || card?.name_en || "").trim();
+  const shownId = normalizeCardId(activeVariantId || selectedVariantId || card?.id || cardId);
+  const titleLang: CardTitleLang = lang === "en" ? "en" : lang === "zh-Hans" ? "zh-Hans" : "zh-Hant";
+  const titleName =
+    titleLang === "en"
+      ? String(card?.name_en || card?.name || "").trim()
+      : titleLang === "zh-Hans"
+        ? toSimplifiedText(card?.name || card?.name_en || "")
+        : String(card?.name || card?.name_en || "").trim();
+  titleNameRef.current = titleName;
+  titleLangRef.current = titleLang;
+
   useLayoutEffect(() => {
     function onPop(event: PopStateEvent) {
       const id = cardIdFromPathname(window.location.pathname);
@@ -363,11 +376,16 @@ export function CardDetailClient({
       // Next.js also listens for popstate and would soft-navigate (and scroll).
       event.stopImmediatePropagation();
       setActiveVariantId(id);
-      document.title = cardDocumentTitle(titleNameRef.current, id);
+      document.title = cardDocumentTitle(titleNameRef.current, id, titleLangRef.current);
     }
     window.addEventListener("popstate", onPop, true);
     return () => window.removeEventListener("popstate", onPop, true);
   }, [cardId]);
+
+  useEffect(() => {
+    if (!card) return;
+    document.title = cardDocumentTitle(titleNameRef.current, shownId, titleLangRef.current);
+  }, [card, shownId, titleLang, titleName]);
 
   useEffect(() => {
     const id = card?.id || "";
@@ -509,8 +527,9 @@ export function CardDetailClient({
     }
   }
 
-  const shownId = normalizeCardId(activeVariantId || selectedVariantId || card.id);
   const leaderCard = isLeaderCardType(card.card_type, card.card_type_en);
+  const headingZh = lang === "zh-Hans" ? toSimplifiedText(card.name || "") : String(card.name || "");
+  const heading = cardHeadingText(headingZh, String(card.name_en || ""), shownId, titleLang);
 
   function onVariantClick(event: { button?: number; metaKey?: boolean; ctrlKey?: boolean; shiftKey?: boolean; altKey?: boolean; defaultPrevented?: boolean; preventDefault: () => void }, id: string) {
     if (shouldDeferVariantClick(event)) return;
@@ -518,7 +537,7 @@ export function CardDetailClient({
     const next = normalizeCardId(id);
     if (!next) return;
     setActiveVariantId(next);
-    document.title = cardDocumentTitle(String(card?.name || card?.name_en || "").trim(), next);
+    document.title = cardDocumentTitle(titleNameRef.current, next, titleLangRef.current);
     const href = cardVariantHref(next);
     if (window.location.pathname !== href) {
       // `__NA` makes Next.js leave this pushState alone. Without it, Next
@@ -535,7 +554,10 @@ export function CardDetailClient({
       <div className="detail-grid">
         <div className="detail-lead">
           <div>
-            {cardTitle}
+            <div className="card-page-heading">
+              {cardTitle}
+              <h1>{heading}</h1>
+            </div>
             {isParallelArtId(shownId) ? (
               <p className="detail-base-link">
                 <a
@@ -553,39 +575,37 @@ export function CardDetailClient({
           </div>
           <div className="detail-img">
           <h2 style={{ marginBottom: 8 }}>{t("detail.images")}</h2>
+          <div className="detail-main-frame">
           <CardImg
             className="detail-main-img"
             cardId={shownId}
             alt={variantMainAlt(name, shownId)}
             loading="eager"
+            fetchPriority="high"
             width={733}
             height={1024}
           />
+          </div>
           {thumbVariantIds.length > 0 ? (
             <div className="detail-thumbs">
               {thumbVariantIds.map((vid) => {
                 const id = normalizeCardId(vid);
                 const selected = shownId === id;
-                const parallel = isParallelArtId(id);
+                const thumbText = variantThumbAlt(name, id);
                 return (
                   <a
                     key={id}
                     href={cardVariantHref(id)}
                     className={`detail-thumb${selected ? " active" : ""}`}
                     aria-current={selected ? "true" : undefined}
-                    title={id}
+                    title={thumbText}
                     onClick={(event) => onVariantClick(event, id)}
                     onKeyDown={(event) => {
                       if (event.key !== "Enter") return;
                       onVariantClick(event, id);
                     }}
                   >
-                    <CardImg cardId={id} alt={variantThumbAlt(name, id)} width={120} height={168} />
-                    {parallel ? (
-                      <span className="detail-thumb-label" aria-hidden="true">
-                        {id}
-                      </span>
-                    ) : null}
+                    <CardImg cardId={id} alt={thumbText} width={120} height={168} />
                   </a>
                 );
               })}
