@@ -3,7 +3,12 @@
 
 api.optcgassistant.com {
 	encode gzip zstd
-	reverse_proxy 127.0.0.1:8000
+	# Retry dialing for up to 15s when this upstream is not accepting connections.
+	# An established connection, including a battle WebSocket, is left alone.
+	reverse_proxy 127.0.0.1:8000 {
+		lb_try_duration 15s
+		lb_try_interval 250ms
+	}
 }
 
 # Canonical host is apex; keep www as a 301 so sitemap / search stay on one origin.
@@ -13,5 +18,9 @@ www.optcgassistant.com {
 
 # Primary site: Next.js.
 optcgassistant.com {
-	reverse_proxy 127.0.0.1:3000
+	# Same dial retry as the API site, for the Next.js restart window.
+	reverse_proxy 127.0.0.1:3000 {
+		lb_try_duration 15s
+		lb_try_interval 250ms
+	}
 }
