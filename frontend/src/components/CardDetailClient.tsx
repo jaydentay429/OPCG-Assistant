@@ -437,8 +437,9 @@ export function CardDetailClient({
         {t("detail.back")}
       </button>
       <div className="detail-grid">
-        {cardTitle}
-        <div className="detail-img">
+        <div className="detail-lead">
+          {cardTitle}
+          <div className="detail-img">
           <h2 style={{ marginBottom: 8 }}>{t("detail.images")}</h2>
           <CardImg
             className="detail-main-img"
@@ -462,7 +463,8 @@ export function CardDetailClient({
                 );
               })}
             </div>
-          ) : null}
+            ) : null}
+          </div>
         </div>
         <div className="detail-info">
           <h2 style={{ marginBottom: 8 }}>{t("detail.info")}</h2>
