@@ -505,20 +505,25 @@ body.battle-active .play-seo-intro {
   pointer-events: none;
 }
 
-.card-seo-header {
+.card-page-heading {
+  min-width: 0;
+}
+
+.card-page-heading h1 {
+  margin: 0.25rem 0 0;
+  font-size: 1.45rem;
+  line-height: 1.3;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.card-seo-more {
   margin: 0;
   padding: 0.85rem 0.95rem 1rem;
   border-radius: 12px;
   border: 1px solid rgba(148, 163, 184, 0.22);
   background: rgba(15, 23, 42, 0.45);
   min-width: 0;
-}
-
-.card-seo-header h1 {
-  margin: 0.35rem 0 0.4rem;
-  font-size: 1.35rem;
-  line-height: 1.3;
-  overflow-wrap: anywhere;
 }
 
 .card-seo-summary {
@@ -551,18 +556,19 @@ body.battle-active .play-seo-intro {
   line-height: 1.5;
 }
 
-.card-seo-header h2 {
+.card-seo-more h2 {
   margin: 0.85rem 0 0.3rem;
   font-size: 0.95rem;
 }
 
-.card-seo-header h3 {
+.card-seo-more h3 {
   margin: 0.65rem 0 0.15rem;
   font-size: 0.92rem;
   line-height: 1.4;
 }
 
-.card-seo-header section p {
+.card-seo-more section p,
+.card-seo-faq p {
   margin: 0;
   font-size: 0.9rem;
   line-height: 1.55;
@@ -570,9 +576,24 @@ body.battle-active .play-seo-intro {
   white-space: pre-wrap;
 }
 
+.card-seo-faq {
+  margin-top: 0.35rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+.card-seo-faq summary {
+  cursor: pointer;
+}
+
+.card-seo-faq summary h2 {
+  display: inline;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
 .card-seo-faq p {
   color: var(--text-muted);
-  white-space: pre-wrap;
 }
 
 .set-page-nav a {
@@ -1739,9 +1760,15 @@ input[type="search"]::-webkit-search-cancel-button {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
   grid-template-areas:
+    "title info"
     "art info"
-    "seo info";
+    "extra extra";
   gap: 1rem;
+  align-items: start;
+}
+
+.detail-grid > .card-page-heading {
+  grid-area: title;
 }
 
 .detail-grid > .detail-img {
@@ -1752,8 +1779,8 @@ input[type="search"]::-webkit-search-cancel-button {
   grid-area: info;
 }
 
-.detail-grid > .card-seo-header {
-  grid-area: seo;
+.detail-grid > .card-seo-more {
+  grid-area: extra;
 }
 
 .detail-img {
@@ -3724,9 +3751,10 @@ input[type="search"]::-webkit-search-cancel-button {
        column past the viewport and clip the card art. */
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
+      "title"
       "art"
-      "seo"
-      "info";
+      "info"
+      "extra";
   }
 
   .price-wall {

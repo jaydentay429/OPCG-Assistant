@@ -168,13 +168,16 @@ export function CardDetailClient({
   cardId,
   picked,
   pickedVariant,
-  belowArt,
+  cardTitle,
+  afterDetails,
 }: {
   cardId: string;
   picked?: string;
   pickedVariant?: string;
-  /** Server-rendered card title, facts, and FAQ. Shown under the card image once loaded. */
-  belowArt?: ReactNode;
+  /** Server-rendered H1 (card name and number), placed above the card image. */
+  cardTitle?: ReactNode;
+  /** Summary, attributes, and collapsed FAQ. Rendered after the detail panel. */
+  afterDetails?: ReactNode;
 }) {
   const { t, lang } = useI18n();
   const router = useRouter();
@@ -355,15 +358,17 @@ export function CardDetailClient({
           {t("detail.back")}
         </button>
         <p style={{ color: "#fca5a5" }}>{error}</p>
-        {belowArt}
+        {cardTitle}
+        {afterDetails}
       </div>
     );
   }
   if (!card) {
     return (
       <div className="stack">
-        {belowArt}
+        {cardTitle}
         <p className="muted">…</p>
+        {afterDetails}
       </div>
     );
   }
@@ -432,6 +437,7 @@ export function CardDetailClient({
         {t("detail.back")}
       </button>
       <div className="detail-grid">
+        {cardTitle}
         <div className="detail-img">
           <h2 style={{ marginBottom: 8 }}>{t("detail.images")}</h2>
           <CardImg
@@ -458,7 +464,6 @@ export function CardDetailClient({
             </div>
           ) : null}
         </div>
-        {belowArt}
         <div className="detail-info">
           <h2 style={{ marginBottom: 8 }}>{t("detail.info")}</h2>
           <dl>
@@ -583,6 +588,7 @@ export function CardDetailClient({
             ) : null}
           </section>
         </div>
+        {afterDetails}
       </div>
       {!isDonCard ? (
         <CardDetailExtras

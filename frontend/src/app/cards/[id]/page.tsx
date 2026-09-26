@@ -23,12 +23,6 @@ function pickText(...values: Array<string | null | undefined>): string {
   return "";
 }
 
-function firstSentence(text: string): string {
-  const compact = text.replace(/\s+/g, " ").trim();
-  const m = compact.match(/^.{8,160}?[。．.!?！？]/);
-  return (m ? m[0] : compact).slice(0, 180);
-}
-
 function cardSeoFields(card: Card, fallbackId: string) {
   const id = displayCardId(card.id || fallbackId);
   const name = pickText(card.name, card.name_en, id);
@@ -37,10 +31,9 @@ function cardSeoFields(card: Card, fallbackId: string) {
   const series = setCodeFromCardId(id) || "-";
   const cardType = pickText(card.card_type, card.card_type_en, "-");
   const effect = visibleCardEffect(pickText(card.effect, card.effect_en));
-  const trigger = pickText(card.trigger, card.trigger_en);
   const colors = (card.colors?.length ? card.colors : card.colors_en || []).join(" / ") || "-";
   const traits = (card.traits?.length ? card.traits : card.traits_en || []).join(" / ");
-  return { id, name, nameEn, rarity, series, cardType, effect, trigger, colors, traits };
+  return { id, name, nameEn, rarity, series, cardType, effect, colors, traits };
 }
 
 async function loadCard(cardId: string): Promise<Card | null> {
@@ -179,102 +172,96 @@ export default async function CardPage({
     ? [
         `${seo.id} ${seo.name} 是${seo.colors !== "-" ? ` ${seo.colors} 色、` : ""}${card?.cost != null ? `費用 ${card.cost} 的` : ""}${seo.cardType}。`,
         card?.power != null && String(card.power) !== "" ? `力量 ${card.power}。` : "",
-        seo.effect ? `效果：${firstSentence(seo.effect)}` : "",
       ]
         .filter(Boolean)
         .join(" ")
     : "";
 
-  const cardSeo = seo ? (
-        <header className="card-seo-header">
-          <nav className="set-page-nav muted">
-            <Link href="/">首頁</Link>
+  const cardTitle = seo ? (
+    <div className="card-page-heading">
+      <nav className="set-page-nav muted">
+        <Link href="/">首頁</Link>
+        {" / "}
+        <Link href="/search">卡牌搜索</Link>
+        {setCodeFromCardId(seo.id) ? (
+          <>
             {" / "}
-            <Link href="/search">卡牌搜索</Link>
-            {setCodeFromCardId(seo.id) ? (
-              <>
-                {" / "}
-                <Link href={`/sets/${encodeURIComponent(setCodeFromCardId(seo.id) || "")}`}>
-                  {setCodeFromCardId(seo.id)}
-                </Link>
-              </>
-            ) : null}
-          </nav>
-          <h1>
-            {seo.name}
-            {seo.nameEn && seo.nameEn !== seo.name ? ` / ${seo.nameEn}` : ""} {seo.id}
-          </h1>
-          <p className="card-seo-summary">{summary}</p>
-          <dl className="card-seo-facts">
-            {card?.cost != null ? (
-              <>
-                <dt>費用</dt>
-                <dd>{card.cost}</dd>
-              </>
-            ) : null}
-            {card?.power != null && String(card.power) !== "" ? (
-              <>
-                <dt>力量</dt>
-                <dd>{card.power}</dd>
-              </>
-            ) : null}
-            {card?.counter != null && String(card.counter) !== "" ? (
-              <>
-                <dt>反擊</dt>
-                <dd>{card.counter}</dd>
-              </>
-            ) : null}
-            {seo.colors !== "-" ? (
-              <>
-                <dt>顏色</dt>
-                <dd>{seo.colors}</dd>
-              </>
-            ) : null}
-            {seo.traits ? (
-              <>
-                <dt>特徵</dt>
-                <dd>{seo.traits}</dd>
-              </>
-            ) : null}
-            {seo.series !== "-" ? (
-              <>
-                <dt>系列</dt>
-                <dd>{seo.series}</dd>
-              </>
-            ) : null}
-            <dt>稀有度</dt>
-            <dd>{seo.rarity}</dd>
-          </dl>
-          {seo.effect ? (
-            <section>
-              <h2>效果文本</h2>
-              <p>{seo.effect}</p>
-            </section>
-          ) : null}
-          {seo.trigger ? (
-            <section>
-              <h2>觸發器</h2>
-              <p>{seo.trigger}</p>
-            </section>
-          ) : null}
-          {editorNote ? (
-            <section>
-              <h2>編輯說明</h2>
-              <p>{editorNote}</p>
-            </section>
-          ) : null}
-          {faqItems.length ? (
-            <section className="card-seo-faq">
-              <h2>常見問題</h2>
-              {faqItems.map((item) => (
-                <div key={item.question}>
-                  <h3>{item.question}</h3>
-                  <p>{item.answer}</p>
-                </div>
-              ))}
-            </section>
-          ) : null}
-        </header>
+            <Link href={`/sets/${encodeURIComponent(setCodeFromCardId(seo.id) || "")}`}>
+              {setCodeFromCardId(seo.id)}
+            </Link>
+          </>
+        ) : null}
+      </nav>
+      <h1>
+        {seo.name}
+        {seo.nameEn && seo.nameEn !== seo.name ? ` / ${seo.nameEn}` : ""} {seo.id}
+      </h1>
+    </div>
+  ) : null;
+
+  const cardSupplement = seo ? (
+    <section className="card-seo-more">
+      <p className="card-seo-summary">{summary}</p>
+      <dl className="card-seo-facts">
+        {card?.cost != null ? (
+          <>
+            <dt>費用</dt>
+            <dd>{card.cost}</dd>
+          </>
+        ) : null}
+        {card?.power != null && String(card.power) !== "" ? (
+          <>
+            <dt>力量</dt>
+            <dd>{card.power}</dd>
+          </>
+        ) : null}
+        {card?.counter != null && String(card.counter) !== "" ? (
+          <>
+            <dt>反擊</dt>
+            <dd>{card.counter}</dd>
+          </>
+        ) : null}
+        {seo.colors !== "-" ? (
+          <>
+            <dt>顏色</dt>
+            <dd>{seo.colors}</dd>
+          </>
+        ) : null}
+        {seo.traits ? (
+          <>
+            <dt>特徵</dt>
+            <dd>{seo.traits}</dd>
+          </>
+        ) : null}
+        {seo.series !== "-" ? (
+          <>
+            <dt>系列</dt>
+            <dd>{seo.series}</dd>
+          </>
+        ) : null}
+        <dt>稀有度</dt>
+        <dd>{seo.rarity}</dd>
+      </dl>
+      {editorNote ? (
+        <section>
+          <h2>編輯說明</h2>
+          <p>{editorNote}</p>
+        </section>
+      ) : null}
+      {faqItems.length ? (
+        <details className="card-seo-faq">
+          <summary>
+            <h2>常見問題</h2>
+          </summary>
+          {faqItems.map((item) => (
+            <div key={item.question}>
+              <h3>{item.question}</h3>
+              <p>{item.answer}</p>
+            </div>
+          ))}
+        </details>
+      ) : null}
+    </section>
   ) : null;
 
   return (
@@ -284,7 +271,8 @@ export default async function CardPage({
         cardId={cardId}
         picked={picked ? decodeURIComponent(picked) : undefined}
         pickedVariant={pickedVariant ? decodeURIComponent(pickedVariant) : undefined}
-        belowArt={cardSeo}
+        cardTitle={cardTitle}
+        afterDetails={cardSupplement}
       />
     </div>
   );
