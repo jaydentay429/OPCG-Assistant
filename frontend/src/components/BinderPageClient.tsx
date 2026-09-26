@@ -15,6 +15,7 @@ import {
   type DeckStatFields,
 } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
+import { filterBinderLibrary } from "@/lib/binderLibraryFilter";
 import { cardIdSortKey, displayCardId } from "@/lib/cardId";
 import { cardMatchesCollectionQuery } from "@/lib/cardSearchMatch";
 import { copyTextToClipboard } from "@/lib/clipboard";
@@ -190,12 +191,11 @@ export function BinderPageClient() {
 
   const filteredCollEntries = useMemo(() => {
     const q = collQuery.trim();
-    const filtered = q
-      ? collEntries.filter(([id]) => {
-          if (!(id in metaById)) return true;
-          return cardMatchesCollectionQuery(id, metaById[id]?.searchBlob, q);
-        })
-      : collEntries;
+    // Card numbers are on the collection key. Do not wait for deck-stats
+    // metadata (that fetch can fail); name/trait matching still uses it.
+    const filtered = filterBinderLibrary(collEntries, q, metaById, (id, blob, query) =>
+      cardMatchesCollectionQuery(id, blob, query),
+    );
     const sorted = [...filtered];
     if (collSort === "qty_desc") {
       sorted.sort((a, b) => b[1] - a[1] || cardIdSortKey(a[0]).localeCompare(cardIdSortKey(b[0])));
