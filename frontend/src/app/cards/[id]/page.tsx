@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import { CardDetailClient } from "@/components/CardDetailClient";
 import { JsonLd } from "@/components/JsonLd";
-import { ApiError, fetchCard, fetchCardTournaments, type CardTournamentAppearance } from "@/lib/api";
+import { ApiError, type CardTournamentAppearance } from "@/lib/api";
+import { getCachedCardDetail, getCachedCardTournaments } from "@/lib/cardPageData";
 import { catalogHasCard, missingCardShould404 } from "@/lib/cardCatalog";
 import { cardNotFoundMetadata } from "@/lib/cardNotFoundMetadata";
 import { tournamentFaqAnswer } from "@/lib/cardTournamentFaq";
@@ -43,7 +44,7 @@ function cardSeoFields(card: Card, fallbackId: string) {
 
 const loadCard = cache(async (cardId: string): Promise<Card | null> => {
   try {
-    const data = await fetchCard(cardId, false);
+    const data = await getCachedCardDetail(cardId);
     if (data.card) return data.card;
     if (!missingCardShould404(null, catalogHasCard(cardId))) {
       throw new Error(`Card API returned no card for catalogued id ${cardId}`);
@@ -127,7 +128,7 @@ export default async function CardPage({
 
   let appearances: CardTournamentAppearance[] = [];
   try {
-    const tour = await fetchCardTournaments(cardId, 5);
+    const tour = await getCachedCardTournaments(cardId, 5);
     appearances = tour.items || [];
   } catch {
     appearances = [];
