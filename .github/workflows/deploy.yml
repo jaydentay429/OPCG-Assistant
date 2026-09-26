@@ -65,30 +65,46 @@ jobs:
             -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes" \
             ./ "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/opt/opcg/app/"
 
-      - name: "Sync frontend build output (--delete OK, fully-generated dirs)"
+      # Stage the new standalone tree beside the live one. rsync --delete onto the
+      # directory the running server is serving makes Next answer 400 for chunks
+      # it still has in memory. Promotion (after the API is up) switches symlinks
+      # and keeps the previous build's /_next/static files for one generation.
+      - name: "Sync frontend build into a new release directory"
         run: |
-          for d in frontend/.next/standalone frontend/.next/static frontend/public; do
-            rsync -avz --delete \
-              -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes" \
-              "$d/" "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/opt/opcg/app/$d/"
-          done
+          release="${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}"
+          dest="/opt/opcg/app/frontend/.next/releases/${release}"
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
+            "mkdir -p '${dest}/standalone'"
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes" \
+            frontend/.next/standalone/ \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${dest}/standalone/"
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes" \
+            frontend/public/ \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/opt/opcg/app/frontend/public/"
 
       - name: Install backend deps + restart services
         run: |
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes \
-            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" '
-              set -e
-              cd /opt/opcg/app
-              .venv/bin/pip install -q -r requirements.txt
-              cp deploy/optcgassistant/opcg-api.service /etc/systemd/system/opcg-api.service
-              cp deploy/optcgassistant/opcg-web.service /etc/systemd/system/opcg-web.service
-              systemctl daemon-reload
-              systemctl restart opcg-api opcg-web
-            '
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
+            bash -s << 'EOF'
+          set -euo pipefail
+          cd /opt/opcg/app
+          .venv/bin/pip install -q -r requirements.txt
+          cp deploy/optcgassistant/opcg-api.service /etc/systemd/system/opcg-api.service
+          cp deploy/optcgassistant/opcg-web.service /etc/systemd/system/opcg-web.service
+          systemctl daemon-reload
+          systemctl restart opcg-api || { journalctl -u opcg-api -n 50 --no-pager || true; exit 1; }
+          bash deploy/optcgassistant/wait-http.sh http://127.0.0.1:8000/ opcg-api
+          bash deploy/optcgassistant/promote-frontend.sh '${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}'
+          systemctl restart opcg-web || { journalctl -u opcg-web -n 50 --no-pager || true; exit 1; }
+          bash deploy/optcgassistant/wait-http.sh http://127.0.0.1:3000/ opcg-web
+          EOF
 
       - name: Smoke test
         run: |
-          sleep 3
           curl -sSf https://api.optcgassistant.com/ | head -c 500
           echo
           curl -sSf -o /dev/null -w "frontend: %{http_code}\n" https://optcgassistant.com
