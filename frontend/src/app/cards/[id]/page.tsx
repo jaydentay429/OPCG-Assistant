@@ -2,21 +2,20 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
+import { preload } from "react-dom";
 import { CardDetailClient } from "@/components/CardDetailClient";
 import { JsonLd } from "@/components/JsonLd";
-import { ApiError, CARD_IMAGE_CACHE_BUST, type CardTournamentAppearance } from "@/lib/api";
+import { ApiError, cardImageSources, type CardTournamentAppearance } from "@/lib/api";
 import { getCachedCardDetail, getCachedCardTournaments } from "@/lib/cardPageData";
 import { catalogHasCard, missingCardShould404 } from "@/lib/cardCatalog";
 import { cardNotFoundMetadata } from "@/lib/cardNotFoundMetadata";
 import { tournamentFaqAnswer } from "@/lib/cardTournamentFaq";
 import { cardEditorNote } from "@/lib/cardEditorNotes";
-import bundledCardIds from "@/generated/card-ids.json";
-import { displayCardId, normalizeCardId, setCodeFromCardId, toBaseCardId } from "@/lib/cardId";
+import { cardDocumentTitle, printedCostOrLife, shownCardId } from "@/lib/cardPageView";
+import { displayCardId, isDonCardId, normalizeCardId, setCodeFromCardId, toBaseCardId } from "@/lib/cardId";
 import {
   cardCanonicalUrl,
   cardMetaDescription,
-  isParallelArtId,
-  parallelArtIdsAmong,
   presentMetaText,
 } from "@/lib/parallelArts";
 import {
@@ -28,8 +27,6 @@ import {
   visibleCardEffect,
 } from "@/lib/seo";
 import type { Card } from "@/lib/types";
-
-const CATALOG_IDS = bundledCardIds as string[];
 
 function pickText(...values: Array<string | null | undefined>): string {
   for (const value of values) {
@@ -74,13 +71,27 @@ const loadCard = cache(async (cardId: string): Promise<Card | null> => {
   }
 });
 
+function firstQueryValue(value: string | string[] | undefined): string {
+  const raw = Array.isArray(value) ? value[0] : value;
+  if (!raw) return "";
+  try {
+    return decodeURIComponent(raw);
+  } catch {
+    return raw;
+  }
+}
+
 export async function generateMetadata({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }): Promise<Metadata> {
   const { id: rawId } = await params;
   const cardId = normalizeCardId(decodeURIComponent(rawId));
+  const qp = await searchParams;
+  const shownId = shownCardId(cardId, firstQueryValue(qp.picked), firstQueryValue(qp.pickedVariant));
   const canonicalUrl = cardCanonicalUrl(cardId);
   const ogImage = cardOgImage(cardId);
   const card = await loadCard(cardId);
@@ -98,7 +109,7 @@ export async function generateMetadata({
   });
 
   return buildPageMetadata({
-    title: `${seo.name}（${seo.id}）| OPCG 卡牌資料`,
+    title: cardDocumentTitle(seo.name, shownId),
     description,
     path: canonicalUrl,
     absoluteTitle: true,
@@ -126,20 +137,34 @@ export default async function CardPage({
   const { id: rawId } = await params;
   const cardId = normalizeCardId(decodeURIComponent(rawId));
   const qp = await searchParams;
-  const pickedRaw = qp.picked;
-  const pickedVariantRaw = qp.pickedVariant;
-  const picked = Array.isArray(pickedRaw) ? pickedRaw[0] : pickedRaw;
-  const pickedVariant = Array.isArray(pickedVariantRaw) ? pickedVariantRaw[0] : pickedVariantRaw;
+  const picked = firstQueryValue(qp.picked);
+  const pickedVariant = firstQueryValue(qp.pickedVariant);
   const card = await loadCard(cardId);
   if (!card) notFound();
+  // Same payload the client uses: non-DON pages load the base card so every
+  // alternate-art thumbnail is present. The URL card still supplies the price
+  // of the printing this page opened on.
+  const baseId = toBaseCardId(cardId);
+  let detailCard = card;
+  if (!isDonCardId(cardId) && baseId !== normalizeCardId(cardId)) {
+    try {
+      const baseCard = await loadCard(baseId);
+      if (baseCard) detailCard = baseCard;
+    } catch {
+      detailCard = card;
+    }
+  }
   const seo = card ? cardSeoFields(card, cardId) : null;
   const ogImage = cardOgImage(cardId);
   const editorNote = cardEditorNote(cardId);
+  const printedStat = printedCostOrLife(card);
 
   let appearances: CardTournamentAppearance[] = [];
+  let initialTournaments: { items: CardTournamentAppearance[]; total: number } | undefined;
   try {
-    const tour = await getCachedCardTournaments(cardId, 5);
+    const tour = await getCachedCardTournaments(cardId, 10);
     appearances = tour.items || [];
+    initialTournaments = { items: appearances, total: tour.total_matched || 0 };
   } catch {
     appearances = [];
   }
@@ -189,7 +214,7 @@ export default async function CardPage({
 
   const summary = seo
     ? [
-        `${seo.id} ${seo.name} 是${seo.colors !== "-" ? ` ${seo.colors} 色、` : ""}${card?.cost != null ? `費用 ${card.cost} 的` : ""}${seo.cardType}。`,
+        `${seo.id} ${seo.name} 是${seo.colors !== "-" ? ` ${seo.colors} 色、` : ""}${printedStat ? `${printedStat.kind === "life" ? "生命" : "費用"} ${printedStat.value} 的` : ""}${seo.cardType}。`,
         card?.power != null && String(card.power) !== "" ? `力量 ${card.power}。` : "",
       ]
         .filter(Boolean)
@@ -197,62 +222,29 @@ export default async function CardPage({
     : "";
 
   const cardTitle = seo ? (
-    <div className="card-page-heading">
-      <nav className="set-page-nav muted">
-        <Link href="/">首頁</Link>
-        {" / "}
-        <Link href="/search">卡牌搜索</Link>
-        {setCodeFromCardId(seo.id) ? (
-          <>
-            {" / "}
-            <Link href={`/sets/${encodeURIComponent(setCodeFromCardId(seo.id) || "")}`}>
-              {setCodeFromCardId(seo.id)}
-            </Link>
-          </>
-        ) : null}
-      </nav>
-      <h1>
-        {seo.name}
-        {seo.nameEn && seo.nameEn !== seo.name ? ` / ${seo.nameEn}` : ""} {seo.id}
-      </h1>
-      {isParallelArtId(cardId) ? (
-        <p className="detail-base-link">
-          <Link href={`/cards/${encodeURIComponent(toBaseCardId(cardId))}`}>
-            基礎卡 {toBaseCardId(cardId)}
+    <nav className="set-page-nav muted">
+      <Link href="/">首頁</Link>
+      {" / "}
+      <Link href="/search">卡牌搜索</Link>
+      {setCodeFromCardId(seo.id) ? (
+        <>
+          {" / "}
+          <Link href={`/sets/${encodeURIComponent(setCodeFromCardId(seo.id) || "")}`}>
+            {setCodeFromCardId(seo.id)}
           </Link>
-        </p>
+        </>
       ) : null}
-    </div>
-  ) : null;
-
-  const parallelIds = parallelArtIdsAmong(cardId, CATALOG_IDS);
-  const variantLinks = parallelIds.length ? (
-    <>
-      {parallelIds.map((id) => (
-        <Link key={id} href={`/cards/${encodeURIComponent(id)}`} className="detail-thumb">
-          {/* CDN host is fixed. CardImg's API fallback can point at 127.0.0.1 during local SSR. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={`https://img.optcgassistant.com/${encodeURIComponent(id)}.png?v=${CARD_IMAGE_CACHE_BUST}`}
-            alt={id}
-            width={120}
-            height={168}
-            decoding="async"
-          />
-          <span className="detail-thumb-label">{id}</span>
-        </Link>
-      ))}
-    </>
+    </nav>
   ) : null;
 
   const cardSupplement = seo ? (
     <section className="card-seo-more">
       <p className="card-seo-summary">{summary}</p>
       <dl className="card-seo-facts">
-        {card?.cost != null ? (
+        {printedStat ? (
           <>
-            <dt>費用</dt>
-            <dd>{card.cost}</dd>
+            <dt>{printedStat.kind === "life" ? "生命" : "費用"}</dt>
+            <dd>{printedStat.value}</dd>
           </>
         ) : null}
         {card?.power != null && String(card.power) !== "" ? (
@@ -310,16 +302,26 @@ export default async function CardPage({
     </section>
   ) : null;
 
+  const heroId = shownCardId(cardId, picked, pickedVariant);
+  const heroSrc = cardImageSources(heroId)[0];
+  if (heroSrc && !/localhost|127\.0\.0\.1/i.test(heroSrc)) {
+    preload(heroSrc, { as: "image", fetchPriority: "high" });
+  }
+
   return (
     <div className="stack">
       <JsonLd data={structured} allowFaq={faqItems.length > 0} />
       <CardDetailClient
+        key={cardId}
         cardId={cardId}
-        picked={picked ? decodeURIComponent(picked) : undefined}
-        pickedVariant={pickedVariant ? decodeURIComponent(pickedVariant) : undefined}
+        picked={picked || undefined}
+        pickedVariant={pickedVariant || undefined}
         cardTitle={cardTitle}
         afterDetails={cardSupplement}
-        variantLinks={variantLinks}
+        initialCard={detailCard}
+        initialMarketPrice={card.market_price ?? null}
+        initialPriceCardId={cardId}
+        initialTournaments={initialTournaments}
       />
     </div>
   );

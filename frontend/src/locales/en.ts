@@ -135,6 +135,7 @@ const dict: Record<string, string> = {
   "detail.color": "Color",
   "detail.type": "Type",
   "detail.cost": "Cost",
+  "detail.life": "Life",
   "detail.power": "Power",
   "detail.counter": "Counter",
   "detail.block": "Block",
