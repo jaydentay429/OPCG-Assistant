@@ -130,8 +130,42 @@ export function buildPageMetadata(input: PageMetaInput): Metadata {
   };
 }
 
-export function jsonLdScript(data: Record<string, unknown> | Array<Record<string, unknown>>): string {
-  return JSON.stringify(data).replace(/</g, "\\u003c");
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return !!value && typeof value === "object" && !Array.isArray(value);
+}
+
+function isFaqPage(value: unknown): boolean {
+  if (!isRecord(value)) return false;
+  const type = value["@type"];
+  return type === "FAQPage" || (Array.isArray(type) && type.includes("FAQPage"));
+}
+
+/**
+ * FAQPage is valid only when the same questions and answers are visible on that page.
+ * Shared layout data and the card-page schema do not have a visible FAQ, so drop it.
+ * Pass `{ allowFaq: true }` only from a page that renders the matching Q&A in the UI.
+ */
+function omitFaqPageJsonLd(value: unknown): unknown {
+  if (isFaqPage(value)) return undefined;
+  if (Array.isArray(value)) {
+    return value.filter((item) => !isFaqPage(item)).map((item) => omitFaqPageJsonLd(item));
+  }
+  if (!isRecord(value)) return value;
+  const next: Record<string, unknown> = {};
+  for (const [key, child] of Object.entries(value)) {
+    if (isFaqPage(child)) continue;
+    const cleaned = omitFaqPageJsonLd(child);
+    if (cleaned !== undefined) next[key] = cleaned;
+  }
+  return next;
+}
+
+export function jsonLdScript(
+  data: Record<string, unknown> | Array<Record<string, unknown>>,
+  options?: { allowFaq?: boolean },
+): string {
+  const payload = options?.allowFaq ? data : omitFaqPageJsonLd(data);
+  return JSON.stringify(payload ?? null).replace(/</g, "\\u003c");
 }
 
 /** Root structured data: WebSite + SearchAction + Organization + WebApplication. */
