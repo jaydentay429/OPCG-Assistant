@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { cache } from "react";
 import { CardDetailClient } from "@/components/CardDetailClient";
 import { JsonLd } from "@/components/JsonLd";
-import { ApiError, fetchCard, fetchCardTournaments, type CardTournamentAppearance } from "@/lib/api";
-import { catalogHasCard, missingCardShould404 } from "@/lib/cardCatalog";
+import { fetchCard, fetchCardTournaments, type CardTournamentAppearance } from "@/lib/api";
 import { cardEditorNote } from "@/lib/cardEditorNotes";
 import { displayCardId, setCodeFromCardId } from "@/lib/cardId";
 import {
@@ -45,27 +42,14 @@ function cardSeoFields(card: Card, fallbackId: string) {
   return { id, name, nameEn, rarity, series, cardType, effect, trigger, colors, traits };
 }
 
-const loadCard = cache(async (cardId: string): Promise<Card | null> => {
+async function loadCard(cardId: string): Promise<Card | null> {
   try {
     const data = await fetchCard(cardId, false);
-    if (data.card) return data.card;
-    if (!missingCardShould404(null, catalogHasCard(cardId))) {
-      throw new Error(`Card API returned no card for catalogued id ${cardId}`);
-    }
+    return data.card || null;
+  } catch {
     return null;
-  } catch (error) {
-    // Only 404/422 can be a real miss. 5xx and timeouts must throw so they are
-    // not published as a not-found page for an id that may still exist.
-    if (
-      error instanceof ApiError &&
-      (error.status === 404 || error.status === 422) &&
-      missingCardShould404(error.status, catalogHasCard(cardId))
-    ) {
-      return null;
-    }
-    throw error;
   }
-});
+}
 
 export async function generateMetadata({
   params,
@@ -79,15 +63,13 @@ export async function generateMetadata({
   const card = await loadCard(cardId);
 
   if (!card) {
-    return {
-      title: "找不到卡牌",
-      description: "這個卡號不存在。請回到卡牌搜索查看有效卡牌。",
-      robots: {
-        index: false,
-        follow: false,
-        googleBot: { index: false, follow: false },
-      },
-    };
+    return buildPageMetadata({
+      title: `${displayCardId(cardId)} | OPCG 卡牌助手`,
+      description: `查看 OPCG 卡牌 ${displayCardId(cardId)} 的資料、效果與市場價格。`,
+      path,
+      absoluteTitle: true,
+      images: ogImage ? [ogImage] : undefined,
+    });
   }
 
   const seo = cardSeoFields(card, cardId);
@@ -130,7 +112,6 @@ export default async function CardPage({
   const picked = Array.isArray(pickedRaw) ? pickedRaw[0] : pickedRaw;
   const pickedVariant = Array.isArray(pickedVariantRaw) ? pickedVariantRaw[0] : pickedVariantRaw;
   const card = await loadCard(cardId);
-  if (!card) notFound();
   const seo = card ? cardSeoFields(card, cardId) : null;
   const ogImage = cardOgImage(cardId);
   const editorNote = cardEditorNote(cardId);

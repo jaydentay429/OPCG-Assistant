@@ -15,43 +15,6 @@ function ingestBase(): string {
   return raw.replace(/\/$/, "");
 }
 
-/**
- * Canonical card URLs are uppercase and have no trailing slash
- * (`/cards/ST18-005-P2`). Wrong case and/or a trailing slash 301 once to that
- * path. nextUrl.clone() keeps the request's trailingSlash flag and would put
- * the slash back, so this builds a plain URL. Already-canonical paths are
- * left alone. Search params are kept.
- */
-function redirectNonCanonicalCardUrl(request: NextRequest): NextResponse | null {
-  const url = new URL(request.url);
-  const match = url.pathname.match(/^\/cards\/([^/]+)\/?$/);
-  if (!match) return null;
-  let raw = match[1];
-  try {
-    raw = decodeURIComponent(raw);
-  } catch {
-    return null;
-  }
-  const canonical = raw.toUpperCase();
-  if (!canonical) return null;
-  const target = `/cards/${canonical}`;
-  if (url.pathname === target) return null;
-  url.pathname = target;
-  return NextResponse.redirect(url, 301);
-}
-
-/**
- * next.config sets skipTrailingSlashRedirect so the card redirect above can
- * see the slash and collapse case + slash into one hop. Other paths keep
- * Next's default: one 308 that drops a trailing slash.
- */
-function redirectTrailingSlash(request: NextRequest): NextResponse | null {
-  const url = new URL(request.url);
-  if (url.pathname.length <= 1 || !url.pathname.endsWith("/")) return null;
-  url.pathname = url.pathname.replace(/\/+$/, "") || "/";
-  return NextResponse.redirect(url, 308);
-}
-
 export function middleware(request: NextRequest) {
   const ua = request.headers.get("user-agent") || "";
   const bot = AI_BOTS.find(([, re]) => re.test(ua))?.[0];
@@ -64,10 +27,6 @@ export function middleware(request: NextRequest) {
       keepalive: true,
     }).catch(() => {});
   }
-  const cardRedirect = redirectNonCanonicalCardUrl(request);
-  if (cardRedirect) return cardRedirect;
-  const slashRedirect = redirectTrailingSlash(request);
-  if (slashRedirect) return slashRedirect;
   return NextResponse.next();
 }
 
