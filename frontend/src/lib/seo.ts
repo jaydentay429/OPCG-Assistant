@@ -130,8 +130,55 @@ export function buildPageMetadata(input: PageMetaInput): Metadata {
   };
 }
 
-export function jsonLdScript(data: Record<string, unknown> | Array<Record<string, unknown>>): string {
-  return JSON.stringify(data).replace(/</g, "\\u003c");
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return !!value && typeof value === "object" && !Array.isArray(value);
+}
+
+function isFaqPage(value: unknown): boolean {
+  if (!isRecord(value)) return false;
+  const type = value["@type"];
+  return type === "FAQPage" || (Array.isArray(type) && type.includes("FAQPage"));
+}
+
+/**
+ * FAQPage is valid only when the same questions and answers are visible on that page.
+ * Drop every FAQPage unless the caller opts in, and then keep only the first one.
+ */
+function omitFaqPageJsonLd(value: unknown, state: { allowFaq: boolean; kept: boolean }): unknown {
+  if (isFaqPage(value)) {
+    if (!state.allowFaq || state.kept) return undefined;
+    state.kept = true;
+    return value;
+  }
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => omitFaqPageJsonLd(item, state))
+      .filter((item) => item !== undefined);
+  }
+  if (!isRecord(value)) return value;
+  const next: Record<string, unknown> = {};
+  for (const [key, child] of Object.entries(value)) {
+    const cleaned = omitFaqPageJsonLd(child, state);
+    if (cleaned !== undefined) next[key] = cleaned;
+  }
+  return next;
+}
+
+export function jsonLdScript(
+  data: Record<string, unknown> | Array<Record<string, unknown>>,
+  options?: { allowFaq?: boolean },
+): string {
+  const payload = omitFaqPageJsonLd(data, { allowFaq: Boolean(options?.allowFaq), kept: false });
+  return JSON.stringify(payload ?? null).replace(/</g, "\\u003c");
+}
+
+/** Effect text worth showing. Dashes and the empty-effect placeholder are not. */
+export function visibleCardEffect(text: string): string {
+  const compact = String(text || "").replace(/\s+/g, " ").trim();
+  if (!compact || compact === "-" || compact === "—" || compact === "－" || compact === "（暫無效果文本）") {
+    return "";
+  }
+  return String(text || "").trim();
 }
 
 /** Root structured data: WebSite + SearchAction + Organization + WebApplication. */

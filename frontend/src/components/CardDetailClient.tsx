@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { collectionAdd, collectionRemove, fetchCard, fetchCardPrice, fetchCollection } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
@@ -168,10 +168,16 @@ export function CardDetailClient({
   cardId,
   picked,
   pickedVariant,
+  cardTitle,
+  afterDetails,
 }: {
   cardId: string;
   picked?: string;
   pickedVariant?: string;
+  /** Server-rendered H1 (card name and number), placed above the card image. */
+  cardTitle?: ReactNode;
+  /** Summary, attributes, and collapsed FAQ. Rendered after the detail panel. */
+  afterDetails?: ReactNode;
 }) {
   const { t, lang } = useI18n();
   const router = useRouter();
@@ -352,10 +358,20 @@ export function CardDetailClient({
           {t("detail.back")}
         </button>
         <p style={{ color: "#fca5a5" }}>{error}</p>
+        {cardTitle}
+        {afterDetails}
       </div>
     );
   }
-  if (!card) return <p className="muted">…</p>;
+  if (!card) {
+    return (
+      <div className="stack">
+        {cardTitle}
+        <p className="muted">…</p>
+        {afterDetails}
+      </div>
+    );
+  }
 
   const name = isDonCard
     ? localizeDonCardName(card.name, card.name_en, lang) || displayCardId(card.id)
@@ -421,7 +437,9 @@ export function CardDetailClient({
         {t("detail.back")}
       </button>
       <div className="detail-grid">
-        <div className="detail-img">
+        <div className="detail-lead">
+          {cardTitle}
+          <div className="detail-img">
           <h2 style={{ marginBottom: 8 }}>{t("detail.images")}</h2>
           <CardImg
             className="detail-main-img"
@@ -445,7 +463,8 @@ export function CardDetailClient({
                 );
               })}
             </div>
-          ) : null}
+            ) : null}
+          </div>
         </div>
         <div className="detail-info">
           <h2 style={{ marginBottom: 8 }}>{t("detail.info")}</h2>
@@ -571,6 +590,7 @@ export function CardDetailClient({
             ) : null}
           </section>
         </div>
+        {afterDetails}
       </div>
       {!isDonCard ? (
         <CardDetailExtras
