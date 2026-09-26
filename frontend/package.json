@@ -8,7 +8,7 @@
     "build": "node scripts/generate-card-ids.mjs && next build && node scripts/sync-standalone-assets.mjs",
     "start": "next start",
     "lint": "next lint",
-    "test:unit": "node --experimental-strip-types --import ./scripts/register-test-hooks.mjs --test src/lib/binderLibraryFilter.test.ts",
+    "test:unit": "node --experimental-strip-types --import ./scripts/register-test-hooks.mjs --test src/lib/*.test.ts",
     "generate:hans-names": "node scripts/generate-hans-names.mjs"
   },
   "dependencies": {

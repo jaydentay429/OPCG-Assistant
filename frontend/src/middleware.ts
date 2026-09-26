@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { canonicalRedirect } from "./lib/siteRedirect";
 
 /** Citation / training crawlers to count. Failures are dropped — never block the page. */
 const AI_BOTS: Array<[string, RegExp]> = [
@@ -27,6 +28,10 @@ export function middleware(request: NextRequest) {
       keepalive: true,
     }).catch(() => {});
   }
+  // Path and query only. Location is built from the public site origin inside
+  // canonicalRedirect — never from request.url, nextUrl, or the Host header.
+  const plan = canonicalRedirect(request.nextUrl.pathname, request.nextUrl.search);
+  if (plan) return NextResponse.redirect(plan.location, plan.status);
   return NextResponse.next();
 }
 
