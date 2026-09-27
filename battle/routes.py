@@ -242,11 +242,22 @@ def _mount_paused_battle(
     """Refuse play, matchmaking, and ranked routes. Do not create rooms.
 
     ``POST /battle/bug-report`` stays registered with the same handler used
-    when battle is enabled. Every other ``/battle/*`` HTTP route is 404 so
-    an old room tab (which only clears itself on 404) stops polling.
+    when battle is enabled. Queue-status GETs return ``{"status": "idle"}``
+    so an old tab already waiting for a match clears its queue and stops the
+    1.5s poll. Every other ``/battle/*`` HTTP route is 404.
     """
     router = APIRouter(tags=["battle"])
     _register_bug_report(router, _bind_try_auth_user(auth_from_request), send_email)
+
+    @router.get("/battle/matchmaking/status", include_in_schema=False)
+    def paused_matchmaking_status() -> dict[str, str]:
+        # PlayPageClient treats status "idle" as "leave the queue". No other
+        # field is read on that branch. Do not touch Matchmaker.
+        return {"status": "idle"}
+
+    @router.get("/battle/ranked/status", include_in_schema=False)
+    def paused_ranked_status() -> dict[str, str]:
+        return {"status": "idle"}
 
     @router.api_route(
         "/battle/{path:path}",

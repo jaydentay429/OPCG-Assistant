@@ -105,10 +105,8 @@ PAUSED_CALLS = [
     ("GET", "/battle/rooms/live"),
     ("POST", "/battle/matchmaking/join"),
     ("POST", "/battle/matchmaking/leave"),
-    ("GET", "/battle/matchmaking/status"),
     ("POST", "/battle/ranked/join"),
     ("POST", "/battle/ranked/leave"),
-    ("GET", "/battle/ranked/status"),
     ("GET", "/battle/rank/me"),
     ("GET", "/battle/rank/leaderboard"),
     ("GET", "/battle/rank/elite"),
@@ -132,6 +130,29 @@ def test_paused_play_routes_are_404(monkeypatch) -> None:
         response = client.request(method, path, json={})
         assert response.status_code == 404, path
         assert response.json()["detail"] == PAUSED_DETAIL
+    client.close()
+
+
+def test_paused_queue_status_is_idle_without_matchmakers(monkeypatch) -> None:
+    monkeypatch.delenv("BATTLE_ENABLED", raising=False)
+
+    def _boom(*_args, **_kwargs):
+        raise AssertionError("paused queue status must not construct matchmakers")
+
+    monkeypatch.setattr("battle.routes.ensure_loaded", _boom)
+    monkeypatch.setattr("battle.routes.RoomManager", _boom)
+    monkeypatch.setattr("battle.routes.Matchmaker", _boom)
+    monkeypatch.setattr("battle.routes.RankedMatchmaker", _boom)
+    client, manager = _client(monkeypatch, enabled=False)
+    assert manager is None
+    for path in ("/battle/matchmaking/status", "/battle/ranked/status"):
+        response = client.get(path)
+        assert response.status_code == 200, path
+        assert response.json() == {"status": "idle"}
+    assert client.post("/battle/matchmaking/join", json={}).status_code == 404
+    assert client.post("/battle/ranked/join", json={}).status_code == 404
+    assert client.post("/battle/matchmaking/leave", json={}).status_code == 404
+    assert client.post("/battle/ranked/leave", json={}).status_code == 404
     client.close()
 
 
@@ -275,6 +296,31 @@ def test_enabled_flag_restores_room_lookup_and_bug_report(monkeypatch) -> None:
     assert ok.status_code == 200
     assert ok.json() == {"ok": True}
     assert sent == ["[OPCG Bug] jay"]
+
+    # Live matchmakers: idle is the full ticket payload, not the paused one-field body.
+    casual = client.get("/battle/matchmaking/status", headers={"Authorization": "Bearer good"})
+    assert casual.status_code == 200
+    casual_body = casual.json()
+    assert casual_body["status"] == "idle"
+    assert casual_body["room_code"] is None
+    assert casual_body["queued"] == 0
+    assert "guest_token" not in casual_body
+
+    ranked = client.get("/battle/ranked/status", headers={"Authorization": "Bearer good"})
+    assert ranked.status_code == 200
+    assert ranked.json() == {"status": "idle", "room_code": None, "queued": 0}
+
+    guest_queue = client.get("/battle/matchmaking/status")
+    assert guest_queue.status_code == 200
+    guest_body = guest_queue.json()
+    assert guest_body["status"] == "idle"
+    assert guest_body["room_code"] is None
+    assert isinstance(guest_body.get("guest_token"), str) and guest_body["guest_token"]
+    assert guest_body.get("guest_user_id")
+
+    ranked_anon = client.get("/battle/ranked/status")
+    assert ranked_anon.status_code == 401
+    assert ranked_anon.json()["detail"] == "请先登录。"
     client.close()
 
 
