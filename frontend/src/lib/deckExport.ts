@@ -277,6 +277,7 @@ function drawFromTop(
   w: number,
   h: number,
 ) {
+  void h;
   const iw = Number((img as ImageBitmap).width || (img as HTMLImageElement).naturalWidth || 1);
   const ih = Number((img as ImageBitmap).height || (img as HTMLImageElement).naturalHeight || 1);
   const scale = w / Math.max(1, iw);

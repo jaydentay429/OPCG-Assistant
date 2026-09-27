@@ -6,8 +6,8 @@ import {
   cardImageProxyUrl,
   cardImageSources,
   cardImageUrl,
-} from "./api.ts";
-import { cardOgImage } from "./seo.ts";
+} from "./api";
+import { cardOgImage } from "./seo";
 
 const PUBLIC_BASE = PACKS_CDN_BASE || "https://img.optcgassistant.com";
 
