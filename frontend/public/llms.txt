@@ -7,7 +7,6 @@ Unofficial ONE PIECE CARD GAME (OPCG / OPTCG) fan toolkit. Not affiliated with B
 - https://optcgassistant.com/search — card database
 - https://optcgassistant.com/sets — set lists (OP / EB / ST / P)
 - https://optcgassistant.com/builder — deck builder
-- https://optcgassistant.com/play — browser battles (rooms + AI)
 - https://optcgassistant.com/tournaments — tournament deck lists
 - https://optcgassistant.com/prices — market prices (Yuyu-tei, JPY)
 - https://optcgassistant.com/cards/{id} — individual card (e.g. /cards/OP01-001)

@@ -22,21 +22,23 @@ const dict: Record<string, string> = {
   "page.collector": "Collection",
   "page.binder": "Card Binder",
   "page.prices": "Card Prices",
-  "page.play": "Live Battle",
+  "play.paused_title": "Live battle is paused",
+  "play.paused_body": "Search, deck building, tournament lists, collection, and prices stay available.",
+  "play.paused_builder": "Deck builder",
+  "play.paused_search": "Card search",
   "landing.title": "Card Search",
-  "landing.subtitle": "Search, build, collect — and play live battles",
+  "landing.subtitle": "Search, build, and collect",
   "landing.intro_aria": "About this site",
   "landing.brand_heading": "OPCG Card Assistant · optcgassistant.com",
   "landing.brand_aliases":
     "Also known as OPCG Assistant, OPCG Card Assistant, optcg assistant, and opcg assistant. Domain: optcgassistant.com.",
   "landing.intro":
-    "OPCG Card Assistant (optcgassistant.com) is a ONE PIECE CARD GAME (OPCG / OPTCG) toolkit with a full card database you can filter by ID, name, color, cost, set, and effect keywords. Beyond search, you can build and check decks online, browse OP17 / OP16 tournament deck lists, track your collection, plan binder layouts, and review market prices and watchlists for restocking. Live browser battles are included: open a room with a friend or practice against AI using your own decks to rehearse turns, effects, and pre-event prep. Whether you are sorting the card pool or studying the meta before a tournament, you can search, build, collect, and practice in one place.",
+    "OPCG Card Assistant (optcgassistant.com) is a ONE PIECE CARD GAME (OPCG / OPTCG) toolkit with a full card database you can filter by ID, name, color, cost, set, and effect keywords. Beyond search, you can build and check decks online, browse OP17 / OP16 tournament deck lists, track your collection, plan binder layouts, and review market prices and watchlists for restocking. Whether you are sorting the card pool or studying the meta before a tournament, you can search, build, and collect in one place.",
   "cover.aria": "Welcome",
   "cover.kicker": "Unofficial fan tool",
   "cover.tagline": "Search, build, collect, and practice rules — an unofficial fan sandbox.",
   "cover.cta_search": "Search cards",
   "cover.cta_builder": "Build a deck",
-  "cover.cta_play": "Practice battle",
   "cover.cta_community": "Community",
   "cover.unofficial": "Unofficial · Not affiliated with BANDAI",
   "cover.features_aria": "Main features",
@@ -46,8 +48,6 @@ const dict: Record<string, string> = {
   "cover.feature_builder_desc": "Build, check, and share your decks.",
   "cover.feature_collector": "Collection",
   "cover.feature_collector_desc": "Track owned copies and binder layouts.",
-  "cover.feature_play": "Live practice",
-  "cover.feature_play_desc": "Room, AI, or hotseat rules practice.",
   "cover.updates_aria": "Recent updates",
   "cover.updates_kicker": "Updates",
   "cover.updates_title": "Fixes & updates",
@@ -60,14 +60,12 @@ const dict: Record<string, string> = {
   "guide.search_leader": "Search a Leader",
   "guide.scan": "Scan a card",
   "guide.collection": "Log in to sync collection",
-  "guide.play": "Try Live Battle",
   "nav.search": "Search",
   "nav.builder": "My Decks",
   "nav.tournaments": "Tournaments",
   "nav.collector": "Collection",
   "nav.binder": "My Binder",
   "nav.prices": "Prices",
-  "nav.play": "Play",
   "nav.community": "Community",
   "nav.more": "More",
   "nav.more_close": "Close more menu",
@@ -479,18 +477,16 @@ const dict: Record<string, string> = {
   "legal.disclaimer.p3":
     "Market price figures (when shown) are third-party references such as Yuyu-tei and may be incomplete or outdated. Always confirm prices on the original source before buying or selling.",
   "legal.disclaimer.p4":
-    "The live battle feature is a community practice sandbox for learning turn structure and effects. It is not an official digital client and may differ from tournament or printed rulings.",
-  "legal.disclaimer.p5":
     "This project accepts voluntary sponsorship to help with hosting costs. Sponsorship does not purchase advertising inventory for rights-holder brands, and sponsors are not endorsed by BANDAI or related parties.",
-  "legal.disclaimer.p6":
+  "legal.disclaimer.p5":
     "For copyright or trademark concerns, contact jaydentay429@gmail.com. We aim to review good-faith notices promptly. This page is not legal advice.",
   "legal.terms.title": "Terms of Use",
   "legal.terms.p1":
     "By using OPCG Card Assistant you agree to use it as an unofficial fan tool for personal, non-infringing purposes such as searching cards, building decks, tracking a collection, and practicing rules.",
   "legal.terms.p2":
-    "Accounts are for your own use. Do not attempt to disrupt the service, abuse multiplayer rooms, scrape the site aggressively, or use the service to misrepresent affiliation with rights holders.",
+    "Accounts are for your own use. Do not attempt to disrupt the service, scrape the site aggressively, or use the service to misrepresent affiliation with rights holders.",
   "legal.terms.p3":
-    "Features are provided as-is without warranty. Card text encoding, AI opponents, and price data may contain errors. You are responsible for verifying official materials when accuracy matters.",
+    "Features are provided as-is without warranty. Card text encoding and price data may contain errors. You are responsible for verifying official materials when accuracy matters.",
   "legal.terms.p4":
     "We may suspend access that harms other users or the service. We may update these terms; continued use after changes means you accept the updated terms.",
   "legal.terms.p5":

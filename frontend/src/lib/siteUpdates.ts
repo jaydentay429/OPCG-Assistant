@@ -65,7 +65,6 @@ export const SITE_UPDATES: SiteUpdate[] = [
     id: "op14-033-deny-rest-two-2026-09-24",
     date: "2026-09-24",
     kind: "fix",
-    href: "/play",
     title: {
       "zh-Hant": "OP14-033 佩羅娜登場可指定兩張",
       "zh-Hans": "OP14-033 佩罗娜登场可指定两张",
@@ -209,7 +208,6 @@ export const SITE_UPDATES: SiteUpdate[] = [
     id: "nav-more-binder-community-play-2026-09-20",
     date: "2026-09-20",
     kind: "fix",
-    href: "/play",
     title: {
       "zh-Hant": "底欄「更多」改為卡冊、社區、對戰",
       "zh-Hans": "底栏「更多」改为卡册、社区、对战",
@@ -241,7 +239,6 @@ export const SITE_UPDATES: SiteUpdate[] = [
     id: "ux-p0-p1-2026-09-20",
     date: "2026-09-20",
     kind: "fix",
-    href: "/play",
     title: {
       "zh-Hant": "對戰、搜尋與卡詳情更好用",
       "zh-Hans": "对战、搜索与卡详情更好用",
@@ -353,7 +350,6 @@ export const SITE_UPDATES: SiteUpdate[] = [
     id: "st32-002-deny-rest-blocker-recheck",
     date: "2026-09-20",
     kind: "fix",
-    href: "/play",
     title: {
       "zh-Hant": "再次確認光月御田「無法置為休息」會擋住阻擋",
       "zh-Hans": "再次确认光月御田「无法置为休息」会挡住阻挡",
@@ -369,7 +365,6 @@ export const SITE_UPDATES: SiteUpdate[] = [
     id: "op16-032-deny-rest-attack-fix",
     date: "2026-09-20",
     kind: "fix",
-    href: "/play",
     title: {
       "zh-Hant": "修正漢考克「無法置為休息」仍可進攻",
       "zh-Hans": "修正汉考克「无法置为休息」仍可进攻",
@@ -769,7 +764,6 @@ export const SITE_UPDATES: SiteUpdate[] = [
     id: "op11-040-search-dest",
     date: "2026-09-13",
     kind: "fix",
-    href: "/play",
     title: {
       "zh-Hant": "修復魯夫領袖檢索後無法排牌疊",
       "zh-Hans": "修复路飞领袖检索后无法排牌叠",
@@ -833,7 +827,6 @@ export const SITE_UPDATES: SiteUpdate[] = [
     id: "op09-001-shanks-leader-debuff",
     date: "2026-09-10",
     kind: "fix",
-    href: "/play",
     title: {
       "zh-Hant": "紅髮領航可減對方領航卡力量",
       "zh-Hans": "红发领航可减对方领航卡力量",
@@ -865,7 +858,6 @@ export const SITE_UPDATES: SiteUpdate[] = [
     id: "play-life-count",
     date: "2026-09-08",
     kind: "feature",
-    href: "/play",
     title: {
       "zh-Hant": "對戰生命區顯示剩餘血量",
       "zh-Hans": "对战生命区显示剩余血量",
@@ -881,7 +873,6 @@ export const SITE_UPDATES: SiteUpdate[] = [
     id: "op16-001-p2-rush",
     date: "2026-09-08",
     kind: "fix",
-    href: "/play",
     title: {
       "zh-Hant": "艾斯異圖領航可賦予速攻",
       "zh-Hans": "艾斯异图领航可赋予速攻",
@@ -897,7 +888,6 @@ export const SITE_UPDATES: SiteUpdate[] = [
     id: "op17-058-once",
     date: "2026-09-08",
     kind: "fix",
-    href: "/play",
     title: {
       "zh-Hant": "海道每回合 1 次在對手回合可再用",
       "zh-Hans": "海道每回合 1 次在对手回合可再用",

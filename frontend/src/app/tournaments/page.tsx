@@ -9,7 +9,7 @@ import { BRAND_KEYWORDS, buildPageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "OP17 / OP16 Deck List 賽事卡組 | OPCG Assistant 比賽卡組瀏覽",
   description:
-    "Browse ONE PIECE CARD GAME tournament deck lists on optcgassistant.com：查看 OP17、OP16、EB 等環境賽事卡組，研究 meta deck，並可一鍵導入到 OPCG Assistant 卡組構築與對戰練習。",
+    "Browse ONE PIECE CARD GAME tournament deck lists on optcgassistant.com：查看 OP17、OP16、EB 等環境賽事卡組，研究 meta deck，並可一鍵導入到 OPCG Assistant 卡組構築。",
   path: "/tournaments",
   absoluteTitle: true,
   keywords: [
@@ -43,7 +43,7 @@ export default async function TournamentsPage() {
       />
       <section className="page-seo-intro seo-only" aria-hidden="true">
         <p>
-          在 optcgassistant.com 瀏覽 ONE PIECE CARD GAME 公開賽事卡組：依環境（如 OP17、OP16）、領袖與比賽篩選，並可導入卡組構築與對戰練習。列表會隨資料更新。
+          在 optcgassistant.com 瀏覽 ONE PIECE CARD GAME 公開賽事卡組：依環境（如 OP17、OP16）、領袖與比賽篩選，並可導入卡組構築。列表會隨資料更新。
         </p>
         {decks.length ? (
           <ol className="seo-public-list">

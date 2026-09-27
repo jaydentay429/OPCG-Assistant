@@ -9,6 +9,10 @@ test("root JSON-LD keeps organization data and has no FAQPage", () => {
   assert.match(raw, /"@type":"WebSite"/);
   assert.match(raw, /"@type":"WebApplication"/);
   assert.match(raw, /"@type":"SearchAction"/);
+  assert.equal(raw.includes("即時對戰"), false);
+  assert.equal(raw.includes("practice battles"), false);
+  assert.equal(raw.includes("AI 對戰"), false);
+  assert.equal(raw.includes("房間 PvP"), false);
 });
 
 test("strips a sitewide FAQPage node out of @graph", () => {

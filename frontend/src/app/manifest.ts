@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "OPCG 卡牌助手",
     short_name: "OPCG",
-    description: "航海王 OPCG：卡牌搜索、卡組構築、收藏管理與即時對戰。",
+    description: "航海王 OPCG：卡牌搜索、卡組構築與收藏管理。",
     start_url: "/",
     display: "standalone",
     background_color: "#0b1220",

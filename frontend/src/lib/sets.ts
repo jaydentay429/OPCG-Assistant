@@ -44,5 +44,5 @@ export function setPageTitle(code: string): string {
 
 export function setPageDescription(code: string, count: number): string {
   const label = setLabel(code);
-  return `查看《ONE PIECE 卡牌對戰》${label}（${code}）全部 ${count} 張卡：卡號、卡名、效果與價格。可從 OPCG 卡牌助手搜尋、組牌或練牌。`;
+  return `查看《ONE PIECE 卡牌對戰》${label}（${code}）全部 ${count} 張卡：卡號、卡名、效果與價格。可從 OPCG 卡牌助手搜尋或組牌。`;
 }

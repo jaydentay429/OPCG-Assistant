@@ -9246,3 +9246,45 @@ a.community-nav-btn:active {
   text-decoration: none;
 }
 
+.play-paused {
+  max-width: 36rem;
+  margin: 1.25rem auto 0;
+  padding: 0.25rem 0.15rem 1.25rem;
+}
+
+.play-paused h1 {
+  font-size: 1.45rem;
+  line-height: 1.3;
+  margin-bottom: 0.75rem;
+}
+
+.play-paused p {
+  line-height: 1.65;
+  color: #e2e8f0;
+}
+
+.play-paused-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+}
+
+.play-paused-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #fff;
+}
+
+.play-paused-actions a.secondary {
+  background: #334155;
+  border: 1px solid rgba(148, 163, 184, 0.42);
+  color: #f1f5f9;
+}
+

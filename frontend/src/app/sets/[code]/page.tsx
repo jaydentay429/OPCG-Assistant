@@ -89,7 +89,7 @@ export default async function SetPage({ params }: { params: Promise<{ code: stri
         <span className="muted"> · {set.count} 張</span>
       </h1>
       <p>
-        《ONE PIECE 卡牌對戰》{label}（{code}）全卡列表。點卡號可看效果、異畫、市場價格，並加入卡組或對戰練習。
+        《ONE PIECE 卡牌對戰》{label}（{code}）全卡列表。點卡號可看效果、異畫、市場價格，並加入卡組。
       </p>
       <ul className="set-card-list">
         {set.cards.map((c) => (
