@@ -1855,6 +1855,34 @@ input[type="search"]::-webkit-search-cancel-button {
   border-radius: 6px;
   padding: 2px;
   min-height: 0;
+  min-width: 0;
+}
+
+a.detail-thumb {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.detail-thumb-label {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.62rem;
+  line-height: 1.15;
+  text-align: center;
+  overflow-wrap: anywhere;
+  color: var(--text-muted);
+}
+
+.detail-base-link {
+  margin-top: 0.35rem;
+  font-size: 0.95rem;
+}
+
+.detail-base-link a {
+  color: var(--amber);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .detail-thumb.active {

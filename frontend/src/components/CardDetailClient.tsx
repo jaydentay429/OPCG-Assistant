@@ -7,6 +7,7 @@ import { useAuth } from "@/lib/auth";
 import { useDeck } from "@/lib/deck";
 import { useI18n } from "@/lib/i18n";
 import { displayCardId, isDonCardId, normalizeCardId, toBaseCardId } from "@/lib/cardId";
+import { isParallelArtId } from "@/lib/parallelArts";
 import { localizeCardList, localizeCardName, localizeCardSources, localizeCardText, localizeDonCardName, preferLangText } from "@/lib/cardLocale";
 import { localizeFilterToken, localizeFilterTokens } from "@/lib/filterLabels";
 import { formatEffectLines } from "@/lib/formatEffect";
@@ -170,6 +171,7 @@ export function CardDetailClient({
   pickedVariant,
   cardTitle,
   afterDetails,
+  variantLinks,
 }: {
   cardId: string;
   picked?: string;
@@ -178,6 +180,12 @@ export function CardDetailClient({
   cardTitle?: ReactNode;
   /** Summary, attributes, and collapsed FAQ. Rendered after the detail panel. */
   afterDetails?: ReactNode;
+  /**
+   * Server-rendered `<a href>` thumbnails for alternate-art pages.
+   * Shown in the initial HTML, including the loading state, so crawlers
+   * do not depend on the client variant switch.
+   */
+  variantLinks?: ReactNode;
 }) {
   const { t, lang } = useI18n();
   const router = useRouter();
@@ -359,6 +367,11 @@ export function CardDetailClient({
         </button>
         <p style={{ color: "#fca5a5" }}>{error}</p>
         {cardTitle}
+        {variantLinks ? (
+          <nav className="detail-thumbs" aria-label="異畫版本">
+            {variantLinks}
+          </nav>
+        ) : null}
         {afterDetails}
       </div>
     );
@@ -367,6 +380,11 @@ export function CardDetailClient({
     return (
       <div className="stack">
         {cardTitle}
+        {variantLinks ? (
+          <nav className="detail-thumbs" aria-label="異畫版本">
+            {variantLinks}
+          </nav>
+        ) : null}
         <p className="muted">…</p>
         {afterDetails}
       </div>
@@ -447,23 +465,41 @@ export function CardDetailClient({
             alt={name || displayCardId(card.id)}
             loading="eager"
           />
-          {thumbVariantIds.length > 0 ? (
+          {thumbVariantIds.some((vid) => !isParallelArtId(vid)) || variantLinks ? (
             <div className="detail-thumbs">
-              {thumbVariantIds.map((vid) => {
-                return (
-                  <button
-                    key={vid}
-                    type="button"
-                    className={`detail-thumb ${(activeVariantId || selectedVariantId) === vid ? "active" : ""}`}
-                    onClick={() => setActiveVariantId(vid)}
-                    title={displayCardId(vid)}
-                  >
-                    <CardImg cardId={vid} alt={displayCardId(vid)} />
-                  </button>
-                );
-              })}
+              {thumbVariantIds
+                .filter((vid) => !isParallelArtId(vid) && toBaseCardId(vid) === vid)
+                .map((vid) => {
+                  return (
+                    <button
+                      key={vid}
+                      type="button"
+                      className={`detail-thumb ${(activeVariantId || selectedVariantId) === vid ? "active" : ""}`}
+                      onClick={() => setActiveVariantId(vid)}
+                      title={displayCardId(vid)}
+                    >
+                      <CardImg cardId={vid} alt={displayCardId(vid)} />
+                    </button>
+                  );
+                })}
+              {variantLinks}
+              {thumbVariantIds
+                .filter((vid) => !isParallelArtId(vid) && toBaseCardId(vid) !== vid)
+                .map((vid) => {
+                  return (
+                    <button
+                      key={vid}
+                      type="button"
+                      className={`detail-thumb ${(activeVariantId || selectedVariantId) === vid ? "active" : ""}`}
+                      onClick={() => setActiveVariantId(vid)}
+                      title={displayCardId(vid)}
+                    >
+                      <CardImg cardId={vid} alt={displayCardId(vid)} />
+                    </button>
+                  );
+                })}
             </div>
-            ) : null}
+          ) : null}
           </div>
         </div>
         <div className="detail-info">
