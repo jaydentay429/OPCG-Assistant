@@ -6,6 +6,9 @@ import {
   cardHeadingText,
   cardIdFromPathname,
   isSameCardFamily,
+  rememberVariantScroll,
+  variantClickPlan,
+  variantScrollToRestore,
   leaderLifeValue,
   marketPriceToResponse,
   printedCostOrLife,
@@ -124,6 +127,25 @@ describe("variant history clicks", () => {
     assert.equal(shouldDeferVariantClick({ button: 0, metaKey: true }), true);
     assert.equal(shouldDeferVariantClick({ button: 0, ctrlKey: true }), true);
     assert.equal(shouldDeferVariantClick({ button: 0, shiftKey: true }), true);
+  });
+
+  it("sends a different printing through the App Router without scrolling", () => {
+    assert.deepEqual(variantClickPlan("/cards/OP05-093", "OP05-093-P1"), {
+      kind: "router",
+      href: "/cards/OP05-093-P1",
+      scroll: false,
+    });
+    assert.deepEqual(variantClickPlan("/cards/OP05-093-P1", "OP05-093"), {
+      kind: "router",
+      href: "/cards/OP05-093",
+      scroll: false,
+    });
+    assert.deepEqual(variantClickPlan("/cards/OP05-093-P1", "OP05-093-P1"), { kind: "stay" });
+    const now = 1_000_000;
+    const note = rememberVariantScroll(420, now);
+    assert.equal(variantScrollToRestore(note, now + 1000), 420);
+    assert.equal(variantScrollToRestore(note, now + 6000), null);
+    assert.equal(variantScrollToRestore(rememberVariantScroll(0, now), now), null);
   });
 
   it("reads a card id back out of the path for popstate", () => {

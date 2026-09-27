@@ -18,14 +18,15 @@ import { isParallelArtId } from "@/lib/parallelArts";
 import {
   cardDocumentTitle,
   cardHeadingText,
-  cardIdFromPathname,
   cardVariantHref,
   isLeaderCardType,
-  isSameCardFamily,
   leaderLifeValue,
   marketPriceToResponse,
+  rememberVariantScroll,
   shouldDeferVariantClick,
+  variantClickPlan,
   variantMainAlt,
+  variantScrollToRestore,
   variantThumbAlt,
   type CardTitleLang,
 } from "@/lib/cardPageView";
@@ -244,8 +245,6 @@ export function CardDetailClient({
   const [priceLoading, setPriceLoading] = useState(!seededPrice);
   const [ownedQty, setOwnedQty] = useState(0);
   const seededPriceIdRef = useRef(seededPrice ? normalizeCardId(initialPriceCardId || cardId) : "");
-  const titleNameRef = useRef("");
-  const titleLangRef = useRef<CardTitleLang>("zh-Hant");
 
   const baseId = useMemo(() => toBaseCardId(cardId), [cardId]);
   const selectedVariantId = useMemo(() => {
@@ -274,6 +273,18 @@ export function CardDetailClient({
     const target = readPathScrollTarget(path);
     if (target.y > 0 || target.anchor) {
       requestScrollRestore(target, () => clearCardDetailScroll(path));
+      return;
+    }
+    let handoff: string | null = null;
+    try {
+      handoff = sessionStorage.getItem("opcg-variant-scroll");
+      if (handoff) sessionStorage.removeItem("opcg-variant-scroll");
+    } catch {
+      handoff = null;
+    }
+    const kept = variantScrollToRestore(handoff);
+    if (kept != null) {
+      window.scrollTo({ top: kept, behavior: "auto" });
       return;
     }
     window.scrollTo({ top: 0, behavior: "auto" });
@@ -366,25 +377,9 @@ export function CardDetailClient({
       : titleLang === "zh-Hans"
         ? toSimplifiedText(card?.name || card?.name_en || "")
         : String(card?.name || card?.name_en || "").trim();
-  titleNameRef.current = titleName;
-  titleLangRef.current = titleLang;
-
-  useLayoutEffect(() => {
-    function onPop(event: PopStateEvent) {
-      const id = cardIdFromPathname(window.location.pathname);
-      if (!id || !isSameCardFamily(id, cardId)) return;
-      // Next.js also listens for popstate and would soft-navigate (and scroll).
-      event.stopImmediatePropagation();
-      setActiveVariantId(id);
-      document.title = cardDocumentTitle(titleNameRef.current, id, titleLangRef.current);
-    }
-    window.addEventListener("popstate", onPop, true);
-    return () => window.removeEventListener("popstate", onPop, true);
-  }, [cardId]);
-
   useEffect(() => {
     if (!card) return;
-    document.title = cardDocumentTitle(titleNameRef.current, shownId, titleLangRef.current);
+    document.title = cardDocumentTitle(titleName, shownId, titleLang);
   }, [card, shownId, titleLang, titleName]);
 
   useEffect(() => {
@@ -536,14 +531,18 @@ export function CardDetailClient({
     event.preventDefault();
     const next = normalizeCardId(id);
     if (!next) return;
-    setActiveVariantId(next);
-    document.title = cardDocumentTitle(titleNameRef.current, next, titleLangRef.current);
-    const href = cardVariantHref(next);
-    if (window.location.pathname !== href) {
-      // `__NA` makes Next.js leave this pushState alone. Without it, Next
-      // soft-navigates to the new URL and scrolls to the top.
-      window.history.pushState({ __NA: true, optcgCardVariant: next }, "", href);
+    const plan = variantClickPlan(window.location.pathname, next);
+    if (plan.kind === "stay") {
+      setActiveVariantId(next);
+      document.title = cardDocumentTitle(titleName, next, titleLang);
+      return;
     }
+    try {
+      sessionStorage.setItem("opcg-variant-scroll", rememberVariantScroll(window.scrollY));
+    } catch {
+      /* ignore */
+    }
+    router.push(plan.href, { scroll: plan.scroll });
   }
 
   return (

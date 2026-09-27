@@ -148,6 +148,43 @@ export function cardVariantHref(cardId: string): string {
   return `/cards/${encodeURIComponent(normalizeCardId(cardId))}`;
 }
 
+/**
+ * Variant clicks are App Router navigations (`scroll: false`), not a bare
+ * `pushState({ __NA: true })`. A history entry without Next's router tree
+ * makes the back button change the address bar while the previous page stays
+ * on screen.
+ */
+export function variantClickPlan(
+  currentPathname: string,
+  nextCardId: string,
+): { kind: "stay" } | { kind: "router"; href: string; scroll: false } {
+  const href = cardVariantHref(nextCardId);
+  if (!nextCardId || currentPathname === href) return { kind: "stay" };
+  return { kind: "router", href, scroll: false };
+}
+
+const VARIANT_SCROLL_MS = 5000;
+
+/** Remember the scroll offset across the variant navigation that follows. */
+export function rememberVariantScroll(y: number, now = Date.now()): string {
+  return JSON.stringify({ y: Math.max(0, Math.round(Number(y) || 0)), t: now });
+}
+
+/** Scroll to restore after a variant navigation, or null when the note is stale. */
+export function variantScrollToRestore(raw: string | null, now = Date.now()): number | null {
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw) as { y?: unknown; t?: unknown };
+    const y = Number(parsed.y);
+    const t = Number(parsed.t);
+    if (!Number.isFinite(y) || !Number.isFinite(t)) return null;
+    if (now - t > VARIANT_SCROLL_MS || y <= 0) return null;
+    return y;
+  } catch {
+    return null;
+  }
+}
+
 export function cardIdFromPathname(pathname: string): string {
   const match = String(pathname || "").match(/\/cards\/([^/?#]+)/);
   if (!match) return "";
