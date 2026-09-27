@@ -165,21 +165,35 @@ export async function apiSend<T>(
 /** Bump when packs art language/source changes so browsers skip stale max-age caches. */
 export const CARD_IMAGE_CACHE_BUST = "20260826op119v5";
 
-/** Cloudflare R2 / img subdomain — keeps card art off the API origin. */
-export const PACKS_CDN_BASE = (() => {
-  const fromEnv =
-    (typeof process !== "undefined" && process.env.NEXT_PUBLIC_PACKS_CDN_URL?.replace(/\/$/, "")) || "";
+/**
+ * Image host for card art. An empty site URL (local `next start`) still uses the
+ * public CDN so server HTML and the browser agree, and so `src` is never
+ * `127.0.0.1`. Override with NEXT_PUBLIC_PACKS_CDN_URL when art should come
+ * from somewhere else.
+ */
+export function resolvePacksCdnBase(env: {
+  packsCdnUrl?: string | null;
+  siteUrl?: string | null;
+  hostname?: string | null;
+}): string {
+  const fromEnv = String(env.packsCdnUrl || "").replace(/\/$/, "");
   if (fromEnv) return fromEnv;
-  const siteUrl = (typeof process !== "undefined" && process.env.NEXT_PUBLIC_SITE_URL) || "";
-  if (siteUrl.includes("optcgassistant.com")) return "https://img.optcgassistant.com";
-  if (typeof window !== "undefined") {
-    const host = window.location.hostname;
-    if (host === "optcgassistant.com" || host === "www.optcgassistant.com") {
-      return "https://img.optcgassistant.com";
-    }
+  const siteUrl = String(env.siteUrl || "");
+  if (!siteUrl || siteUrl.includes("optcgassistant.com")) return "https://img.optcgassistant.com";
+  const host = String(env.hostname || "");
+  if (host === "optcgassistant.com" || host === "www.optcgassistant.com") {
+    return "https://img.optcgassistant.com";
   }
   return "";
-})();
+}
+
+/** Cloudflare R2 / img subdomain — keeps card art off the API origin. */
+export const PACKS_CDN_BASE = resolvePacksCdnBase({
+  packsCdnUrl:
+    typeof process !== "undefined" ? process.env.NEXT_PUBLIC_PACKS_CDN_URL : "",
+  siteUrl: typeof process !== "undefined" ? process.env.NEXT_PUBLIC_SITE_URL : "",
+  hostname: typeof window !== "undefined" ? window.location.hostname : "",
+});
 
 function isBlockedCardImageUrl(url: string): boolean {
   const lower = url.toLowerCase();

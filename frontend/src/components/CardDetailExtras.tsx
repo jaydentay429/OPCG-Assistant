@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   createCardComment,
   deleteCardComment,
@@ -37,18 +37,22 @@ function formatCommentTime(raw: string, lang: string): string {
 export function CardDetailExtras({
   cardId,
   sections = "all",
+  initialTournaments,
 }: {
   cardId: string;
   /** all = tournaments + comments; or only one block for layout placement */
   sections?: "all" | "tournaments" | "comments";
+  /** Server-rendered tournament rows. Skips the first client fetch when present. */
+  initialTournaments?: { items: CardTournamentAppearance[]; total: number };
 }) {
   const { t, lang } = useI18n();
   const { token, isLoggedIn, requestLogin } = useAuth();
   const showTournaments = sections === "all" || sections === "tournaments";
   const showComments = sections === "all" || sections === "comments";
-  const [tourneys, setTourneys] = useState<CardTournamentAppearance[]>([]);
-  const [tourneyTotal, setTourneyTotal] = useState(0);
-  const [tourneyLoading, setTourneyLoading] = useState(true);
+  const [tourneys, setTourneys] = useState<CardTournamentAppearance[]>(initialTournaments?.items ?? []);
+  const [tourneyTotal, setTourneyTotal] = useState(initialTournaments?.total ?? 0);
+  const [tourneyLoading, setTourneyLoading] = useState(showTournaments && initialTournaments == null);
+  const skipInitialTourneys = useRef(initialTournaments != null);
   const [comments, setComments] = useState<CardComment[]>([]);
   const [commentTotal, setCommentTotal] = useState(0);
   const [commentLoading, setCommentLoading] = useState(false);
@@ -96,6 +100,10 @@ export function CardDetailExtras({
   }, [cardId, showComments, commentsOpen, loadComments]);
   useEffect(() => {
     if (!showTournaments) return;
+    if (skipInitialTourneys.current) {
+      skipInitialTourneys.current = false;
+      return;
+    }
     let cancelled = false;
     setTourneyLoading(true);
     fetchCardTournaments(cardId, 10)
