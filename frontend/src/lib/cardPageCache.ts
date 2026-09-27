@@ -77,6 +77,23 @@ export function createMapStore<T>(): SuccessCacheStore<T> & { size(): number; ha
   };
 }
 
+/**
+ * One in-flight promise per key. The stored rejection is reused until the
+ * caller drops the map, so a second render in the same request does not
+ * start another HTTP call. A new map (the next request) loads again.
+ */
+export function shareInflight<T>(
+  memo: Map<string, Promise<T>>,
+  key: string,
+  load: () => Promise<T>,
+): Promise<T> {
+  const existing = memo.get(key);
+  if (existing) return existing;
+  const pending = load();
+  memo.set(key, pending);
+  return pending;
+}
+
 export type CardDetailFetcher = (
   cardId: string,
 ) => Promise<CardDetailResponse | null | undefined>;

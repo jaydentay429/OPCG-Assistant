@@ -1,10 +1,8 @@
 import { unstable_cache } from "next/cache";
-import { ApiError, fetchCard, fetchCardTournaments, type CardDetailResponse } from "./api";
-import {
-  CardTemporarilyUnavailableError,
-  fetchCardDetailUncached,
-  fetchSecondaryUncached,
-} from "./cardPageCache";
+import { ApiError, fetchCardTournaments } from "./api";
+import { CardTemporarilyUnavailableError, fetchSecondaryUncached } from "./cardPageCache";
+import { fetchCardDetailForPage } from "./cardPageRequest";
+import type { CardDetailResponse } from "./types";
 
 /**
  * Card text, rarity, and effects change only when the catalog is edited.
@@ -28,6 +26,9 @@ import {
  * throw. These callbacks therefore throw on 5xx, timeouts, connection
  * errors, and empty bodies. They never return null. A stale success is left
  * in place when background revalidation throws.
+ *
+ * The card document fetch itself is 5s with no retry (`fetchCardDetailForPage`).
+ * Tournament SSR is unchanged.
  */
 export const CARD_DATA_REVALIDATE_SECONDS = 6 * 60 * 60;
 
@@ -48,7 +49,7 @@ export async function getCachedCardDetail(cardId: string): Promise<CardDetailRes
       missed = true;
       console.info(`[card-cache] miss cardId=${id}`);
       try {
-        return await fetchCardDetailUncached(id, (cid) => fetchCard(cid, false));
+        return await fetchCardDetailForPage(id);
       } catch (error) {
         logUncached("card", id, error);
         throw error;
