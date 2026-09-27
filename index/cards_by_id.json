@@ -203897,7 +203897,7 @@
     "card_id": "EB05-047",
     "pack_id": "EB-05",
     "colors": [
-      "綠"
+      "黑"
     ],
     "cost": 4,
     "category": "Character",
@@ -203934,7 +203934,7 @@
     "category_en": "Character",
     "card_type_en": "Character",
     "colors_en": [
-      "Green"
+      "Black"
     ],
     "preview": true
   },
@@ -204269,7 +204269,7 @@
     "counter": null,
     "img_full_url": "",
     "img_url": "",
-    "rarity": "R",
+    "rarity": "C",
     "card_type": "Event",
     "traits": [
       "海軍"
@@ -204305,7 +204305,7 @@
     "card_id": "EB05-007",
     "pack_id": "EB-05",
     "colors": [
-      "紫"
+      "紅"
     ],
     "cost": 2,
     "category": "Character",
@@ -204342,7 +204342,7 @@
     "category_en": "Character",
     "card_type_en": "Character",
     "colors_en": [
-      "Purple"
+      "Red"
     ],
     "preview": true
   },
@@ -204581,9 +204581,9 @@
     "category": "Event",
     "power": null,
     "counter": null,
-    "img_full_url": "",
-    "img_url": "",
-    "rarity": "C",
+    "img_full_url": "https://api.optcgassistant.com/packs/EB05-048.png",
+    "img_url": "https://api.optcgassistant.com/packs/EB05-048.png",
+    "rarity": "R",
     "card_type": "Event",
     "traits": [
       "B・W"
@@ -204965,7 +204965,7 @@
     "counter": null,
     "img_full_url": "",
     "img_url": "",
-    "rarity": "C",
+    "rarity": "R",
     "card_type": "Event",
     "traits": [
       "東海",
@@ -205263,7 +205263,6 @@
     "card_id": "EB05-046",
     "preview": true,
     "manual_source": "screenshot",
-    "suppress_pack_image": true,
     "img_url": "",
     "img_full_url": "",
     "block_number": 5,

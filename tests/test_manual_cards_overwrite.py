@@ -18,13 +18,27 @@ def test_seed_matches_index_and_ids_are_unique():
     seed = load_manual_cards()
     assert set(seed) == {"EB05-046", "OP18-112"}
     assert cards["EB05-046"]["name"] == "大和"
+    assert cards["EB05-046"]["name_en"] == "Yamato"
     assert cards["EB05-046"]["manual_source"] == "screenshot"
-    assert cards["EB05-046"]["suppress_pack_image"] is True
+    assert "suppress_pack_image" not in cards["EB05-046"]
+    assert cards["EB05-046"]["img_url"] == ""
+    assert cards["EB05-046"]["img_full_url"] == ""
+    assert "EB05-046.png" not in json.dumps(cards["EB05-046"])
     assert cards["EB05-046"]["preview"] is True
     assert cards["EB05-048"]["name"] == "刺針刺蝟"
     assert cards["EB05-048"]["name_en"] == "Stinger Hedgehog"
     assert cards["EB05-048"]["card_id"] == "EB05-048"
     assert cards["EB05-048"]["card_type"] == "Event"
+    assert cards["EB05-048"]["rarity"] == "R"
+    assert cards["EB05-048"]["img_url"].endswith("/EB05-048.png")
+    assert cards["EB05-048"]["img_full_url"].endswith("/EB05-048.png")
+    assert "EB05-046" not in cards["EB05-048"]["img_url"]
+    assert cards["EB05-007"]["colors"] == ["紅"]
+    assert cards["EB05-007"]["colors_en"] == ["Red"]
+    assert cards["EB05-047"]["colors"] == ["黑"]
+    assert cards["EB05-047"]["colors_en"] == ["Black"]
+    assert cards["EB05-009"]["rarity"] == "R"
+    assert cards["EB05-029"]["rarity"] == "C"
     assert cards["OP18-112"]["name"] == "火燒山"
     assert cards["OP18-112"]["manual_source"] == "screenshot"
     assert list(cards).count("EB05-046") == 1
@@ -66,8 +80,7 @@ def test_official_sync_overwrites_screenshot_row_without_duplicates():
     assert row["effect"] == "官方效果"
     assert "preview" not in row
     assert "manual_source" not in row
-    # Bad packs art stays hidden until an official image download clears the flag.
-    assert row.get("suppress_pack_image") is True
+    assert not row.get("suppress_pack_image")
     assert list(merged).count("EB05-046") == 1
     assert row_is_official(row) is True
 

@@ -164,7 +164,7 @@ export async function apiSend<T>(
 }
 
 /** Bump when packs art language/source changes so browsers skip stale max-age caches. */
-export const CARD_IMAGE_CACHE_BUST = "20260826op119v5";
+export const CARD_IMAGE_CACHE_BUST = "20260927eb05v1";
 
 /** Cloudflare R2 / img subdomain — keeps card art off the API origin. */
 export const PACKS_CDN_BASE = (() => {
@@ -229,7 +229,8 @@ export function cardImageCdnUrl(cardId: string): string | null {
 export function cardImageSources(cardId: string, localUrl?: string | null): string[] {
   const id = String(cardId || "").trim();
   if (!id) return [];
-  // Filename matches the id, but the bytes are a different card (EB05-046 → EB05-048 art).
+  // Opt-in only. EB05-046 Yamato must keep requesting {id}.png so a replaced
+  // file is not stuck behind the old cache buster; it has no stored URL.
   if (isSuppressedCardImage(id)) return [];
   const out: string[] = [];
   const push = (raw: string | null | undefined) => {
