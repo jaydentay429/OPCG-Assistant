@@ -732,6 +732,27 @@ body.battle-active .play-seo-intro {
   gap: 0.65rem;
 }
 
+.route-error {
+  width: min(40rem, 100%);
+  max-width: 100%;
+  min-width: 0;
+  margin: 1.25rem auto 2rem;
+  overflow-wrap: anywhere;
+}
+
+.route-error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-width: 100%;
+}
+
+.route-error-actions button {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+}
+
 .search-row {
   display: flex;
   gap: 0.5rem;
