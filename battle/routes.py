@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import os
 import secrets
 import time
 from typing import Any, Callable
@@ -153,28 +154,23 @@ def _ai_pace_lock(room_code: str) -> asyncio.Lock:
     return lock
 
 
-def mount_battle(
-    app: FastAPI,
-    *,
-    catalog: CatalogFn,
-    auth_from_token: AuthFn,
+_BATTLE_ENABLED_VALUES = {"1", "true", "yes", "on"}
+PAUSED_DETAIL = "对战功能已暂停。"
+
+
+def battle_enabled() -> bool:
+    """True only when BATTLE_ENABLED is 1/true/yes/on.
+
+    Read when ``mount_battle`` runs (API process startup). Changing the
+    variable requires restarting the API process.
+    """
+    raw = str(os.getenv("BATTLE_ENABLED", "")).strip().lower()
+    return raw in _BATTLE_ENABLED_VALUES
+
+
+def _bind_try_auth_user(
     auth_from_request: Callable[[Request], dict[str, Any]],
-    load_deck: DeckFn,
-    ask_llm: LlmFn = None,
-    send_email: EmailFn = None,
-) -> RoomManager:
-    ensure_loaded()
-    manager = RoomManager(catalog, ask_llm=ask_llm)
-    matchmaker = Matchmaker(manager)
-    ranked_matchmaker = RankedMatchmaker(manager)
-    router = APIRouter(tags=["battle"])
-
-    def _resolve_token_user(token: str) -> dict[str, Any] | None:
-        user = auth_from_token(token)
-        if user:
-            return user
-        return _guest_user_from_token(token)
-
+) -> Callable[[Request], dict[str, Any] | None]:
     def _try_auth_user(request: Request) -> dict[str, Any] | None:
         auth_header = str(request.headers.get("Authorization") or "")
         token = ""
@@ -192,6 +188,126 @@ def mount_battle(
             if exc.status_code == 401:
                 return None
             raise
+
+    return _try_auth_user
+
+
+def _register_bug_report(
+    router: APIRouter,
+    try_auth_user: Callable[[Request], dict[str, Any] | None],
+    send_email: EmailFn | None,
+) -> None:
+    @router.post("/battle/bug-report")
+    def submit_bug_report(request: Request, payload: BugReportRequest) -> dict[str, Any]:
+        user = try_auth_user(request)
+        if not user or user.get("is_guest"):
+            raise HTTPException(status_code=401, detail="请先登录。")
+        message = str(payload.message or "").strip()
+        if len(message) < 4:
+            raise HTTPException(status_code=400, detail="Please describe the bug (at least a few characters).")
+        if len(message) > 4000:
+            raise HTTPException(status_code=400, detail="Bug report is too long.")
+
+        to_email = str(os.getenv("BUG_REPORT_EMAIL") or os.getenv("SMTP_FROM") or "jaydentay429@gmail.com").strip()
+        username = str(user.get("username") or "player")
+        user_id = str(user.get("user_id") or "")
+        subject = f"[OPCG Battle Bug] {username} · {payload.room_code or 'no-room'}"
+        if not payload.room_code and payload.page_url:
+            subject = f"[OPCG Bug] {username}"
+        body = (
+            f"From: {username} ({user_id})\n"
+            f"Room: {payload.room_code or '-'}\n"
+            f"Phase: {payload.phase or '-'}\n"
+            f"Turn: {payload.turn_number if payload.turn_number is not None else '-'}\n"
+            f"Page: {payload.page_url or '-'}\n"
+            f"\n---\n{message}\n"
+        )
+        if send_email is None:
+            print(f"[battle-bug] to={to_email}\n{subject}\n{body}")
+        else:
+            try:
+                send_email(to_email, subject, body)
+            except Exception as exc:
+                print(f"[battle-bug] send failed: {exc}\n{body}")
+                raise HTTPException(status_code=502, detail="Failed to send bug report email.") from exc
+        return {"ok": True}
+
+
+def _mount_paused_battle(
+    app: FastAPI,
+    *,
+    auth_from_request: Callable[[Request], dict[str, Any]],
+    send_email: EmailFn | None,
+) -> None:
+    """Refuse play, matchmaking, and ranked routes. Do not create rooms.
+
+    ``POST /battle/bug-report`` stays registered with the same handler used
+    when battle is enabled. Queue-status GETs return ``{"status": "idle"}``
+    so an old tab already waiting for a match clears its queue and stops the
+    1.5s poll. Every other ``/battle/*`` HTTP route is 404.
+    """
+    router = APIRouter(tags=["battle"])
+    _register_bug_report(router, _bind_try_auth_user(auth_from_request), send_email)
+
+    @router.get("/battle/matchmaking/status", include_in_schema=False)
+    def paused_matchmaking_status() -> dict[str, str]:
+        # PlayPageClient treats status "idle" as "leave the queue". No other
+        # field is read on that branch. Do not touch Matchmaker.
+        return {"status": "idle"}
+
+    @router.get("/battle/ranked/status", include_in_schema=False)
+    def paused_ranked_status() -> dict[str, str]:
+        return {"status": "idle"}
+
+    @router.api_route(
+        "/battle/{path:path}",
+        methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
+        include_in_schema=False,
+    )
+    def battle_paused(path: str) -> None:
+        # A non-POST to the bug-report path must stay 405, same as the live route.
+        if path.strip("/") == "bug-report":
+            raise HTTPException(status_code=405, headers={"Allow": "POST"})
+        raise HTTPException(status_code=404, detail=PAUSED_DETAIL)
+
+    @router.websocket("/battle/ws")
+    async def battle_ws_paused(ws: WebSocket) -> None:
+        # Reject the handshake. No seat, room, or match is created.
+        await ws.close(code=1008, reason=PAUSED_DETAIL)
+
+    app.include_router(router)
+
+
+def mount_battle(
+    app: FastAPI,
+    *,
+    catalog: CatalogFn,
+    auth_from_token: AuthFn,
+    auth_from_request: Callable[[Request], dict[str, Any]],
+    load_deck: DeckFn,
+    ask_llm: LlmFn = None,
+    send_email: EmailFn = None,
+) -> RoomManager | None:
+    if not battle_enabled():
+        _mount_paused_battle(
+            app,
+            auth_from_request=auth_from_request,
+            send_email=send_email,
+        )
+        return None
+    ensure_loaded()
+    manager = RoomManager(catalog, ask_llm=ask_llm)
+    matchmaker = Matchmaker(manager)
+    ranked_matchmaker = RankedMatchmaker(manager)
+    router = APIRouter(tags=["battle"])
+
+    def _resolve_token_user(token: str) -> dict[str, Any] | None:
+        user = auth_from_token(token)
+        if user:
+            return user
+        return _guest_user_from_token(token)
+
+    _try_auth_user = _bind_try_auth_user(auth_from_request)
 
     def _require_user(request: Request, *, allow_guest: bool = True) -> tuple[dict[str, Any], str | None]:
         """Returns (user, guest_token_if_minted)."""
@@ -748,41 +864,7 @@ def mount_battle(
             raise HTTPException(status_code=404, detail="Replay not found.")
         return data
 
-    @router.post("/battle/bug-report")
-    def submit_bug_report(request: Request, payload: BugReportRequest) -> dict[str, Any]:
-        user = _try_auth_user(request)
-        if not user or user.get("is_guest"):
-            raise HTTPException(status_code=401, detail="请先登录。")
-        message = str(payload.message or "").strip()
-        if len(message) < 4:
-            raise HTTPException(status_code=400, detail="Please describe the bug (at least a few characters).")
-        if len(message) > 4000:
-            raise HTTPException(status_code=400, detail="Bug report is too long.")
-        import os
-
-        to_email = str(os.getenv("BUG_REPORT_EMAIL") or os.getenv("SMTP_FROM") or "jaydentay429@gmail.com").strip()
-        username = str(user.get("username") or "player")
-        user_id = str(user.get("user_id") or "")
-        subject = f"[OPCG Battle Bug] {username} · {payload.room_code or 'no-room'}"
-        if not payload.room_code and payload.page_url:
-            subject = f"[OPCG Bug] {username}"
-        body = (
-            f"From: {username} ({user_id})\n"
-            f"Room: {payload.room_code or '-'}\n"
-            f"Phase: {payload.phase or '-'}\n"
-            f"Turn: {payload.turn_number if payload.turn_number is not None else '-'}\n"
-            f"Page: {payload.page_url or '-'}\n"
-            f"\n---\n{message}\n"
-        )
-        if send_email is None:
-            print(f"[battle-bug] to={to_email}\n{subject}\n{body}")
-        else:
-            try:
-                send_email(to_email, subject, body)
-            except Exception as exc:
-                print(f"[battle-bug] send failed: {exc}\n{body}")
-                raise HTTPException(status_code=502, detail="Failed to send bug report email.") from exc
-        return {"ok": True}
+    _register_bug_report(router, _try_auth_user, send_email)
 
     @router.websocket("/battle/ws")
     async def battle_ws(ws: WebSocket, token: str = "", room: str = "", role: str = "") -> None:
