@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { ApiError } from "./api";
 import {
+  AUTH_ME_RETRY_DELAY_MS,
   AUTH_STORAGE_KEY,
   refreshAuthSession,
   restoreAuthSession,
@@ -153,6 +154,33 @@ describe("restoreAuthSession", () => {
     assert.equal(timedOut.token, "tok-1");
     assert.equal(timedOut.username, "nami");
     assert.equal(stored(storage)?.t, "tok-1");
+  });
+
+  it("clears the stored login when a 502 is followed by 401 on retry", async () => {
+    const storage = memoryStorage();
+    seedLogin(storage);
+    const sleeps: number[] = [];
+    let calls = 0;
+    globalThis.fetch = async () => {
+      calls += 1;
+      if (calls === 1) return httpResponse(502, "bad gateway", "Bad Gateway");
+      return httpResponse(401, { detail: "invalid token" }, "Unauthorized");
+    };
+
+    const session = await restoreAuthSession(storage, {
+      sleep: async (ms) => {
+        sleeps.push(ms);
+        assert.equal(stored(storage)?.t, "tok-1");
+        assert.equal(stored(storage)?.u, "luffy");
+      },
+    });
+
+    assert.equal(calls, 2);
+    assert.deepEqual(sleeps, [AUTH_ME_RETRY_DELAY_MS]);
+    assert.equal(session.token, null);
+    assert.equal(session.username, null);
+    assert.equal(session.email, null);
+    assert.equal(storage.getItem(AUTH_STORAGE_KEY), null);
   });
 
   it("refreshes the stored profile after a 502 retry succeeds", async () => {
