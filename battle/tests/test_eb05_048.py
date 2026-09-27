@@ -1,4 +1,4 @@
-"""EB05-046 Stinger Hedgehog: rest DON + KO own B・W → deny Blocker on opp cost 0 this turn; Counter Leader +3000."""
+"""EB05-048 Stinger Hedgehog (printed number; previously misfiled as EB05-046): rest DON + KO own B・W → deny Blocker on opp cost 0 this turn; Counter Leader +3000."""
 
 from __future__ import annotations
 
@@ -75,7 +75,7 @@ def _main_state() -> MatchState:
         is_ai=False,
         leader_card_id="OP02-093",
         deck=["X"] * 20,
-        hand=["EB05-046"],
+        hand=["EB05-048"],
         life=["L"] * 5,
         don_active=3,
         don_given=3,
@@ -118,10 +118,10 @@ def _confirm_if_needed(st: MatchState) -> None:
 
 def test_eb05_046_override_shape():
     reload_effect_library(force=True)
-    entry = get_card_entry("EB05-046")
+    entry = get_card_entry("EB05-048")
     abs_ = [a for a in entry["abilities"] if a.get("ops")]
-    assert abs_, "EB05-046 abilities dropped on normalize"
-    main = next(a for a in get_abilities("EB05-046", "on_play"))
+    assert abs_, "EB05-048 abilities dropped on normalize"
+    main = next(a for a in get_abilities("EB05-048", "on_play"))
     assert main["ops"][0].get("op") == "rest_don"
     assert main["ops"][0].get("as_cost") is True
     assert main["ops"][1].get("op") == "ko"
@@ -132,10 +132,10 @@ def test_eb05_046_override_shape():
     assert deny.get("op") == "deny_blocker"
     assert deny.get("duration") == "turn"
     assert deny.get("cost_eq") == 0
-    ctr = next(a for a in get_abilities("EB05-046", "counter_event"))
+    ctr = next(a for a in get_abilities("EB05-048", "counter_event"))
     assert ctr["ops"][0].get("op") == "buff"
     assert ctr["ops"][0].get("amount") == 3000
-    info = catalog("EB05-046")
+    info = catalog("EB05-048")
     assert has_counter_timing(info) is True
 
 

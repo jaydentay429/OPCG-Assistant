@@ -203897,7 +203897,7 @@
     "card_id": "EB05-047",
     "pack_id": "EB-05",
     "colors": [
-      "綠"
+      "黑"
     ],
     "cost": 4,
     "category": "Character",
@@ -203934,7 +203934,7 @@
     "category_en": "Character",
     "card_type_en": "Character",
     "colors_en": [
-      "Green"
+      "Black"
     ],
     "preview": true
   },
@@ -204269,7 +204269,7 @@
     "counter": null,
     "img_full_url": "",
     "img_url": "",
-    "rarity": "R",
+    "rarity": "C",
     "card_type": "Event",
     "traits": [
       "海軍"
@@ -204305,7 +204305,7 @@
     "card_id": "EB05-007",
     "pack_id": "EB-05",
     "colors": [
-      "紫"
+      "紅"
     ],
     "cost": 2,
     "category": "Character",
@@ -204342,7 +204342,7 @@
     "category_en": "Character",
     "card_type_en": "Character",
     "colors_en": [
-      "Purple"
+      "Red"
     ],
     "preview": true
   },
@@ -204570,9 +204570,9 @@
     ],
     "preview": true
   },
-  "EB05-046": {
+  "EB05-048": {
     "name": "刺針刺蝟",
-    "card_id": "EB05-046",
+    "card_id": "EB05-048",
     "pack_id": "EB-05",
     "colors": [
       "黑"
@@ -204581,9 +204581,9 @@
     "category": "Event",
     "power": null,
     "counter": null,
-    "img_full_url": "https://api.optcgassistant.com/packs/EB05-046.png",
-    "img_url": "https://api.optcgassistant.com/packs/EB05-046.png",
-    "rarity": "C",
+    "img_full_url": "https://api.optcgassistant.com/packs/EB05-048.png",
+    "img_url": "https://api.optcgassistant.com/packs/EB05-048.png",
+    "rarity": "R",
     "card_type": "Event",
     "traits": [
       "B・W"
@@ -204965,7 +204965,7 @@
     "counter": null,
     "img_full_url": "",
     "img_url": "",
-    "rarity": "C",
+    "rarity": "R",
     "card_type": "Event",
     "traits": [
       "東海",
@@ -205258,5 +205258,97 @@
     "effect_en": "This Character gains +12 cost.\n[On K.O.] K.O. up to 1 of your opponent's Characters with a cost of 4 or less.",
     "trigger": "",
     "trigger_en": ""
+  },
+  "EB05-046": {
+    "card_id": "EB05-046",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "大和",
+    "name_en": "Yamato",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黑"
+    ],
+    "colors_en": [
+      "Black"
+    ],
+    "cost": 4,
+    "power": 5000,
+    "life": null,
+    "counter": 1000,
+    "rarity": "SR",
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "traits": [
+      "和之國"
+    ],
+    "traits_en": [
+      "Land of Wano"
+    ],
+    "effect": "若對手有原本力量值8000以上的角色卡時，這張角色卡獲得【防禦】，力量值+3000。\n【對方攻擊時】可以廢棄1張自己的手牌：若自己廢棄區有10張以上卡片時，自己的領航卡原本的力量值，在這個回合變更成7000。",
+    "effect_en": "If your opponent has a Character with a base power of 8000 or more, this Character gains [Blocker] and +3000 power.\n[On Your Opponent's Attack] You may trash 1 card from your hand: If you have 10 or more cards in your trash, your Leader's base power becomes 7000 during this turn.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
+  },
+  "OP18-112": {
+    "card_id": "OP18-112",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "name": "火燒山",
+    "name_en": "Yamakaji",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黃"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "cost": 7,
+    "power": 7000,
+    "life": null,
+    "counter": 2000,
+    "rarity": "C",
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "traits": [
+      "中將",
+      "海軍"
+    ],
+    "traits_en": [
+      "Vice Admiral",
+      "Navy"
+    ],
+    "effect": "【防禦】(對手攻擊後，將這張卡片置為休息狀態即可使攻擊的對象換成這張卡片)",
+    "effect_en": "[Blocker] (After your opponent declares an attack, you may rest this card to make it the new target of the attack.)",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "補充包 OP-18【OP-18】"
+    ]
   }
 }
