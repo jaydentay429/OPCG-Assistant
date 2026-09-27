@@ -1,4 +1,4 @@
-import { cardImagePacksUrl, cardImageProxyUrl } from "@/lib/api";
+import { cardImagePacksUrl, cardImageProxyUrl, hasCardImage } from "@/lib/api";
 import { displayCardId } from "@/lib/cardId";
 
 async function fetchImageBitmap(url: string, cache: RequestCache = "force-cache"): Promise<ImageBitmap | null> {
@@ -14,6 +14,7 @@ async function fetchImageBitmap(url: string, cache: RequestCache = "force-cache"
 }
 
 async function loadCardBitmap(cardId: string): Promise<ImageBitmap | null> {
+  if (!hasCardImage(cardId)) return null;
   const proxy = cardImageProxyUrl(cardId);
   const candidates = [cardImagePacksUrl(cardId), proxy, `${proxy}?retry=1`];
   const seen = new Set<string>();
@@ -138,16 +139,11 @@ export async function exportBinderPageImage(input: BinderPageExportInput): Promi
         ctx.drawImage(bmp, x, y, cardW, cardH);
         ctx.restore();
       } else if (cid) {
-        // Soft placeholder only — keep layout; avoid looking like a permanent “card number” tile.
-        ctx.fillStyle = "rgba(15, 23, 42, 0.45)";
+        ctx.fillStyle = "#64748b";
         roundRectPath(ctx, x, y, cardW, cardH, 6);
         ctx.fill();
-        ctx.strokeStyle = "rgba(148, 163, 184, 0.35)";
-        ctx.lineWidth = 1;
-        roundRectPath(ctx, x + 0.5, y + 0.5, cardW - 1, cardH - 1, 6);
-        ctx.stroke();
-        ctx.fillStyle = "#94a3b8";
-        ctx.font = "500 11px system-ui, sans-serif";
+        ctx.fillStyle = "#f8fafc";
+        ctx.font = "600 13px system-ui, sans-serif";
         ctx.textAlign = "center";
         ctx.fillText(displayCardId(cid), x + cardW / 2, y + cardH / 2);
         ctx.textAlign = "start";

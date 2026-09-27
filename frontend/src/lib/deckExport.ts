@@ -1,5 +1,5 @@
 import QRCode from "qrcode";
-import { cardImagePacksUrl, cardImageProxyUrl, fetchDeckStatsBatch, type DeckStatFields } from "@/lib/api";
+import { cardImagePacksUrl, cardImageProxyUrl, fetchDeckStatsBatch, hasCardImage, type DeckStatFields } from "@/lib/api";
 import { cardIdSortKey, displayCardId, normalizeCardId } from "@/lib/cardId";
 import { localizeCardName } from "@/lib/cardLocale";
 import type { Lang } from "@/lib/i18n";
@@ -99,6 +99,8 @@ async function fetchDrawable(url: string): Promise<CanvasImageSource | null> {
 }
 
 async function loadCardDrawable(cardId: string): Promise<CanvasImageSource | null> {
+  // No manifest entry: do not request packs or the proxy. The canvas draws a gray box.
+  if (!hasCardImage(cardId)) return null;
   // Prefer API packs/proxy (CORS). The public CDN URL has no ACAO for fetch().
   const primary = await fetchDrawable(cardImagePacksUrl(cardId));
   if (primary) return primary;
@@ -477,22 +479,32 @@ async function renderDeckCanvas(input: ExportInput): Promise<{ blob: Blob; title
   const portraitW = Math.round(portraitH / 1.4);
   const portraitX = pad;
   const portraitY = 24;
-  if (leaderImg) {
+  if (leaderId) {
     roundRect(ctx, portraitX, portraitY, portraitW, portraitH, 22);
-    ctx.fillStyle = "#020617";
-    ctx.fill();
-    ctx.save();
-    roundRect(ctx, portraitX, portraitY, portraitW, portraitH, 22);
-    ctx.clip();
-    drawCover(ctx, leaderImg, portraitX, portraitY, portraitW, portraitH);
-    ctx.restore();
+    if (leaderImg) {
+      ctx.fillStyle = "#020617";
+      ctx.fill();
+      ctx.save();
+      roundRect(ctx, portraitX, portraitY, portraitW, portraitH, 22);
+      ctx.clip();
+      drawCover(ctx, leaderImg, portraitX, portraitY, portraitW, portraitH);
+      ctx.restore();
+    } else {
+      ctx.fillStyle = "#64748b";
+      ctx.fill();
+      ctx.fillStyle = "#f8fafc";
+      ctx.font = "800 36px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(displayCardId(leaderId), portraitX + portraitW / 2, portraitY + portraitH / 2);
+      ctx.textAlign = "left";
+    }
     ctx.strokeStyle = "rgba(251, 191, 36, 0.85)";
     ctx.lineWidth = 4;
     roundRect(ctx, portraitX, portraitY, portraitW, portraitH, 22);
     ctx.stroke();
   }
 
-  const textX = leaderImg ? portraitX + portraitW + 36 : pad;
+  const textX = leaderId ? portraitX + portraitW + 36 : pad;
   const textW = W - pad - textX;
   ctx.fillStyle = "#f8fafc";
   ctx.font = "800 64px system-ui, sans-serif";
@@ -606,21 +618,28 @@ async function renderDeckCanvas(input: ExportInput): Promise<{ blob: Blob; title
       drawFromTop(ctx, img, x, y, cardW, cardH);
       ctx.restore();
     } else {
-      ctx.fillStyle = "#94a3b8";
-      ctx.font = "800 28px system-ui, sans-serif";
-      ctx.fillText(fitText(ctx, displayCardId(card.id), cardW - 20), x + 12, y + cardH / 2);
+      ctx.fillStyle = "#64748b";
+      roundRect(ctx, x, y, cardW, cardH, 18);
+      ctx.fill();
+      ctx.fillStyle = "#f8fafc";
+      ctx.font = "800 32px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(fitText(ctx, displayCardId(card.id), cardW - 24), x + cardW / 2, y + cardH / 2);
+      ctx.textAlign = "left";
     }
     const accent = TYPE_ACCENT[card.type] || "#94a3b8";
     ctx.fillStyle = accent;
     ctx.fillRect(x, y + 10, 10, cardH - 20);
 
-    const fadeH = Math.round(cardH * 0.5);
-    const fade = ctx.createLinearGradient(0, y + cardH - fadeH, 0, y + cardH);
-    fade.addColorStop(0, "rgba(2,6,23,0)");
-    fade.addColorStop(0.28, "rgba(2,6,23,0.55)");
-    fade.addColorStop(1, "rgba(2,6,23,0.94)");
-    ctx.fillStyle = fade;
-    ctx.fillRect(x, y + cardH - fadeH, cardW, fadeH);
+    if (img) {
+      const fadeH = Math.round(cardH * 0.5);
+      const fade = ctx.createLinearGradient(0, y + cardH - fadeH, 0, y + cardH);
+      fade.addColorStop(0, "rgba(2,6,23,0)");
+      fade.addColorStop(0.28, "rgba(2,6,23,0.55)");
+      fade.addColorStop(1, "rgba(2,6,23,0.94)");
+      ctx.fillStyle = fade;
+      ctx.fillRect(x, y + cardH - fadeH, cardW, fadeH);
+    }
 
     const idLabel = displayCardId(card.id);
     ctx.textAlign = "left";

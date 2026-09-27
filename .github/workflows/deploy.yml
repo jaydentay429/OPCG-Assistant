@@ -31,6 +31,32 @@ jobs:
         working-directory: frontend
         run: npm ci
 
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      # Production build runs on this runner, not on the VPS. The daily sync
+      # writes the manifest on the VPS from R2 bytes. Pull that file before
+      # `npm run build` so the static import matches R2. If the pull fails,
+      # the committed snapshot is used and the check script still rejects an
+      # empty or undersized file.
+      - name: Pull card image manifest from VPS
+        run: |
+          set +e
+          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/opt/opcg/app/frontend/src/generated/card-image-manifest.json" \
+            frontend/src/generated/card-image-manifest.json
+          rc=$?
+          set -e
+          if [ "$rc" -ne 0 ]; then
+            echo "warning: could not pull the VPS manifest (rc=$rc); using the committed snapshot"
+          else
+            echo "using the VPS card-image manifest"
+          fi
+
       - name: Build frontend
         working-directory: frontend
         run: |
@@ -39,13 +65,6 @@ jobs:
           rm -rf .next/standalone/.next/static .next/standalone/public
           cp -R .next/static .next/standalone/.next/static
           cp -R public .next/standalone/public
-
-      - name: Set up SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
 
       - name: "Sync backend code (no --delete, keeps server-only files like packs/, .env, dbs)"
         run: |

@@ -79,14 +79,16 @@ type PageMetaInput = {
   path: string;
   keywords?: string[];
   type?: "website" | "article";
-  images?: Array<{ url: string; width?: number; height?: number; alt?: string }>;
+  /** `null` omits og:image and twitter:image. Omit the field to use the site image. */
+  images?: Array<{ url: string; width?: number; height?: number; alt?: string }> | null;
   noIndex?: boolean;
   absoluteTitle?: boolean;
 };
 
 /** Shared page metadata with OG + Twitter + canonical. */
 export function buildPageMetadata(input: PageMetaInput): Metadata {
-  const images = input.images?.length ? input.images : [defaultOgImage()];
+  const images =
+    input.images === null ? [] : input.images?.length ? input.images : [defaultOgImage()];
   const canonical = input.path.startsWith("http") ? input.path : input.path;
   return {
     title: input.absoluteTitle ? { absolute: input.title } : input.title,
@@ -108,6 +110,9 @@ export function buildPageMetadata(input: PageMetaInput): Metadata {
       siteName: SITE_NAME,
       locale: "zh_HK",
       type: input.type || "website",
+      // Always set `images`, including []. An omitted key lets the root
+      // opengraph-image file fill in, which would put a site image on a card
+      // that has no file.
       images,
     },
     twitter: {

@@ -20,7 +20,8 @@ import type {
   MeResponse,
   PhotoRecognizeResponse,
 } from "./types";
-import { isSuppressedCardImage } from "./cardImagePolicy";
+import { cardImageHash } from "./cardImageManifest";
+import { normalizeCardId } from "./cardId";
 
 export const API_BASE = (() => {
   const fromEnv =
@@ -193,27 +194,24 @@ export const PACKS_CDN_BASE = resolvePacksCdnBase({
   hostname: typeof window !== "undefined" ? window.location.hostname : "",
 });
 
-function isBlockedCardImageUrl(url: string): boolean {
-  const lower = url.toLowerCase();
-  return (
-    lower.includes("limitless") ||
-    lower.includes("_en.") ||
-    lower.includes("en.onepiece-cardgame")
-  );
-}
-
 const PUBLIC_CARD_IMAGE_HOST = "https://img.optcgassistant.com";
+
+/** True only when the build-time manifest has a content hash for this id. */
+export function hasCardImage(cardId: string): boolean {
+  return cardImageHash(cardId) !== "";
+}
 
 /**
  * Public card-art URL. Filename is the catalog id, including variants
- * (`OP13-001`, `OP13-001-P1`). No query string: the same file keeps the same
- * URL across deploys. There is no per-file etag in the repo to version with.
+ * (`OP13-001-P1`). `?h=` is the first 8 hex chars of that file's MD5.
+ * Empty when the manifest has no file — callers must not request the CDN.
  */
 export function cardImageUrl(cardId: string): string {
-  const id = String(cardId || "").trim();
-  if (!id) return "";
+  const id = normalizeCardId(cardId);
+  const hash = cardImageHash(id);
+  if (!id || !hash) return "";
   const base = PACKS_CDN_BASE || PUBLIC_CARD_IMAGE_HOST;
-  return `${base}/${encodeURIComponent(id)}.png`;
+  return `${base}/${encodeURIComponent(id)}.png?h=${hash}`;
 }
 
 /** API packs file. Canvas export fetches this because the CDN does not send CORS. */
@@ -226,23 +224,54 @@ export function cardImageProxyUrl(cardId: string): string {
   return `${API_BASE}/images/card/${encodeURIComponent(cardId)}`;
 }
 
-/** Preferred → fallback order for CardImg (public URL first, then API packs, then proxy). */
+/**
+ * The only image URL for a card, or [] when the manifest has no file.
+ * Does not fall back to packs, the API proxy, or img_local_url.
+ * `localUrl` is ignored so a card payload cannot invent a second URL.
+ */
 export function cardImageSources(cardId: string, localUrl?: string | null): string[] {
-  const id = String(cardId || "").trim();
-  if (!id) return [];
-  // Opt-in only. EB05-046 Yamato has no stored URL and must still request {id}.png.
-  if (isSuppressedCardImage(id)) return [];
-  const out: string[] = [];
-  const push = (raw: string | null | undefined) => {
-    const u = String(raw || "").trim();
-    if (!u || isBlockedCardImageUrl(u) || out.includes(u)) return;
-    out.push(u);
+  void localUrl;
+  const url = cardImageUrl(cardId);
+  return url ? [url] : [];
+}
+
+function imageFileId(url: string): string {
+  const raw = (String(url || "").split("/").pop() || "").split("?")[0] || "";
+  let file = raw;
+  try {
+    file = decodeURIComponent(raw);
+  } catch {
+    file = raw;
+  }
+  return file.replace(/\.(png|jpe?g|webp)$/i, "");
+}
+
+/**
+ * Drop image URLs whose file is not in the manifest so a card payload cannot
+ * put a missing CDN path into the page HTML. URLs for files that exist are kept.
+ */
+export function stripAbsentCardImageUrls<
+  T extends {
+    img_url?: string | null;
+    img_full_url?: string | null;
+    img_local_url?: string | null;
+    alt_image_urls?: string[] | null;
+  },
+>(card: T): T {
+  const keep = (url: string | null | undefined): string => {
+    const text = String(url || "").trim();
+    if (!text) return "";
+    const id = imageFileId(text);
+    if (!id || !/\.(png|jpe?g|webp)(\?|$)/i.test(text.split("/").pop() || "")) return text;
+    return hasCardImage(id) ? text : "";
   };
-  push(cardImageUrl(id));
-  push(localUrl || "");
-  push(cardImagePacksUrl(id));
-  push(cardImageProxyUrl(id));
-  return out;
+  return {
+    ...card,
+    img_url: keep(card.img_url) || null,
+    img_full_url: keep(card.img_full_url) || null,
+    img_local_url: keep(card.img_local_url) || null,
+    alt_image_urls: (card.alt_image_urls || []).map(keep).filter(Boolean),
+  };
 }
 
 const prefetchedImages = new Set<string>();
