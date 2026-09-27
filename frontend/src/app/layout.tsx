@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Syne } from "next/font/google";
+import { ChunkLoadRecovery } from "@/components/ChunkLoadRecovery";
 import { Providers } from "@/components/Providers";
 import { TopBar } from "@/components/TopBar";
 import { BottomNav } from "@/components/BottomNav";
@@ -106,6 +107,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <JsonLd data={rootJsonLd()} />
         <Providers>
+          <ChunkLoadRecovery />
           <div className="app-shell">
             <TopBar />
             <main className="main">{children}</main>
