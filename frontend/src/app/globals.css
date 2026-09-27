@@ -406,6 +406,56 @@ img {
   color: #fff;
 }
 
+/* Fixed so showing it does not push the top bar, main column, or bottom nav.
+   Right-aligned above the nav so the centered page copy stays readable.
+   z-index stays under the nav and dialogs. Shadow goes upward, off the nav. */
+.chunk-update-banner {
+  position: fixed;
+  z-index: 45;
+  right: 8px;
+  left: auto;
+  bottom: calc(var(--nav-h) + var(--safe-bottom) + 16px);
+  width: max-content;
+  max-width: calc(100vw - 16px);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.4rem 0.45rem 0.4rem 0.75rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(17, 24, 39, 0.96);
+  box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.28);
+  color: var(--text);
+  pointer-events: auto;
+}
+
+.chunk-update-banner[hidden] {
+  display: none;
+}
+
+.chunk-update-banner p {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+  font-size: 0.85rem;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+@media (max-width: 340px) {
+  .chunk-update-banner p {
+    white-space: normal;
+  }
+}
+
+.chunk-update-banner button {
+  flex: 0 0 auto;
+  min-height: 32px;
+  padding: 0.15rem 0.65rem;
+  font-size: 0.82rem;
+}
+
 .nav-more-backdrop {
   position: fixed;
   inset: 0;
