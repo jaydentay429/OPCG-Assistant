@@ -470,6 +470,7 @@ export type CardTournamentAppearance = TopdeckBrief & {
 export async function fetchCardTournaments(
   cardId: string,
   limit = 10,
+  opts?: { cache?: RequestCache },
 ): Promise<{ card_base_id: string; total_matched: number; items: CardTournamentAppearance[] }> {
   const { data } = await apiGet<{
     card_base_id: string;
@@ -477,7 +478,9 @@ export async function fetchCardTournaments(
     items: CardTournamentAppearance[];
   }>(`/cards/${encodeURIComponent(cardId)}/tournaments`, {
     query: { limit },
-    cache: "default",
+    // Browser callers keep "default" (HTTP cache). Card-page SSR passes
+    // "no-store" so a gateway 502 cannot sit in the Next fetch data cache.
+    cache: opts?.cache ?? "default",
   });
   return data;
 }
