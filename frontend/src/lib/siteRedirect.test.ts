@@ -32,6 +32,17 @@ describe("canonicalRedirect", () => {
     }
   });
 
+  it("does not redirect /play, a trailing slash, a nested path, or a query", () => {
+    assert.equal(canonicalRedirect("/play"), null);
+    assert.equal(canonicalRedirect("/play/"), null);
+    assert.equal(canonicalRedirect("/play/", "?x=1"), null);
+    assert.equal(canonicalRedirect("/play/rank"), null);
+    assert.equal(canonicalRedirect("/play/rank/"), null);
+    assert.equal(canonicalRedirect("/play/room/xxx"), null);
+    assert.equal(canonicalRedirect("/play/room/xxx/", "?x=1"), null);
+    assert.equal(canonicalRedirect("/play", "?x=1"), null);
+  });
+
   it("308s trailing slashes on other routes and keeps the query", () => {
     assert.deepEqual(canonicalRedirect("/search/", "?q=luffy"), {
       status: 308,

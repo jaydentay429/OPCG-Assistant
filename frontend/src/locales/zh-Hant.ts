@@ -22,21 +22,23 @@ const dict: Record<string, string> = {
   "page.collector": "卡牌收藏",
   "page.binder": "卡冊",
   "page.prices": "卡牌價格",
-  "page.play": "即時對戰",
+  "play.paused_title": "對戰功能暫停開放",
+  "play.paused_body": "搜卡、組牌、賽事卡組、收藏與價格仍可照常使用。",
+  "play.paused_builder": "去組卡器",
+  "play.paused_search": "去查卡",
   "landing.title": "卡牌搜索",
-  "landing.subtitle": "搜卡、組牌、收藏，也能即時對戰練牌",
+  "landing.subtitle": "搜卡、組牌、收藏",
   "landing.intro_aria": "產品介紹",
   "landing.brand_heading": "OPCG 卡牌助手 · optcgassistant.com",
   "landing.brand_aliases":
     "也稱為 OPCG Assistant、OPCG Card Assistant、optcg assistant、opcg assistant。網址：optcgassistant.com。",
   "landing.intro":
-    "OPCG 卡牌助手（optcgassistant.com）是一個航海王集換式卡牌（ONE PIECE CARD GAME / OPCG / OPTCG）工具網站，提供完整卡牌資料庫查詢，可依卡號、卡名、顏色、費用、系列與效果關鍵字快速篩選。除了查卡，你還能在線構築與檢查牌組、瀏覽 OP17／OP16 等賽事卡組 deck list、追蹤個人收藏進度、規劃實體卡冊排版，並查看市場價格與關注清單作為補牌參考。新增瀏覽器即時對戰：可開房間與好友對戰，或挑戰 AI，載入自己的卡組練習回合、效果與賽前備牌。無論你是剛入坑整理卡池，還是賽前備牌與研究環境，這裡都能一次完成查詢、構築、收藏管理與對戰練習。",
+    "OPCG 卡牌助手（optcgassistant.com）是一個航海王集換式卡牌（ONE PIECE CARD GAME / OPCG / OPTCG）工具網站，提供完整卡牌資料庫查詢，可依卡號、卡名、顏色、費用、系列與效果關鍵字快速篩選。除了查卡，你還能在線構築與檢查牌組、瀏覽 OP17／OP16 等賽事卡組 deck list、追蹤個人收藏進度、規劃實體卡冊排版，並查看市場價格與關注清單作為補牌參考。無論你是剛入坑整理卡池，還是賽前備牌與研究環境，這裡都能完成查詢、構築與收藏管理。",
   "cover.aria": "歡迎頁",
   "cover.kicker": "非官方粉絲工具",
   "cover.tagline": "搜卡、組牌、收藏與規則練習——非官方粉絲工具箱。",
   "cover.cta_search": "進入卡牌搜索",
   "cover.cta_builder": "組一副卡組",
-  "cover.cta_play": "規則練習對戰",
   "cover.cta_community": "社區論壇",
   "cover.unofficial": "非官方 · 與 BANDAI 無關聯",
   "cover.features_aria": "主要功能",
@@ -46,8 +48,6 @@ const dict: Record<string, string> = {
   "cover.feature_builder_desc": "組牌、檢查與分享你的卡組。",
   "cover.feature_collector": "收藏",
   "cover.feature_collector_desc": "追蹤持有張數與卡冊排版。",
-  "cover.feature_play": "即時練習",
-  "cover.feature_play_desc": "房間、AI 或雙人熱座規則練習。",
   "cover.updates_aria": "近期更新",
   "cover.updates_kicker": "Updates",
   "cover.updates_title": "近期修復與更新",
@@ -60,14 +60,12 @@ const dict: Record<string, string> = {
   "guide.search_leader": "搜領袖開始組卡",
   "guide.scan": "拍照識卡",
   "guide.collection": "登入同步收藏",
-  "guide.play": "試試即時對戰",
   "nav.search": "卡牌搜索",
   "nav.builder": "我的卡組",
   "nav.tournaments": "比賽卡組",
   "nav.collector": "我的收藏",
   "nav.binder": "我的卡冊",
   "nav.prices": "卡牌價格",
-  "nav.play": "對戰",
   "nav.community": "社區",
   "nav.more": "更多",
   "nav.more_close": "關閉更多選單",
@@ -479,18 +477,16 @@ const dict: Record<string, string> = {
   "legal.disclaimer.p3":
     "所顯示的市場價格（如有）來自第三方參考來源（例如 Yuyu-tei），可能不完整或過時；買賣前請以原始來源為準。",
   "legal.disclaimer.p4":
-    "即時對戰功能是社群規則練習沙盒，用於熟悉回合與效果，並非官方數字客戶端，可能與賽事或紙牌裁定不同。",
-  "legal.disclaimer.p5":
     "本專案接受自願贊助以協助主機等成本。贊助並非購買權利人品牌廣告位，贊助方亦不代表獲得 BANDAI 或相關方背書。",
-  "legal.disclaimer.p6":
+  "legal.disclaimer.p5":
     "若有著作權或商標疑慮，請聯繫 jaydentay429@gmail.com。我們會儘速審視善意通知。本頁不構成法律意見。",
   "legal.terms.title": "使用條款",
   "legal.terms.p1":
     "使用 OPCG 卡牌助手即表示你同意將其作為非官方粉絲工具，用於個人、非侵權用途，例如搜卡、組牌、收藏與規則練習。",
   "legal.terms.p2":
-    "帳號僅供本人使用。請勿干擾服務、濫用對戰房間、惡意大量抓取，或以任何方式暗示本站與權利人有官方關聯。",
+    "帳號僅供本人使用。請勿干擾服務、惡意大量抓取，或以任何方式暗示本站與權利人有官方關聯。",
   "legal.terms.p3":
-    "功能按現況提供、不附帶保證。卡效編碼、AI 對手與價格資料可能有誤；需要準確資訊時請自行核對官方資料。",
+    "功能按現況提供、不附帶保證。卡效編碼與價格資料可能有誤；需要準確資訊時請自行核對官方資料。",
   "legal.terms.p4":
     "我們可能停用損害他人或服務的存取。條款更新後若繼續使用，視為接受更新內容。",
   "legal.terms.p5":

@@ -47,6 +47,10 @@ const SAFE_CARD_ID = /^[A-Za-z0-9_-]+$/;
  * paths, and card ids outside the safe set with no trailing slash, return null.
  */
 export function canonicalRedirect(pathname: string, search = ""): RedirectPlan | null {
+  // /play and /play/* stay on the paused notice, including a trailing slash.
+  // A 308 here would be a hop before the 200 the notice is supposed to return.
+  if (pathname === "/play" || pathname.startsWith("/play/")) return null;
+
   const card = CARD_PATH.exec(pathname);
   if (card) {
     const segment = card[1];

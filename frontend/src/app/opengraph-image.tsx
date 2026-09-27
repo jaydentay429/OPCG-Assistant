@@ -37,12 +37,12 @@ export default function OpenGraphImage() {
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
           <div style={{ fontSize: 84, fontWeight: 800, lineHeight: 1.05 }}>OPCG 卡牌助手</div>
           <div style={{ fontSize: 34, color: "#cbd5e1", maxWidth: 920, lineHeight: 1.35 }}>
-            卡牌搜索 · 卡組構築 · 收藏卡冊 · 市場價格 · 即時對戰
+            卡牌搜索 · 卡組構築 · 收藏卡冊 · 市場價格
           </div>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 26, color: "#94a3b8" }}>
           <span>optcgassistant.com</span>
-          <span>Search · Build · Collect · Play</span>
+          <span>Search · Build · Collect</span>
         </div>
       </div>
     ),

@@ -6,7 +6,7 @@ import { useI18n } from "@/lib/i18n";
 type DocId = "disclaimer" | "terms" | "privacy";
 
 const PARA_COUNTS: Record<DocId, number> = {
-  disclaimer: 6,
+  disclaimer: 5,
   terms: 5,
   privacy: 5,
 };

@@ -17,13 +17,11 @@ const PRIMARY = [
 const MORE = [
   { href: "/binder", key: "nav.binder", icon: IconBinder },
   { href: "/community", key: "nav.community", icon: IconCommunity },
-  { href: "/play", key: "nav.play", icon: IconPlay },
 ] as const;
 
 function tabRoot(pathname: string): string {
   if (pathname.startsWith("/builder")) return "/builder";
   if (pathname.startsWith("/tournaments")) return "/tournaments";
-  if (pathname.startsWith("/play")) return "/play";
   if (pathname.startsWith("/community")) return "/community";
   if (pathname.startsWith("/collector")) return "/collector";
   if (pathname.startsWith("/binder")) return "/binder";
@@ -90,14 +88,6 @@ function IconBinder() {
     <svg className="nav-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
       <rect x="5" y="4" width="14" height="16" rx="1.5" fill="none" stroke="currentColor" strokeWidth="2" />
       <path d="M9 4v16M15 4v16" fill="none" stroke="currentColor" strokeWidth="2" />
-    </svg>
-  );
-}
-
-function IconPlay() {
-  return (
-    <svg className="nav-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-      <path d="M8 6.5v11l9-5.5-9-5.5z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
     </svg>
   );
 }

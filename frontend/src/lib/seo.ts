@@ -41,7 +41,6 @@ export const BRAND_KEYWORDS = [
   "卡組構築",
   "卡牌搜索",
   "賽事卡組",
-  "即時對戰",
 ] as const;
 
 const PACKS_CDN =
@@ -196,7 +195,7 @@ export function rootJsonLd(): Record<string, unknown> {
         url: SITE_URL,
         logo: absoluteUrl("/opengraph-image"),
         description:
-          "Unofficial ONE PIECE CARD GAME (OPCG / OPTCG) fan toolkit: card database, deck builder, tournament deck lists, collection tools, and browser practice battles. Also known as OPCG Assistant / optcgassistant.",
+          "Unofficial ONE PIECE CARD GAME (OPCG / OPTCG) fan toolkit: card database, deck builder, tournament deck lists, and collection tools. Also known as OPCG Assistant / optcgassistant.",
       },
       {
         "@type": "WebSite",
@@ -226,7 +225,7 @@ export function rootJsonLd(): Record<string, unknown> {
         inLanguage: ["zh-HK", "zh-CN", "en"],
         isPartOf: { "@id": `${SITE_URL}/#website` },
         description:
-          "ONE PIECE CARD GAME（OPCG）工具網站 optcgassistant.com：卡牌資料庫、卡組構築、賽事卡組（OP17 / OP16 deck list）、收藏與卡冊、市場價格，以及瀏覽器即時對戰（房間對戰與 AI 對戰）。",
+          "ONE PIECE CARD GAME（OPCG）工具網站 optcgassistant.com：卡牌資料庫、卡組構築、賽事卡組（OP17 / OP16 deck list）、收藏與卡冊、市場價格。",
         featureList: [
           "卡牌搜索與篩選",
           "卡組構築 / deck builder",
@@ -234,8 +233,6 @@ export function rootJsonLd(): Record<string, unknown> {
           "收藏管理",
           "卡冊排版",
           "市場價格",
-          "即時對戰（房間 PvP）",
-          "AI 對戰",
         ],
         offers: {
           "@type": "Offer",
@@ -261,14 +258,6 @@ export function rootJsonLd(): Record<string, unknown> {
             acceptedAnswer: {
               "@type": "Answer",
               text: "打開卡牌搜索，輸入卡號（如 OP01-001）或中文／英文卡名即可篩選顏色、費用、系列與效果關鍵字。",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "可以在瀏覽器練牌或對戰嗎？",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "可以。即時對戰支援房間對戰與 AI 對戰，訪客可用範例卡組一鍵開始，無需先組好 50 張。",
             },
           },
           {

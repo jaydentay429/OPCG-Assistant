@@ -18,22 +18,10 @@ export function HomeSeoIntro() {
         {" · "}
         <Link href="/tournaments">{t("nav.tournaments")}</Link>
         {" · "}
-        <Link href="/play">{t("nav.play")}</Link>
-        {" · "}
         <Link href="/sets">{t("nav.sets")}</Link>
         {" · "}
         <Link href="/prices">{t("nav.prices")}</Link>
       </p>
-    </section>
-  );
-}
-
-export function PlaySeoIntro() {
-  const { t } = useI18n();
-  return (
-    <section className="play-seo-intro seo-only" aria-hidden="true">
-      <h2 className="play-seo-title">{t("play.seo_title")}</h2>
-      <p>{t("play.seo_intro")}</p>
     </section>
   );
 }

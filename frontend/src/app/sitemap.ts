@@ -37,8 +37,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }> = [
     { path: "/", priority: 1, changeFrequency: "daily" },
     { path: "/search", priority: 0.98, changeFrequency: "daily" },
-    { path: "/play", priority: 0.95, changeFrequency: "daily" },
-    { path: "/play/rank", priority: 0.7, changeFrequency: "daily" },
     { path: "/builder", priority: 0.9, changeFrequency: "weekly" },
     { path: "/tournaments", priority: 0.9, changeFrequency: "daily" },
     { path: "/collector", priority: 0.8, changeFrequency: "weekly" },
