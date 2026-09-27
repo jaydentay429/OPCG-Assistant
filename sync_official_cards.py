@@ -695,6 +695,10 @@ def merge_index(existing: dict[str, Any], parsed_cards: dict[str, ParsedCard], b
 
         if pc.name or pc.fields.get("effect"):
             current.pop("preview", None)
+            # Official text wins over screenshot/manual rows. Leave
+            # suppress_pack_image until an official image download replaces
+            # a known-bad packs file (see sync_card_images.py).
+            current.pop("manual_source", None)
 
         merged[card_id] = current
     return merged
@@ -884,6 +888,11 @@ def main() -> None:
     merged = merge_index(existing, parsed_cards, source_url)
     if en_cards:
         merged = merge_english_fields(merged, en_cards)
+    from manual_cards import apply_manual_cards
+
+    # Re-seed screenshot cards the official list still does not contain.
+    # apply_manual_cards will not overwrite a row this merge just marked official.
+    manual_applied = apply_manual_cards(merged)
     sets_fixed = apply_official_card_sets(merged, parsed_cards)
     dropped = drop_underscore_alias_keys(merged)
     INDEX_PATH.write_text(json.dumps(merged, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -895,6 +904,7 @@ def main() -> None:
     print(f"索引总卡牌: {len(merged)}")
     print(f"card_sets 校正: {sets_fixed}")
     print(f"清理 _p/_r 重复键: {dropped}")
+    print(f"手工/截图卡补回（官方已收录的不覆盖）: {manual_applied}")
     print(f"快照已写入: {SNAPSHOT_PATH}")
 
     if with_limited:

@@ -441,7 +441,11 @@ def main() -> None:
     for card_id, card in work_items:
         total += 1
         existing = list(PACKS_DIR.glob(f"{card_id}.*"))
-        force = bool(args.overwrite or args.overwrite_preview)
+        row = card if isinstance(card, dict) else {}
+        # Known-bad packs file (printed number ≠ filename). Try the official
+        # URL and replace the file only when that download succeeds.
+        suppress_bad_art = bool(row.get("suppress_pack_image"))
+        force = bool(args.overwrite or args.overwrite_preview or suppress_bad_art)
         if args.fix_en_art:
             if not needs_en_art_fix(card_id, session):
                 skipped += 1
@@ -452,10 +456,11 @@ def main() -> None:
             continue
 
         # asia-tc (繁中) → JP official → EN last.
+        # Suppressed ids only accept an official cardlist file, never Limitless.
         candidates = list(direct_official_candidates(card_id))
         candidates.extend(official_candidates(card if isinstance(card, dict) else {}))
         candidates.extend(jp_map.get(card_id) or [])
-        if not args.overwrite_preview and not candidates:
+        if not args.overwrite_preview and not suppress_bad_art and not candidates:
             candidates.extend(limitless_page_candidates(card_id))
         candidates = dedupe(candidates)
         if not candidates:
@@ -465,6 +470,12 @@ def main() -> None:
         ok, used_url = download_image(card_id, candidates, session)
         if ok:
             downloaded += 1
+            if suppress_bad_art and is_official_cdn_url(used_url):
+                row = data.get(card_id)
+                if isinstance(row, dict) and row.get("suppress_pack_image"):
+                    row.pop("suppress_pack_image", None)
+                    data[card_id] = row
+                    index_dirty = True
             if args.overwrite_preview and is_official_cdn_url(used_url):
                 row = data.get(card_id)
                 if isinstance(row, dict) and row.get("preview"):

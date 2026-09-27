@@ -3824,9 +3824,18 @@ def _download_card_image_to_packs(card_key: str, img_full_url: str | None, img_u
     return None
 
 
+def pack_image_suppressed(card_id: str) -> bool:
+    """True when the packs/CDN file for this id is a known mismatch (do not show it)."""
+    card_key = normalize_card_id(card_id)
+    row = cards_by_id.get(card_key) if card_key else None
+    return isinstance(row, dict) and bool(row.get("suppress_pack_image"))
+
+
 def ensure_local_card_image(card_id: str, img_full_url: str | None, img_url: str | None) -> str | None:
     card_key = normalize_card_id(card_id)
     if not card_key:
+        return None
+    if pack_image_suppressed(card_key):
         return None
 
     PACKS_DIR.mkdir(parents=True, exist_ok=True)
@@ -7155,6 +7164,8 @@ def get_pack_image(filename: str) -> Response:
         raise HTTPException(status_code=404, detail="image not found")
     if Path(safe_name).suffix.lower() not in _PACK_MANIFEST_IMAGE_EXTS:
         raise HTTPException(status_code=404, detail="image not found")
+    if pack_image_suppressed(Path(safe_name).stem):
+        raise HTTPException(status_code=404, detail="image not found")
     fp = (PACKS_DIR / safe_name).resolve()
     try:
         packs_root = PACKS_DIR.resolve()
@@ -7187,6 +7198,8 @@ def get_card_image_proxy(card_id: str) -> Response:
     basic = cards_by_id.get(card_key)
     if not basic:
         raise HTTPException(status_code=404, detail="card not found")
+    if pack_image_suppressed(card_key):
+        raise HTTPException(status_code=404, detail="image not found")
 
     # Buffer local files instead of streaming FileResponse.
     # Under concurrent card-wall loads, streamed FileResponse can drop mid-transfer.

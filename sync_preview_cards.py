@@ -579,6 +579,11 @@ def main() -> int:
         if is_official_card(existing):
             skipped_official += 1
             continue
+        # Screenshot rows stay until official sync clears manual_source.
+        # A preview re-scrape must not put a guessed id back on top of them.
+        if isinstance(existing, dict) and existing.get("manual_source"):
+            skipped_official += 1
+            continue
         if args.images_only:
             merged = existing if isinstance(existing, dict) else {"card_id": cid, "preview": True}
         else:

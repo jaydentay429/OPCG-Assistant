@@ -14,6 +14,24 @@ export type SiteUpdate = {
 /** Newest first. Keep this list short — homepage shows the latest few. */
 export const SITE_UPDATES: SiteUpdate[] = [
   {
+    id: "eb05-046-op18-112-2026-09-27",
+    date: "2026-09-27",
+    kind: "feature",
+    href: "/cards/EB05-046",
+    title: {
+      "zh-Hant": "EB05-046 大和、OP18-112 火燒山 已上線",
+      "zh-Hans": "EB05-046 大和、OP18-112 火烧山 已上线",
+      en: "EB05-046 Yamato and OP18-112 Yamakaji added",
+    },
+    body: {
+      "zh-Hant":
+        "截圖暫收：黑 SR 大和（對手有原本力量 8000 以上角色才有防禦與 +3000；對方攻擊時可棄 1 張，廢棄區 10 張以上則本回合領航原本力量變更成 7000）。黃 C 火燒山為標準防禦。刺針刺蝟卡面印號是 EB05-048，已從 EB05-046 移出；大和暫不顯示那張錯圖。",
+      "zh-Hans":
+        "截图暂收：黑 SR 大和（对手有原本力量 8000 以上角色才有防御与 +3000；对方攻击时可弃 1 张，废弃区 10 张以上则本回合领航原本力量变更成 7000）。黄 C 火烧山为标准防御。刺针刺猬卡面印号是 EB05-048，已从 EB05-046 移出；大和暂不显示那张错图。",
+      en: "Screenshot entries: black SR Yamato (Blocker and +3000 only while an opponent Character has 8000+ base power; on the opponent's attack you may trash 1, and if trash is 10+ your Leader's base power becomes 7000 this turn). Yellow C Yamakaji is a standard Blocker. The Stinger Hedgehog previously filed as EB05-046 is EB05-048 on the card face; Yamato does not show that image.",
+    },
+  },
+  {
     id: "op18-086-2026-09-26",
     date: "2026-09-26",
     kind: "feature",
@@ -81,16 +99,16 @@ export const SITE_UPDATES: SiteUpdate[] = [
     id: "eb05-046-2026-09-23",
     date: "2026-09-23",
     kind: "feature",
-    href: "/cards/EB05-046",
+    href: "/cards/EB05-048",
     title: {
-      "zh-Hant": "EB05-046 刺針刺蝟 已上線",
-      "zh-Hans": "EB05-046 刺针刺猬 已上线",
-      en: "EB05-046 Stinger Hedgehog added",
+      "zh-Hant": "刺針刺蝟 曾誤標為 EB05-046",
+      "zh-Hans": "刺针刺猬 曾误标为 EB05-046",
+      en: "Stinger Hedgehog was misnumbered as EB05-046",
     },
     body: {
-      "zh-Hant": "黑 1 費事件：可休息 1 咚並 KO 自己《B・W》角色，對手費用 0 角色此回合無法防禦；反擊領航 +3000。",
-      "zh-Hans": "黑 1 费事件：可休息 1 咚并 KO 自己《B・W》角色，对手费用 0 角色此回合无法防御；反击领航 +3000。",
-      en: "Black 1c Event: rest 1 DON!! and KO your {Baroque Works} Character so opponent cost-0 Characters cannot Blocker this turn; Counter: Leader +3000.",
+      "zh-Hant": "黑 1 費事件：可休息 1 咚並 KO 自己《B・W》角色，對手費用 0 角色此回合無法防禦；反擊領航 +3000。卡面印號為 EB05-048，已從 EB05-046 移出。",
+      "zh-Hans": "黑 1 费事件：可休息 1 咚并 KO 自己《B・W》角色，对手费用 0 角色此回合无法防御；反击领航 +3000。卡面印号为 EB05-048，已从 EB05-046 移出。",
+      en: "Black 1c Event: rest 1 DON!! and KO your {Baroque Works} Character so opponent cost-0 Characters cannot Blocker this turn; Counter: Leader +3000. The printed number is EB05-048; it is no longer filed as EB05-046.",
     },
   },
   {

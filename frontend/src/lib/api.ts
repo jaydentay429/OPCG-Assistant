@@ -20,6 +20,7 @@ import type {
   MeResponse,
   PhotoRecognizeResponse,
 } from "./types";
+import { isSuppressedCardImage } from "./cardImagePolicy";
 
 export const API_BASE = (() => {
   const fromEnv =
@@ -228,6 +229,8 @@ export function cardImageCdnUrl(cardId: string): string | null {
 export function cardImageSources(cardId: string, localUrl?: string | null): string[] {
   const id = String(cardId || "").trim();
   if (!id) return [];
+  // Filename matches the id, but the bytes are a different card (EB05-046 → EB05-048 art).
+  if (isSuppressedCardImage(id)) return [];
   const out: string[] = [];
   const push = (raw: string | null | undefined) => {
     const u = String(raw || "").trim();

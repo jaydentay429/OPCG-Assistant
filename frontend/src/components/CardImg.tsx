@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { cardImagePacksUrl, cardImageSources } from "@/lib/api";
+import { cardImageSources } from "@/lib/api";
 import { displayCardId } from "@/lib/cardId";
 
 type Props = {
@@ -21,11 +21,24 @@ type Props = {
 export function CardImg({ cardId, alt, className, localUrl, loading = "lazy" }: Props) {
   const sources = useMemo(() => cardImageSources(cardId, localUrl), [cardId, localUrl]);
   const [idx, setIdx] = useState(0);
-  const src = sources[idx] ?? sources[0] ?? cardImagePacksUrl(cardId);
+  const src = sources[idx] ?? sources[0] ?? "";
 
   useEffect(() => {
     setIdx(0);
   }, [cardId, localUrl]);
+
+  if (!src) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        className={className}
+        src="/battle/card-back.png"
+        alt={alt || displayCardId(cardId)}
+        loading={loading}
+        decoding="async"
+      />
+    );
+  }
 
   return (
     // eslint-disable-next-line @next/next/no-img-element
