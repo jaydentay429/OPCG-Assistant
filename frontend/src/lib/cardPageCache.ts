@@ -7,8 +7,12 @@ import { withTransientRetry } from "./transientRetry";
  * Thrown when the card API did not give a definitive answer (5xx, timeout,
  * connection failure, or retries exhausted). This is not a 404.
  *
- * Next.js App Router turns an uncaught page error into HTTP 500. There is no
- * supported way for a Server Component to set 503 without middleware.
+ * Next.js 15.5 has no Server Component API for 503. An uncaught error becomes
+ * the error document with HTTP 500, and that document inserts
+ * `<meta name="robots" content="noindex">` whenever the status is above 400.
+ * `installCardServerErrorRewrite` (from instrumentation) rewrites only
+ * `/cards/:id` 5xx responses to 503 and removes that tag before the bytes
+ * are sent. Middleware, next.config, and redirects are not involved.
  */
 export class CardTemporarilyUnavailableError extends Error {
   readonly retryAfterSeconds = 10;
