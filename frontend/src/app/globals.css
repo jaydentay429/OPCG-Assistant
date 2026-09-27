@@ -434,6 +434,14 @@ img {
   display: none;
 }
 
+/* On a narrow builder, the wrapped price / clear-draft row sits just above the
+   nav. Lift the prompt so it rests above that row instead of covering it. */
+@media (max-width: 480px) {
+  .chunk-update-banner.is-above-toolbar {
+    bottom: calc(var(--nav-h) + var(--safe-bottom) + 16px + 4.75rem);
+  }
+}
+
 .chunk-update-banner p {
   margin: 0;
   flex: 1;

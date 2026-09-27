@@ -2,6 +2,7 @@
 
 import { attachChunkLoadRecovery } from "@/lib/chunkReload";
 import { useI18n } from "@/lib/i18n";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 /**
@@ -10,12 +11,19 @@ import { useEffect, useState } from "react";
  */
 export function ChunkLoadRecovery() {
   const { t } = useI18n();
+  const pathname = usePathname();
   const [visible, setVisible] = useState(false);
+  const aboveToolbar = pathname === "/builder" || pathname.startsWith("/builder/");
 
   useEffect(() => attachChunkLoadRecovery({ onPrompt: () => setVisible(true) }), []);
 
   return (
-    <div className="chunk-update-banner" role="status" aria-live="polite" hidden={!visible}>
+    <div
+      className={`chunk-update-banner${aboveToolbar ? " is-above-toolbar" : ""}`}
+      role="status"
+      aria-live="polite"
+      hidden={!visible}
+    >
       <p>{t("chunk.updated")}</p>
       <button type="button" onClick={() => window.location.reload()}>
         {t("chunk.refresh")}
