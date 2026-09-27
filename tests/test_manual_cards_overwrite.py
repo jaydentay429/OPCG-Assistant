@@ -45,12 +45,12 @@ def test_seed_matches_index_and_ids_are_unique():
     assert list(cards).count("EB05-048") == 1
     assert list(cards).count("OP18-112") == 1
     overrides = json.loads((ROOT / "index" / "card_effect_overrides.json").read_text(encoding="utf-8"))
+    # New cards are catalog-only. Hedgehog keeps the rekeyed encoding, nothing new.
+    assert "EB05-046" not in overrides["cards"]
+    assert "OP18-112" not in overrides["cards"]
     assert overrides["cards"]["EB05-048"]["card_id"] == "EB05-048"
-    assert overrides["cards"]["EB05-046"]["card_id"] == "EB05-046"
-    timings = {a["timing"] for a in overrides["cards"]["EB05-046"]["abilities"]}
-    assert timings == {"your_turn", "opponent_turn", "on_opponent_attack"}
     hog_timings = {a["timing"] for a in overrides["cards"]["EB05-048"]["abilities"]}
-    assert "counter_event" in hog_timings
+    assert hog_timings == {"on_play", "counter_event"}
 
 
 def test_official_sync_overwrites_screenshot_row_without_duplicates():
