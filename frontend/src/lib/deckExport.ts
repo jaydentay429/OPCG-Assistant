@@ -1,5 +1,5 @@
 import QRCode from "qrcode";
-import { API_BASE, cardImagePacksUrl, cardImageUrl, fetchDeckStatsBatch, type DeckStatFields } from "@/lib/api";
+import { cardImagePacksUrl, cardImageProxyUrl, fetchDeckStatsBatch, type DeckStatFields } from "@/lib/api";
 import { cardIdSortKey, displayCardId, normalizeCardId } from "@/lib/cardId";
 import { localizeCardName } from "@/lib/cardLocale";
 import type { Lang } from "@/lib/i18n";
@@ -99,10 +99,10 @@ async function fetchDrawable(url: string): Promise<CanvasImageSource | null> {
 }
 
 async function loadCardDrawable(cardId: string): Promise<CanvasImageSource | null> {
-  // Prefer API packs/proxy (CORS). CDN often lacks ACAO for fetch().
+  // Prefer API packs/proxy (CORS). The public CDN URL has no ACAO for fetch().
   const primary = await fetchDrawable(cardImagePacksUrl(cardId));
   if (primary) return primary;
-  return fetchDrawable(cardImageUrl(cardId));
+  return fetchDrawable(cardImageProxyUrl(cardId));
 }
 
 const COLOR_DOT: Record<string, string> = {

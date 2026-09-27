@@ -1,4 +1,4 @@
-import { API_BASE, cardImagePacksUrl, cardImageUrl } from "@/lib/api";
+import { cardImagePacksUrl, cardImageProxyUrl } from "@/lib/api";
 import { displayCardId } from "@/lib/cardId";
 
 async function fetchImageBitmap(url: string, cache: RequestCache = "force-cache"): Promise<ImageBitmap | null> {
@@ -14,11 +14,8 @@ async function fetchImageBitmap(url: string, cache: RequestCache = "force-cache"
 }
 
 async function loadCardBitmap(cardId: string): Promise<ImageBitmap | null> {
-  const candidates = [
-    cardImagePacksUrl(cardId),
-    cardImageUrl(cardId),
-    `${cardImageUrl(cardId)}&retry=1`,
-  ];
+  const proxy = cardImageProxyUrl(cardId);
+  const candidates = [cardImagePacksUrl(cardId), proxy, `${proxy}?retry=1`];
   const seen = new Set<string>();
   for (const url of candidates) {
     if (!url || seen.has(url)) continue;

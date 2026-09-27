@@ -163,9 +163,6 @@ export async function apiSend<T>(
   return (await res.json()) as T;
 }
 
-/** Bump when packs art language/source changes so browsers skip stale max-age caches. */
-export const CARD_IMAGE_CACHE_BUST = "20260927eb05v1";
-
 /**
  * Image host for card art. An empty site URL (local `next start`) still uses the
  * public CDN so server HTML and the browser agree, and so `src` is never
@@ -205,46 +202,35 @@ function isBlockedCardImageUrl(url: string): boolean {
   );
 }
 
-/** Ensure our CDN /packs image URLs always carry the bust query (API local URLs often omit it). */
-function withCardImageCacheBust(url: string): string {
-  const raw = String(url || "").trim();
-  if (!raw) return raw;
-  try {
-    const u = new URL(raw, "https://optcgassistant.com");
-    const host = u.hostname.toLowerCase();
-    const path = u.pathname.toLowerCase();
-    const isOurCdn = host === "img.optcgassistant.com";
-    const isOurPacks =
-      (host === "api.optcgassistant.com" || host === "127.0.0.1" || host === "localhost") &&
-      path.includes("/packs/");
-    if (!isOurCdn && !isOurPacks) return raw;
-    u.searchParams.set("v", CARD_IMAGE_CACHE_BUST);
-    return u.toString();
-  } catch {
-    return raw;
-  }
-}
+const PUBLIC_CARD_IMAGE_HOST = "https://img.optcgassistant.com";
 
+/**
+ * Public card-art URL. Filename is the catalog id, including variants
+ * (`OP13-001`, `OP13-001-P1`). No query string: the same file keeps the same
+ * URL across deploys. There is no per-file etag in the repo to version with.
+ */
 export function cardImageUrl(cardId: string): string {
-  return `${API_BASE}/images/card/${encodeURIComponent(cardId)}?v=${CARD_IMAGE_CACHE_BUST}`;
-}
-
-export function cardImagePacksUrl(cardId: string): string {
-  return `${API_BASE}/packs/${encodeURIComponent(cardId)}.png?v=${CARD_IMAGE_CACHE_BUST}`;
-}
-
-export function cardImageCdnUrl(cardId: string): string | null {
   const id = String(cardId || "").trim();
-  if (!id || !PACKS_CDN_BASE) return null;
-  return `${PACKS_CDN_BASE}/${encodeURIComponent(id)}.png?v=${CARD_IMAGE_CACHE_BUST}`;
+  if (!id) return "";
+  const base = PACKS_CDN_BASE || PUBLIC_CARD_IMAGE_HOST;
+  return `${base}/${encodeURIComponent(id)}.png`;
 }
 
-/** Preferred → fallback order for CardImg (CDN first, then API packs, then proxy). */
+/** API packs file. Canvas export fetches this because the CDN does not send CORS. */
+export function cardImagePacksUrl(cardId: string): string {
+  return `${API_BASE}/packs/${encodeURIComponent(cardId)}.png`;
+}
+
+/** API image proxy. Canvas export fallback; not a public card-art URL. */
+export function cardImageProxyUrl(cardId: string): string {
+  return `${API_BASE}/images/card/${encodeURIComponent(cardId)}`;
+}
+
+/** Preferred → fallback order for CardImg (public URL first, then API packs, then proxy). */
 export function cardImageSources(cardId: string, localUrl?: string | null): string[] {
   const id = String(cardId || "").trim();
   if (!id) return [];
-  // Opt-in only. EB05-046 Yamato must keep requesting {id}.png so a replaced
-  // file is not stuck behind the old cache buster; it has no stored URL.
+  // Opt-in only. EB05-046 Yamato has no stored URL and must still request {id}.png.
   if (isSuppressedCardImage(id)) return [];
   const out: string[] = [];
   const push = (raw: string | null | undefined) => {
@@ -252,11 +238,10 @@ export function cardImageSources(cardId: string, localUrl?: string | null): stri
     if (!u || isBlockedCardImageUrl(u) || out.includes(u)) return;
     out.push(u);
   };
-  // Prefer versioned CDN over API's bare img_local_url (same host, no ?v= → stale browser cache).
-  push(cardImageCdnUrl(id));
-  push(withCardImageCacheBust(localUrl || ""));
-  push(cardImagePacksUrl(id));
   push(cardImageUrl(id));
+  push(localUrl || "");
+  push(cardImagePacksUrl(id));
+  push(cardImageProxyUrl(id));
   return out;
 }
 

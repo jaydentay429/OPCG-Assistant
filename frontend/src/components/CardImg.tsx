@@ -17,7 +17,7 @@ type Props = {
 
 /**
  * Card image loader (fast path first):
- * 1) img.optcgassistant.com CDN (or API img_local_url when same host)
+ * 1) cardImageUrl(id) — public CDN file, no cache-bust query
  * 2) api.../packs/{id}.png
  * 3) api.../images/card/{id} proxy
  */
