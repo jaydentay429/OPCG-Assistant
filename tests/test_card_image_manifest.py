@@ -90,6 +90,29 @@ def test_first_write_does_not_need_a_previous_file(tmp_path: Path):
     assert load_manifest(path) == {"EB05-048": "f7a50a1d"}
 
 
+def test_first_rclone_run_can_replace_the_committed_snapshot(tmp_path: Path):
+    """No previous file, or a previous file that is the CDN snapshot, both write.
+
+    A VPS run after the first deploy sees the seeded snapshot. New R2 files
+    (the snapshot plus later uploads) must replace it. A drop of more than 5%
+    still refuses.
+    """
+    path = tmp_path / "card-image-manifest.json"
+    snapshot = load_manifest(MANIFEST)
+    assert snapshot["OP13-001"] == "870e05eb"
+    write_manifest(path, snapshot)
+    extra = {"EB05-016-P1": "4567abcd", "OP18-016": "89abcdef"}
+    assert all(key not in snapshot for key in extra)
+    fresh = dict(snapshot)
+    fresh.update(extra)
+    write_manifest(path, fresh)
+    saved = load_manifest(path)
+    assert saved["EB05-016-P1"] == "4567abcd"
+    assert saved["OP18-016"] == "89abcdef"
+    assert saved["OP13-001"] == "870e05eb"
+    assert len(saved) == len(snapshot) + len(extra)
+
+
 def test_rclone_hashsum_uses_filename_and_prefers_png():
     text = "\n".join(
         [

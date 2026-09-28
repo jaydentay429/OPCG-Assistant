@@ -235,20 +235,35 @@ export function cardImageSources(cardId: string, localUrl?: string | null): stri
   return url ? [url] : [];
 }
 
-function imageFileId(url: string): string {
-  const raw = (String(url || "").split("/").pop() || "").split("?")[0] || "";
-  let file = raw;
+function decodePathSegment(raw: string): string {
   try {
-    file = decodeURIComponent(raw);
+    return decodeURIComponent(raw);
   } catch {
-    file = raw;
+    return raw;
   }
-  return file.replace(/\.(png|jpe?g|webp)$/i, "");
+}
+
+/** Catalog id named by a card-art URL, or "" when this URL is not card art. */
+function cardArtIdFromUrl(url: string): string {
+  const text = String(url || "").trim();
+  if (!text) return "";
+  let path = text.split("?")[0] || text;
+  try {
+    path = new URL(text).pathname;
+  } catch {
+    path = text.split("?")[0] || text;
+  }
+  const proxy = path.match(/\/images\/card\/([^/]+)$/i);
+  if (proxy) return decodePathSegment(proxy[1]);
+  const file = path.split("/").pop() || "";
+  if (!/\.(png|jpe?g|webp)$/i.test(file)) return "";
+  return decodePathSegment(file).replace(/\.(png|jpe?g|webp)$/i, "");
 }
 
 /**
  * Drop image URLs whose file is not in the manifest so a card payload cannot
- * put a missing CDN path into the page HTML. URLs for files that exist are kept.
+ * put a missing CDN path, packs file, or `/images/card/<id>` proxy into the
+ * page HTML. URLs for files that exist are kept.
  */
 export function stripAbsentCardImageUrls<
   T extends {
@@ -261,8 +276,8 @@ export function stripAbsentCardImageUrls<
   const keep = (url: string | null | undefined): string => {
     const text = String(url || "").trim();
     if (!text) return "";
-    const id = imageFileId(text);
-    if (!id || !/\.(png|jpe?g|webp)(\?|$)/i.test(text.split("/").pop() || "")) return text;
+    const id = cardArtIdFromUrl(text);
+    if (!id) return text;
     return hasCardImage(id) ? text : "";
   };
   return {

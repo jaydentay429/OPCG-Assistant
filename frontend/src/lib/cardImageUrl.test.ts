@@ -72,12 +72,22 @@ describe("cardImageUrl", () => {
       assert.equal(stripped.img_local_url, null);
       assert.equal(stripped.img_url, null);
       assert.deepEqual(stripped.alt_image_urls, []);
+      const proxy = stripAbsentCardImageUrls({
+        img_local_url: `https://api.optcgassistant.com/images/card/${id}`,
+        img_url: `https://api.optcgassistant.com/packs/${id}.png`,
+        alt_image_urls: [`https://api.optcgassistant.com/images/card/${id}`],
+      });
+      assert.equal(proxy.img_local_url, null);
+      assert.equal(proxy.img_url, null);
+      assert.deepEqual(proxy.alt_image_urls, []);
     }
     const kept = stripAbsentCardImageUrls({
       img_local_url: `${PUBLIC_BASE}/OP13-001.png`,
+      img_url: "https://api.optcgassistant.com/images/card/OP13-001",
       alt_image_urls: [`${PUBLIC_BASE}/OP13-001-P1.png`],
     });
     assert.equal(kept.img_local_url, `${PUBLIC_BASE}/OP13-001.png`);
+    assert.equal(kept.img_url, "https://api.optcgassistant.com/images/card/OP13-001");
     assert.deepEqual(kept.alt_image_urls, [`${PUBLIC_BASE}/OP13-001-P1.png`]);
     assert.equal(cardImagePacksUrl("OP13-001").includes("?"), false);
     assert.equal(cardImageProxyUrl("OP13-001").includes("?"), false);
