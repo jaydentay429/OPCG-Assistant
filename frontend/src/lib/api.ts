@@ -20,7 +20,8 @@ import type {
   MeResponse,
   PhotoRecognizeResponse,
 } from "./types";
-import { isSuppressedCardImage } from "./cardImagePolicy";
+import { cardImageHash } from "./cardImageManifest";
+import { normalizeCardId } from "./cardId";
 
 export const API_BASE = (() => {
   const fromEnv =
@@ -163,9 +164,6 @@ export async function apiSend<T>(
   return (await res.json()) as T;
 }
 
-/** Bump when packs art language/source changes so browsers skip stale max-age caches. */
-export const CARD_IMAGE_CACHE_BUST = "20260927eb05v1";
-
 /**
  * Image host for card art. An empty site URL (local `next start`) still uses the
  * public CDN so server HTML and the browser agree, and so `src` is never
@@ -196,68 +194,99 @@ export const PACKS_CDN_BASE = resolvePacksCdnBase({
   hostname: typeof window !== "undefined" ? window.location.hostname : "",
 });
 
-function isBlockedCardImageUrl(url: string): boolean {
-  const lower = url.toLowerCase();
-  return (
-    lower.includes("limitless") ||
-    lower.includes("_en.") ||
-    lower.includes("en.onepiece-cardgame")
-  );
+const PUBLIC_CARD_IMAGE_HOST = "https://img.optcgassistant.com";
+
+/** True only when the build-time manifest has a content hash for this id. */
+export function hasCardImage(cardId: string): boolean {
+  return cardImageHash(cardId) !== "";
 }
 
-/** Ensure our CDN /packs image URLs always carry the bust query (API local URLs often omit it). */
-function withCardImageCacheBust(url: string): string {
-  const raw = String(url || "").trim();
-  if (!raw) return raw;
+/**
+ * Public card-art URL. Filename is the catalog id, including variants
+ * (`OP13-001-P1`). `?h=` is the first 8 hex chars of that file's MD5.
+ * Empty when the manifest has no file — callers must not request the CDN.
+ */
+export function cardImageUrl(cardId: string): string {
+  const id = normalizeCardId(cardId);
+  const hash = cardImageHash(id);
+  if (!id || !hash) return "";
+  const base = PACKS_CDN_BASE || PUBLIC_CARD_IMAGE_HOST;
+  return `${base}/${encodeURIComponent(id)}.png?h=${hash}`;
+}
+
+/** API packs file. Canvas export fetches this because the CDN does not send CORS. */
+export function cardImagePacksUrl(cardId: string): string {
+  return `${API_BASE}/packs/${encodeURIComponent(cardId)}.png`;
+}
+
+/** API image proxy. Canvas export fallback; not a public card-art URL. */
+export function cardImageProxyUrl(cardId: string): string {
+  return `${API_BASE}/images/card/${encodeURIComponent(cardId)}`;
+}
+
+/**
+ * The only image URL for a card, or [] when the manifest has no file.
+ * Does not fall back to packs, the API proxy, or img_local_url.
+ * `localUrl` is ignored so a card payload cannot invent a second URL.
+ */
+export function cardImageSources(cardId: string, localUrl?: string | null): string[] {
+  void localUrl;
+  const url = cardImageUrl(cardId);
+  return url ? [url] : [];
+}
+
+function decodePathSegment(raw: string): string {
   try {
-    const u = new URL(raw, "https://optcgassistant.com");
-    const host = u.hostname.toLowerCase();
-    const path = u.pathname.toLowerCase();
-    const isOurCdn = host === "img.optcgassistant.com";
-    const isOurPacks =
-      (host === "api.optcgassistant.com" || host === "127.0.0.1" || host === "localhost") &&
-      path.includes("/packs/");
-    if (!isOurCdn && !isOurPacks) return raw;
-    u.searchParams.set("v", CARD_IMAGE_CACHE_BUST);
-    return u.toString();
+    return decodeURIComponent(raw);
   } catch {
     return raw;
   }
 }
 
-export function cardImageUrl(cardId: string): string {
-  return `${API_BASE}/images/card/${encodeURIComponent(cardId)}?v=${CARD_IMAGE_CACHE_BUST}`;
+/** Catalog id named by a card-art URL, or "" when this URL is not card art. */
+function cardArtIdFromUrl(url: string): string {
+  const text = String(url || "").trim();
+  if (!text) return "";
+  let path = text.split("?")[0] || text;
+  try {
+    path = new URL(text).pathname;
+  } catch {
+    path = text.split("?")[0] || text;
+  }
+  const proxy = path.match(/\/images\/card\/([^/]+)$/i);
+  if (proxy) return decodePathSegment(proxy[1]);
+  const file = path.split("/").pop() || "";
+  if (!/\.(png|jpe?g|webp)$/i.test(file)) return "";
+  return decodePathSegment(file).replace(/\.(png|jpe?g|webp)$/i, "");
 }
 
-export function cardImagePacksUrl(cardId: string): string {
-  return `${API_BASE}/packs/${encodeURIComponent(cardId)}.png?v=${CARD_IMAGE_CACHE_BUST}`;
-}
-
-export function cardImageCdnUrl(cardId: string): string | null {
-  const id = String(cardId || "").trim();
-  if (!id || !PACKS_CDN_BASE) return null;
-  return `${PACKS_CDN_BASE}/${encodeURIComponent(id)}.png?v=${CARD_IMAGE_CACHE_BUST}`;
-}
-
-/** Preferred → fallback order for CardImg (CDN first, then API packs, then proxy). */
-export function cardImageSources(cardId: string, localUrl?: string | null): string[] {
-  const id = String(cardId || "").trim();
-  if (!id) return [];
-  // Opt-in only. EB05-046 Yamato must keep requesting {id}.png so a replaced
-  // file is not stuck behind the old cache buster; it has no stored URL.
-  if (isSuppressedCardImage(id)) return [];
-  const out: string[] = [];
-  const push = (raw: string | null | undefined) => {
-    const u = String(raw || "").trim();
-    if (!u || isBlockedCardImageUrl(u) || out.includes(u)) return;
-    out.push(u);
+/**
+ * Drop image URLs whose file is not in the manifest so a card payload cannot
+ * put a missing CDN path, packs file, or `/images/card/<id>` proxy into the
+ * page HTML. URLs for files that exist are kept.
+ */
+export function stripAbsentCardImageUrls<
+  T extends {
+    img_url?: string | null;
+    img_full_url?: string | null;
+    img_local_url?: string | null;
+    alt_image_urls?: string[] | null;
+  },
+>(card: T): T {
+  const keep = (url: string | null | undefined): string => {
+    const text = String(url || "").trim();
+    if (!text) return "";
+    const id = cardArtIdFromUrl(text);
+    if (!id) return text;
+    return hasCardImage(id) ? text : "";
   };
-  // Prefer versioned CDN over API's bare img_local_url (same host, no ?v= → stale browser cache).
-  push(cardImageCdnUrl(id));
-  push(withCardImageCacheBust(localUrl || ""));
-  push(cardImagePacksUrl(id));
-  push(cardImageUrl(id));
-  return out;
+  return {
+    ...card,
+    img_url: keep(card.img_url) || null,
+    img_full_url: keep(card.img_full_url) || null,
+    img_local_url: keep(card.img_local_url) || null,
+    alt_image_urls: (card.alt_image_urls || []).map(keep).filter(Boolean),
+  };
 }
 
 const prefetchedImages = new Set<string>();

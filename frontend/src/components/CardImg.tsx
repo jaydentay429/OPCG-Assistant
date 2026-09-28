@@ -16,10 +16,8 @@ type Props = {
 };
 
 /**
- * Card image loader (fast path first):
- * 1) img.optcgassistant.com CDN (or API img_local_url when same host)
- * 2) api.../packs/{id}.png
- * 3) api.../images/card/{id} proxy
+ * Card image loader. The only source is cardImageUrl(id) (CDN file with ?h=).
+ * An id missing from the manifest has no src here; the placeholder is unchanged.
  */
 export function CardImg({
   cardId,

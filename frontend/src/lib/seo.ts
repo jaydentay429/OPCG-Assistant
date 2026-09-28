@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { isSuppressedCardImage } from "./cardImagePolicy";
+import { cardImageUrl } from "./api";
 
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://optcgassistant.com").replace(
   /\/$/,
@@ -44,10 +44,6 @@ export const BRAND_KEYWORDS = [
   "賽事卡組",
 ] as const;
 
-const PACKS_CDN =
-  (process.env.NEXT_PUBLIC_PACKS_CDN_URL || "").replace(/\/$/, "") ||
-  (SITE_URL.includes("optcgassistant.com") ? "https://img.optcgassistant.com" : "");
-
 /** Absolute URL helper. */
 export function absoluteUrl(path = "/"): string {
   if (/^https?:\/\//i.test(path)) return path;
@@ -64,22 +60,17 @@ export function defaultOgImage(): { url: string; width: number; height: number; 
   };
 }
 
-/** Card art for Open Graph / Twitter. Prefer CDN for crawlability. */
-export function cardOgImage(
-  cardId: string,
-): { url: string; width: number; height: number; alt: string } | null {
+/**
+ * Card art for Open Graph / Twitter / JSON-LD / sitemap.
+ * Same URL as the page image. Width and height are omitted: card files are
+ * not one size (600×838, 460×642, and larger scans all exist).
+ */
+export function cardOgImage(cardId: string): { url: string; alt: string } | null {
   const id = String(cardId || "").trim();
-  // No file yet (screenshot rows). Do not advertise img.optcgassistant.com/<id>.png.
-  if (!id || isSuppressedCardImage(id)) return null;
-  const url = PACKS_CDN
-    ? `${PACKS_CDN}/${encodeURIComponent(id)}.png`
-    : `https://api.optcgassistant.com/packs/${encodeURIComponent(id)}.png`;
-  return {
-    url,
-    width: 733,
-    height: 1024,
-    alt: id,
-  };
+  if (!id) return null;
+  const url = cardImageUrl(id);
+  if (!url) return null;
+  return { url, alt: id };
 }
 
 type PageMetaInput = {

@@ -5,7 +5,7 @@ import { cache } from "react";
 import { preload } from "react-dom";
 import { CardDetailClient } from "@/components/CardDetailClient";
 import { JsonLd } from "@/components/JsonLd";
-import { ApiError, cardImageSources, type CardTournamentAppearance } from "@/lib/api";
+import { ApiError, cardImageSources, stripAbsentCardImageUrls, type CardTournamentAppearance } from "@/lib/api";
 import { getCachedCardDetail, getCachedCardTournaments } from "@/lib/cardPageData";
 import { catalogHasCard, missingCardShould404 } from "@/lib/cardCatalog";
 import { cardNotFoundMetadata } from "@/lib/cardNotFoundMetadata";
@@ -318,7 +318,7 @@ export default async function CardPage({
         pickedVariant={pickedVariant || undefined}
         cardTitle={cardTitle}
         afterDetails={cardSupplement}
-        initialCard={detailCard}
+        initialCard={stripAbsentCardImageUrls(detailCard)}
         initialMarketPrice={card.market_price ?? null}
         initialPriceCardId={cardId}
         initialTournaments={initialTournaments}
