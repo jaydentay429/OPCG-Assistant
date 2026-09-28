@@ -14,6 +14,24 @@ export type SiteUpdate = {
 /** Newest first. Keep this list short — homepage shows the latest few. */
 export const SITE_UPDATES: SiteUpdate[] = [
   {
+    id: "op18-016-2026-09-28",
+    date: "2026-09-28",
+    kind: "feature",
+    href: "/cards/OP18-016",
+    title: {
+      "zh-Hant": "OP18-016 蒙其・D・魯夫 已上線",
+      "zh-Hans": "OP18-016 蒙奇・D・路飞 已上线",
+      en: "OP18-016 Monkey.D.Luffy added",
+    },
+    body: {
+      "zh-Hant":
+        "截圖暫收：紅 C 費用 6、力量 7000、反擊 +1000、屬性打，《阿拉巴斯坦王國／草帽一行人》。【消失】【KO時】使最多 1 張自己手牌中力量 6000 以下的《阿拉巴斯坦王國》角色登場。卡圖為已上傳的 OP18-016.png。",
+      "zh-Hans":
+        "截图暂收：红 C 费用 6、力量 7000、反击 +1000、属性打，《阿拉巴斯坦王国／草帽一行人》。【消失】【KO时】使最多 1 张自己手牌中力量 6000 以下的《阿拉巴斯坦王国》角色登场。卡图为已上传的 OP18-016.png。",
+      en: "Screenshot entry: red C, cost 6, power 7000, Counter +1000, Strike, {Alabasta}/{Straw Hat Crew}. [Banish] [On K.O.] Play up to 1 {Alabasta} Character with 6000 power or less from your hand. Art is the uploaded OP18-016.png.",
+    },
+  },
+  {
     id: "eb05-046-op18-112-2026-09-27",
     date: "2026-09-27",
     kind: "feature",

@@ -194123,8 +194123,54 @@
   "EB05-016": {
     "card_id": "EB05-016",
     "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/EB05-016.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/EB05-016.png",
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "妮可・羅賓",
+    "name_en": "Nico Robin",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "綠"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "cost": 6,
+    "power": 6000,
+    "life": null,
+    "counter": 1000,
+    "rarity": "SR",
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "traits": [
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Straw Hat Crew"
+    ],
+    "effect": "【我方回合中】【登場時】使最多1張自己手牌中費用5以下、持有屬性（知）的角色卡登場。【觸發】將最多1張對手費用6以下的角色卡置為休息狀態。",
+    "effect_en": "[Your Turn] [On Play] Play up to 1 Character card with a cost of 5 or less and the {Wisdom} attribute from your hand. [Trigger] Rest up to 1 of your opponent's Characters with a cost of 6 or less.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
+  },
+  "EB05-016-P1": {
+    "card_id": "EB05-016-P1",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "妮可・羅賓",
@@ -194144,6 +194190,9 @@
     "life": null,
     "counter": 1000,
     "rarity": "SP",
+    "attributes": [
+      "知"
+    ],
     "attributes_en": [
       "Wisdom"
     ],
@@ -194154,7 +194203,12 @@
       "Straw Hat Crew"
     ],
     "effect": "【我方回合中】【登場時】使最多1張自己手牌中費用5以下、持有屬性（知）的角色卡登場。【觸發】將最多1張對手費用6以下的角色卡置為休息狀態。",
-    "effect_en": "[Your Turn] [On Play] Play up to 1 Character card with a cost of 5 or less and the {Wisdom} attribute from your hand. [Trigger] Rest up to 1 of your opponent's Characters with a cost of 6 or less."
+    "effect_en": "[Your Turn] [On Play] Play up to 1 Character card with a cost of 5 or less and the {Wisdom} attribute from your hand. [Trigger] Rest up to 1 of your opponent's Characters with a cost of 6 or less.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
   },
   "OP18-021-P1": {
     "card_id": "OP18-021-P1",
@@ -205345,6 +205399,53 @@
     ],
     "effect": "【防禦】(對手攻擊後，將這張卡片置為休息狀態即可使攻擊的對象換成這張卡片)",
     "effect_en": "[Blocker] (After your opponent declares an attack, you may rest this card to make it the new target of the attack.)",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "補充包 OP-18【OP-18】"
+    ]
+  },
+  "OP18-016": {
+    "card_id": "OP18-016",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "name": "蒙其・D・魯夫",
+    "name_en": "Monkey.D.Luffy",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "cost": 6,
+    "power": 7000,
+    "life": null,
+    "counter": 1000,
+    "rarity": "C",
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "traits": [
+      "阿拉巴斯坦王國",
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Alabasta",
+      "Straw Hat Crew"
+    ],
+    "effect": "【消失】 【KO時】使最多1張自己手牌中力量值6000以下、擁有《阿拉巴斯坦王國》特徵的角色卡登場。",
+    "effect_en": "[Banish] [On K.O.] Play up to 1 {Alabasta} type Character card with 6000 power or less from your hand.",
     "trigger": "",
     "trigger_en": "",
     "card_sets": [
