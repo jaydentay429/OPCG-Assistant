@@ -57,7 +57,7 @@ jobs:
               "$target:$remote_path" "$dest"
             echo "using the VPS card-image manifest for this build"
           elif [ "$status" = absent ]; then
-            echo "warning: VPS has no card-image-manifest.json yet; this build uses the committed snapshot"
+            echo "::warning::VPS has no card-image-manifest.json yet; this build uses the committed snapshot"
           else
             echo "error: unexpected manifest probe result: ${status}"
             exit 1

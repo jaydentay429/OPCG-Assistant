@@ -17,6 +17,11 @@ This VM cannot see the bucket. ``--from-cdn`` GETs
 only for producing a snapshot to commit. A cached 404 or an old edge object
 can disagree with R2 for up to max-age (14400s), so the VPS job is the source
 of truth for the next deploy.
+
+``--from-etag-listing`` reads a Manager export of ``{"objects": {"OP13-001.png":
+"<etag>"}}``. Use it only when every object was a single-part upload: that
+ETag is the content MD5. A multipart ETag (``<hex>-<parts>``) is not an MD5
+and the command refuses the file.
 """
 
 from __future__ import annotations
@@ -220,6 +225,40 @@ def manifest_from_cdn(card_ids: list[str], base: str = DEFAULT_CDN, workers: int
     return out
 
 
+def manifest_from_etag_listing(path: Path) -> dict[str, str]:
+    """Turn a Manager key→ETag export into a manifest.
+
+    Single-part uploads only. The ETag must be the content MD5. Multipart
+    ETags contain a hyphen and a part count and are rejected.
+    """
+    data = json.loads(path.read_text(encoding="utf-8"))
+    objects = data.get("objects") if isinstance(data, dict) else None
+    if not isinstance(objects, dict) or not objects:
+        raise ManifestRejected("etag listing must be a JSON object with a non-empty 'objects' map")
+    found: dict[str, list[tuple[str, str]]] = {}
+    for name, etag in objects.items():
+        cid = filename_card_id(str(name))
+        if not cid:
+            continue
+        digest = str(etag or "").strip().lower().strip('"')
+        if "-" in digest:
+            raise ManifestRejected(
+                f"{name}: multipart etag is not a content md5; "
+                "--from-etag-listing is for single-part uploads only"
+            )
+        if len(digest) != 32 or any(ch not in "0123456789abcdef" for ch in digest):
+            raise ManifestRejected(f"{name}: etag is not a 32-char hex md5")
+        suffix = Path(str(name)).suffix.lower()
+        found.setdefault(cid, []).append((suffix, digest[:8]))
+    if not found:
+        raise ManifestRejected("etag listing contained no card images")
+    out: dict[str, str] = {}
+    for cid, rows in found.items():
+        rows.sort(key=lambda row: 0 if row[0] == ".png" else 1)
+        out[cid] = rows[0][1]
+    return out
+
+
 def catalog_ids(index_path: Path) -> list[str]:
     data = json.loads(index_path.read_text(encoding="utf-8"))
     if not isinstance(data, dict):
@@ -232,18 +271,26 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output", type=Path, default=DEFAULT_MANIFEST)
     parser.add_argument("--rclone-remote", default=os.getenv("OPCG_R2_RCLONE_REMOTE", ""))
     parser.add_argument("--from-cdn", action="store_true", help="Hash public CDN bytes (snapshot only)")
+    parser.add_argument(
+        "--from-etag-listing",
+        type=Path,
+        default=None,
+        help="Manager JSON of key→ETag. Single-part uploads only; the ETag must be the content MD5",
+    )
     parser.add_argument("--cdn-base", default=DEFAULT_CDN)
     parser.add_argument("--index", type=Path, default=DEFAULT_INDEX)
     parser.add_argument("--workers", type=int, default=32)
     args = parser.parse_args(argv)
 
-    modes = [bool(args.rclone_remote), bool(args.from_cdn)]
+    modes = [bool(args.rclone_remote), bool(args.from_cdn), args.from_etag_listing is not None]
     if sum(modes) != 1:
-        print("Pass exactly one of --rclone-remote or --from-cdn", file=sys.stderr)
+        print("Pass exactly one of --rclone-remote, --from-cdn, or --from-etag-listing", file=sys.stderr)
         return 2
     try:
         if args.rclone_remote:
             fresh = manifest_from_rclone(args.rclone_remote)
+        elif args.from_etag_listing is not None:
+            fresh = manifest_from_etag_listing(args.from_etag_listing)
         else:
             fresh = manifest_from_cdn(catalog_ids(args.index), args.cdn_base, args.workers)
         write_manifest(args.output, fresh)

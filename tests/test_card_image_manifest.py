@@ -14,6 +14,7 @@ from scripts.build_card_image_manifest import (  # noqa: E402
     below_keep_ratio,
     content_md5_prefix,
     load_manifest,
+    manifest_from_etag_listing,
     parse_rclone_hashsum,
     write_manifest,
 )
@@ -101,14 +102,14 @@ def test_first_rclone_run_can_replace_the_committed_snapshot(tmp_path: Path):
     snapshot = load_manifest(MANIFEST)
     assert snapshot["OP13-001"] == "870e05eb"
     write_manifest(path, snapshot)
-    extra = {"EB05-016-P1": "4567abcd", "OP18-016": "89abcdef"}
+    extra = {"OP18-112": "4567abcd", "OP16-098-P2": "89abcdef"}
     assert all(key not in snapshot for key in extra)
     fresh = dict(snapshot)
     fresh.update(extra)
     write_manifest(path, fresh)
     saved = load_manifest(path)
-    assert saved["EB05-016-P1"] == "4567abcd"
-    assert saved["OP18-016"] == "89abcdef"
+    assert saved["OP18-112"] == "4567abcd"
+    assert saved["OP16-098-P2"] == "89abcdef"
     assert saved["OP13-001"] == "870e05eb"
     assert len(saved) == len(snapshot) + len(extra)
 
@@ -130,10 +131,28 @@ def test_rclone_hashsum_uses_filename_and_prefers_png():
     assert "notes" not in parsed
 
 
+def test_etag_listing_rejects_multipart(tmp_path: Path):
+    path = tmp_path / "listing.json"
+    path.write_text(
+        json.dumps({"objects": {"OP13-001.png": "870e05eb5391791e66ce8fb538a17b27-2"}}),
+        encoding="utf-8",
+    )
+    try:
+        manifest_from_etag_listing(path)
+    except ManifestRejected as exc:
+        assert "single-part" in str(exc)
+    else:
+        raise AssertionError("expected ManifestRejected")
+
+
 def test_committed_snapshot_matches_known_cdn_bytes():
     data = json.loads(MANIFEST.read_text(encoding="utf-8"))
     assert data["OP13-001"] == "870e05eb"
     assert data["EB05-048"] == "f7a50a1d"
-    for missing in ("EB05-046", "OP18-112", "OP16-098-P2"):
+    assert data["EB05-046"] == "92194e1d"
+    assert data["EB05-016"] == "9f53b217"
+    assert data["EB05-016-P1"] == "f0de3b59"
+    assert data["OP18-016"] == "cb8ad5a3"
+    assert len(data) == 5274
+    for missing in ("OP18-112", "OP16-098-P2"):
         assert missing not in data
-    assert data

@@ -9,8 +9,8 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-/** 95% of the committed snapshot (5271 entries → 5007). Update when that count changes. */
-export const CARD_IMAGE_MANIFEST_MIN_COUNT = 5007;
+/** 95% of the committed snapshot (5274 entries → 5010). Update when that count changes. */
+export const CARD_IMAGE_MANIFEST_MIN_COUNT = 5010;
 
 const frontendRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 
