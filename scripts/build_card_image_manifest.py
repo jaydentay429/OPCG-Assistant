@@ -7,6 +7,9 @@ as the etag, so this script hashes the bytes.
 
 Production (on the VPS, after images are on R2):
 
+The daily official sync first copies packs ``<ID>.png`` keys that are missing
+on the remote (``rclone copy --ignore-existing``), then runs:
+
     python3 scripts/build_card_image_manifest.py --rclone-remote "$OPCG_R2_RCLONE_REMOTE"
 
 That runs ``rclone hashsum MD5 --download`` so rclone reads the object body.
