@@ -31,6 +31,7 @@ import {
   type CardTitleLang,
 } from "@/lib/cardPageView";
 import { localizeCardList, localizeCardName, localizeCardSources, localizeCardText, localizeDonCardName, preferLangText, toSimplifiedText } from "@/lib/cardLocale";
+import { usePinnedDocumentTitle } from "@/lib/pinnedDocumentTitle";
 import { localizeFilterToken, localizeFilterTokens } from "@/lib/filterLabels";
 import { formatEffectLines } from "@/lib/formatEffect";
 import type { Card, CardPriceResponse, PriceHistoryPoint } from "@/lib/types";
@@ -377,10 +378,7 @@ export function CardDetailClient({
       : titleLang === "zh-Hans"
         ? toSimplifiedText(card?.name || card?.name_en || "")
         : String(card?.name || card?.name_en || "").trim();
-  useEffect(() => {
-    if (!card) return;
-    document.title = cardDocumentTitle(titleName, shownId, titleLang);
-  }, [card, shownId, titleLang, titleName]);
+  usePinnedDocumentTitle(card ? cardDocumentTitle(titleName, shownId, titleLang) : "");
 
   useEffect(() => {
     const id = card?.id || "";
@@ -534,7 +532,6 @@ export function CardDetailClient({
     const plan = variantClickPlan(window.location.pathname, next);
     if (plan.kind === "stay") {
       setActiveVariantId(next);
-      document.title = cardDocumentTitle(titleName, next, titleLang);
       return;
     }
     try {

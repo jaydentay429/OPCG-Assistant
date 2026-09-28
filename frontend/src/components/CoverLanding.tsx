@@ -4,10 +4,12 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { CoverUpdates } from "@/components/CoverUpdates";
 import { useI18n } from "@/lib/i18n";
+import { homeDocumentTitle, usePinnedDocumentTitle } from "@/lib/pinnedDocumentTitle";
 import { markTabNavScrollReset } from "@/lib/scrollRestore";
 
 export function CoverLanding() {
-  const { t } = useI18n();
+  const { lang, t } = useI18n();
+  usePinnedDocumentTitle(homeDocumentTitle(lang));
 
   useEffect(() => {
     document.body.classList.add("cover-active");
