@@ -132,6 +132,7 @@ const dict: Record<string, string> = {
   "wall.col_rm": "Collect −1",
   "detail.back": "← Back",
   "detail.images": "Card images",
+  "card.no_image": "No image",
   "detail.info": "Card details",
   "detail.id": "ID",
   "detail.name": "Name",

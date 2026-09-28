@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { cardImageSources } from "@/lib/api";
 import { displayCardId } from "@/lib/cardId";
+import { useI18n } from "@/lib/i18n";
 
 type Props = {
   cardId: string;
@@ -15,9 +16,23 @@ type Props = {
   height?: number;
 };
 
+function joinClass(...parts: Array<string | false | undefined>): string {
+  return parts.filter(Boolean).join(" ");
+}
+
+/** Gray frame + localized label. Not an <img>, so it cannot carry the card name as alt. */
+function CardImagePlaceholder({ className }: { className?: string }) {
+  const { t } = useI18n();
+  return (
+    <span className={joinClass("card-img-placeholder", className)}>
+      <span className="card-img-placeholder-label">{t("card.no_image")}</span>
+    </span>
+  );
+}
+
 /**
  * Card image loader. The only source is cardImageUrl(id) (CDN file with ?h=).
- * An id missing from the manifest has no src here; the placeholder is unchanged.
+ * An empty URL (no manifest hash) or a failed load becomes a neutral placeholder.
  */
 export function CardImg({
   cardId,
@@ -30,24 +45,15 @@ export function CardImg({
   height,
 }: Props) {
   const sources = useMemo(() => cardImageSources(cardId, localUrl), [cardId, localUrl]);
-  const [idx, setIdx] = useState(0);
-  const src = sources[idx] ?? sources[0] ?? "";
+  const [failed, setFailed] = useState(false);
+  const src = sources[0] ?? "";
 
   useEffect(() => {
-    setIdx(0);
+    setFailed(false);
   }, [cardId, localUrl]);
 
-  if (!src) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        className={className}
-        src="/battle/card-back.png"
-        alt={alt || displayCardId(cardId)}
-        loading={loading}
-        decoding="async"
-      />
-    );
+  if (!src || failed) {
+    return <CardImagePlaceholder className={className} />;
   }
 
   return (
@@ -61,9 +67,7 @@ export function CardImg({
       loading={loading}
       fetchPriority={fetchPriority}
       decoding="async"
-      onError={() => {
-        setIdx((current) => (current + 1 < sources.length ? current + 1 : current));
-      }}
+      onError={() => setFailed(true)}
     />
   );
 }

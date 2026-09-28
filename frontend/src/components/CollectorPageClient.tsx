@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
-  cardImageUrl,
   collectionAdd,
   collectionRemove,
   fetchCollection,
@@ -18,6 +17,7 @@ import { useI18n } from "@/lib/i18n";
 import { formatYen, loadUnitPrices, sumPricedCopies, unitPriceOf } from "@/lib/priceCalc";
 import { consumeSkipScrollRestore, flushCurrentScroll, readPathScrollTarget, requestScrollRestore, scrollYForPersist } from "@/lib/scrollRestore";
 import type { CollectionResponse } from "@/lib/types";
+import { CardImg } from "./CardImg";
 import { LoginGate } from "./LoginGate";
 import { SearchPageClient } from "./SearchPageClient";
 
@@ -412,12 +412,12 @@ export function CollectorPageClient() {
                       <Link
                         href={`/cards/${encodeURIComponent(id)}?pickedVariant=${encodeURIComponent(id)}`}
                         className="collector-art"
+                        aria-label={displayCardId(id)}
                         scroll={false}
                         onPointerDown={() => flushCurrentScroll(id)}
                         onClick={() => flushCurrentScroll(id)}
                       >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={cardImageUrl(id)} alt={id} />
+                        <CardImg cardId={id} alt={id} />
                       </Link>
                       <div className="collector-meta">
                         <div className="collector-meta-row">

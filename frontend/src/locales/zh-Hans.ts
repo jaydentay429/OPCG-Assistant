@@ -132,6 +132,7 @@ const dict: Record<string, string> = {
   "wall.col_rm": "收藏 −1",
   "detail.back": "← 返回",
   "detail.images": "卡牌图片",
+  "card.no_image": "暂无图片",
   "detail.info": "卡牌详情",
   "detail.id": "卡号",
   "detail.name": "名称",

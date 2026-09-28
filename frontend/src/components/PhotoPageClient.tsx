@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { cardImageUrl, recognizePhoto } from "@/lib/api";
+import { recognizePhoto } from "@/lib/api";
 import { displayCardId } from "@/lib/cardId";
 import { useI18n } from "@/lib/i18n";
 import type { PhotoRecognizeResponse } from "@/lib/types";
+import { CardImg } from "./CardImg";
 
 function fileToBase64(file: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -349,8 +350,7 @@ export function PhotoPageClient() {
               className="photo-candidate"
               onClick={() => router.push(`/cards/${encodeURIComponent(row.id)}`)}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={cardImageUrl(row.id)} alt={displayCardId(row.id)} />
+              <CardImg cardId={row.id} alt={displayCardId(row.id)} />
               <span className="photo-candidate-meta">
                 <strong>{displayCardId(row.id)}</strong>
                 {row.distance != null ? (
