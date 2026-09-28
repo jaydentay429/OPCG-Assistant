@@ -120,6 +120,11 @@ HTTPS 与反代
 
 每日官方卡表+卡图（VPS cron，10:00 HKT / 02:00 UTC）
   与抓价分开，避免 429 或官网超时把另一半一起杀掉。
+  卡表写入本地 packs/ 之后、重建 card-image manifest 之前：
+  rclone copy --ignore-existing 把 packs 里 R2 还没有的 <ID>.png 补到
+  OPCG_R2_RCLONE_REMOTE（不覆盖已有对象、不删除 R2 上任何东西）。
+  复制失败（rclone 缺失、remote 不可用、权限、超时）只记日志（退出码和复制数量），
+  仍会重建 manifest。墙钟超时默认 1200 秒。
   bash /opt/opcg/app/deploy/optcgassistant/run_daily_official_sync.sh
   日志：/opt/opcg/logs/daily_official_latest.log
   crontab:

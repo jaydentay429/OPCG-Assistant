@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 # Daily VPS job: official cardlist + limited variants + pack images.
 # Split from price sync so a yuyu 429 cannot kill image ingest, and vice versa.
+# After packs/ is updated, copy <ID>.png keys that R2 does not already have
+# (rclone copy --ignore-existing; never sync, never delete), then rebuild the
+# card-image manifest. A copy failure is logged and does not skip the rebuild.
 set -uo pipefail
 
-APP_ROOT=/opt/opcg/app
-LOG_DIR=/opt/opcg/logs
-LOCK=/opt/opcg/logs/daily_official_sync.lock
-PY="$APP_ROOT/.venv/bin/python"
+APP_ROOT="${OPCG_APP_ROOT:-/opt/opcg/app}"
+LOG_DIR="${OPCG_LOG_DIR:-/opt/opcg/logs}"
+LOCK="${OPCG_OFFICIAL_SYNC_LOCK:-$LOG_DIR/daily_official_sync.lock}"
+PY="${OPCG_SYNC_PYTHON:-$APP_ROOT/.venv/bin/python}"
 TS=$(date -u +%Y%m%dT%H%M%SZ)
 LOG="$LOG_DIR/daily_official_${TS}.log"
 
@@ -37,10 +40,20 @@ read_env_value() {
   rc=$?
   echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] ======== DAILY OFFICIAL SYNC END rc=$rc ========"
 
-  # Full rebuild of the card-image manifest from R2 object bytes (not etags).
-  # The file is picked up by the next GitHub Actions build; this job does not deploy.
+  # Upload <ID>.png keys that are missing on R2, then rebuild the manifest
+  # from object bytes (not etags). copy --ignore-existing does not overwrite
+  # or delete. The manifest is picked up by the next GitHub Actions build;
+  # this job does not deploy. Copy failures are logged and do not skip the rebuild.
   remote="$(read_env_value OPCG_R2_RCLONE_REMOTE)"
-  if [[ -n "$remote" ]] && command -v rclone >/dev/null 2>&1; then
+  if [[ -n "$remote" ]]; then
+    echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] copy new pack images to $remote"
+    copy_rc=0
+    "$PY" -u scripts/copy_new_pack_images_to_r2.py \
+      --packs "$APP_ROOT/packs" \
+      --rclone-remote "$remote" || copy_rc=$?
+    if [[ "$copy_rc" -ne 0 ]]; then
+      echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] copy new pack images FAILED rc=$copy_rc; continuing to card image manifest"
+    fi
     echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] card image manifest from $remote"
     if ! "$PY" -u scripts/build_card_image_manifest.py --rclone-remote "$remote"; then
       echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] card image manifest FAILED (previous file kept if the count guard tripped)"
@@ -49,7 +62,7 @@ read_env_value() {
       fi
     fi
   else
-    echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] skip card image manifest: rclone or OPCG_R2_RCLONE_REMOTE is not set"
+    echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] skip card image manifest: OPCG_R2_RCLONE_REMOTE is not set"
   fi
   exit $rc
 } >>"$LOG" 2>&1
