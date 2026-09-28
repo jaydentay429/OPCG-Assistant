@@ -9,5 +9,7 @@ describe("isSuppressedCardImage", () => {
     assert.equal(isSuppressedCardImage("EB05-048"), false);
     assert.equal(isSuppressedCardImage("EB05-010"), false);
     assert.equal(isSuppressedCardImage("OP18-112"), false);
+    assert.equal(isSuppressedCardImage("OP18-016"), true);
+    assert.equal(isSuppressedCardImage("op18-016"), true);
   });
 });

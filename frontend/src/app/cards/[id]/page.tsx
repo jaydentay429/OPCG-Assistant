@@ -123,7 +123,7 @@ export async function generateMetadata({
       presentMetaText(seo.rarity),
       presentMetaText(seo.series),
     ].filter(Boolean) as string[],
-    images: ogImage ? [ogImage] : undefined,
+    images: ogImage ? [ogImage] : null,
   });
 }
 

@@ -16,7 +16,7 @@ from sync_official_cards import ParsedCard, merge_index  # noqa: E402
 def test_seed_matches_index_and_ids_are_unique():
     cards = json.loads((ROOT / "index" / "cards_by_id.json").read_text(encoding="utf-8"))
     seed = load_manual_cards()
-    assert set(seed) == {"EB05-046", "OP18-112"}
+    assert set(seed) == {"EB05-046", "OP18-112", "OP18-016"}
     assert cards["EB05-046"]["name"] == "大和"
     assert cards["EB05-046"]["name_en"] == "Yamato"
     assert cards["EB05-046"]["manual_source"] == "screenshot"
@@ -41,13 +41,42 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["EB05-029"]["rarity"] == "C"
     assert cards["OP18-112"]["name"] == "火燒山"
     assert cards["OP18-112"]["manual_source"] == "screenshot"
+    assert cards["OP18-016"]["name"] == "蒙其・D・魯夫"
+    assert cards["OP18-016"]["name_en"] == "Monkey.D.Luffy"
+    assert cards["OP18-016"]["manual_source"] == "screenshot"
+    assert cards["OP18-016"]["suppress_pack_image"] is True
+    assert cards["OP18-016"]["img_url"] == ""
+    assert cards["OP18-016"]["img_full_url"] == ""
+    assert "OP18-016.png" not in json.dumps(cards["OP18-016"])
+    assert cards["OP18-016"]["preview"] is True
+    assert cards["OP18-016"]["colors"] == ["紅"]
+    assert cards["OP18-016"]["colors_en"] == ["Red"]
+    assert cards["OP18-016"]["cost"] == 6
+    assert cards["OP18-016"]["power"] == 7000
+    assert cards["OP18-016"]["counter"] == 1000
+    assert cards["OP18-016"]["rarity"] == "C"
+    assert cards["OP18-016"]["attributes"] == ["打"]
+    assert cards["OP18-016"]["attributes_en"] == ["Strike"]
+    assert cards["OP18-016"]["traits"] == ["阿拉巴斯坦王國", "草帽一行人"]
+    assert cards["OP18-016"]["traits_en"] == ["Alabasta", "Straw Hat Crew"]
+    assert cards["OP18-016"]["card_sets"] == ["補充包 OP-18【OP-18】"]
+    assert cards["OP18-016"]["pack_id"] == "OP-18"
+    # Already in the catalog as a preview SP. Do not overwrite it with the SR screenshot.
+    assert "EB05-016" not in seed
+    assert cards["EB05-016"]["name"] == "妮可・羅賓"
+    assert cards["EB05-016"]["name_en"] == "Nico Robin"
+    assert cards["EB05-016"]["rarity"] == "SP"
+    assert cards["EB05-016"].get("manual_source") is None
+    assert list(cards).count("EB05-016") == 1
     assert list(cards).count("EB05-046") == 1
     assert list(cards).count("EB05-048") == 1
     assert list(cards).count("OP18-112") == 1
+    assert list(cards).count("OP18-016") == 1
     overrides = json.loads((ROOT / "index" / "card_effect_overrides.json").read_text(encoding="utf-8"))
     # New cards are catalog-only. Hedgehog keeps the rekeyed encoding, nothing new.
     assert "EB05-046" not in overrides["cards"]
     assert "OP18-112" not in overrides["cards"]
+    assert "OP18-016" not in overrides["cards"]
     assert overrides["cards"]["EB05-048"]["card_id"] == "EB05-048"
     hog_timings = {a["timing"] for a in overrides["cards"]["EB05-048"]["abilities"]}
     assert hog_timings == {"on_play", "counter_event"}
@@ -55,8 +84,8 @@ def test_seed_matches_index_and_ids_are_unique():
 
 def test_official_sync_overwrites_screenshot_row_without_duplicates():
     index: dict = {}
-    assert apply_manual_cards(index) == 2
-    assert apply_manual_cards(index) == 2
+    assert apply_manual_cards(index) == 3
+    assert apply_manual_cards(index) == 3
     assert list(index).count("EB05-046") == 1
     assert index["EB05-046"]["name"] == "大和"
 
@@ -92,6 +121,9 @@ def test_official_sync_overwrites_screenshot_row_without_duplicates():
     assert merged["OP18-112"]["name"] == "火燒山"
     assert merged["OP18-112"]["manual_source"] == "screenshot"
     assert list(merged).count("OP18-112") == 1
+    assert merged["OP18-016"]["name"] == "蒙其・D・魯夫"
+    assert merged["OP18-016"]["manual_source"] == "screenshot"
+    assert list(merged).count("OP18-016") == 1
 
 
 def test_apply_does_not_replace_an_existing_official_card():

@@ -205350,5 +205350,53 @@
     "card_sets": [
       "補充包 OP-18【OP-18】"
     ]
+  },
+  "OP18-016": {
+    "card_id": "OP18-016",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "suppress_pack_image": true,
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "name": "蒙其・D・魯夫",
+    "name_en": "Monkey.D.Luffy",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "cost": 6,
+    "power": 7000,
+    "life": null,
+    "counter": 1000,
+    "rarity": "C",
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "traits": [
+      "阿拉巴斯坦王國",
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Alabasta",
+      "Straw Hat Crew"
+    ],
+    "effect": "【消失】 【KO時】使最多1張自己手牌中力量值6000以下、擁有《阿拉巴斯坦王國》特徵的角色卡登場。",
+    "effect_en": "[Banish] [On K.O.] Play up to 1 {Alabasta} type Character card with 6000 power or less from your hand.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "補充包 OP-18【OP-18】"
+    ]
   }
 }
