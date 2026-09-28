@@ -12,7 +12,13 @@ import {
   type ReactNode,
 } from "react";
 import { fetchMe, login as apiLogin, register as apiRegister } from "./api";
-import { bindLoginOpener, clearLoginIntent, installLoginTrigger } from "./loginTrigger";
+import {
+  bindLoginOpener,
+  clearLoginIntent,
+  hasLoginIntent,
+  installLoginTrigger,
+  settleCapturedLogin,
+} from "./loginTrigger";
 import {
   emptyAuth,
   loadStoredAuth,
@@ -126,8 +132,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const requestLogin = useCallback(() => setAuthOpen(true), []);
   const closeAuth = useCallback(() => setAuthOpen(false), []);
 
-  // onClick is dropped until hydration commits. Apply a click captured before that.
-  useLayoutEffect(() => bindLoginOpener(requestLogin), [requestLogin]);
+  const readyRef = useRef(state.ready);
+  const tokenRef = useRef(state.token);
+  readyRef.current = state.ready;
+  tokenRef.current = state.token;
+
+  // Replay a click captured before hydration only after the mirror is loaded
+  // and there is no token. A stored token — still waiting on /auth/me, or kept
+  // after a 5xx/network error — drops the click.
+  const consumeLoginIntent = useCallback(() => {
+    const next = settleCapturedLogin(hasLoginIntent(), {
+      ready: readyRef.current,
+      token: tokenRef.current,
+    });
+    if (!hasLoginIntent() || next.pending) return;
+    clearLoginIntent();
+    if (next.open) setAuthOpen(true);
+  }, []);
+
+  useLayoutEffect(() => bindLoginOpener(consumeLoginIntent), [consumeLoginIntent]);
+  useEffect(() => {
+    consumeLoginIntent();
+  }, [state.ready, state.token, consumeLoginIntent]);
   useLayoutEffect(() => {
     if (authOpen) clearLoginIntent();
   }, [authOpen]);

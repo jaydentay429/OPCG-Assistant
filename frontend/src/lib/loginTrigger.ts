@@ -31,6 +31,30 @@ export type LoginTrigger = {
   dispose: () => void;
 };
 
+export type CapturedLoginDecision = "wait" | "open" | "drop";
+
+/**
+ * A stored token is a session, including while /auth/me is still in flight and
+ * when a 5xx or network error keeps the mirror. Only a ready state with no
+ * token may open the dialog. Dropping while the token is present means a later
+ * 401/403 (token cleared) does not revive this click.
+ */
+export function decideCapturedLogin(state: { ready: boolean; token: string | null }): CapturedLoginDecision {
+  if (!state.ready) return "wait";
+  if (state.token) return "drop";
+  return "open";
+}
+
+export function settleCapturedLogin(
+  pending: boolean,
+  state: { ready: boolean; token: string | null },
+): { pending: boolean; open: boolean } {
+  if (!pending) return { pending: false, open: false };
+  const decision = decideCapturedLogin(state);
+  if (decision === "wait") return { pending: true, open: false };
+  return { pending: false, open: decision === "open" };
+}
+
 export function isLoginTriggerTarget(target: EventTarget | null): boolean {
   let node: ClickTarget | null = target && typeof target === "object" ? (target as ClickTarget) : null;
   if (node?.nodeType === 3) node = node.parentElement ?? null;
@@ -84,4 +108,8 @@ export function bindLoginOpener(open: () => void): () => void {
 
 export function clearLoginIntent(): void {
   installed?.clearIntent();
+}
+
+export function hasLoginIntent(): boolean {
+  return installed?.hasIntent() ?? false;
 }
