@@ -2,6 +2,7 @@ import QRCode from "qrcode";
 import { cardImagePacksUrl, cardImageProxyUrl, fetchDeckStatsBatch, hasCardImage, type DeckStatFields } from "@/lib/api";
 import { cardIdSortKey, displayCardId, normalizeCardId } from "@/lib/cardId";
 import { localizeCardName } from "@/lib/cardLocale";
+import { ensureHansConverter } from "@/lib/openccLazy";
 import type { Lang } from "@/lib/i18n";
 import { buildDeckShareUrlCompact } from "@/lib/deckShare";
 import {
@@ -353,6 +354,9 @@ function downsample(src: HTMLCanvasElement, width: number, height: number): HTML
 }
 
 async function renderDeckCanvas(input: ExportInput): Promise<{ blob: Blob; title: string; width: number; height: number }> {
+  if (input.lang === "zh-Hans") {
+    await ensureHansConverter();
+  }
   const leaderId = input.leader ? normalizeCardId(input.leader) : "";
   const entries = Object.entries(input.cards)
     .map(([id, n]) => [normalizeCardId(id), Math.max(0, Math.floor(Number(n) || 0))] as const)

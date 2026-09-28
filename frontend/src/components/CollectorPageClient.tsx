@@ -47,7 +47,7 @@ function isCollectorSort(v: unknown): v is CollectorSort {
 }
 
 export function CollectorPageClient() {
-  const { t } = useI18n();
+  const { t, openccRev } = useI18n();
   const { token, isLoggedIn, ready } = useAuth();
   const [data, setData] = useState<CollectionResponse | null>(null);
   const [error, setError] = useState("");
@@ -252,7 +252,7 @@ export function CollectorPageClient() {
       sorted.sort((a, b) => cardIdSortKey(a[0]).localeCompare(cardIdSortKey(b[0])));
     }
     return sorted;
-  }, [allEntries, query, metaById, sortBy]);
+  }, [allEntries, query, metaById, sortBy, openccRev]);
 
   useEffect(() => {
     setVisibleCount(120);

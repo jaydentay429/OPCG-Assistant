@@ -54,7 +54,7 @@ function rarityRank(rarity: string) {
 }
 
 export function BinderPageClient() {
-  const { t } = useI18n();
+  const { t, openccRev } = useI18n();
   const { token, isLoggedIn, ready } = useAuth();
   const [binder, setBinder] = useState<BinderResponse | null>(null);
   const [collection, setCollection] = useState<CollectionResponse | null>(null);
@@ -219,7 +219,7 @@ export function BinderPageClient() {
       sorted.sort((a, b) => cardIdSortKey(a[0]).localeCompare(cardIdSortKey(b[0])));
     }
     return sorted;
-  }, [collEntries, collQuery, collSort, metaById]);
+  }, [collEntries, collQuery, collSort, metaById, openccRev]);
 
   useEffect(() => {
     setCollVisible(120);
