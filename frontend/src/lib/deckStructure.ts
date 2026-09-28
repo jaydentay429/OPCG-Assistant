@@ -1,5 +1,7 @@
-import type { DeckStatFields } from "@/lib/api";
-import type { Lang } from "@/lib/i18n";
+import type { DeckStatFields } from "./api";
+import { normalizeCardId } from "./cardId";
+
+type Lang = "zh-Hant" | "zh-Hans" | "en";
 
 export type CurveBucket = { key: string; n: number };
 
@@ -96,9 +98,10 @@ export function summarizeDeckStructure(
   const counterBucket: Record<string, number> = {};
   const typeCounts: Record<string, number> = {};
 
-  if (leader) {
-    bump(typeCounts, "Leader", 1);
-  }
+  // The leader slot is one card. Leader-typed rows that also sit in `cards`
+  // (loadDeck does not strip them; +1 omits card type) must not add their qty.
+  const leaderId = leader ? normalizeCardId(leader) : "";
+  let countLeader = Boolean(leaderId);
 
   for (const [id, rawQty] of Object.entries(cards)) {
     const n = Math.max(0, Math.floor(Number(rawQty) || 0));
@@ -111,8 +114,14 @@ export function summarizeDeckStructure(
     if (powerKey) bump(powerBucket, powerKey, n);
     const counterKey = counterBucketKey(toInt(st.counter), st.card_type);
     if (counterKey) bump(counterBucket, counterKey, n);
-    bump(typeCounts, typeKey(st.card_type), n);
+    const tk = typeKey(st.card_type);
+    const sameAsSlot = Boolean(leaderId) && normalizeCardId(id) === leaderId;
+    if (tk === "Leader") countLeader = true;
+    if (sameAsSlot || tk === "Leader") continue;
+    bump(typeCounts, tk, n);
   }
+
+  if (countLeader) bump(typeCounts, "Leader", 1);
 
   const costCurve: CurveBucket[] = [];
   for (let c = 0; c <= 10; c++) {

@@ -121,6 +121,7 @@ export function BinderPageClient() {
         title: (binder?.page_titles?.[page - 1] || "").trim(),
         ownerName: res.owner_name || undefined,
         slots: pageSlots,
+        noImageLabel: t("card.no_image"),
       });
       setSharePhoto(photo);
       setShareOpen(true);
