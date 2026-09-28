@@ -434,6 +434,14 @@ img {
   display: none;
 }
 
+/* On a narrow builder, the wrapped price / clear-draft row sits just above the
+   nav. Lift the prompt so it rests above that row instead of covering it. */
+@media (max-width: 480px) {
+  .chunk-update-banner.is-above-toolbar {
+    bottom: calc(var(--nav-h) + var(--safe-bottom) + 16px + 4.75rem);
+  }
+}
+
 .chunk-update-banner p {
   margin: 0;
   flex: 1;
@@ -730,6 +738,27 @@ body.battle-active .play-seo-intro {
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
+}
+
+.route-error {
+  width: min(40rem, 100%);
+  max-width: 100%;
+  min-width: 0;
+  margin: 1.25rem auto 2rem;
+  overflow-wrap: anywhere;
+}
+
+.route-error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-width: 100%;
+}
+
+.route-error-actions button {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .search-row {

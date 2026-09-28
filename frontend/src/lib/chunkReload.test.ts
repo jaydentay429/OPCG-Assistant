@@ -10,6 +10,9 @@ import {
   handleChunkLoadFailure,
   internalNavigationHrefFromClick,
   isChunkLoadError,
+  recordInternalNavigationClick,
+  recoverChunkErrorFromBoundary,
+  reloadOnceForChunkFailure,
   type ChunkLoadEventTarget,
 } from "./chunkReload";
 
@@ -360,5 +363,65 @@ describe("chunk recovery", () => {
     windowTarget.dispatch("error", { error: chunkError() });
     assert.deepEqual(assigned, []);
     assert.equal(prompts, 1);
+  });
+
+  it("reloads a chunk error once and then shares the 10 second window", () => {
+    installBrowser();
+    const now = 1_700_000_000_000;
+    assert.equal(reloadOnceForChunkFailure(now), true);
+    assert.equal(reloads, 1);
+    assert.equal(storage.get(CHUNK_RELOAD_STORAGE_KEY), String(now));
+    assert.equal(reloadOnceForChunkFailure(now + 1), false);
+    assert.equal(reloadOnceForChunkFailure(now + CHUNK_RELOAD_WINDOW_MS - 1), false);
+    assert.equal(reloads, 1);
+    assert.equal(assignOnceForChunkNavigation(`${ORIGIN}/builder`, now + 2_000), false);
+    assert.deepEqual(assigned, []);
+
+    assert.equal(reloadOnceForChunkFailure(now + CHUNK_RELOAD_WINDOW_MS), true);
+    assert.equal(reloads, 2);
+  });
+
+  it("does not reload when sessionStorage throws", () => {
+    installBrowser();
+    storageThrows = true;
+    assert.equal(reloadOnceForChunkFailure(1_700_000_000_000), false);
+    assert.equal(reloads, 0);
+  });
+
+  it("lets the error boundary assign a recent click, and reload only after that window", () => {
+    installBrowser();
+    const now = 1_700_000_000_000;
+    recordInternalNavigationClick(`${ORIGIN}/builder`, now);
+    assert.equal(recoverChunkErrorFromBoundary(chunkError(), now + 1_000), "assigned");
+    assert.deepEqual(assigned, [`${ORIGIN}/builder`]);
+    assert.equal(reloads, 0);
+
+    recordInternalNavigationClick(`${ORIGIN}/search`, now + 1_500);
+    assert.equal(recoverChunkErrorFromBoundary(chunkError(), now + 2_000), "shown");
+    assert.deepEqual(assigned, [`${ORIGIN}/builder`]);
+    assert.equal(reloads, 0);
+
+    clearPendingNavigation();
+    const afterWindow = now + 1_000 + CHUNK_RELOAD_WINDOW_MS;
+    assert.equal(recoverChunkErrorFromBoundary(chunkError(), afterWindow), "reloaded");
+    assert.equal(reloads, 1);
+    assert.equal(recoverChunkErrorFromBoundary(chunkError(), afterWindow + 1), "shown");
+    assert.equal(reloads, 1);
+  });
+
+  it("shows other errors and a wrapped chunk cause without a second navigation", () => {
+    installBrowser();
+    const now = 1_700_000_000_000;
+    assert.equal(recoverChunkErrorFromBoundary(new Error("Failed to fetch"), now), "shown");
+    assert.equal(reloads, 0);
+    assert.deepEqual(assigned, []);
+    assert.equal(storage.has(CHUNK_RELOAD_STORAGE_KEY), false);
+
+    const wrapped = new Error("render failed");
+    (wrapped as Error & { cause?: unknown }).cause = chunkError();
+    assert.equal(recoverChunkErrorFromBoundary(wrapped, now), "reloaded");
+    assert.equal(reloads, 1);
+    assert.equal(recoverChunkErrorFromBoundary(new Error("card api down"), now + 1), "shown");
+    assert.equal(reloads, 1);
   });
 });
