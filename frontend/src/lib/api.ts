@@ -304,9 +304,18 @@ export async function fetchFilterCards(
   return { cards: data, total };
 }
 
-export async function fetchCard(cardId: string, includeAi = false): Promise<CardDetailResponse> {
+/**
+ * `timeoutMs` overrides the 15s GET default. The card detail page passes 5s.
+ * Other callers leave it unset.
+ */
+export async function fetchCard(
+  cardId: string,
+  includeAi = false,
+  opts?: { timeoutMs?: number },
+): Promise<CardDetailResponse> {
   const { data } = await apiGet<CardDetailResponse>(`/cards/${encodeURIComponent(cardId)}`, {
     query: { include_ai: includeAi ? "1" : "0" },
+    timeoutMs: opts?.timeoutMs,
   });
   return data;
 }

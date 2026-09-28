@@ -49,6 +49,31 @@ type I18nCtx = {
 
 const Ctx = createContext<I18nCtx | null>(null);
 
+/** Same lookup the provider uses, so error UI can render without the provider. */
+export function translate(lang: Lang, key: string, vars?: Record<string, string | number>): string {
+  // English must never fall back to Chinese chrome strings.
+  let s =
+    DICTS[lang][key] ??
+    (lang === "zh-Hans" ? DICTS["zh-Hant"][key] : undefined) ??
+    (lang === "en" ? undefined : DICTS.en[key]) ??
+    key;
+  if (vars) {
+    for (const [k, v] of Object.entries(vars)) {
+      s = s.replaceAll(`{${k}}`, String(v));
+    }
+  }
+  return s;
+}
+
+export function readStoredLang(): Lang {
+  if (typeof window === "undefined") return DEFAULT_LANG;
+  try {
+    return normalizeLang(localStorage.getItem(LANG_KEY)) ?? DEFAULT_LANG;
+  } catch {
+    return DEFAULT_LANG;
+  }
+}
+
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>(DEFAULT_LANG);
 
@@ -77,20 +102,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const t = useCallback(
-    (key: string, vars?: Record<string, string | number>) => {
-      // English must never fall back to Chinese chrome strings.
-      let s =
-        DICTS[lang][key] ??
-        (lang === "zh-Hans" ? DICTS["zh-Hant"][key] : undefined) ??
-        (lang === "en" ? undefined : DICTS.en[key]) ??
-        key;
-      if (vars) {
-        for (const [k, v] of Object.entries(vars)) {
-          s = s.replaceAll(`{${k}}`, String(v));
-        }
-      }
-      return s;
-    },
+    (key: string, vars?: Record<string, string | number>) => translate(lang, key, vars),
     [lang],
   );
 
@@ -102,4 +114,9 @@ export function useI18n() {
   const ctx = useContext(Ctx);
   if (!ctx) throw new Error("useI18n outside provider");
   return ctx;
+}
+
+/** Null when the root layout (and its provider) failed to mount. */
+export function useOptionalI18n(): I18nCtx | null {
+  return useContext(Ctx);
 }

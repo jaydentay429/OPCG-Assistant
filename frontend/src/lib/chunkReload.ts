@@ -146,6 +146,27 @@ export function assignOnceForChunkNavigation(href: string, now = Date.now()): bo
   }
 }
 
+/**
+ * Reload the current document at most once per window.
+ * Shares `opcg-chunk-reload-at` with link-click navigation, so an error
+ * boundary cannot refresh inside the guard and cannot refresh twice in a row.
+ */
+export function reloadOnceForChunkFailure(now = Date.now()): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    const stored = sessionStorage.getItem(CHUNK_RELOAD_STORAGE_KEY);
+    const previous = stored === null || stored === "" ? Number.NaN : Number(stored);
+    if (Number.isFinite(previous) && now - previous < CHUNK_RELOAD_WINDOW_MS) {
+      return false;
+    }
+    sessionStorage.setItem(CHUNK_RELOAD_STORAGE_KEY, String(now));
+    window.location.reload();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export type ChunkRecovery = "assigned" | "prompt" | "ignored";
 
 /** Assign only for a recent in-app link click. Every other chunk failure asks the user. */
@@ -154,6 +175,32 @@ export function handleChunkLoadFailure(value: unknown, now = Date.now()): ChunkR
   const href = recentInternalNavigationHref(now);
   if (href && assignOnceForChunkNavigation(href, now)) return "assigned";
   return "prompt";
+}
+
+export type BoundaryChunkRecovery = "assigned" | "reloaded" | "shown";
+
+function chunkErrorValue(value: unknown): unknown {
+  if (isChunkLoadError(value)) return value;
+  if (value && typeof value === "object" && "cause" in value) {
+    const cause = (value as { cause?: unknown }).cause;
+    if (isChunkLoadError(cause)) return cause;
+  }
+  return value;
+}
+
+/**
+ * Error-boundary recovery for a chunk failure.
+ * A recent in-app click still navigates once. Otherwise the current document
+ * reloads once, unless the shared 10s window is already closed. Anything else
+ * only shows the fallback. One call never both assigns and reloads.
+ */
+export function recoverChunkErrorFromBoundary(value: unknown, now = Date.now()): BoundaryChunkRecovery {
+  const target = chunkErrorValue(value);
+  if (!isChunkLoadError(target)) return "shown";
+  if (handleChunkLoadFailure(target, now) === "assigned") return "assigned";
+  // The click is still the cause, but the 10s window refused another hop.
+  if (recentInternalNavigationHref(now)) return "shown";
+  return reloadOnceForChunkFailure(now) ? "reloaded" : "shown";
 }
 
 type ChunkListener = (event: Event) => void;
