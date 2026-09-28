@@ -1,10 +1,8 @@
-import * as OpenCC from "opencc-js";
 import type { Lang } from "@/lib/i18n";
+import { convertToHansSync, ensureHansConverter } from "@/lib/openccLazy";
 import { HANS_PHRASE_FIXES } from "@/locales/hansPhraseFixes.generated";
 import NAME_ALIASES from "@/locales/nameAliases.generated";
 import NAME_HANS_BY_EN from "@/locales/nameHansByEn.generated";
-
-const toHans = OpenCC.Converter({ from: "tw", to: "cn" });
 
 const CJK_RE = /[\u4e00-\u9fff]/;
 
@@ -94,10 +92,20 @@ export function preferLangText(text: string | null | undefined, lang: Lang): str
   return "";
 }
 
-/** Convert Taiwan Traditional card text into Mainland Simplified + popular name fixes. */
+/**
+ * Convert Taiwan Traditional card text into Mainland Simplified + popular name fixes.
+ * The dictionary loads on demand. Until it arrives (or if it fails), the original
+ * text is returned so rendering never throws or waits.
+ */
 export function toSimplifiedText(text: string | null | undefined): string {
   if (!text) return "";
-  return applyHansPhraseFixes(toHans(String(text)));
+  const raw = String(text);
+  const converted = convertToHansSync(raw);
+  if (converted == null) {
+    void ensureHansConverter();
+    return raw;
+  }
+  return applyHansPhraseFixes(converted);
 }
 
 /**

@@ -12,6 +12,7 @@ import {
 import en from "@/locales/en";
 import zhHans from "@/locales/zh-Hans";
 import zhHant from "@/locales/zh-Hant";
+import { OPENCC_READY_EVENT } from "@/lib/openccEvents";
 
 export type Lang = "zh-Hant" | "zh-Hans" | "en";
 
@@ -45,6 +46,8 @@ type I18nCtx = {
   lang: Lang;
   setLang: (l: Lang) => void;
   t: (key: string, vars?: Record<string, string | number>) => string;
+  /** Increments when an OpenCC dictionary becomes ready so cached filters can refresh. */
+  openccRev: number;
 };
 
 const Ctx = createContext<I18nCtx | null>(null);
@@ -76,6 +79,15 @@ export function readStoredLang(): Lang {
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>(DEFAULT_LANG);
+  // Bumps when an OpenCC dictionary finishes loading so visible text can replace
+  // the original string. The provider does not import the dictionaries themselves.
+  const [openccRev, setOpenccRev] = useState(0);
+
+  useEffect(() => {
+    const bump = () => setOpenccRev((n) => n + 1);
+    window.addEventListener(OPENCC_READY_EVENT, bump);
+    return () => window.removeEventListener(OPENCC_READY_EVENT, bump);
+  }, []);
 
   useEffect(() => {
     try {
@@ -106,7 +118,9 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     [lang],
   );
 
-  const value = useMemo(() => ({ lang, setLang, t }), [lang, setLang, t]);
+  const value = useMemo<I18nCtx>(() => {
+    return { lang, setLang, t, openccRev };
+  }, [lang, setLang, t, openccRev]);
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 
