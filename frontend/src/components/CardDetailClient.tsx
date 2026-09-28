@@ -597,6 +597,7 @@ export function CardDetailClient({
                     href={cardVariantHref(id)}
                     className={`detail-thumb${selected ? " active" : ""}`}
                     aria-current={selected ? "true" : undefined}
+                    aria-label={thumbText}
                     title={thumbText}
                     onClick={(event) => onVariantClick(event, id)}
                     onKeyDown={(event) => {

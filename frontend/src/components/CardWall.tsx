@@ -95,6 +95,7 @@ export function CardWall({ cards }: { cards: FilterCard[] }) {
             <Link
               href={`/cards/${encodeURIComponent(c.id)}?pickedVariant=${encodeURIComponent(pickedVariant)}`}
               className="thumb"
+              aria-label={displayName}
               scroll={false}
               onPointerDown={() => flushCurrentScroll(c.id)}
               onClick={() => flushCurrentScroll(c.id)}

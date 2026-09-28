@@ -1700,6 +1700,7 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 .card-tile .thumb {
+  display: block;
   aspect-ratio: 5 / 7;
   overflow: hidden;
   border-radius: 4px;
@@ -9321,5 +9322,114 @@ a.community-nav-btn:active {
   background: #334155;
   border: 1px solid rgba(148, 163, 184, 0.42);
   color: #f1f5f9;
+}
+
+/* Neutral stand-in for a card with no art. 460:642 matches a card face (~5:7). */
+.card-img-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 460 / 642;
+  overflow: hidden;
+  background: #4a5160;
+  color: #e8eaef;
+  text-align: center;
+  border-radius: inherit;
+  container-type: inline-size;
+  user-select: none;
+}
+
+.card-img-placeholder-label {
+  display: block;
+  max-width: 100%;
+  margin: 0;
+  padding: 0 0.35em;
+  overflow: hidden;
+  font-size: clamp(8px, 15cqi, 15px);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.card-tile .thumb .card-img-placeholder,
+.detail-thumb .card-img-placeholder,
+.price-tile-art .card-img-placeholder,
+.collector-art .card-img-placeholder,
+.deck-card-art .card-img-placeholder,
+.draft-tile .card-img-placeholder {
+  display: flex;
+}
+
+.card-tile .thumb .card-img-placeholder,
+.detail-thumb .card-img-placeholder,
+.price-tile-art .card-img-placeholder {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+}
+
+.detail-main-frame .detail-main-img.card-img-placeholder {
+  /* The frame can be shorter than 460:642 because of max-height.
+     Keep the gray card at the real face ratio and center it, the way
+     object-fit: contain does for a loaded image. */
+  inset: auto;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  aspect-ratio: 460 / 642;
+  margin: 0;
+  background: #4a5160;
+  color: #e8eaef;
+}
+
+.deck-editor-leader .card-img-placeholder {
+  width: 56px;
+  flex: none;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.photo-candidate .card-img-placeholder {
+  width: 64px;
+  aspect-ratio: 460 / 642;
+  flex: none;
+  border-radius: 6px;
+}
+
+.draft-tile.leader .card-img-placeholder {
+  outline: 2px solid rgba(245, 158, 11, 0.55);
+  outline-offset: 1px;
+}
+
+.collector-art .card-img-placeholder {
+  border-radius: 6px;
+}
+
+.ux-card-img.card-img-placeholder,
+.ux-log-card-preview-img.card-img-placeholder,
+.ux-life-card-img.card-img-placeholder,
+.ux-zone-card-img.card-img-placeholder,
+.ux-search-card-img.card-img-placeholder,
+.ux-choice-card-img.card-img-placeholder,
+.ux-mulligan-card.card-img-placeholder,
+.ux-card-detail-img.card-img-placeholder,
+.play-history-leader-img.card-img-placeholder,
+.binder-pocket-img.card-img-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 

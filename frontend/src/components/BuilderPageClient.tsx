@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
-  cardImageUrl,
   createDeck,
   deleteDeck,
   fetchDeckStatsBatch,
@@ -26,6 +25,7 @@ import { formatYen, loadUnitPrices, sumPricedCopies, unitPriceOf } from "@/lib/p
 import { consumeSkipScrollRestore, flushCurrentScroll, readPathScrollTarget, requestScrollRestore, scrollYForPersist } from "@/lib/scrollRestore";
 import type { Deck } from "@/lib/types";
 import QRCode from "qrcode";
+import { CardImg } from "./CardImg";
 import { SearchPageClient } from "./SearchPageClient";
 
 const BUILDER_SECTIONS_KEY = "opcg_builder_sections_v1";
@@ -646,8 +646,7 @@ export function BuilderPageClient() {
                   >
                     <div className="deck-card-art">
                       {d.leader_card_id ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={cardImageUrl(d.leader_card_id)} alt={displayCardId(d.leader_card_id)} />
+                        <CardImg cardId={d.leader_card_id} alt={displayCardId(d.leader_card_id)} />
                       ) : (
                         <div className="deck-card-art-empty">{t("deck.no_leader")}</div>
                       )}
@@ -724,8 +723,7 @@ export function BuilderPageClient() {
         <div className="deck-editor-top">
           {draft.leader ? (
             <div className="deck-editor-leader">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={cardImageUrl(draft.leader)} alt={displayCardId(draft.leader)} />
+              <CardImg cardId={draft.leader} alt={displayCardId(draft.leader)} />
               <div>
                 <div className="muted">{t("deck.leader_short")}</div>
                 <strong>{displayCardId(draft.leader)}</strong>
@@ -984,9 +982,9 @@ export function BuilderPageClient() {
                   scroll={false}
                   onPointerDown={() => flushCurrentScroll(draft.leader || undefined)}
                   onClick={() => flushCurrentScroll(draft.leader || undefined)}
+                  aria-label={displayCardId(draft.leader)}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={cardImageUrl(draft.leader)} alt={displayCardId(draft.leader)} />
+                  <CardImg cardId={draft.leader} alt={displayCardId(draft.leader)} />
                 </Link>
                 <div className="cap">{displayCardId(draft.leader)}</div>
                 {showPrices ? (
@@ -1017,9 +1015,9 @@ export function BuilderPageClient() {
                     scroll={false}
                     onPointerDown={() => flushCurrentScroll(id)}
                     onClick={() => flushCurrentScroll(id)}
+                    aria-label={displayCardId(id)}
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={cardImageUrl(id)} alt={id} />
+                    <CardImg cardId={id} alt={id} />
                   </Link>
                   <div className="cap">
                     {displayCardId(id)} ×{n}
