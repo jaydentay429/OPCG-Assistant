@@ -5,12 +5,14 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
   type ReactNode,
 } from "react";
 import { fetchMe, login as apiLogin, register as apiRegister } from "./api";
+import { bindLoginOpener, clearLoginIntent, installLoginTrigger } from "./loginTrigger";
 import {
   emptyAuth,
   loadStoredAuth,
@@ -36,6 +38,9 @@ type AuthCtx = AuthState & {
 };
 
 const Ctx = createContext<AuthCtx | null>(null);
+
+// Register before hydrateRoot so the listener exists when __reactProps first appears.
+if (typeof window !== "undefined") installLoginTrigger();
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AuthState>({
@@ -120,6 +125,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const requestLogin = useCallback(() => setAuthOpen(true), []);
   const closeAuth = useCallback(() => setAuthOpen(false), []);
+
+  // onClick is dropped until hydration commits. Apply a click captured before that.
+  useLayoutEffect(() => bindLoginOpener(requestLogin), [requestLogin]);
+  useLayoutEffect(() => {
+    if (authOpen) clearLoginIntent();
+  }, [authOpen]);
 
   const value = useMemo(
     () => ({

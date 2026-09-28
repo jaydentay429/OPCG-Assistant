@@ -150,7 +150,7 @@ export function TopBar() {
               ) : null}
             </div>
           ) : (
-            <button type="button" onClick={() => requestLogin()}>
+            <button type="button" data-login-trigger="" onClick={() => requestLogin()}>
               {t("auth.login")}
             </button>
           )}
