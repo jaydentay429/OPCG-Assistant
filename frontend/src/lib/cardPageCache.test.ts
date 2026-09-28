@@ -8,6 +8,7 @@ import {
   fetchSecondaryUncached,
   loadRenderableCard,
   readThroughSuccessCache,
+  shareInflight,
 } from "./cardPageCache";
 import type { CardDetailResponse } from "./types";
 
@@ -17,6 +18,31 @@ const retryNow = { delayMs: 0, sleep: noWait };
 function cardPayload(id: string, name: string): CardDetailResponse {
   return { card: { id, name, effect: `${name} effect`, rarity: "SR", card_type: "Character" } };
 }
+
+describe("shareInflight", () => {
+  it("runs the load once and reuses a rejection for the same key", async () => {
+    const memo = new Map<string, Promise<string>>();
+    let calls = 0;
+    const load = () => {
+      calls += 1;
+      return Promise.reject(new Error("down"));
+    };
+    const first = shareInflight(memo, "OP01-001", load);
+    const second = shareInflight(memo, "OP01-001", load);
+    assert.equal(first, second);
+    assert.equal(calls, 1);
+    await assert.rejects(first, /down/);
+    await assert.rejects(second, /down/);
+
+    const other = shareInflight(memo, "OP01-002", async () => "ok");
+    assert.equal(await other, "ok");
+    assert.equal(calls, 1);
+
+    const fresh = shareInflight(new Map(), "OP01-001", load);
+    await assert.rejects(fresh, /down/);
+    assert.equal(calls, 2);
+  });
+});
 
 describe("readThroughSuccessCache", () => {
   it("does not store a throw or a resolved null", async () => {
@@ -98,6 +124,25 @@ describe("card detail cache policy", () => {
     );
     assert.equal(hit?.id, "OP05-093");
     assert.deepEqual(calls, []);
+  });
+
+  it("does not retry a 502 or a timeout when the caller disables retries", async () => {
+    for (const status of [408, 502]) {
+      let calls = 0;
+      await assert.rejects(
+        () =>
+          fetchCardDetailUncached(
+            "OP05-093",
+            async () => {
+              calls += 1;
+              throw new ApiError(status, "unavailable");
+            },
+            { retries: 0 },
+          ),
+        (error: unknown) => error instanceof CardTemporarilyUnavailableError,
+      );
+      assert.equal(calls, 1);
+    }
   });
 
   it("does not cache a connection failure, then reads fresh data after recovery", async () => {
