@@ -1,9 +1,11 @@
-import { SUPPRESSED_CARD_IMAGE_IDS } from "./suppressedCardImages.generated";
+import { hasCardImage } from "./api";
 
-const SUPPRESSED = new Set(SUPPRESSED_CARD_IMAGE_IDS.map((id) => id.toUpperCase()));
-
-/** Packs/CDN file for this id is a known mismatch and must not be shown. */
+/**
+ * True when this catalog id has no file in the card-image manifest.
+ * The manifest is the only signal; card payload image fields are ignored.
+ */
 export function isSuppressedCardImage(cardId: string): boolean {
-  const id = String(cardId || "").trim().toUpperCase();
-  return Boolean(id) && SUPPRESSED.has(id);
+  const id = String(cardId || "").trim();
+  if (!id) return false;
+  return !hasCardImage(id);
 }

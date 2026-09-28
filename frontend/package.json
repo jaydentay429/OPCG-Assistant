@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "bash ../scripts/frontend-dev-from-tmp.sh",
     "dev:turbopack": "next dev --turbopack",
-    "build": "node scripts/generate-card-ids.mjs && next build && node scripts/sync-standalone-assets.mjs",
+    "build": "node scripts/check-card-image-manifest.mjs && node scripts/generate-card-ids.mjs && next build && node scripts/sync-standalone-assets.mjs",
     "start": "next start",
     "lint": "next lint",
     "test:unit": "node --experimental-strip-types --import ./scripts/register-test-hooks.mjs --test src/lib/*.test.ts",

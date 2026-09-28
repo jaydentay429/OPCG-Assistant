@@ -31,6 +31,40 @@ jobs:
         working-directory: frontend
         run: npm ci
 
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      # Production build runs on this runner, not on the VPS. The daily sync
+      # writes the manifest on the VPS from R2 bytes. Pull that file before
+      # `npm run build` so the static import is the VPS copy.
+      # A missing file (first deploy, before the rclone script has run) keeps
+      # the committed snapshot and warns. Any other SSH or copy error fails
+      # the job. The later rsync never replaces a manifest that already exists.
+      - name: Pull card image manifest from VPS
+        run: |
+          set -euo pipefail
+          dest="frontend/src/generated/card-image-manifest.json"
+          remote_path="/opt/opcg/app/frontend/src/generated/card-image-manifest.json"
+          ssh_base=(ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes -o BatchMode=yes -o ConnectTimeout=20)
+          target="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
+          status="$("${ssh_base[@]}" "$target" "if [ -f '$remote_path' ]; then printf present; else printf absent; fi")"
+          if [ "$status" = present ]; then
+            scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes -o BatchMode=yes -o ConnectTimeout=20 \
+              "$target:$remote_path" "$dest"
+            echo "using the VPS card-image manifest for this build"
+          elif [ "$status" = absent ]; then
+            echo "::warning::VPS has no card-image-manifest.json yet; this build uses the committed snapshot"
+          else
+            echo "error: unexpected manifest probe result: ${status}"
+            exit 1
+          fi
+          sha256sum "$dest"
+          python3 -c 'import json,sys; print(len(json.load(open(sys.argv[1]))), "manifest entries")' "$dest"
+
       - name: Build frontend
         working-directory: frontend
         run: |
@@ -39,13 +73,6 @@ jobs:
           rm -rf .next/standalone/.next/static .next/standalone/public
           cp -R .next/static .next/standalone/.next/static
           cp -R public .next/standalone/public
-
-      - name: Set up SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
 
       - name: "Sync backend code (no --delete, keeps server-only files like packs/, .env, dbs)"
         run: |
@@ -61,9 +88,33 @@ jobs:
             --exclude 'meta/photo_hash_index.json' --exclude 'meta/photo_clip_index.npz' \
             --exclude 'meta/*.log' \
             --exclude 'cards/cards/' --exclude 'cards/official_sync/' \
+            --exclude 'frontend/src/generated/card-image-manifest.json' \
             --exclude '.venv' --exclude '__pycache__/' --exclude '*.pyc' \
             -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes" \
             ./ "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/opt/opcg/app/"
+
+      # The code sync excludes the manifest. Seed the committed snapshot only
+      # when the VPS file is still absent. An existing file is left untouched,
+      # including one written by scripts/build_card_image_manifest.py.
+      - name: Seed card image manifest only if the VPS has none
+        run: |
+          set -euo pipefail
+          remote_path="/opt/opcg/app/frontend/src/generated/card-image-manifest.json"
+          target="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
+          status="$(ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes -o BatchMode=yes -o ConnectTimeout=20 \
+            "$target" "if [ -f '$remote_path' ]; then printf present; else printf absent; fi")"
+          if [ "$status" = present ]; then
+            echo "leaving the existing VPS card-image manifest in place"
+          elif [ "$status" = absent ]; then
+            ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes -o BatchMode=yes -o ConnectTimeout=20 \
+              "$target" "mkdir -p /opt/opcg/app/frontend/src/generated"
+            scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes -o BatchMode=yes -o ConnectTimeout=20 \
+              frontend/src/generated/card-image-manifest.json "$target:$remote_path"
+            echo "seeded the VPS manifest from the committed snapshot"
+          else
+            echo "error: unexpected manifest probe result: ${status}"
+            exit 1
+          fi
 
       # Stage the new standalone tree beside the live one. rsync --delete onto the
       # directory the running server is serving makes Next answer 400 for chunks

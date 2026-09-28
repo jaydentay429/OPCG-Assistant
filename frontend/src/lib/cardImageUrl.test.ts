@@ -1,0 +1,117 @@
+import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
+import { mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { describe, it } from "node:test";
+import {
+  PACKS_CDN_BASE,
+  cardImagePacksUrl,
+  cardImageProxyUrl,
+  cardImageSources,
+  cardImageUrl,
+  hasCardImage,
+  stripAbsentCardImageUrls,
+} from "./api";
+import { cardImageHash } from "./cardImageManifest";
+import { cardOgImage } from "./seo";
+
+const PUBLIC_BASE = PACKS_CDN_BASE || "https://img.optcgassistant.com";
+
+function runManifestCheck(body: string, minCount?: string) {
+  const dir = mkdtempSync(join(tmpdir(), "card-manifest-"));
+  const file = join(dir, "card-image-manifest.json");
+  writeFileSync(file, body);
+  const env: NodeJS.ProcessEnv = { ...process.env, CARD_IMAGE_MANIFEST: file };
+  if (minCount != null) env.CARD_IMAGE_MANIFEST_MIN_COUNT = minCount;
+  return spawnSync(process.execPath, ["scripts/check-card-image-manifest.mjs"], {
+    cwd: process.cwd(),
+    env,
+    encoding: "utf8",
+  });
+}
+
+describe("cardImageUrl", () => {
+  it("appends the manifest content hash and uses one URL for every public surface", () => {
+    const url = `${PUBLIC_BASE}/OP13-001.png?h=870e05eb`;
+    assert.equal(cardImageHash("OP13-001"), "870e05eb");
+    assert.equal(cardImageHash("op13-001"), "870e05eb");
+    assert.equal(hasCardImage("OP13-001"), true);
+    assert.equal(cardImageUrl("OP13-001"), url);
+    assert.equal(cardImageUrl("OP13-001-P1").startsWith(`${PUBLIC_BASE}/OP13-001-P1.png?h=`), true);
+    assert.equal(cardImageUrl("OP13-001-P2").startsWith(`${PUBLIC_BASE}/OP13-001-P2.png?h=`), true);
+    assert.match(cardImageUrl("OP13-001-P1"), /\?h=[0-9a-f]{8}$/);
+    assert.equal(cardImageUrl("  "), "");
+    assert.equal(cardImageUrl("OP13-001").includes("20260927eb05v1"), false);
+
+    const og = cardOgImage("OP13-001");
+    assert.ok(og);
+    assert.equal(og.url, url);
+    assert.equal("width" in og, false);
+    assert.equal("height" in og, false);
+    const sources = cardImageSources("OP13-001", "https://example.invalid/local.png");
+    assert.deepEqual(sources, [url]);
+    assert.equal(cardImageUrl("OP13-001-P1"), cardOgImage("OP13-001-P1")?.url);
+    assert.equal(cardImageHash("EB05-048"), "f7a50a1d");
+    assert.equal(cardImageUrl("EB05-048"), `${PUBLIC_BASE}/EB05-048.png?h=f7a50a1d`);
+    assert.equal(cardImageHash("EB05-046"), "92194e1d");
+    assert.equal(cardImageUrl("EB05-046"), `${PUBLIC_BASE}/EB05-046.png?h=92194e1d`);
+  });
+
+  it("returns no URL and no og image when the manifest has no file", () => {
+    for (const id of ["OP18-112", "OP16-098-P2"]) {
+      assert.equal(hasCardImage(id), false);
+      assert.equal(cardImageHash(id), "");
+      assert.equal(cardImageUrl(id), "");
+      assert.equal(cardOgImage(id), null);
+      assert.deepEqual(cardImageSources(id, `${PUBLIC_BASE}/${id}.png`), []);
+      const stripped = stripAbsentCardImageUrls({
+        img_local_url: `${PUBLIC_BASE}/${id}.png`,
+        img_url: `https://example.invalid/${id}.png`,
+        img_full_url: "",
+        alt_image_urls: [`${PUBLIC_BASE}/${id}.png`],
+      });
+      assert.equal(stripped.img_local_url, null);
+      assert.equal(stripped.img_url, null);
+      assert.deepEqual(stripped.alt_image_urls, []);
+      const proxy = stripAbsentCardImageUrls({
+        img_local_url: `https://api.optcgassistant.com/images/card/${id}`,
+        img_url: `https://api.optcgassistant.com/packs/${id}.png`,
+        alt_image_urls: [`https://api.optcgassistant.com/images/card/${id}`],
+      });
+      assert.equal(proxy.img_local_url, null);
+      assert.equal(proxy.img_url, null);
+      assert.deepEqual(proxy.alt_image_urls, []);
+    }
+    const kept = stripAbsentCardImageUrls({
+      img_local_url: `${PUBLIC_BASE}/OP13-001.png`,
+      img_url: "https://api.optcgassistant.com/images/card/OP13-001",
+      alt_image_urls: [`${PUBLIC_BASE}/OP13-001-P1.png`],
+    });
+    assert.equal(kept.img_local_url, `${PUBLIC_BASE}/OP13-001.png`);
+    assert.equal(kept.img_url, "https://api.optcgassistant.com/images/card/OP13-001");
+    assert.deepEqual(kept.alt_image_urls, [`${PUBLIC_BASE}/OP13-001-P1.png`]);
+    assert.equal(cardImagePacksUrl("OP13-001").includes("?"), false);
+    assert.equal(cardImageProxyUrl("OP13-001").includes("?"), false);
+  });
+
+  it("fails the build check on an empty or undersized manifest", () => {
+    const empty = runManifestCheck("{}\n");
+    assert.notEqual(empty.status, 0);
+    assert.match(empty.stderr, /empty/);
+
+    const missing = spawnSync(process.execPath, ["scripts/check-card-image-manifest.mjs"], {
+      cwd: process.cwd(),
+      env: { ...process.env, CARD_IMAGE_MANIFEST: join(tmpdir(), "no-such-card-manifest.json") },
+      encoding: "utf8",
+    });
+    assert.notEqual(missing.status, 0);
+
+    const under = runManifestCheck('{"OP13-001":"870e05eb"}\n', "2");
+    assert.notEqual(under.status, 0);
+    assert.match(under.stderr, /floor/);
+
+    const ok = runManifestCheck('{"OP13-001":"870e05eb"}\n', "1");
+    assert.equal(ok.status, 0, ok.stderr);
+  });
+});
