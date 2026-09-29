@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { forgotPassword } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { useI18n } from "@/lib/i18n";
+import { shouldIgnoreBackdropDismiss } from "@/lib/modalDismiss";
 import { PasswordField } from "./PasswordField";
 
 type AuthTab = "login" | "register" | "forgot";
@@ -16,10 +17,24 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
   const [info, setInfo] = useState("");
   const [busy, setBusy] = useState(false);
   const firstFieldRef = useRef<HTMLInputElement | null>(null);
+  const openedAtRef = useRef(Date.now());
 
   useEffect(() => {
     firstFieldRef.current?.focus();
   }, [tab]);
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  function onBackdropClick() {
+    if (shouldIgnoreBackdropDismiss(openedAtRef.current, Date.now())) return;
+    onClose();
+  }
 
   function switchTab(next: AuthTab) {
     setTab(next);
@@ -85,7 +100,7 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
     tab === "login" ? t("auth.login") : tab === "register" ? t("auth.register") : t("auth.forgot_title");
 
   return (
-    <div className="modal-backdrop" onClick={onClose} role="presentation">
+    <div className="modal-backdrop" onClick={onBackdropClick} role="presentation">
       <div className="modal" onClick={(e) => e.stopPropagation()} role="dialog">
         <h2>{title}</h2>
         {tab !== "forgot" ? (
