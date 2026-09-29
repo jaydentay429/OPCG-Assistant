@@ -24,6 +24,7 @@ from analytics.exclude import (  # noqa: E402
     exclusion_reasons,
     ip_is_datacenter,
     legacy_excluded,
+    signals_from_row,
 )
 from analytics.recount import format_report, parse_access_log, recount_rows, window_dates  # noqa: E402
 from analytics.report import build_daily_report  # noqa: E402
@@ -184,11 +185,20 @@ def test_insert_and_report_honor_new_signals(monkeypatch, tmp_path: Path):
         ts=when,
     )
     stored = fetch_pageviews("1970-01-01T00:00:00Z", "2999-01-01T00:00:00Z")
+    cols = set(stored[0].keys())
+    assert "email" not in cols
+    assert "client_ip" not in cols
+    assert "ip_is_datacenter" in cols
+    assert "user_agent" in cols
     flags = {row["visitor_id"]: int(row["is_excluded"]) for row in stored}
     assert flags["human"] == 0
     assert flags["owner-cookie"] == 1
     assert flags["owner-account"] == 1
     assert flags["bot"] == 1
+    human = next(row for row in stored if row["visitor_id"] == "human")
+    assert int(human["ip_is_datacenter"]) == 0
+    assert str(human["user_agent"]).startswith("Mozilla")
+    assert len(str(human["user_agent"])) <= 300
     from zoneinfo import ZoneInfo
 
     hkt_day = when.astimezone(ZoneInfo("Asia/Hong_Kong")).date()
@@ -212,9 +222,8 @@ def test_recount_splits_old_and_new(monkeypatch, tmp_path: Path):
             "visitor_id": "human",
             "username": None,
             "user_id": None,
-            "email": None,
             "ip_hash": "h",
-            "client_ip": HOME_IP,
+            "ip_is_datacenter": 0,
             "user_agent": CHROME,
             "has_exclude_cookie": 0,
             "has_internal_header": 0,
@@ -224,9 +233,8 @@ def test_recount_splits_old_and_new(monkeypatch, tmp_path: Path):
             "visitor_id": "bot",
             "username": None,
             "user_id": None,
-            "email": None,
             "ip_hash": "b",
-            "client_ip": HOME_IP,
+            "ip_is_datacenter": 0,
             "user_agent": "curl/8.5.0",
             "has_exclude_cookie": 0,
             "has_internal_header": 0,
@@ -280,9 +288,98 @@ def test_old_schema_rows_cannot_invent_ua_hits():
 
 
 def signals_from_row_of(row):
-    from analytics.exclude import signals_from_row
-
     return signals_from_row(row)
+
+
+def test_stored_row_ignores_raw_email_and_ip(monkeypatch):
+    monkeypatch.setenv("ANALYTICS_EXCLUDE_EMAILS", "owner@example.com")
+    monkeypatch.delenv("ANALYTICS_EXCLUDE_USER_IDS", raising=False)
+    monkeypatch.delenv("ANALYTICS_EXCLUDE_USERNAMES", raising=False)
+    sample = next(net for net in datacenter_networks() if net.version == 4 and net.prefixlen < 32)
+    inside = str(next(sample.hosts()))
+    row = {
+        "visitor_id": "v",
+        "username": "fan",
+        "user_id": 7,
+        "email": "owner@example.com",
+        "client_ip": inside,
+        "ip_is_datacenter": 0,
+        "user_agent": CHROME,
+        "ip_hash": "h",
+        "has_exclude_cookie": 0,
+        "has_internal_header": 0,
+    }
+    assert exclusion_reasons(signals_from_row(row, {7: "other@example.com"})) == ()
+    assert exclusion_reasons(signals_from_row(row, {7: "owner@example.com"}))[0] == REASON_ACCOUNT
+    flagged = dict(row)
+    flagged["user_id"] = None
+    flagged["ip_is_datacenter"] = 1
+    assert exclusion_reasons(signals_from_row(flagged, {}))[0] == REASON_IP
+
+
+def test_insert_stores_datacenter_flag_not_raw_ip(monkeypatch, tmp_path: Path):
+    monkeypatch.setenv("ANALYTICS_DB_FILE", str(tmp_path / "analytics.db"))
+    monkeypatch.delenv("ANALYTICS_EXCLUDE_VISITOR_IDS", raising=False)
+    monkeypatch.delenv("ANALYTICS_EXCLUDE_USERNAMES", raising=False)
+    monkeypatch.delenv("ANALYTICS_EXCLUDE_USER_IDS", raising=False)
+    monkeypatch.delenv("ANALYTICS_EXCLUDE_EMAILS", raising=False)
+    monkeypatch.delenv("ANALYTICS_EXCLUDE_IP_HASHES", raising=False)
+    sample = next(net for net in datacenter_networks() if net.version == 4 and net.prefixlen < 32)
+    inside = str(next(sample.hosts()))
+    init_analytics_db()
+    long_ua = "Mozilla/5.0 " + ("A" * 400)
+    insert_pageview(
+        path="/",
+        visitor_id="cloud",
+        session_id="s-cloud",
+        user_agent=long_ua,
+        ip=inside,
+        email="secret@example.com",
+        user_id=3,
+        ts=datetime(2026, 9, 28, 3, 0, tzinfo=timezone.utc),
+    )
+    row = fetch_pageviews("1970-01-01T00:00:00Z", "2999-01-01T00:00:00Z")[0]
+    assert int(row["ip_is_datacenter"]) == 1
+    assert int(row["is_excluded"]) == 1
+    assert len(str(row["user_agent"])) == 300
+    assert "email" not in row.keys()
+    assert "client_ip" not in row.keys()
+    db_path = tmp_path / "analytics.db"
+    checkpoint = sqlite3.connect(str(db_path))
+    checkpoint.execute("PRAGMA wal_checkpoint(FULL)")
+    checkpoint.close()
+    blob = db_path.read_bytes()
+    for extra in (db_path.with_name(db_path.name + "-wal"), db_path.with_name(db_path.name + "-shm")):
+        if extra.is_file():
+            blob += extra.read_bytes()
+    assert b"secret@example.com" not in blob
+    assert inside.encode() not in blob
+
+
+def test_fetch_skips_legacy_email_and_ip_columns(monkeypatch, tmp_path: Path):
+    monkeypatch.setenv("ANALYTICS_DB_FILE", str(tmp_path / "analytics.db"))
+    init_analytics_db()
+    insert_pageview(
+        path="/",
+        visitor_id="legacy",
+        session_id="s-legacy",
+        user_agent=CHROME,
+        ip=HOME_IP,
+        ts=datetime(2026, 9, 28, 4, 0, tzinfo=timezone.utc),
+    )
+    conn = sqlite3.connect(str(tmp_path / "analytics.db"))
+    conn.execute("ALTER TABLE pageviews ADD COLUMN email TEXT")
+    conn.execute("ALTER TABLE pageviews ADD COLUMN client_ip TEXT")
+    conn.execute(
+        "UPDATE pageviews SET email = ?, client_ip = ?",
+        ("secret@example.com", "203.0.113.50"),
+    )
+    conn.commit()
+    conn.close()
+    row = fetch_pageviews("1970-01-01T00:00:00Z", "2999-01-01T00:00:00Z")[0]
+    assert "email" not in row.keys()
+    assert "client_ip" not in row.keys()
+    assert exclusion_reasons(signals_from_row(row, {})) == ()
 
 
 def test_window_dates_includes_today():

@@ -16,9 +16,11 @@ from pathlib import Path
 from typing import Any, Iterable, Mapping
 from zoneinfo import ZoneInfo
 
+from analytics.db import pageview_select_list
 from analytics.exclude import (
     REASON_LABELS,
     exclusion_reasons,
+    ip_is_datacenter,
     legacy_excluded,
     signals_from_row,
 )
@@ -45,7 +47,7 @@ class DayCount:
 class RecountResult:
     days: list[DayCount]
     rows_missing_user_agent: int = 0
-    rows_missing_client_ip: int = 0
+    rows_missing_datacenter_flag: int = 0
     skipped_lines: int = 0
     source_note: str = ""
 
@@ -78,7 +80,7 @@ def recount_rows(
     wanted = {item.isoformat() for item in days}
     grouped: dict[str, list[Any]] = defaultdict(list)
     missing_ua = 0
-    missing_ip = 0
+    missing_flag = 0
     for row in rows:
         day = _day_from_utc_iso(str(row["ts"] if _has(row, "ts") else ""))
         if day is None or day not in wanted:
@@ -86,8 +88,8 @@ def recount_rows(
         grouped[day].append(row)
         if not str(_get(row, "user_agent") or "").strip():
             missing_ua += 1
-        if not str(_get(row, "client_ip") or "").strip():
-            missing_ip += 1
+        if not _has(row, "ip_is_datacenter"):
+            missing_flag += 1
     out: list[DayCount] = []
     for item in days:
         key = item.isoformat()
@@ -95,7 +97,7 @@ def recount_rows(
     return RecountResult(
         days=out,
         rows_missing_user_agent=missing_ua,
-        rows_missing_client_ip=missing_ip,
+        rows_missing_datacenter_flag=missing_flag,
     )
 
 
@@ -111,7 +113,7 @@ def _count_day(
     reasons: Counter[str] = Counter()
     for row in rows:
         signals = signals_from_row(row, email_by_user_id)
-        visitor = str(signals.visitor_id or "").strip() or str(signals.ip or "").strip() or "?"
+        visitor = str(signals.visitor_id or "").strip() or "?"
         if not legacy_excluded(signals):
             old_visitors.add(visitor)
         matched = exclusion_reasons(signals)
@@ -161,7 +163,8 @@ def read_pageviews(db_path: Path) -> tuple[list[sqlite3.Row], set[str]]:
         cols = {str(row[1]) for row in conn.execute("PRAGMA table_info(pageviews)")}
         if not cols:
             raise sqlite3.Error("pageviews table is missing")
-        rows = conn.execute("SELECT * FROM pageviews").fetchall()
+        selected = pageview_select_list(cols)
+        rows = conn.execute(f"SELECT {selected} FROM pageviews").fetchall()
         return list(rows), cols
     finally:
         conn.close()
@@ -192,10 +195,11 @@ def _parse_log_line(line: str) -> dict[str, Any] | None:
     when = _parse_combined_time(match.group("time"))
     if when is None:
         return None
+    ip = match.group("ip")
     return {
         "ts": when.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "visitor_id": match.group("ip"),
-        "client_ip": match.group("ip"),
+        "visitor_id": ip,
+        "ip_is_datacenter": 1 if ip_is_datacenter(ip) else 0,
         "user_agent": match.group("ua"),
         "path": match.group("path"),
     }
@@ -264,7 +268,7 @@ def _parse_caddy_json(line: str) -> dict[str, Any] | None:
     return {
         "ts": ts,
         "visitor_id": ip,
-        "client_ip": ip,
+        "ip_is_datacenter": 1 if ip_is_datacenter(ip) else 0,
         "user_agent": ua,
         "has_internal_header": 1 if internal.strip() == "1" else 0,
         "path": str(request.get("uri") or "/"),
@@ -331,13 +335,18 @@ def format_report(result: RecountResult, *, source: str) -> str:
         notes.append(
             f"有 {result.rows_missing_user_agent} 行没有 user_agent，这些行不能按 User-Agent 重算。"
         )
-    if result.rows_missing_client_ip:
+    if result.rows_missing_datacenter_flag:
         notes.append(
-            f"有 {result.rows_missing_client_ip} 行没有 client_ip，这些行不能按数据中心 IP 重算。"
+            f"有 {result.rows_missing_datacenter_flag} 行没有 ip_is_datacenter。"
+            "数据中心判断只在写入时做，这些行不能按 IP 段重算。"
         )
     if result.skipped_lines:
         notes.append(f"跳过无法解析的日志 {result.skipped_lines} 行。")
     if notes:
         lines.append("注: " + " ".join(notes))
-    lines.append("旧口径只按 visitor_id / username / ip_hash 名单排除。新口径再加上 cookie、账号、User-Agent、数据中心 IP 和内部请求头。")
+    lines.append(
+        "旧口径只按 visitor_id / username / ip_hash 名单排除。"
+        "新口径再加上 cookie、账号、User-Agent、写入时的数据中心标志和内部请求头。"
+        "统计库不保存原始 IP 和邮箱。改 CIDR 名单只影响新写入的浏览。"
+    )
     return "\n".join(lines) + "\n"

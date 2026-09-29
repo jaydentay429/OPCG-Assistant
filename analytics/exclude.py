@@ -87,7 +87,10 @@ class TrafficSignals:
     email: str | None = None
     user_id: int | str | None = None
     ip_hash: str | None = None
+    # In-memory only, at insert time. Stored rows do not carry a raw IP.
     ip: str | None = None
+    # Frozen at insert. Recount uses this and does not match CIDRs again.
+    ip_is_datacenter: bool = False
     user_agent: str | None = None
     exclude_cookie: bool = False
     internal_header: bool = False
@@ -123,38 +126,40 @@ def _row_get(row: Any, name: str, default: Any = None) -> Any:
     return default if value is None else value
 
 
+def _flag(value: Any) -> bool:
+    try:
+        return int(value or 0) == 1
+    except (TypeError, ValueError):
+        return str(value).strip() == "1"
+
+
 def signals_from_row(
     row: Any,
     email_by_user_id: Mapping[int, str] | None = None,
 ) -> TrafficSignals:
-    """Build signals from a pageviews row. Missing columns count as absent."""
-    email = str(_row_get(row, "email") or "").strip() or None
+    """Build signals from a pageviews row.
+
+    Email comes only from the auth.db lookup keyed by user_id. A leftover
+    email or client_ip column on an older database is ignored.
+    """
     user_id = _row_get(row, "user_id")
-    if not email and email_by_user_id and user_id is not None and str(user_id).strip() != "":
+    email = None
+    if email_by_user_id and user_id is not None and str(user_id).strip() != "":
         try:
             email = str(email_by_user_id.get(int(user_id)) or "").strip() or None
         except (TypeError, ValueError):
             email = None
-    cookie_raw = _row_get(row, "has_exclude_cookie", 0)
-    header_raw = _row_get(row, "has_internal_header", 0)
-    try:
-        cookie = int(cookie_raw or 0) == 1
-    except (TypeError, ValueError):
-        cookie = str(cookie_raw).strip() == "1"
-    try:
-        header = int(header_raw or 0) == 1
-    except (TypeError, ValueError):
-        header = str(header_raw).strip() == "1"
     return TrafficSignals(
         visitor_id=str(_row_get(row, "visitor_id") or ""),
         username=(str(_row_get(row, "username")).strip() if _row_get(row, "username") else None),
         email=email,
         user_id=user_id,
         ip_hash=(str(_row_get(row, "ip_hash")).strip() if _row_get(row, "ip_hash") else None),
-        ip=(str(_row_get(row, "client_ip")).strip() if _row_get(row, "client_ip") else None),
+        ip=None,
+        ip_is_datacenter=_flag(_row_get(row, "ip_is_datacenter", 0)),
         user_agent=(str(_row_get(row, "user_agent")).strip() if _row_get(row, "user_agent") else None),
-        exclude_cookie=cookie,
-        internal_header=header,
+        exclude_cookie=_flag(_row_get(row, "has_exclude_cookie", 0)),
+        internal_header=_flag(_row_get(row, "has_internal_header", 0)),
     )
 
 
@@ -278,7 +283,9 @@ def exclusion_reasons(signals: TrafficSignals) -> tuple[str, ...]:
         found.append(REASON_ACCOUNT)
     if ua_is_machine(signals.user_agent):
         found.append(REASON_UA)
-    if ip_is_datacenter(signals.ip):
+    # Prefer the flag stored at insert. A raw IP is only present in memory
+    # while the hit is being recorded, never read back from pageviews.
+    if signals.ip_is_datacenter or ip_is_datacenter(signals.ip):
         found.append(REASON_IP)
     visitor_id = str(signals.visitor_id or "").strip()
     if visitor_id and visitor_id in _csv_set("ANALYTICS_EXCLUDE_VISITOR_IDS"):
@@ -307,6 +314,7 @@ def is_excluded_event(
     email: str | None = None,
     user_id: int | str | None = None,
     ip: str | None = None,
+    ip_is_datacenter: bool = False,
     user_agent: str | None = None,
     exclude_cookie: bool = False,
     internal_header: bool = False,
@@ -321,6 +329,7 @@ def is_excluded_event(
                 user_id=user_id,
                 ip_hash=ip_hash,
                 ip=ip,
+                ip_is_datacenter=ip_is_datacenter,
                 user_agent=user_agent,
                 exclude_cookie=exclude_cookie,
                 internal_header=internal_header,

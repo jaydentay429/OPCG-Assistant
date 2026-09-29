@@ -51,4 +51,6 @@ extraHTTPHeaders: { "X-OPCG-Internal": "1" }
 
 HeadlessChrome、Playwright、puppeteer、python-requests、curl、wget、Go-http-client、node-fetch、axios、undici，以及 bot / crawler / spider / preview（含 Googlebot）也会被排除。数据中心 IP 用 `analytics/datacenter_cidrs.txt` 里的默认段，可用 `ANALYTICS_DATACENTER_CIDRS` 追加。
 
+统计库不保存原始 IP，也不保存邮箱。写入时用当时的 CIDR 名单判断，只存 `ip_is_datacenter`（0 或 1）。之后改 CIDR 名单或 `ANALYTICS_DATACENTER_CIDRS` 只影响新写入的浏览，不会回头重算已有行。邮箱在写入时用当前登录用户的地址做判断，库里只留下是否排除；重算时只用 `user_id` 去 `auth.db` 只读反查。User-Agent 截断到 300 字后保存，供 bot 规则重算。`--log` 只在当次进程里用日志中的 IP 算出同一个标志，不写回统计库。
+
 自己的电脑和手机不靠 IP。在服务器环境变量设置 `ANALYTICS_EXCLUDE_ME_TOKEN`（只放占位符进仓库）。浏览器打开 `/internal/exclude-me?token=<该值>` 一次，这台设备会写下长期 cookie；`revoke=1` 撤销。token 错误是 404。登录账号用 `ANALYTICS_EXCLUDE_USER_IDS` 和 `ANALYTICS_EXCLUDE_EMAILS`，不要把真实邮箱写进仓库。

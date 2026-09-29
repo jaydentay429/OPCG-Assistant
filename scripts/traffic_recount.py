@@ -5,11 +5,13 @@ Read-only. Prints one row per Hong Kong calendar day. Does not send mail and
 does not write the database.
 
 The daily digest is sqlite pageviews (meta/analytics.db on the VPS), not the
-Caddy access log. Pass --log only when you want a separate access-log pass:
-visitors are client IPs, and cookie/account signals are absent unless the
-line carries them.
+Caddy access log. Pageviews do not store raw IP or email. Datacenter matches
+are the ip_is_datacenter flag written with the row; changing the CIDR list
+does not reclassify old rows. Email lists are applied by looking up user_id
+in auth.db. Pass --log for a separate access-log pass: the IP is used only
+in that process to set the same flag, and is not written back.
 
-VPS (after the new columns exist; older rows simply lack UA/IP signals):
+VPS:
 
   cd /opt/opcg/app && .venv/bin/python scripts/traffic_recount.py \\
     --db /opt/opcg/app/meta/analytics.db \\
@@ -112,10 +114,14 @@ def main(argv: list[str] | None = None) -> int:
     notes = []
     if "user_agent" not in columns:
         notes.append("统计库还没有 user_agent 列，User-Agent 规则对已有行无效。")
-    if "client_ip" not in columns:
-        notes.append("统计库还没有 client_ip 列，数据中心 IP 规则对已有行无效。")
+    if "ip_is_datacenter" not in columns:
+        notes.append(
+            "统计库还没有 ip_is_datacenter 列。数据中心判断只在写入时做，这些旧行不能按 IP 段重算。"
+        )
     if not emails:
-        notes.append("没有读到账号邮箱。ANALYTICS_EXCLUDE_EMAILS 只作用于已经写入 email 列的行。")
+        notes.append(
+            "没有读到 auth.db。ANALYTICS_EXCLUDE_EMAILS 按 user_id 反查邮箱，统计库不保存邮箱。"
+        )
     if notes:
         result.source_note = " ".join(notes)
     sys.stdout.write(format_report(result, source=f"sqlite {db_path}"))
