@@ -6848,6 +6848,7 @@ def analytics_event(body: AnalyticsEventIn, request: Request) -> dict[str, Any]:
 
     user_id: int | None = None
     username: str | None = None
+    email: str | None = None
     row = _read_auth_user_from_request(request)
     if row is not None:
         try:
@@ -6855,7 +6856,12 @@ def analytics_event(body: AnalyticsEventIn, request: Request) -> dict[str, Any]:
         except (TypeError, ValueError, KeyError):
             user_id = None
         username = str(row["username"] or "") or None
+        email = str(row["email"] or "").strip() or None
 
+    from analytics.exclude import EXCLUDE_COOKIE_NAME, EXCLUDE_COOKIE_VALUE, INTERNAL_HEADER_VALUE
+
+    cookie = str(request.cookies.get(EXCLUDE_COOKIE_NAME) or "")
+    internal = str(request.headers.get("x-opcg-internal") or "").strip()
     try:
         result = insert_pageview(
             path=str(body.path or "/"),
@@ -6864,10 +6870,13 @@ def analytics_event(body: AnalyticsEventIn, request: Request) -> dict[str, Any]:
             referrer=body.referrer,
             user_id=user_id,
             username=username,
+            email=email,
             ip=_client_ip(request),
             user_agent=str(request.headers.get("user-agent") or ""),
             language=body.language,
             screen=body.screen,
+            exclude_cookie=cookie == EXCLUDE_COOKIE_VALUE,
+            internal_header=internal == INTERNAL_HEADER_VALUE,
         )
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
