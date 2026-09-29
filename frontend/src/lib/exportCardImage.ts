@@ -1,4 +1,5 @@
 import { cardImagePacksUrl, cardImageProxyUrl, cardImageUrl } from "./api";
+import { cardImageHash } from "./cardImageManifest";
 
 type Lang = "zh-Hant" | "zh-Hans" | "en";
 
@@ -7,11 +8,24 @@ export type ExportCardImagePlan = {
   cdn: string;
   /**
    * Current API art URLs (packs, then the image proxy).
+   * The packs URL includes `?h=` when the manifest has a content hash.
    * Empty when `cdn` is empty: canvas export draws the gray placeholder
    * and does not request packs or the proxy.
    */
   api: string[];
 };
+
+/**
+ * `/packs/<id>.png` for canvas export only.
+ * Appends the same manifest content hash as the CDN URL so a replaced file
+ * is not stuck on the 7-day packs response. No hash: the original URL, with no query.
+ */
+export function exportPacksFallbackUrl(cardId: string): string {
+  const url = cardImagePacksUrl(cardId);
+  const hash = cardImageHash(cardId);
+  if (!hash) return url;
+  return `${url}?h=${hash}`;
+}
 
 /**
  * Canvas export tries the same CDN URL as the page, then the API.
@@ -23,7 +37,7 @@ export function exportCardImagePlan(cardId: string): ExportCardImagePlan {
   if (!cdn) return { cdn: "", api: [] };
   return {
     cdn,
-    api: [cardImagePacksUrl(cardId), cardImageProxyUrl(cardId)],
+    api: [exportPacksFallbackUrl(cardId), cardImageProxyUrl(cardId)],
   };
 }
 

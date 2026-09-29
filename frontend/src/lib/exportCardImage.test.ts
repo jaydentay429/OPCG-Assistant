@@ -1,9 +1,11 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { cardImagePacksUrl, cardImageProxyUrl, cardImageUrl } from "./api";
+import { cardImageHash } from "./cardImageManifest";
 import {
   cardImagePlaceholderLabel,
   exportCardImagePlan,
+  exportPacksFallbackUrl,
 } from "./exportCardImage";
 
 describe("exportCardImagePlan", () => {
@@ -14,10 +16,26 @@ describe("exportCardImagePlan", () => {
       assert.ok(cdn.startsWith("https://img.optcgassistant.com/"));
       assert.match(cdn, new RegExp(`/${id}\\.png\\?h=[0-9a-f]{8}$`));
       assert.equal(plan.cdn, cdn);
-      assert.deepEqual(plan.api, [cardImagePacksUrl(id), cardImageProxyUrl(id)]);
+      const hash = cardImageHash(id);
+      assert.match(hash, /^[0-9a-f]{8}$/);
+      assert.equal(cdn.endsWith(`?h=${hash}`), true);
+      assert.deepEqual(plan.api, [`${cardImagePacksUrl(id)}?h=${hash}`, cardImageProxyUrl(id)]);
+      assert.equal(plan.api[0], exportPacksFallbackUrl(id));
       assert.equal(plan.api[0].includes("/packs/"), true);
+      assert.match(plan.api[0], new RegExp(`/packs/${id}\\.png\\?h=${hash}$`));
       assert.equal(plan.api[1].includes("/images/card/"), true);
+      assert.equal(plan.api[1].includes("?"), false);
       assert.equal(plan.cdn.includes("/packs/"), false);
+    }
+  });
+
+  it("leaves the packs fallback unchanged when the manifest has no hash", () => {
+    for (const id of ["OP18-112", "OP16-098-P2"]) {
+      assert.equal(cardImageHash(id), "");
+      const url = exportPacksFallbackUrl(id);
+      assert.equal(url, cardImagePacksUrl(id));
+      assert.equal(url.includes("?"), false);
+      assert.equal(url.includes("h="), false);
     }
   });
 
