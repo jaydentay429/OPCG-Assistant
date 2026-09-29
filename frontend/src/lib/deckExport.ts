@@ -1,10 +1,17 @@
 import QRCode from "qrcode";
-import { cardImagePacksUrl, cardImageProxyUrl, fetchDeckStatsBatch, hasCardImage, type DeckStatFields } from "@/lib/api";
+import { fetchDeckStatsBatch, type DeckStatFields } from "@/lib/api";
 import { cardIdSortKey, displayCardId, normalizeCardId } from "@/lib/cardId";
 import { localizeCardName } from "@/lib/cardLocale";
 import { ensureHansConverter } from "@/lib/openccLazy";
 import type { Lang } from "@/lib/i18n";
 import { buildDeckShareUrlCompact } from "@/lib/deckShare";
+import {
+  EXPORT_PLACEHOLDER_BG,
+  EXPORT_PLACEHOLDER_FG,
+  cardImagePlaceholderLabel,
+  exportCardImagePlan,
+  loadCdnCardImage,
+} from "@/lib/exportCardImage";
 import {
   costBucketKey,
   counterBucketKey,
@@ -100,12 +107,39 @@ async function fetchDrawable(url: string): Promise<CanvasImageSource | null> {
 }
 
 async function loadCardDrawable(cardId: string): Promise<CanvasImageSource | null> {
-  // No manifest entry: do not request packs or the proxy. The canvas draws a gray box.
-  if (!hasCardImage(cardId)) return null;
-  // Prefer API packs/proxy (CORS). The public CDN URL has no ACAO for fetch().
-  const primary = await fetchDrawable(cardImagePacksUrl(cardId));
-  if (primary) return primary;
-  return fetchDrawable(cardImageProxyUrl(cardId));
+  const plan = exportCardImagePlan(cardId);
+  // No manifest entry: gray placeholder, no packs or proxy request.
+  if (!plan.cdn) return null;
+  const cdn = await loadCdnCardImage(plan.cdn);
+  if (cdn) return cdn;
+  for (const url of plan.api) {
+    const drawn = await fetchDrawable(url);
+    if (drawn) return drawn;
+  }
+  return null;
+}
+
+function drawMissingArt(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  radius: number,
+  label: string,
+  labelYRatio = 0.38,
+) {
+  ctx.save();
+  roundRect(ctx, x, y, w, h, radius);
+  ctx.fillStyle = EXPORT_PLACEHOLDER_BG;
+  ctx.fill();
+  ctx.fillStyle = EXPORT_PLACEHOLDER_FG;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  const size = Math.max(18, Math.min(48, Math.round(w * 0.14)));
+  ctx.font = `600 ${size}px system-ui, sans-serif`;
+  ctx.fillText(label, x + w / 2, y + h * labelYRatio);
+  ctx.restore();
 }
 
 const COLOR_DOT: Record<string, string> = {
@@ -472,6 +506,7 @@ async function renderDeckCanvas(input: ExportInput): Promise<{ blob: Blob; title
   ctx.fillStyle = "#0b1220";
   ctx.fillRect(0, 0, W, H);
 
+  const missingArtLabel = cardImagePlaceholderLabel(input.lang);
   const leaderImg = leaderId ? images.get(leaderId) : null;
   const heroBg = ctx.createLinearGradient(0, 0, W, heroH);
   heroBg.addColorStop(0, "#152033");
@@ -494,13 +529,7 @@ async function renderDeckCanvas(input: ExportInput): Promise<{ blob: Blob; title
       drawCover(ctx, leaderImg, portraitX, portraitY, portraitW, portraitH);
       ctx.restore();
     } else {
-      ctx.fillStyle = "#64748b";
-      ctx.fill();
-      ctx.fillStyle = "#f8fafc";
-      ctx.font = "800 36px system-ui, sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText(displayCardId(leaderId), portraitX + portraitW / 2, portraitY + portraitH / 2);
-      ctx.textAlign = "left";
+      drawMissingArt(ctx, portraitX, portraitY, portraitW, portraitH, 22, missingArtLabel, 0.5);
     }
     ctx.strokeStyle = "rgba(251, 191, 36, 0.85)";
     ctx.lineWidth = 4;
@@ -622,14 +651,7 @@ async function renderDeckCanvas(input: ExportInput): Promise<{ blob: Blob; title
       drawFromTop(ctx, img, x, y, cardW, cardH);
       ctx.restore();
     } else {
-      ctx.fillStyle = "#64748b";
-      roundRect(ctx, x, y, cardW, cardH, 18);
-      ctx.fill();
-      ctx.fillStyle = "#f8fafc";
-      ctx.font = "800 32px system-ui, sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText(fitText(ctx, displayCardId(card.id), cardW - 24), x + cardW / 2, y + cardH / 2);
-      ctx.textAlign = "left";
+      drawMissingArt(ctx, x, y, cardW, cardH, 18, missingArtLabel);
     }
     const accent = TYPE_ACCENT[card.type] || "#94a3b8";
     ctx.fillStyle = accent;

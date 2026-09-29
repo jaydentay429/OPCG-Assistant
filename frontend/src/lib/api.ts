@@ -214,12 +214,12 @@ export function cardImageUrl(cardId: string): string {
   return `${base}/${encodeURIComponent(id)}.png?h=${hash}`;
 }
 
-/** API packs file. Canvas export fetches this because the CDN does not send CORS. */
+/** API packs file. Canvas export falls back here when the CDN image cannot be drawn. */
 export function cardImagePacksUrl(cardId: string): string {
   return `${API_BASE}/packs/${encodeURIComponent(cardId)}.png`;
 }
 
-/** API image proxy. Canvas export fallback; not a public card-art URL. */
+/** API image proxy. Second canvas-export fallback; not a public card-art URL. */
 export function cardImageProxyUrl(cardId: string): string {
   return `${API_BASE}/images/card/${encodeURIComponent(cardId)}`;
 }
