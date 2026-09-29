@@ -24,7 +24,7 @@ if ! flock -n 9; then
   exit 0
 fi
 
-cd "$APP_ROOT"
+cd "$APP_ROOT" || exit
 export PYTHONUNBUFFERED=1
 
 read_env_value() {

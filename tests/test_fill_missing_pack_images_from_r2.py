@@ -40,16 +40,19 @@ def test_fill_command_ignores_existing_and_filters_images(tmp_path: Path):
     assert "--checksum" not in cmd
     assert not any(arg == "sync" or arg.startswith("--delete") for arg in cmd)
     assert "-v" in cmd
-    exclude_at = [i for i, arg in enumerate(cmd) if arg == "--exclude"]
-    include_at = [i for i, arg in enumerate(cmd) if arg == "--include"]
-    assert exclude_at and include_at
-    assert max(exclude_at) < min(include_at)
-    excluded = {cmd[i + 1] for i in exclude_at}
-    assert "* 2.*" in excluded
-    assert "*-HEROINES-*" in excluded
-    assert any(pattern.startswith("*-") and "[0-9]" in pattern for pattern in excluded)
-    assert any(pattern.startswith("*.") and "[0-9]" in pattern for pattern in excluded)
-    assert [cmd[i + 1] for i in include_at] == ["*.png", "*.jpg", "*.jpeg", "*.webp", "*.gif"]
+    assert "--include" not in cmd
+    assert "--exclude" not in cmd
+    rules = [cmd[i + 1] for i, arg in enumerate(cmd) if arg == "--filter"]
+    assert rules[0].startswith("- ")
+    assert "- * 2.*" in rules
+    assert "- *-HEROINES-*" in rules
+    assert any(rule.startswith("- *-") and "[0-9]" in rule for rule in rules)
+    assert any(rule.startswith("- *.") and "[0-9]" in rule for rule in rules)
+    includes = [rule[2:] for rule in rules if rule.startswith("+ ")]
+    assert includes == ["*.png", "*.jpg", "*.jpeg", "*.webp", "*.gif"]
+    assert rules[-1] == "- *"
+    assert rules.index("- * 2.*") < rules.index("+ *.png")
+    assert rules.index("+ *.gif") < rules.index("- *")
 
 
 def test_copied_new_names_reads_verbose_lines_and_skips_ignored():

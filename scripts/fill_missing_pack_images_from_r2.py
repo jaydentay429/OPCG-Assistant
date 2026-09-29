@@ -64,6 +64,9 @@ def build_rclone_fill_command(remote: str, packs_dir: Path) -> list[str]:
     The subcommand is ``copy``. There is no ``sync`` and no delete flag.
     ``--ignore-existing`` skips any file that is already in packs, whatever
     its size or mtime.
+
+    Rules are ``--filter`` in order. rclone 1.60 parses a mix of ``--include``
+    and ``--exclude`` in an indeterminate order, so excludes would not stick.
     """
     cmd = [
         "rclone",
@@ -75,9 +78,10 @@ def build_rclone_fill_command(remote: str, packs_dir: Path) -> list[str]:
         "1",
     ]
     for pattern in EXCLUDE_GLOBS:
-        cmd.extend(["--exclude", pattern])
+        cmd.extend(["--filter", f"- {pattern}"])
     for pattern in IMAGE_GLOBS:
-        cmd.extend(["--include", pattern])
+        cmd.extend(["--filter", f"+ {pattern}"])
+    cmd.extend(["--filter", "- *"])
     cmd.extend(
         [
             "-v",
