@@ -1,8 +1,12 @@
-import * as OpenCC from "opencc-js";
 import { displayCardId } from "@/lib/cardId";
+import {
+  convertToHansSync,
+  convertToHantSync,
+  ensureHansConverter,
+  ensureHantConverter,
+} from "@/lib/openccLazy";
 
-const toHans = OpenCC.Converter({ from: "tw", to: "cn" });
-const toHant = OpenCC.Converter({ from: "cn", to: "tw" });
+const CJK_RE = /[\u4e00-\u9fff]/;
 
 /** Mirror backend normalize_name_for_match. */
 function normalizeForMatch(text: string): string {
@@ -13,11 +17,11 @@ function normalizeForMatch(text: string): string {
     .replace(/[^0-9a-z\u4e00-\u9fffぁ-んァ-ヶー]/gi, "");
 }
 
-function safeConvert(text: string, convert: (s: string) => string): string {
+function scriptVariant(text: string, convert: (value: string) => string | null): string | null {
   try {
     return convert(text);
   } catch {
-    return text;
+    return null;
   }
 }
 
@@ -48,16 +52,24 @@ const SYNONYM_PAIRS: [string, string][] = [
 function expandNameSearchTexts(...parts: Array<string | null | undefined>): string[] {
   const out: string[] = [];
   const seen = new Set<string>();
+  let needsDict = false;
   for (const part of parts) {
     const raw = String(part || "").trim();
     if (!raw) continue;
-    for (const v of [raw, safeConvert(raw, toHans), safeConvert(raw, toHant)]) {
-      const key = v.trim();
+    if (CJK_RE.test(raw)) needsDict = true;
+    const variants = [raw, scriptVariant(raw, convertToHansSync), scriptVariant(raw, convertToHantSync)];
+    for (const variant of variants) {
+      const key = String(variant || "").trim();
       if (key && !seen.has(key)) {
         seen.add(key);
         out.push(key);
       }
     }
+  }
+  // Character-only queries (card ids) match without a dictionary.
+  if (needsDict) {
+    void ensureHansConverter();
+    void ensureHantConverter();
   }
   return out;
 }

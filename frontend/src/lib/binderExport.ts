@@ -1,5 +1,10 @@
-import { cardImagePacksUrl, cardImageProxyUrl, hasCardImage } from "@/lib/api";
-import { displayCardId } from "@/lib/cardId";
+import {
+  EXPORT_PLACEHOLDER_BG,
+  EXPORT_PLACEHOLDER_FG,
+  cardImagePlaceholderLabel,
+  exportCardImagePlan,
+  loadCdnCardImage,
+} from "@/lib/exportCardImage";
 
 async function fetchImageBitmap(url: string, cache: RequestCache = "force-cache"): Promise<ImageBitmap | null> {
   try {
@@ -13,12 +18,14 @@ async function fetchImageBitmap(url: string, cache: RequestCache = "force-cache"
   }
 }
 
-async function loadCardBitmap(cardId: string): Promise<ImageBitmap | null> {
-  if (!hasCardImage(cardId)) return null;
-  const proxy = cardImageProxyUrl(cardId);
-  const candidates = [cardImagePacksUrl(cardId), proxy, `${proxy}?retry=1`];
+async function loadCardBitmap(cardId: string): Promise<CanvasImageSource | null> {
+  const plan = exportCardImagePlan(cardId);
+  if (!plan.cdn) return null;
+  const cdn = await loadCdnCardImage(plan.cdn);
+  if (cdn) return cdn;
+  const retry = plan.api[1] ? `${plan.api[1]}?retry=1` : "";
   const seen = new Set<string>();
-  for (const url of candidates) {
+  for (const url of [...plan.api, retry]) {
     if (!url || seen.has(url)) continue;
     seen.add(url);
     const cached = await fetchImageBitmap(url, "force-cache");
@@ -48,6 +55,8 @@ export type BinderPageExportInput = {
   ownerName?: string;
   slots: (string | null)[];
   siteLabel?: string;
+  /** Gray-placeholder caption. Defaults to the Traditional Chinese card label. */
+  noImageLabel?: string;
 };
 
 /** Match UI binder-sheet: 684×921 bg with 3×3 pockets; cards ~83% of cell. */
@@ -139,14 +148,17 @@ export async function exportBinderPageImage(input: BinderPageExportInput): Promi
         ctx.drawImage(bmp, x, y, cardW, cardH);
         ctx.restore();
       } else if (cid) {
-        ctx.fillStyle = "#64748b";
+        const label = input.noImageLabel || cardImagePlaceholderLabel("zh-Hant");
+        ctx.save();
         roundRectPath(ctx, x, y, cardW, cardH, 6);
+        ctx.fillStyle = EXPORT_PLACEHOLDER_BG;
         ctx.fill();
-        ctx.fillStyle = "#f8fafc";
+        ctx.fillStyle = EXPORT_PLACEHOLDER_FG;
         ctx.font = "600 13px system-ui, sans-serif";
         ctx.textAlign = "center";
-        ctx.fillText(displayCardId(cid), x + cardW / 2, y + cardH / 2);
-        ctx.textAlign = "start";
+        ctx.textBaseline = "middle";
+        ctx.fillText(label, x + cardW / 2, y + cardH / 2);
+        ctx.restore();
       }
     }
 
