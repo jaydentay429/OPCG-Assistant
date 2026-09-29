@@ -205451,5 +205451,52 @@
     "card_sets": [
       "補充包 OP-18【OP-18】"
     ]
+  },
+  "OP18-025": {
+    "card_id": "OP18-025",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "name": "貢貝",
+    "name_en": "Gonbe",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "綠"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "cost": 1,
+    "power": 0,
+    "life": null,
+    "counter": 1000,
+    "rarity": "C",
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "traits": [
+      "動物",
+      "W7"
+    ],
+    "traits_en": [
+      "Animal",
+      "Water Seven"
+    ],
+    "effect": "【我方回合結束時】若這張角色卡在休息狀態時，將自己的領航卡置為活動狀態。",
+    "effect_en": "[End of Your Turn] If this Character is rested, set your Leader as active.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "補充包 OP-18【OP-18】"
+    ]
   }
 }

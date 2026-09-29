@@ -14,6 +14,24 @@ export type SiteUpdate = {
 /** Newest first. Keep this list short — homepage shows the latest few. */
 export const SITE_UPDATES: SiteUpdate[] = [
   {
+    id: "op18-025-2026-09-29",
+    date: "2026-09-29",
+    kind: "feature",
+    href: "/cards/OP18-025",
+    title: {
+      "zh-Hant": "OP18-025 貢貝 已上線",
+      "zh-Hans": "OP18-025 贡贝 已上线",
+      en: "OP18-025 Gonbe added",
+    },
+    body: {
+      "zh-Hant":
+        "截圖暫收：綠 C 費用 1、力量 0、反擊 +1000、屬性知，《動物／W7》。【我方回合結束時】若這張角色卡在休息狀態，將自己的領航卡置為活動狀態。卡圖為已上傳的 OP18-025.png。",
+      "zh-Hans":
+        "截图暂收：绿 C 费用 1、力量 0、反击 +1000、属性知，《动物／W7》。【我方回合结束时】若这张角色卡在休息状态，将自己的领航卡置为活动状态。卡图为已上传的 OP18-025.png。",
+      en: "Screenshot entry: green C, cost 1, power 0, Counter +1000, Wisdom, {Animal}/{Water Seven}. [End of Your Turn] If this Character is rested, set your Leader as active. Art is the uploaded OP18-025.png.",
+    },
+  },
+  {
     id: "op18-016-2026-09-28",
     date: "2026-09-28",
     kind: "feature",

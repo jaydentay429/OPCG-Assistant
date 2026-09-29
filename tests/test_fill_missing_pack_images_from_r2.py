@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import fnmatch
 import shutil
 import subprocess
 import sys
@@ -13,6 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from scripts.fill_missing_pack_images_from_r2 import (  # noqa: E402
+    EXCLUDE_GLOBS,
+    IMAGE_GLOBS,
     FillResult,
     build_rclone_fill_command,
     copied_new_names,
@@ -53,6 +56,24 @@ def test_fill_command_ignores_existing_and_filters_images(tmp_path: Path):
     assert rules[-1] == "- *"
     assert rules.index("- * 2.*") < rules.index("+ *.png")
     assert rules.index("+ *.gif") < rules.index("- *")
+
+
+def test_op18_025_png_is_kept_by_the_fill_filter(tmp_path: Path):
+    rules = [f"- {pattern}" for pattern in EXCLUDE_GLOBS]
+    rules.extend(f"+ {pattern}" for pattern in IMAGE_GLOBS)
+    rules.append("- *")
+
+    def kept(name: str) -> bool:
+        for rule in rules:
+            if fnmatch.fnmatchcase(name, rule[2:]):
+                return rule.startswith("+")
+        return False
+
+    assert kept("OP18-025.png") is True
+    cmd = build_rclone_fill_command("opcg-r2:opcg-packs", tmp_path / "packs")
+    assert "OP18-025" not in cmd
+    assert "--ignore-existing" in cmd
+    assert not any("OP18-025" in arg and arg.startswith("-") for arg in cmd)
 
 
 def test_copied_new_names_reads_verbose_lines_and_skips_ignored():
@@ -186,6 +207,7 @@ def test_real_rclone_fills_missing_images_and_does_not_overwrite(tmp_path: Path)
     packs.mkdir()
     (source / "EB05-016.png").write_bytes(b"r2-different")
     (source / "OP13-001.png").write_bytes(b"from-r2")
+    (source / "OP18-025.png").write_bytes(b"gonbe")
     (source / "OP18-002.jpg").write_bytes(b"jpeg")
     (source / "OP18-004.jpeg").write_bytes(b"jpeg-long")
     (source / "OP18-005.webp").write_bytes(b"webp")
@@ -205,6 +227,7 @@ def test_real_rclone_fills_missing_images_and_does_not_overwrite(tmp_path: Path)
     assert (packs / "EB05-016.png").read_bytes() == b"local-alt"
     assert (packs / "OP18-002.jpg").read_bytes() == b"local-jpeg"
     assert (packs / "OP13-001.png").read_bytes() == b"from-r2"
+    assert (packs / "OP18-025.png").read_bytes() == b"gonbe"
     assert (packs / "OP18-004.jpeg").read_bytes() == b"jpeg-long"
     assert (packs / "OP18-005.webp").read_bytes() == b"webp"
     assert (packs / "OP18-006.gif").read_bytes() == b"gif"
@@ -217,6 +240,7 @@ def test_real_rclone_fills_missing_images_and_does_not_overwrite(tmp_path: Path)
     assert not (packs / "OP18-003.png").exists()
     assert not (packs / "extra").exists()
     assert "OP13-001.png" in result.filled
+    assert "OP18-025.png" in result.filled
     assert "EB05-016.png" not in result.filled
     assert "EB01-001-P2 2.png" not in result.filled
-    assert result.copied == 4
+    assert result.copied == 5

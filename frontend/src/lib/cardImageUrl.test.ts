@@ -65,6 +65,9 @@ describe("cardImageUrl", () => {
     assert.equal(cardImageHash("OP18-016"), "cb8ad5a3");
     assert.equal(cardImageUrl("OP18-016"), `${PUBLIC_BASE}/OP18-016.png?h=cb8ad5a3`);
     assert.equal(cardOgImage("OP18-016")?.url, `${PUBLIC_BASE}/OP18-016.png?h=cb8ad5a3`);
+    assert.equal(cardImageHash("OP18-025"), "136e365c");
+    assert.equal(cardImageUrl("OP18-025"), `${PUBLIC_BASE}/OP18-025.png?h=136e365c`);
+    assert.equal(cardOgImage("OP18-025")?.url, `${PUBLIC_BASE}/OP18-025.png?h=136e365c`);
   });
 
   it("returns no URL and no og image when the manifest has no file", () => {
