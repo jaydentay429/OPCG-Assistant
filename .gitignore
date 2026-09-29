@@ -38,7 +38,9 @@ rclone*
 *.zip
 .DS_Store
 Documents.code-workspace
-.cursor/
+.cursor/*
+!.cursor/skills/
+!.cursor/skills/**
 opcg_pages/
 
 # --- runtime DBs & private user data ---
