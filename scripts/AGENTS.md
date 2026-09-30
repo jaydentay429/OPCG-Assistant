@@ -23,7 +23,7 @@
 
 `fix_batch_*.py` 和 `fix_semantic_*.py` 是按批次改效果覆盖的历史脚本。新的修复优先走 `README_EFFECTS.md` 里的循环，不要再复制出一批新的 `fix_batch_*`。
 
-卡图相关还有 `build_card_image_manifest.py`（构建期校验清单）、`copy_new_pack_images_to_r2.py`（packs→R2 只补缺）、`fill_missing_pack_images_from_r2.py`（R2→packs 只补缺）和 `generate_card_webp.py`（由 PNG 另存 WebP，不覆盖原图）。它们不负责界面文案。
+卡图相关还有 `build_card_image_manifest.py`（按 R2 对象体重建清单；`--merge-missing-from` 只补仓库里多出来的卡号，不改、不删已有条目）、`copy_new_pack_images_to_r2.py`（packs→R2 只补缺）、`fill_missing_pack_images_from_r2.py`（R2→packs 只补缺）和 `generate_card_webp.py`（由 PNG 另存 WebP，不覆盖原图）。它们不负责界面文案。
 
 `generate_card_webp.py` 读取 R2 桶 `opcg-packs` 或本地 `packs/` 里的 `<ID>.png`，上传三份 WebP：宽 200、宽 320，以及与原图同像素的全尺寸。对象名带 PNG 内容哈希前 8 位，和 manifest 的 `?h=` 是同一个值；原图一变，键就变，旧对象留着。默认跳过已存在的 WebP，`--force` 才覆盖这些 WebP。脚本没有删除，也不会上传或覆盖 `.png`。每个新对象的 Cache-Control 是 `public, max-age=31536000, immutable`。
 

@@ -11,15 +11,20 @@ sys.path.insert(0, str(ROOT))
 
 from scripts.build_card_image_manifest import (  # noqa: E402
     ManifestRejected,
+    apply_missing_entries,
     below_keep_ratio,
     content_md5_prefix,
     filename_card_id,
     is_generated_webp_name,
     load_manifest,
+    main,
     manifest_from_etag_listing,
+    merge_missing_entries,
     parse_rclone_hashsum,
     write_manifest,
 )
+
+DEPLOY = ROOT / ".github" / "workflows" / "deploy.yml"
 
 MANIFEST = ROOT / "frontend" / "src" / "generated" / "card-image-manifest.json"
 
@@ -169,3 +174,58 @@ def test_committed_snapshot_matches_known_cdn_bytes():
     assert len(data) == 5276
     for missing in ("OP18-112", "OP16-098-P2"):
         assert missing not in data
+
+
+def test_merge_missing_keeps_server_hashes_and_adds_repo_only_keys():
+    base = {"OP13-001": "870e05eb", "OP18-025": "136e365c"}
+    additions = {"OP13-001": "ffffffff", "OP18-044": "274c36d9"}
+    merged = merge_missing_entries(base, additions)
+    assert merged["OP13-001"] == "870e05eb"
+    assert merged["OP18-025"] == "136e365c"
+    assert merged["OP18-044"] == "274c36d9"
+    assert set(merged) == {"OP13-001", "OP18-025", "OP18-044"}
+
+
+def test_apply_missing_entries_writes_only_when_a_key_is_new(tmp_path: Path, capsys):
+    server = tmp_path / "server.json"
+    repo = tmp_path / "repo.json"
+    write_manifest(server, {"OP13-001": "870e05eb", "OP18-025": "136e365c"})
+    write_manifest(repo, {"OP13-001": "ffffffff", "OP18-044": "274c36d9"})
+    added = apply_missing_entries(server, repo)
+    assert added == ["OP18-044"]
+    saved = load_manifest(server)
+    assert saved["OP13-001"] == "870e05eb"
+    assert saved["OP18-025"] == "136e365c"
+    assert saved["OP18-044"] == "274c36d9"
+    untouched = server.read_bytes()
+    assert apply_missing_entries(server, repo) == []
+    assert server.read_bytes() == untouched
+
+    assert main(["--merge-missing-from", str(repo), "--output", str(server)]) == 0
+    out = capsys.readouterr().out
+    assert "added 0\n" in out
+    assert server.read_bytes() == untouched
+
+    fresh = tmp_path / "missing.json"
+    assert main(["--merge-missing-from", str(repo), "--output", str(fresh)]) == 1
+    assert main(["--merge-missing-from", str(repo), "--output", str(server), "--from-cdn"]) == 2
+
+
+def test_deploy_workflow_merges_repo_only_manifest_entries():
+    text = DEPLOY.read_text(encoding="utf-8")
+    pull_at = text.index("Pull card image manifest from VPS")
+    build_at = text.index("name: Build frontend")
+    publish_at = text.index("Add repo-only card image manifest entries on the VPS")
+    assert pull_at < build_at < publish_at
+    pull = text[pull_at:build_at]
+    assert "card-image-manifest.repo.json" in pull
+    assert "--merge-missing-from" in pull
+    assert "using the VPS card-image manifest plus repo-only entries for this build" in pull
+    publish = text[publish_at:]
+    assert "--merge-missing-from" in publish
+    assert '[ "${added:-0}" != "0" ]' in publish
+    assert "wrote ${added} repo-only manifest entries onto the VPS" in publish
+    assert "left it unchanged" in publish
+    assert "seeded the VPS manifest from the committed snapshot" in publish
+    assert "leaving the existing VPS card-image manifest in place" not in text
+    assert "--exclude 'frontend/src/generated/card-image-manifest.json'" in text

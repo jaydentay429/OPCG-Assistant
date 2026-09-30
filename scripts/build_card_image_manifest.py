@@ -26,6 +26,12 @@ of truth for the next deploy.
 "<etag>"}}``. Use it only when every object was a single-part upload: that
 ETag is the content MD5. A multipart ETag (``<hex>-<parts>``) is not an MD5
 and the command refuses the file.
+
+``--merge-missing-from`` does not hash anything. It adds keys from that file
+that ``--output`` does not already have. Entries already in ``--output`` stay,
+including when the other file has a different hash. Nothing is deleted. Deploy
+uses this so a committed card can ship before the next R2 rebuild, without
+replacing hashes the VPS already recorded.
 """
 
 from __future__ import annotations
@@ -283,6 +289,34 @@ def manifest_from_etag_listing(path: Path) -> dict[str, str]:
     return out
 
 
+def merge_missing_entries(base: dict[str, str], additions: dict[str, str]) -> dict[str, str]:
+    """Return ``base`` plus keys that exist only in ``additions``.
+
+    Values already in ``base`` are kept. Keys only in ``base`` are kept.
+    Nothing is deleted.
+    """
+    merged = dict(base)
+    for key, value in additions.items():
+        if key not in merged:
+            merged[key] = value
+    return merged
+
+
+def apply_missing_entries(base_path: Path, additions_path: Path) -> list[str]:
+    """Add keys from ``additions_path`` that ``base_path`` does not have.
+
+    Existing base entries are not changed or removed. When nothing is missing,
+    ``base_path`` is left byte-for-byte. Returns the added ids, sorted.
+    """
+    base = load_manifest(base_path)
+    additions = load_manifest(additions_path)
+    added = sorted(key for key in additions if key not in base)
+    if not added:
+        return []
+    write_manifest(base_path, merge_missing_entries(base, additions))
+    return added
+
+
 def catalog_ids(index_path: Path) -> list[str]:
     data = json.loads(index_path.read_text(encoding="utf-8"))
     if not isinstance(data, dict):
@@ -293,6 +327,13 @@ def catalog_ids(index_path: Path) -> list[str]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Write the card-image content-hash manifest")
     parser.add_argument("--output", type=Path, default=DEFAULT_MANIFEST)
+    parser.add_argument(
+        "--merge-missing-from",
+        type=Path,
+        default=None,
+        help="Add keys from this manifest that --output does not already have. "
+        "Existing output entries are not changed or removed",
+    )
     parser.add_argument("--rclone-remote", default=os.getenv("OPCG_R2_RCLONE_REMOTE", ""))
     parser.add_argument("--from-cdn", action="store_true", help="Hash public CDN bytes (snapshot only)")
     parser.add_argument(
@@ -305,6 +346,27 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--index", type=Path, default=DEFAULT_INDEX)
     parser.add_argument("--workers", type=int, default=32)
     args = parser.parse_args(argv)
+    supplied = list(sys.argv[1:] if argv is None else argv)
+    explicit_remote = any(
+        item == "--rclone-remote" or item.startswith("--rclone-remote=") for item in supplied
+    )
+    merging = args.merge_missing_from is not None
+    if merging and (explicit_remote or args.from_cdn or args.from_etag_listing is not None):
+        print("Do not combine --merge-missing-from with a rebuild source", file=sys.stderr)
+        return 2
+    if merging:
+        if not args.output.is_file():
+            print(f"error: --output does not exist: {args.output}", file=sys.stderr)
+            return 1
+        try:
+            added = apply_missing_entries(args.output, args.merge_missing_from)
+        except (OSError, json.JSONDecodeError, ValueError, ManifestRejected) as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 1
+        print(f"added {len(added)}")
+        if added:
+            print("added keys: " + ",".join(added))
+        return 0
 
     modes = [bool(args.rclone_remote), bool(args.from_cdn), args.from_etag_listing is not None]
     if sum(modes) != 1:

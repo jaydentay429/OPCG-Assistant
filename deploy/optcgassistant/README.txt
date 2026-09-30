@@ -147,6 +147,12 @@ HTTPS 与反代
   日志：/opt/opcg/logs/daily_official_latest.log
   crontab:
     0 2 * * * bash /opt/opcg/app/deploy/optcgassistant/run_daily_official_sync.sh >> /opt/opcg/logs/daily_official_cron.log 2>&1
+  这次同步改的是 VPS 上的 manifest 源文件，并会把 R2 上有、packs 没有的 PNG 拉回
+  /opt/opcg/app/packs/。API 的 /packs/<ID>.png 和 /images/card/<ID> 读这块磁盘，
+  文件落地后即可访问，不用再部署。卡页和 og:image 不读这份源文件，它们用的是
+  deploy.yml 构建时打进 Next 的那份。部署先拉 VPS 清单，只补仓库里有而 VPS
+  没有的卡号（已有 hash 不改、不删），再用合并结果构建，并把新卡号写回 VPS。
+  所以每日同步写上新 hash 之后，卡页仍要等下一次部署才不再显示「暫無圖片」。
 
 每日流量日报邮件（VPS cron，00:05 HKT / 16:05 UTC）
   统计「昨天」香港时间的浏览量 / 独立访客，发到 ANALYTICS_REPORT_EMAIL。
