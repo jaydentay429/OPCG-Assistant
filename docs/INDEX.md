@@ -44,7 +44,7 @@ OPTCG 工具站：Python API 加 Next.js 前端，界面为繁中、简中、英
 
 ## 部署
 
-`.github/workflows/deploy.yml` 在 `main` 上构建前端并同步到 VPS。站点与 API 的反代、服务文件在 `deploy/optcgassistant/`。
+`.github/workflows/deploy.yml` 在 `main` 上构建前端并同步到 VPS。连接用 GitHub Actions secrets `VPS_SSH_KEY`、`VPS_HOST`、`VPS_USER`（只写名字，值在仓库 Secrets 里）。站点与 API 的反代、服务文件在 `deploy/optcgassistant/`。每日官方同步先把 packs 里 R2 还没有的 `<ID>.png` 补上 R2，再从 R2 只补本地缺失的卡图（不覆盖已有文件），然后按 R2 对象体重建 manifest。
 
 ## 大文件
 
