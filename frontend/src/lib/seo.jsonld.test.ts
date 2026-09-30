@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { breadcrumbJsonLd, cardJsonLd, jsonLdScript, rootJsonLd, visibleCardEffect } from "./seo.ts";
+import { breadcrumbJsonLd, cardJsonLd, cardOgImage, jsonLdScript, rootJsonLd, visibleCardEffect } from "./seo.ts";
 
 test("root JSON-LD keeps organization data and has no FAQPage", () => {
   const raw = jsonLdScript(rootJsonLd());
@@ -91,6 +91,22 @@ test("empty card effects are not FAQ answers", () => {
   assert.equal(visibleCardEffect(" — "), "");
   assert.equal(visibleCardEffect("（暫無效果文本）"), "");
   assert.equal(visibleCardEffect("【登場時】抽 1 張。"), "【登場時】抽 1 張。");
+});
+
+test("card JSON-LD image stays the png og url", () => {
+  const og = cardOgImage("OP13-001");
+  assert.ok(og);
+  assert.match(og.url, /\/OP13-001\.png\?h=870e05eb$/);
+  const raw = jsonLdScript(
+    cardJsonLd({
+      id: "OP13-001",
+      name: "蒙其·D·魯夫",
+      description: "效果",
+      imageUrl: og.url,
+    }),
+  );
+  assert.match(raw, /OP13-001\.png\?h=870e05eb/);
+  assert.equal(raw.includes(".webp"), false);
 });
 
 test("a page with a visible FAQ can still opt in to one FAQPage", () => {

@@ -5,7 +5,8 @@ import { cache } from "react";
 import { preload } from "react-dom";
 import { CardDetailClient } from "@/components/CardDetailClient";
 import { JsonLd } from "@/components/JsonLd";
-import { ApiError, cardImageSources, stripAbsentCardImageUrls, type CardTournamentAppearance } from "@/lib/api";
+import { ApiError, stripAbsentCardImageUrls, type CardTournamentAppearance } from "@/lib/api";
+import { heroPreloadHref } from "@/lib/cardImageSrcSet";
 import { getCachedCardDetail, getCachedCardTournaments } from "@/lib/cardPageData";
 import { catalogHasCard, missingCardShould404 } from "@/lib/cardCatalog";
 import { cardNotFoundMetadata } from "@/lib/cardNotFoundMetadata";
@@ -303,7 +304,7 @@ export default async function CardPage({
   ) : null;
 
   const heroId = shownCardId(cardId, picked, pickedVariant);
-  const heroSrc = cardImageSources(heroId)[0];
+  const heroSrc = heroPreloadHref(heroId);
   if (heroSrc && !/localhost|127\.0\.0\.1/i.test(heroSrc)) {
     preload(heroSrc, { as: "image", fetchPriority: "high" });
   }

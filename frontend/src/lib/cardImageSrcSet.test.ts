@@ -1,11 +1,16 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { PACKS_CDN_BASE, cardImageUrl } from "./api";
+import { cardJsonLd, cardOgImage, jsonLdScript } from "./seo";
 import {
   CARD_WALL_IMAGE_SIZES,
   cardWebpObjectKey,
+  clearHeroWebpMisses,
   clearListWebpMisses,
+  heroCardImageAttrs,
+  heroPreloadHref,
   listCardImageAttrs,
+  noteHeroWebpMiss,
   noteListWebpMiss,
 } from "./cardImageSrcSet";
 
@@ -54,5 +59,62 @@ describe("list card webp srcset", () => {
     assert.equal(listCardImageAttrs("OP18-112", true), null);
     noteListWebpMiss("OP18-112");
     assert.equal(listCardImageAttrs("OP18-112"), null);
+  });
+});
+
+describe("card page hero webp", () => {
+  it("requests the full-size webp and falls back to the same png url", () => {
+    clearHeroWebpMisses();
+    clearListWebpMisses();
+    const hash = "870e05eb";
+    const png = `${PUBLIC_BASE}/OP13-001.png?h=${hash}`;
+    const webpUrl = `${PUBLIC_BASE}/OP13-001.${hash}.webp?h=${hash}`;
+    const hero = heroCardImageAttrs("OP13-001");
+    assert.ok(hero);
+    assert.equal(hero.webp, true);
+    assert.equal(hero.src, webpUrl);
+    assert.equal(hero.srcSet, undefined);
+    assert.equal(heroPreloadHref("op13-001"), webpUrl);
+
+    const failed = heroCardImageAttrs("OP13-001", true);
+    assert.deepEqual(failed, { src: png, webp: false });
+
+    noteHeroWebpMiss("op13-001");
+    assert.deepEqual(heroCardImageAttrs("OP13-001"), { src: png, webp: false });
+    assert.equal(listCardImageAttrs("OP13-001")?.webp, true);
+
+    clearHeroWebpMisses();
+    noteListWebpMiss("OP13-001");
+    assert.equal(heroCardImageAttrs("OP13-001")?.src, webpUrl);
+    clearListWebpMisses();
+  });
+
+  it("keeps a variant on its own hash and leaves og/json-ld on the png", () => {
+    clearHeroWebpMisses();
+    const hash = "a1625823";
+    const png = `${PUBLIC_BASE}/OP13-001-P1.png?h=${hash}`;
+    const hero = heroCardImageAttrs("OP13-001-P1");
+    assert.equal(hero?.src, `${PUBLIC_BASE}/OP13-001-P1.${hash}.webp?h=${hash}`);
+    assert.equal(heroPreloadHref("OP13-001-P1"), hero?.src);
+    assert.equal(cardImageUrl("OP13-001-P1"), png);
+    const og = cardOgImage("OP13-001-P1");
+    assert.equal(og?.url, png);
+    const raw = jsonLdScript(
+      cardJsonLd({
+        id: "OP13-001-P1",
+        name: "variant",
+        description: "d",
+        imageUrl: og?.url,
+      }),
+    );
+    assert.match(raw, /OP13-001-P1\.png\?h=a1625823/);
+    assert.equal(raw.includes(".webp"), false);
+  });
+
+  it("returns nothing when the manifest has no png hash", () => {
+    assert.equal(heroCardImageAttrs("OP18-112"), null);
+    assert.equal(heroCardImageAttrs("OP18-112", true), null);
+    assert.equal(heroPreloadHref("OP18-112"), "");
+    assert.equal(cardOgImage("OP18-112"), null);
   });
 });
