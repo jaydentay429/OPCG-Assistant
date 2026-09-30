@@ -16,6 +16,7 @@ Disallow: /play/history
 Disallow: /play/spectate
 Disallow: /binder/s/
 Disallow: /api/
+Disallow: /internal/
 
 User-agent: Googlebot
 Allow: /
@@ -27,6 +28,7 @@ Disallow: /play/history
 Disallow: /play/spectate
 Disallow: /binder/s/
 Disallow: /api/
+Disallow: /internal/
 
 User-agent: Bingbot
 Allow: /
@@ -38,6 +40,7 @@ Disallow: /play/history
 Disallow: /play/spectate
 Disallow: /binder/s/
 Disallow: /api/
+Disallow: /internal/
 
 User-agent: OAI-SearchBot
 Allow: /
@@ -49,6 +52,7 @@ Disallow: /play/history
 Disallow: /play/spectate
 Disallow: /binder/s/
 Disallow: /api/
+Disallow: /internal/
 
 User-agent: ChatGPT-User
 Allow: /
@@ -60,6 +64,7 @@ Disallow: /play/history
 Disallow: /play/spectate
 Disallow: /binder/s/
 Disallow: /api/
+Disallow: /internal/
 
 User-agent: PerplexityBot
 Allow: /
@@ -71,6 +76,7 @@ Disallow: /play/history
 Disallow: /play/spectate
 Disallow: /binder/s/
 Disallow: /api/
+Disallow: /internal/
 
 User-agent: ClaudeBot
 Allow: /
@@ -82,6 +88,7 @@ Disallow: /play/history
 Disallow: /play/spectate
 Disallow: /binder/s/
 Disallow: /api/
+Disallow: /internal/
 
 User-agent: GPTBot
 Allow: /
@@ -93,6 +100,7 @@ Disallow: /play/history
 Disallow: /play/spectate
 Disallow: /binder/s/
 Disallow: /api/
+Disallow: /internal/
 
 User-agent: Google-Extended
 Allow: /
@@ -104,6 +112,7 @@ Disallow: /play/history
 Disallow: /play/spectate
 Disallow: /binder/s/
 Disallow: /api/
+Disallow: /internal/
 
 Sitemap: https://optcgassistant.com/sitemap.xml
 Host: https://optcgassistant.com

@@ -11,7 +11,7 @@ OPTCG 工具站：Python API 加 Next.js 前端，界面为繁中、简中、英
 | `app.py` | FastAPI：卡牌、卡组、价格、图片 |
 | `sync_*.py`、`sync_daily_pipeline.py` | 每日数据同步（在仓库根目录） |
 | `battle/` | 对战引擎，见 `battle/AGENTS.md` |
-| `frontend/` | Next.js 15，见 `frontend/AGENTS.md` |
+| `frontend/` | Next.js 15，见 `frontend/AGENTS.md`。另有不索引的 `/internal/exclude-me` |
 | `frontend/src/locales/` | 三语文案，见该目录 `AGENTS.md` |
 | `scripts/` | 效果审计、后台、卡图脚本，见 `scripts/AGENTS.md` |
 | `meta/` | 报告和评测产物，见 `meta/AGENTS.md` |

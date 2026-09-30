@@ -6,7 +6,12 @@ from typing import Any
 from urllib.parse import urlparse
 from zoneinfo import ZoneInfo
 
-from analytics.db import fetch_pageviews, first_seen_before, is_excluded_event
+from analytics.db import fetch_pageviews, first_seen_before, load_user_emails
+from analytics.exclude import (
+    REASON_LABELS,
+    exclusion_reasons,
+    signals_from_row,
+)
 
 HKT = ZoneInfo("Asia/Hong_Kong")
 
@@ -93,13 +98,19 @@ def classify_referrer(referrer: str | None) -> str:
     return "referral"
 
 
-def row_matches_exclude_config(row: Any) -> bool:
-    """Hard filter against current ANALYTICS_EXCLUDE_* env (not the stale DB flag alone)."""
-    return is_excluded_event(
-        visitor_id=str(row["visitor_id"] or ""),
-        username=(str(row["username"]).strip() if row["username"] else None),
-        ip_hash=(str(row["ip_hash"]).strip() if row["ip_hash"] else None),
-    )
+def row_matches_exclude_config(row: Any, email_by_user_id: dict[int, str] | None = None) -> bool:
+    """Current exclusion rules, not the insert-time is_excluded flag alone."""
+    return bool(exclusion_reasons(signals_from_row(row, email_by_user_id)))
+
+
+def exclusion_reason_counts(rows: list[Any], email_by_user_id: dict[int, str] | None = None) -> Counter[str]:
+    """Pageview counts by primary reason. A hit is counted once."""
+    counts: Counter[str] = Counter()
+    for row in rows:
+        reasons = exclusion_reasons(signals_from_row(row, email_by_user_id))
+        if reasons:
+            counts[reasons[0]] += 1
+    return counts
 
 
 def _pct(part: int, whole: int) -> str:
@@ -190,14 +201,18 @@ def build_daily_report(day: date | None = None) -> tuple[str, str]:
     """
     Build (subject, body) for the daily analytics email.
 
-    Exclusion is applied from current ANALYTICS_EXCLUDE_* env vars before any
-    business metrics are computed (not merely the insert-time is_excluded flag).
+    Exclusion is applied from the current rules (cookie, account, user agent,
+    datacenter IP, internal header, and ANALYTICS_EXCLUDE_* lists) before any
+    business metrics are computed. The insert-time is_excluded flag is not
+    enough on its own, because the lists can change later.
     """
     label, start_utc, end_utc = report_day_bounds_hkt(day)
     all_rows = fetch_pageviews(start_utc, end_utc, include_excluded=True)
+    email_by_user_id = load_user_emails()
 
-    clean = [r for r in all_rows if not row_matches_exclude_config(r)]
-    excluded = [r for r in all_rows if row_matches_exclude_config(r)]
+    clean = [r for r in all_rows if not row_matches_exclude_config(r, email_by_user_id)]
+    excluded = [r for r in all_rows if row_matches_exclude_config(r, email_by_user_id)]
+    reason_counts = exclusion_reason_counts(excluded, email_by_user_id)
 
     biz = _summarize_business(clean, start_utc=start_utc)
     excl_visitors = {str(r["visitor_id"]) for r in excluded}
@@ -284,10 +299,15 @@ def build_daily_report(day: date | None = None) -> tuple[str, str]:
             "",
             "---",
             "**🛠️ 诊断与排除区（仅供开发者参考）**",
-            f"* 已排除测试流量：{len(excluded)} 次浏览 / {len(excl_visitors)} 个访客",
-            "  （按当前 ANALYTICS_EXCLUDE_VISITOR_IDS / USERNAMES / IP_HASHES 硬过滤）",
+            f"* 已排除：{len(excluded)} 次浏览 / {len(excl_visitors)} 个访客",
+            "  （cookie、账号、User-Agent、数据中心 IP、X-OPCG-Internal，以及 ANALYTICS_EXCLUDE_* 名单）",
         ]
     )
+    if reason_counts:
+        for code, _label in REASON_LABELS.items():
+            n = int(reason_counts.get(code, 0))
+            if n:
+                lines.append(f"  * {_label}：{n} 次浏览")
 
     if biz["suspects"]:
         lines.append("* 疑似未排除的高频 ID（请核对是否添加到环境变量）：")
@@ -302,7 +322,11 @@ def build_daily_report(day: date | None = None) -> tuple[str, str]:
             "配置提示:",
             "  ANALYTICS_EXCLUDE_VISITOR_IDS=visitor_id1,visitor_id2",
             "  ANALYTICS_EXCLUDE_USERNAMES=your_username",
+            "  ANALYTICS_EXCLUDE_USER_IDS=1,2",
+            "  ANALYTICS_EXCLUDE_EMAILS=you@example.com",
             "  ANALYTICS_EXCLUDE_IP_HASHES=iphash1,iphash2",
+            "  ANALYTICS_EXCLUDE_ME_TOKEN=（不公开页面的 token，不要提交真实值）",
+            "  请求头 X-OPCG-Internal: 1 或 User-Agent 含 OPCG-Internal 的访问不计入",
             "",
             "— OPCG Analytics",
         ]

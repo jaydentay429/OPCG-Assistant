@@ -8,9 +8,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from analytics.exclude import TrafficSignals, exclusion_reasons, ip_is_datacenter
+
 BASE_DIR = Path(__file__).resolve().parent.parent
-ANALYTICS_DB_FILE = Path(os.getenv("ANALYTICS_DB_FILE") or (BASE_DIR / "meta" / "analytics.db"))
 _lock = threading.Lock()
+
+
+def analytics_db_path() -> Path:
+    raw = str(os.getenv("ANALYTICS_DB_FILE") or "").strip()
+    return Path(raw) if raw else (BASE_DIR / "meta" / "analytics.db")
 
 
 def analytics_enabled() -> bool:
@@ -19,8 +25,9 @@ def analytics_enabled() -> bool:
 
 
 def _connect() -> sqlite3.Connection:
-    ANALYTICS_DB_FILE.parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(str(ANALYTICS_DB_FILE), timeout=30)
+    path = analytics_db_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(str(path), timeout=30)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA journal_mode=WAL")
     return conn
@@ -45,7 +52,11 @@ def init_analytics_db() -> None:
                     ua_hash TEXT,
                     language TEXT,
                     screen TEXT,
-                    is_excluded INTEGER NOT NULL DEFAULT 0
+                    is_excluded INTEGER NOT NULL DEFAULT 0,
+                    user_agent TEXT,
+                    has_exclude_cookie INTEGER NOT NULL DEFAULT 0,
+                    has_internal_header INTEGER NOT NULL DEFAULT 0,
+                    ip_is_datacenter INTEGER NOT NULL DEFAULT 0
                 )
                 """
             )
@@ -58,6 +69,7 @@ def init_analytics_db() -> None:
             conn.execute(
                 "CREATE INDEX IF NOT EXISTS idx_pv_path_ts ON pageviews(path, ts)"
             )
+            _ensure_pageview_columns(conn)
             conn.execute(
                 """
                 CREATE TABLE IF NOT EXISTS ai_crawl_logs (
@@ -76,11 +88,46 @@ def init_analytics_db() -> None:
             conn.close()
 
 
-def _csv_set(env_key: str) -> set[str]:
-    raw = str(os.getenv(env_key) or "").strip()
-    if not raw:
-        return set()
-    return {x.strip() for x in raw.split(",") if x.strip()}
+def _ensure_pageview_columns(conn: sqlite3.Connection) -> None:
+    """Add signal columns. Do not add email or client_ip; those are not stored."""
+    have = {str(row[1]) for row in conn.execute("PRAGMA table_info(pageviews)")}
+    additions = (
+        ("user_agent", "TEXT"),
+        ("has_exclude_cookie", "INTEGER NOT NULL DEFAULT 0"),
+        ("has_internal_header", "INTEGER NOT NULL DEFAULT 0"),
+        ("ip_is_datacenter", "INTEGER NOT NULL DEFAULT 0"),
+    )
+    for name, ddl in additions:
+        if name not in have:
+            conn.execute(f"ALTER TABLE pageviews ADD COLUMN {name} {ddl}")
+
+
+def load_user_emails(auth_db: Path | None = None) -> dict[int, str]:
+    """Read-only id → email map. Pageviews do not store the address."""
+    path = auth_db or (BASE_DIR / "meta" / "auth.db")
+    if not path.is_file():
+        return {}
+    uri = path.resolve().as_uri() + "?mode=ro"
+    try:
+        conn = sqlite3.connect(uri, uri=True)
+    except sqlite3.Error:
+        return {}
+    try:
+        rows = conn.execute("SELECT id, email FROM users").fetchall()
+    except sqlite3.Error:
+        return {}
+    finally:
+        conn.close()
+    out: dict[int, str] = {}
+    for row in rows:
+        try:
+            uid = int(row[0])
+        except (TypeError, ValueError):
+            continue
+        email = str(row[1] or "").strip()
+        if email:
+            out[uid] = email
+    return out
 
 
 def hash_ip(ip: str | None) -> str | None:
@@ -99,27 +146,6 @@ def hash_ua(ua: str | None) -> str | None:
     return hashlib.sha256(ua.encode("utf-8")).hexdigest()[:12]
 
 
-def is_excluded_event(
-    *,
-    visitor_id: str,
-    username: str | None,
-    ip_hash: str | None,
-) -> bool:
-    """Match against current ANALYTICS_EXCLUDE_* env lists (exact, stripped)."""
-    vid = (visitor_id or "").strip()
-    if vid and vid in _csv_set("ANALYTICS_EXCLUDE_VISITOR_IDS"):
-        return True
-    uname = (username or "").strip()
-    if uname:
-        excluded_names = _csv_set("ANALYTICS_EXCLUDE_USERNAMES")
-        if uname in excluded_names or uname.lower() in {x.lower() for x in excluded_names}:
-            return True
-    iph = (ip_hash or "").strip()
-    if iph and iph in _csv_set("ANALYTICS_EXCLUDE_IP_HASHES"):
-        return True
-    return False
-
-
 def insert_pageview(
     *,
     path: str,
@@ -133,6 +159,9 @@ def insert_pageview(
     language: str | None = None,
     screen: str | None = None,
     ts: datetime | None = None,
+    email: str | None = None,
+    exclude_cookie: bool = False,
+    internal_header: bool = False,
 ) -> dict[str, Any]:
     path = (path or "/").strip()[:300] or "/"
     # Persist without query/hash so reports stay aggregatable.
@@ -151,7 +180,28 @@ def insert_pageview(
 
     ip_h = hash_ip(ip)
     ua_h = hash_ua(user_agent)
-    excluded = 1 if is_excluded_event(visitor_id=visitor_id, username=username, ip_hash=ip_h) else 0
+    ua_stored = (user_agent or "").strip()[:300] or None
+    email_now = (email or "").strip()[:200] or None
+    cookie_flag = 1 if exclude_cookie else 0
+    header_flag = 1 if internal_header else 0
+    datacenter_flag = 1 if ip_is_datacenter(ip) else 0
+    excluded = (
+        1
+        if exclusion_reasons(
+            TrafficSignals(
+                visitor_id=visitor_id,
+                username=username,
+                email=email_now,
+                user_id=user_id,
+                ip_hash=ip_h,
+                ip_is_datacenter=bool(datacenter_flag),
+                user_agent=ua_stored,
+                exclude_cookie=bool(exclude_cookie),
+                internal_header=bool(internal_header),
+            )
+        )
+        else 0
+    )
 
     with _lock:
         conn = _connect()
@@ -160,8 +210,9 @@ def insert_pageview(
                 """
                 INSERT INTO pageviews (
                     ts, path, referrer, visitor_id, session_id,
-                    user_id, username, ip_hash, ua_hash, language, screen, is_excluded
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    user_id, username, ip_hash, ua_hash, language, screen, is_excluded,
+                    user_agent, has_exclude_cookie, has_internal_header, ip_is_datacenter
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     ts_s,
@@ -176,6 +227,10 @@ def insert_pageview(
                     (language or None),
                     (screen or None),
                     excluded,
+                    ua_stored,
+                    cookie_flag,
+                    header_flag,
+                    datacenter_flag,
                 ),
             )
             conn.commit()
@@ -217,6 +272,36 @@ def insert_ai_crawl(*, bot: str, path: str, ts: datetime | None = None) -> None:
             conn.close()
 
 
+# Columns the report is allowed to read. email and client_ip are never selected,
+# even if an older database still has those columns.
+PAGEVIEW_READ_COLUMNS = (
+    "id",
+    "ts",
+    "path",
+    "referrer",
+    "visitor_id",
+    "session_id",
+    "user_id",
+    "username",
+    "ip_hash",
+    "ua_hash",
+    "language",
+    "screen",
+    "is_excluded",
+    "user_agent",
+    "has_exclude_cookie",
+    "has_internal_header",
+    "ip_is_datacenter",
+)
+
+
+def pageview_select_list(have: set[str]) -> str:
+    cols = [name for name in PAGEVIEW_READ_COLUMNS if name in have]
+    if "ts" not in cols or "visitor_id" not in cols:
+        raise sqlite3.Error("pageviews is missing required columns")
+    return ", ".join(cols)
+
+
 def fetch_pageviews(
     start_utc: str,
     end_utc: str,
@@ -227,24 +312,19 @@ def fetch_pageviews(
     with _lock:
         conn = _connect()
         try:
-            if include_excluded:
-                rows = conn.execute(
-                    """
-                    SELECT * FROM pageviews
-                    WHERE ts >= ? AND ts < ?
-                    ORDER BY ts ASC
-                    """,
-                    (start_utc, end_utc),
-                ).fetchall()
-            else:
-                rows = conn.execute(
-                    """
-                    SELECT * FROM pageviews
-                    WHERE ts >= ? AND ts < ? AND is_excluded = 0
-                    ORDER BY ts ASC
-                    """,
-                    (start_utc, end_utc),
-                ).fetchall()
+            have = {str(row[1]) for row in conn.execute("PRAGMA table_info(pageviews)")}
+            selected = pageview_select_list(have)
+            where = "ts >= ? AND ts < ?"
+            if not include_excluded:
+                where += " AND is_excluded = 0"
+            rows = conn.execute(
+                f"""
+                SELECT {selected} FROM pageviews
+                WHERE {where}
+                ORDER BY ts ASC
+                """,
+                (start_utc, end_utc),
+            ).fetchall()
             return list(rows)
         finally:
             conn.close()

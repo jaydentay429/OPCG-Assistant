@@ -11,6 +11,7 @@ Next.js 15 App Router。页面在 `src/app`，客户端界面在 `src/components
 - `/community`、`/community/new`、`/community/[id]`、`/community/me`、`/community/admin`
 - `/play` 对战（`[[...slug]]`）
 - `/reset-password`，`/legal/terms`、`/legal/privacy`、`/legal/disclaimer`
+- `/internal/exclude-me` 不公开、不索引。token 不对返回 404。不要把带 token 的地址写进公开说明
 
 ## 职责
 

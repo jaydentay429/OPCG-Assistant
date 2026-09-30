@@ -69,7 +69,8 @@ export function trackPageview(path: string, token?: string | null): void {
       body: JSON.stringify(payload),
       keepalive: true,
       mode: "cors",
-      credentials: "omit",
+      // Send the HttpOnly exclude-me cookie to the API. Auth stays on the Bearer header.
+      credentials: "include",
     }).catch(() => {
       /* ignore network errors */
     });

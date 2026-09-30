@@ -157,8 +157,13 @@ HTTPS 与反代
   漏发补寄（本机有 Gmail SMTP 时）：
     scp <DEPLOY_USER>@<VPS_IP>:/opt/opcg/app/meta/analytics.db /tmp/opcg-analytics.db
     cd /opt/opcg/app && ANALYTICS_DB_FILE=/tmp/opcg-analytics.db .venv/bin/python scripts/send_daily_analytics_report.py --day YYYY-MM-DD
-  .env 需配置：ANALYTICS_ENABLED=1、ANALYTICS_REPORT_EMAIL、以及
-  ANALYTICS_EXCLUDE_VISITOR_IDS / USERNAMES（排除你自己的测试流量）
+  .env 需配置：ANALYTICS_ENABLED=1、ANALYTICS_REPORT_EMAIL、以及排除名单
+  ANALYTICS_EXCLUDE_VISITOR_IDS / USERNAMES / USER_IDS / EMAILS / IP_HASHES。
+  ANALYTICS_EXCLUDE_ME_TOKEN 只放在服务器 .env，不要提交真实值。
+  QA 和代理请求带 X-OPCG-Internal: 1，或 User-Agent 含 OPCG-Internal。
+  按新规则重算最近几天（只读，不发信）：
+    cd /opt/opcg/app && .venv/bin/python scripts/traffic_recount.py \
+      --db /opt/opcg/app/meta/analytics.db --auth-db /opt/opcg/app/meta/auth.db
 
 把线上价格拉回本机
   rsync -avz <DEPLOY_USER>@<VPS_IP>:/opt/opcg/app/meta/market_prices.json \
