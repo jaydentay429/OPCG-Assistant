@@ -12,7 +12,8 @@ R2, and it does not delete anything. ``rclone sync`` is not used.
 
 Filters keep card images only: png, jpg, jpeg, webp, and gif (the suffixes
 ``/packs`` already serves). Duplicate ``* 2.png`` names, ``*-HEROINES-*``
-hand copies, and date-suffixed backups are left on R2.
+hand copies, date-suffixed backups, and ``generate_card_webp.py`` derivatives
+(``<ID>.w320.<hash>.webp``, ``<ID>.<hash>.webp``) are left on R2.
 """
 
 from __future__ import annotations
@@ -44,6 +45,9 @@ EXCLUDE_GLOBS = (
     "*-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9].*",
     "*-[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].*",
     "*.[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]",
+    # generate_card_webp.py keys: <ID>.w320.<8 hex>.webp and <ID>.<8 hex>.webp.
+    # A catalog file such as OP18-005.webp does not match.
+    "*.[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f].webp",
 )
 
 

@@ -70,6 +70,10 @@ def test_op18_025_png_is_kept_by_the_fill_filter(tmp_path: Path):
         return False
 
     assert kept("OP18-025.png") is True
+    assert kept("OP18-005.webp") is True
+    assert kept("OP13-001.w320.870e05eb.webp") is False
+    assert kept("OP13-001.w200.870e05eb.webp") is False
+    assert kept("OP13-001.870e05eb.webp") is False
     cmd = build_rclone_fill_command("opcg-r2:opcg-packs", tmp_path / "packs")
     assert "OP18-025" not in cmd
     assert "--ignore-existing" in cmd
@@ -211,6 +215,8 @@ def test_real_rclone_fills_missing_images_and_does_not_overwrite(tmp_path: Path)
     (source / "OP18-002.jpg").write_bytes(b"jpeg")
     (source / "OP18-004.jpeg").write_bytes(b"jpeg-long")
     (source / "OP18-005.webp").write_bytes(b"webp")
+    (source / "OP13-001.w320.870e05eb.webp").write_bytes(b"thumb")
+    (source / "OP13-001.870e05eb.webp").write_bytes(b"fullwebp")
     (source / "OP18-006.gif").write_bytes(b"gif")
     (source / "EB01-001-P2 2.png").write_bytes(b"duplicate")
     (source / "EB05-016-HEROINES-alt.png").write_bytes(b"heroines")
@@ -230,6 +236,8 @@ def test_real_rclone_fills_missing_images_and_does_not_overwrite(tmp_path: Path)
     assert (packs / "OP18-025.png").read_bytes() == b"gonbe"
     assert (packs / "OP18-004.jpeg").read_bytes() == b"jpeg-long"
     assert (packs / "OP18-005.webp").read_bytes() == b"webp"
+    assert not (packs / "OP13-001.w320.870e05eb.webp").exists()
+    assert not (packs / "OP13-001.870e05eb.webp").exists()
     assert (packs / "OP18-006.gif").read_bytes() == b"gif"
     assert not (packs / "EB01-001-P2 2.png").exists()
     assert not (packs / "EB05-016-HEROINES-alt.png").exists()

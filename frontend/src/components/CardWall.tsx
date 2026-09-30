@@ -100,7 +100,7 @@ export function CardWall({ cards }: { cards: FilterCard[] }) {
               onPointerDown={() => flushCurrentScroll(c.id)}
               onClick={() => flushCurrentScroll(c.id)}
             >
-              <CardImg cardId={c.id} alt={displayName} localUrl={c.img_local_url} />
+              <CardImg cardId={c.id} alt={displayName} localUrl={c.img_local_url} listThumb />
             </Link>
             {isDon ? null : (
               <div className="id" title={displayCardId(c.id)}>

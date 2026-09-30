@@ -13,6 +13,8 @@ from scripts.build_card_image_manifest import (  # noqa: E402
     ManifestRejected,
     below_keep_ratio,
     content_md5_prefix,
+    filename_card_id,
+    is_generated_webp_name,
     load_manifest,
     manifest_from_etag_listing,
     parse_rclone_hashsum,
@@ -119,6 +121,9 @@ def test_rclone_hashsum_uses_filename_and_prefers_png():
         [
             "870e05eb5391791e66ce8fb538a17b27 OP13-001.png",
             "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa OP13-001.jpg",
+            "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb OP13-001.w320.870e05eb.webp",
+            "cccccccccccccccccccccccccccccccc OP13-001.w200.870e05eb.webp",
+            "dddddddddddddddddddddddddddddddd OP13-001.870e05eb.webp",
             "f7a50a1dec01b54fec9493bb029fdb6a EB05-048.png",
             "deadbeefdeadbeefdeadbeefdeadbeef EB01-001-P2 2.png",
             "not-a-hash notes.txt",
@@ -128,7 +133,13 @@ def test_rclone_hashsum_uses_filename_and_prefers_png():
     assert parsed["OP13-001"] == "870e05eb"
     assert parsed["EB05-048"] == "f7a50a1d"
     assert "EB01-001-P2" not in parsed
+    assert "OP13-001.W320.870E05EB" not in parsed
     assert "notes" not in parsed
+    assert filename_card_id("OP13-001.w320.870e05eb.webp") == ""
+    assert filename_card_id("OP13-001.870e05eb.webp") == ""
+    assert filename_card_id("OP18-005.webp") == "OP18-005"
+    assert is_generated_webp_name("OP13-001.w200.870e05eb.webp") is True
+    assert is_generated_webp_name("OP18-005.webp") is False
 
 
 def test_etag_listing_rejects_multipart(tmp_path: Path):
