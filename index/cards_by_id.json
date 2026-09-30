@@ -205498,5 +205498,50 @@
     "card_sets": [
       "補充包 OP-18【OP-18】"
     ]
+  },
+  "OP18-044": {
+    "card_id": "OP18-044",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "name": "Mr.賓茲&Miss凱瑟蓮娜",
+    "name_en": "Mr. Beans & Miss. Katherina",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "藍"
+    ],
+    "colors_en": [
+      "Blue"
+    ],
+    "cost": 3,
+    "power": 4000,
+    "life": null,
+    "counter": 1000,
+    "rarity": "C",
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "traits": [
+      "B・W"
+    ],
+    "traits_en": [
+      "Baroque Works"
+    ],
+    "effect": "【咚‼×1】這張角色卡力量值+1000。\n【登場時】抽1張卡片，並廢棄1張自己的手牌。",
+    "effect_en": "[DON!! x1] This Character gains +1000 power.\n[On Play] Draw 1 card and trash 1 card from your hand.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "補充包 OP-18【OP-18】"
+    ]
   }
 }

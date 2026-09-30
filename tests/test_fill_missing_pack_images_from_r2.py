@@ -70,10 +70,13 @@ def test_op18_025_png_is_kept_by_the_fill_filter(tmp_path: Path):
         return False
 
     assert kept("OP18-025.png") is True
+    assert kept("OP18-044.png") is True
     cmd = build_rclone_fill_command("opcg-r2:opcg-packs", tmp_path / "packs")
     assert "OP18-025" not in cmd
+    assert "OP18-044" not in cmd
     assert "--ignore-existing" in cmd
     assert not any("OP18-025" in arg and arg.startswith("-") for arg in cmd)
+    assert not any("OP18-044" in arg and arg.startswith("-") for arg in cmd)
 
 
 def test_copied_new_names_reads_verbose_lines_and_skips_ignored():
@@ -208,6 +211,7 @@ def test_real_rclone_fills_missing_images_and_does_not_overwrite(tmp_path: Path)
     (source / "EB05-016.png").write_bytes(b"r2-different")
     (source / "OP13-001.png").write_bytes(b"from-r2")
     (source / "OP18-025.png").write_bytes(b"gonbe")
+    (source / "OP18-044.png").write_bytes(b"beans")
     (source / "OP18-002.jpg").write_bytes(b"jpeg")
     (source / "OP18-004.jpeg").write_bytes(b"jpeg-long")
     (source / "OP18-005.webp").write_bytes(b"webp")
@@ -228,6 +232,7 @@ def test_real_rclone_fills_missing_images_and_does_not_overwrite(tmp_path: Path)
     assert (packs / "OP18-002.jpg").read_bytes() == b"local-jpeg"
     assert (packs / "OP13-001.png").read_bytes() == b"from-r2"
     assert (packs / "OP18-025.png").read_bytes() == b"gonbe"
+    assert (packs / "OP18-044.png").read_bytes() == b"beans"
     assert (packs / "OP18-004.jpeg").read_bytes() == b"jpeg-long"
     assert (packs / "OP18-005.webp").read_bytes() == b"webp"
     assert (packs / "OP18-006.gif").read_bytes() == b"gif"
@@ -241,6 +246,7 @@ def test_real_rclone_fills_missing_images_and_does_not_overwrite(tmp_path: Path)
     assert not (packs / "extra").exists()
     assert "OP13-001.png" in result.filled
     assert "OP18-025.png" in result.filled
+    assert "OP18-044.png" in result.filled
     assert "EB05-016.png" not in result.filled
     assert "EB01-001-P2 2.png" not in result.filled
-    assert result.copied == 5
+    assert result.copied == 6
