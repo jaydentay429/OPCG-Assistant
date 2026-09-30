@@ -14,6 +14,24 @@ export type SiteUpdate = {
 /** Newest first. Keep this list short — homepage shows the latest few. */
 export const SITE_UPDATES: SiteUpdate[] = [
   {
+    id: "op18-044-2026-09-30",
+    date: "2026-09-30",
+    kind: "feature",
+    href: "/cards/OP18-044",
+    title: {
+      "zh-Hant": "OP18-044 Mr.賓茲&Miss凱瑟蓮娜 已上線",
+      "zh-Hans": "OP18-044 Mr.宾兹&Miss凯瑟莲娜 已上线",
+      en: "OP18-044 Mr. Beans & Miss. Katherina added",
+    },
+    body: {
+      "zh-Hant":
+        "截圖暫收：藍 C 費用 3、力量 4000、反擊 +1000、屬性知，《B・W》。【咚‼×1】這張角色卡力量值+1000。【登場時】抽1張卡片，並廢棄1張自己的手牌。卡圖為已上傳的 OP18-044.png。",
+      "zh-Hans":
+        "截图暂收：蓝 C 费用 3、力量 4000、反击 +1000、属性知，《B・W》。【咚‼×1】这张角色卡力量值+1000。【登场时】抽1张卡片，并废弃1张自己的手牌。卡图为已上传的 OP18-044.png。",
+      en: "Screenshot entry: blue C, cost 3, power 4000, Counter +1000, Wisdom, {Baroque Works}. [DON!! x1] This Character gains +1000 power. [On Play] Draw 1 card and trash 1 card from your hand. Art is the uploaded OP18-044.png.",
+    },
+  },
+  {
     id: "op18-025-2026-09-29",
     date: "2026-09-29",
     kind: "feature",

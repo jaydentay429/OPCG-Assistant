@@ -16,7 +16,7 @@ from sync_official_cards import ParsedCard, merge_index  # noqa: E402
 def test_seed_matches_index_and_ids_are_unique():
     cards = json.loads((ROOT / "index" / "cards_by_id.json").read_text(encoding="utf-8"))
     seed = load_manual_cards()
-    assert set(seed) == {"EB05-046", "EB05-016", "EB05-016-P1", "OP18-112", "OP18-016", "OP18-025"}
+    assert set(seed) == {"EB05-046", "EB05-016", "EB05-016-P1", "OP18-112", "OP18-016", "OP18-025", "OP18-044"}
     assert cards["EB05-046"]["name"] == "大和"
     assert cards["EB05-046"]["name_en"] == "Yamato"
     assert cards["EB05-046"]["manual_source"] == "screenshot"
@@ -82,6 +82,28 @@ def test_seed_matches_index_and_ids_are_unique():
     assert "rested" in cards["OP18-025"]["effect_en"]
     assert cards["OP18-025"]["card_sets"] == ["補充包 OP-18【OP-18】"]
     assert cards["OP18-025"]["pack_id"] == "OP-18"
+    assert cards["OP18-044"]["name"] == "Mr.賓茲&Miss凱瑟蓮娜"
+    assert cards["OP18-044"]["name_en"] == "Mr. Beans & Miss. Katherina"
+    assert cards["OP18-044"]["manual_source"] == "screenshot"
+    assert "suppress_pack_image" not in cards["OP18-044"]
+    assert cards["OP18-044"]["img_url"] == ""
+    assert cards["OP18-044"]["img_full_url"] == ""
+    assert cards["OP18-044"]["preview"] is True
+    assert cards["OP18-044"]["colors"] == ["藍"]
+    assert cards["OP18-044"]["colors_en"] == ["Blue"]
+    assert cards["OP18-044"]["cost"] == 3
+    assert cards["OP18-044"]["power"] == 4000
+    assert cards["OP18-044"]["counter"] == 1000
+    assert cards["OP18-044"]["rarity"] == "C"
+    assert cards["OP18-044"]["attributes"] == ["知"]
+    assert cards["OP18-044"]["attributes_en"] == ["Wisdom"]
+    assert cards["OP18-044"]["traits"] == ["B・W"]
+    assert cards["OP18-044"]["traits_en"] == ["Baroque Works"]
+    assert cards["OP18-044"]["card_type"] == "Character"
+    assert cards["OP18-044"]["effect"].startswith("【咚‼×1】")
+    assert "trash 1 card from your hand" in cards["OP18-044"]["effect_en"]
+    assert cards["OP18-044"]["card_sets"] == ["補充包 OP-18【OP-18】"]
+    assert cards["OP18-044"]["pack_id"] == "OP-18"
     # Base id stays EB05-016. The stored SP row was the heroine parallel art;
     # the normal printing is SR, and EB05-016-P1 keeps the SP mark used by other -P1 rows.
     assert cards["EB05-016"]["card_id"] == "EB05-016"
@@ -111,12 +133,14 @@ def test_seed_matches_index_and_ids_are_unique():
     assert list(cards).count("OP18-112") == 1
     assert list(cards).count("OP18-016") == 1
     assert list(cards).count("OP18-025") == 1
+    assert list(cards).count("OP18-044") == 1
     overrides = json.loads((ROOT / "index" / "card_effect_overrides.json").read_text(encoding="utf-8"))
     # New cards are catalog-only. Hedgehog keeps the rekeyed encoding, nothing new.
     assert "EB05-046" not in overrides["cards"]
     assert "OP18-112" not in overrides["cards"]
     assert "OP18-016" not in overrides["cards"]
     assert "OP18-025" not in overrides["cards"]
+    assert "OP18-044" not in overrides["cards"]
     assert "EB05-016-P1" not in overrides["cards"]
     assert overrides["cards"]["EB05-016"]["card_id"] == "EB05-016"
     assert overrides["cards"]["EB05-048"]["card_id"] == "EB05-048"
@@ -126,8 +150,8 @@ def test_seed_matches_index_and_ids_are_unique():
 
 def test_official_sync_overwrites_screenshot_row_without_duplicates():
     index: dict = {}
-    assert apply_manual_cards(index) == 6
-    assert apply_manual_cards(index) == 6
+    assert apply_manual_cards(index) == 7
+    assert apply_manual_cards(index) == 7
     assert list(index).count("EB05-046") == 1
     assert index["EB05-046"]["name"] == "大和"
 
@@ -170,6 +194,9 @@ def test_official_sync_overwrites_screenshot_row_without_duplicates():
     assert merged["OP18-025"]["name"] == "貢貝"
     assert merged["OP18-025"]["manual_source"] == "screenshot"
     assert list(merged).count("OP18-025") == 1
+    assert merged["OP18-044"]["name"] == "Mr.賓茲&Miss凱瑟蓮娜"
+    assert merged["OP18-044"]["manual_source"] == "screenshot"
+    assert list(merged).count("OP18-044") == 1
     assert merged["EB05-016"]["rarity"] == "SR"
     assert merged["EB05-016-P1"]["rarity"] == "SP"
 
