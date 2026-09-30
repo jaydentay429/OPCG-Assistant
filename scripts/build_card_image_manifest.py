@@ -34,6 +34,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import sys
 import urllib.error
 import urllib.request
@@ -62,10 +63,29 @@ def content_md5_prefix(data: bytes) -> str:
     return hashlib.md5(data).hexdigest()[:8]
 
 
-def filename_card_id(name: str) -> str:
-    """Map a bucket filename to a catalog id. Skip duplicate names like ``X 2.png``."""
+# scripts/generate_card_webp.py writes ``<ID>.w320.<8 hex>.webp`` and
+# ``<ID>.<8 hex>.webp``. The hash is the PNG content prefix (manifest ``?h=``).
+# These are derivatives, not catalog files. A plain ``<ID>.webp`` is left alone.
+_GENERATED_WEBP_NAME = re.compile(
+    r"^(?P<id>[A-Za-z0-9][A-Za-z0-9-]*)(?:\.w(?P<width>\d+))?\.(?P<hash>[0-9a-f]{8})\.webp$",
+    re.IGNORECASE,
+)
+
+
+def is_generated_webp_name(name: str) -> bool:
+    """True for WebP derivatives whose object key embeds the PNG content hash."""
     base = Path(str(name or "").replace("\\", "/")).name
-    if not base or " " in base or base.startswith("."):
+    return _GENERATED_WEBP_NAME.match(base) is not None
+
+
+def filename_card_id(name: str) -> str:
+    """Map a bucket filename to a catalog id. Skip duplicate names like ``X 2.png``.
+
+    Generated WebP derivatives are skipped so a manifest rebuild keeps the PNG
+    hash and does not invent ids such as ``OP13-001.W320``.
+    """
+    base = Path(str(name or "").replace("\\", "/")).name
+    if not base or " " in base or base.startswith(".") or is_generated_webp_name(base):
         return ""
     suffix = Path(base).suffix.lower()
     if suffix not in IMAGE_SUFFIXES:

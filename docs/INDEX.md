@@ -26,6 +26,8 @@ OPTCG 工具站：Python API 加 Next.js 前端，界面为繁中、简中、英
 
 官方或第三方来源 → 根目录 `sync_official_cards.py`、`sync_yuyutei_prices.py`、`sync_limitless.py` 等，由 `sync_daily_pipeline.py` 串起来 → `index/*.json` → `app.py` → `frontend/`。
 
+卡图 WebP 由 `scripts/generate_card_webp.py` 从 PNG 另存到 R2（不覆盖原 PNG）。列表页用 manifest 里同一个 `?h=` 拼缩略图地址；WebP 还没有时回退到 PNG。
+
 效果文本另外走 `scripts/compile_card_effects.py` 与审计脚本，人工修正落在 `index/card_effect_overrides.json`，对战引擎从这里读。界面简中卡名由 `frontend/scripts/generate-hans-names.mjs` 写入 locale 生成文件和 `meta/name_hans_by_en.json`。
 
 ## 关键文件
@@ -44,7 +46,7 @@ OPTCG 工具站：Python API 加 Next.js 前端，界面为繁中、简中、英
 
 ## 部署
 
-`.github/workflows/deploy.yml` 在 `main` 上构建前端并同步到 VPS。连接用 GitHub Actions secrets `VPS_SSH_KEY`、`VPS_HOST`、`VPS_USER`（只写名字，值在仓库 Secrets 里）。站点与 API 的反代、服务文件在 `deploy/optcgassistant/`。每日官方同步先把 packs 里 R2 还没有的 `<ID>.png` 补上 R2，再从 R2 只补本地缺失的卡图（不覆盖已有文件），然后按 R2 对象体重建 manifest。
+`.github/workflows/deploy.yml` 在 `main` 上构建前端并同步到 VPS。连接用 GitHub Actions secrets `VPS_SSH_KEY`、`VPS_HOST`、`VPS_USER`（只写名字，值在仓库 Secrets 里）。站点与 API 的反代、服务文件在 `deploy/optcgassistant/`。每日官方同步先把 packs 里 R2 还没有的 `<ID>.png` 补上 R2，再从 R2 只补本地缺失的卡图（不覆盖已有文件），然后为还没有的 WebP 衍生图补 w200、w320 和全尺寸（失败只记日志），最后按 R2 对象体重建 manifest。衍生图文件名带内容哈希，manifest 解析会跳过它们，清单仍然只记 PNG 的哈希。
 
 ## 大文件
 

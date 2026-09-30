@@ -4,8 +4,9 @@
 # After packs/ is updated, copy <ID>.png keys that R2 does not already have
 # (rclone copy --ignore-existing; never sync, never delete). Then copy card
 # images that are on R2 but missing in packs/ (same flag, so local files that
-# differ from R2 stay). Then rebuild the card-image manifest from R2 bytes.
-# A copy or fill failure is logged and does not skip the rebuild.
+# differ from R2 stay). Then add missing WebP derivatives (failure is logged
+# and does not skip the rebuild). Then rebuild the card-image manifest from
+# R2 bytes. A copy, fill, or webp failure is logged and does not skip the rebuild.
 set -uo pipefail
 
 APP_ROOT="${OPCG_APP_ROOT:-/opt/opcg/app}"
@@ -46,8 +47,10 @@ read_env_value() {
   # object bytes, not from packs/) includes them. Then fill local gaps from
   # the same remote. --ignore-existing does not overwrite packs files that
   # already exist, including alt arts whose bytes differ from R2. The fill
-  # does not change the R2 set the manifest hashes; it sits before the rebuild
-  # so a fill failure still continues into the manifest. This job does not deploy.
+  # does not change the R2 set the manifest hashes. WebP derivatives are
+  # generated next from local packs (missing keys only; a failure is logged).
+  # Copy, fill, and webp failures still continue into the manifest. This job
+  # does not deploy.
   remote="$(read_env_value OPCG_R2_RCLONE_REMOTE)"
   if [[ -n "$remote" ]]; then
     echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] copy new pack images to $remote"
@@ -65,6 +68,13 @@ read_env_value() {
       --rclone-remote "$remote" || fill_rc=$?
     if [[ "$fill_rc" -ne 0 ]]; then
       echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] fill missing pack images from R2 FAILED rc=$fill_rc; continuing to card image manifest"
+    fi
+    echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] generate card webp variants"
+    webp_rc=0
+    "$PY" -u scripts/generate_card_webp.py \
+      --packs "$APP_ROOT/packs" || webp_rc=$?
+    if [[ "$webp_rc" -ne 0 ]]; then
+      echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] generate card webp FAILED rc=$webp_rc; continuing to card image manifest"
     fi
     echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] card image manifest from $remote"
     if ! "$PY" -u scripts/build_card_image_manifest.py --rclone-remote "$remote"; then

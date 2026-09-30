@@ -128,18 +128,21 @@ HTTPS 与反代
 
 每日官方卡表+卡图（VPS cron，10:00 HKT / 02:00 UTC）
   与抓价分开，避免 429 或官网超时把另一半一起杀掉。
-  卡表写入本地 packs/ 之后、重建 card-image manifest 之前，两步都用
-  rclone copy --ignore-existing（不覆盖、不删除）：
-  1. scripts/copy_new_pack_images_to_r2.py 把 packs 里 R2 还没有的 <ID>.png
-     补到 OPCG_R2_RCLONE_REMOTE。
+  卡表写入本地 packs/ 之后、重建 card-image manifest 之前：
+  1. scripts/copy_new_pack_images_to_r2.py 用 rclone copy --ignore-existing
+     把 packs 里 R2 还没有的 <ID>.png 补到 OPCG_R2_RCLONE_REMOTE（不覆盖、不删除）。
   2. scripts/fill_missing_pack_images_from_r2.py 从同一 remote 把本地没有的
      卡图补回 packs/。只含 png/jpg/jpeg/webp/gif，排除「 2」重复文件、
-     *-HEROINES-* 和日期后缀备份。本地已有文件保持不动，包括和 R2 内容不同的异画。
-  manifest 哈希的是 R2 对象体，不是本地 packs，所以第 2 步不改变清单内容。
-  它放在第 1 步之后，是为了今天的新图先进入 R2 再被哈希；放在 manifest 之前，
-  是为了补缺失败时仍然继续建清单。
-  任一步失败（rclone 缺失、remote 不可用、权限、超时）只记日志（退出码、复制数量，
-  补缺还会逐个打出新文件名），仍会重建 manifest。墙钟超时默认 1200 秒。
+     *-HEROINES-*、日期后缀备份，以及 generate_card_webp.py 的衍生图
+     （<ID>.w320.<hash>.webp、<ID>.<hash>.webp）。本地已有文件保持不动，
+     包括和 R2 内容不同的异画。
+  3. scripts/generate_card_webp.py --packs 为还没有的 WebP 补 w200、w320 和
+     全尺寸。凭据是 R2_ACCESS_KEY_ID / R2_SECRET_ACCESS_KEY 和端点或账号
+     （见 env.production.example）。不删除、不覆盖 PNG。失败只记日志。
+  manifest 哈希的是 R2 上的 PNG 对象体，解析时会跳过上面的衍生图文件名，
+  所以清单仍然只记 PNG 的 ?h=。第 2 步不改变清单内容。
+  这三步都放在 manifest 之前：今天的新图先进入 R2，WebP 用同一份字节的哈希，
+  任一步失败仍然继续建清单。rclone 墙钟超时默认 1200 秒。
   bash /opt/opcg/app/deploy/optcgassistant/run_daily_official_sync.sh
   日志：/opt/opcg/logs/daily_official_latest.log
   crontab:

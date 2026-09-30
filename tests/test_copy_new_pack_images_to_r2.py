@@ -220,15 +220,16 @@ def test_daily_sync_source_copies_before_manifest_and_does_not_sync():
     text = DAILY_SYNC.read_text(encoding="utf-8")
     copy_at = text.index("scripts/copy_new_pack_images_to_r2.py")
     fill_at = text.index("scripts/fill_missing_pack_images_from_r2.py")
+    webp_at = text.index("scripts/generate_card_webp.py")
     manifest_at = text.index("scripts/build_card_image_manifest.py")
-    assert copy_at < fill_at < manifest_at
+    assert copy_at < fill_at < webp_at < manifest_at
     between = text[copy_at:manifest_at]
     assert "exit " not in between
     assert "rclone sync" not in text
     assert "continuing to card image manifest" in text
     assert "--ignore-existing" in text
-    assert between.count("--packs") == 2
-    assert between.count('"$APP_ROOT/packs"') == 2
+    assert between.count("--packs") == 3
+    assert between.count('"$APP_ROOT/packs"') == 3
     assert between.count('"$remote"') == 2
     assert "opcg-r2:" not in text
     assert "/opt/opcg/app/packs" not in text
@@ -246,6 +247,8 @@ def _fake_python(path: Path) -> None:
                 "    raise SystemExit(7)",
                 "if any(arg.endswith('fill_missing_pack_images_from_r2.py') for arg in sys.argv):",
                 "    raise SystemExit(int(os.environ.get('FILL_EXIT', '0')))",
+                "if any(arg.endswith('generate_card_webp.py') for arg in sys.argv):",
+                "    raise SystemExit(int(os.environ.get('WEBP_EXIT', '0')))",
                 "raise SystemExit(0)",
                 "",
             ]
@@ -284,8 +287,9 @@ def test_daily_sync_continues_to_manifest_when_copy_fails(tmp_path: Path):
     calls = call_log.read_text(encoding="utf-8").splitlines()
     copy_at = next(i for i, line in enumerate(calls) if "copy_new_pack_images_to_r2.py" in line)
     fill_at = next(i for i, line in enumerate(calls) if "fill_missing_pack_images_from_r2.py" in line)
+    webp_at = next(i for i, line in enumerate(calls) if "generate_card_webp.py" in line)
     manifest_at = next(i for i, line in enumerate(calls) if "build_card_image_manifest.py" in line)
-    assert copy_at < fill_at < manifest_at
+    assert copy_at < fill_at < webp_at < manifest_at
     assert "--packs" in calls[copy_at]
     assert f"--packs {app / 'packs'}" in calls[copy_at]
     assert f"--packs {app / 'packs'}" in calls[fill_at]
@@ -336,6 +340,45 @@ def test_daily_sync_continues_to_manifest_when_fill_fails(tmp_path: Path):
     log = (logs / "daily_official_latest.log").read_text(encoding="utf-8")
     assert "fill missing pack images from R2 FAILED rc=9; continuing to card image manifest" in log
     assert log.index("fill missing pack images from R2 FAILED rc=9") < log.index(
+        "card image manifest from opcg-r2:opcg-packs"
+    )
+
+
+def test_daily_sync_continues_to_manifest_when_webp_fails(tmp_path: Path):
+    app = tmp_path / "app"
+    logs = tmp_path / "logs"
+    app.mkdir()
+    (app / ".env").write_text("OPCG_R2_RCLONE_REMOTE=opcg-r2:opcg-packs\n", encoding="utf-8")
+    fake_py = tmp_path / "fake-python.py"
+    call_log = tmp_path / "calls.txt"
+    _fake_python(fake_py)
+    env = {
+        "PATH": "/usr/bin:/bin",
+        "HOME": str(tmp_path),
+        "OPCG_APP_ROOT": str(app),
+        "OPCG_LOG_DIR": str(logs),
+        "OPCG_SYNC_PYTHON": str(fake_py),
+        "CALL_LOG": str(call_log),
+        "WEBP_EXIT": "4",
+    }
+    proc = subprocess.run(
+        ["bash", str(DAILY_SYNC)],
+        cwd=str(app),
+        env=env,
+        capture_output=True,
+        text=True,
+        timeout=30,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stderr
+    calls = call_log.read_text(encoding="utf-8").splitlines()
+    webp_at = next(i for i, line in enumerate(calls) if "generate_card_webp.py" in line)
+    manifest_at = next(i for i, line in enumerate(calls) if "build_card_image_manifest.py" in line)
+    assert webp_at < manifest_at
+    assert f"--packs {app / 'packs'}" in calls[webp_at]
+    log = (logs / "daily_official_latest.log").read_text(encoding="utf-8")
+    assert "generate card webp FAILED rc=4; continuing to card image manifest" in log
+    assert log.index("generate card webp FAILED rc=4") < log.index(
         "card image manifest from opcg-r2:opcg-packs"
     )
 

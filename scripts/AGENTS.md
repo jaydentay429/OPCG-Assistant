@@ -6,7 +6,7 @@
 
 - 效果审计与编译：`audit_*`、`compile_*`、`fix_*`、`review_*`、`run_full_effect_scan.py`、`build_effect_problem_queue.py`。命令和产物路径见 `README_EFFECTS.md`，不要在这里重抄。
 - 后台与运维：`admin_set_password.py`、`promote_forum_admin.py`、`configure_resend.py`、`send_daily_analytics_report.py`、`traffic_recount.py`。
-- 卡图：`build_card_image_manifest.py`、`copy_new_pack_images_to_r2.py`、`fill_missing_pack_images_from_r2.py`。
+- 卡图：`build_card_image_manifest.py`、`copy_new_pack_images_to_r2.py`、`fill_missing_pack_images_from_r2.py`、`generate_card_webp.py`。
 - AI 评测：`build_ai_eval_pool.py`、`ai_selfplay_eval.py`、`ai_stuck_diagnose.py`，写出 `meta/ai_eval_*.json`。
 
 新增根目录 `sync_*.py` 时，改 `docs/INDEX.md` 的数据流，并在上面补一行分类。
@@ -23,7 +23,20 @@
 
 `fix_batch_*.py` 和 `fix_semantic_*.py` 是按批次改效果覆盖的历史脚本。新的修复优先走 `README_EFFECTS.md` 里的循环，不要再复制出一批新的 `fix_batch_*`。
 
-卡图相关还有 `build_card_image_manifest.py`（构建期校验清单）、`copy_new_pack_images_to_r2.py`（packs→R2 只补缺）和 `fill_missing_pack_images_from_r2.py`（R2→packs 只补缺）。它们不负责界面文案。
+卡图相关还有 `build_card_image_manifest.py`（构建期校验清单）、`copy_new_pack_images_to_r2.py`（packs→R2 只补缺）、`fill_missing_pack_images_from_r2.py`（R2→packs 只补缺）和 `generate_card_webp.py`（由 PNG 另存 WebP，不覆盖原图）。它们不负责界面文案。
+
+`generate_card_webp.py` 读取 R2 桶 `opcg-packs` 或本地 `packs/` 里的 `<ID>.png`，上传三份 WebP：宽 200、宽 320，以及与原图同像素的全尺寸。对象名带 PNG 内容哈希前 8 位，和 manifest 的 `?h=` 是同一个值；原图一变，键就变，旧对象留着。默认跳过已存在的 WebP，`--force` 才覆盖这些 WebP。脚本没有删除，也不会上传或覆盖 `.png`。每个新对象的 Cache-Control 是 `public, max-age=31536000, immutable`。
+
+凭据只来自环境变量（仓库里不写值）：`R2_ACCESS_KEY_ID`、`R2_SECRET_ACCESS_KEY`，以及 `R2_ENDPOINT` 或 `R2_ACCOUNT_ID`（也认 `OPCG_R2_ENDPOINT`、`OPCG_R2_ACCOUNT_ID`、`CLOUDFLARE_ACCOUNT_ID`）。桶名默认 `opcg-packs`，可用 `R2_BUCKET` 或 `OPCG_R2_BUCKET`。进程会读仓库根的 `.env`，但已经导出的环境变量优先。
+
+在仓库根目录，先看 20 张会新增哪些键，再正式跑（中断后重跑会跳过已有 WebP）：
+
+```bash
+python3 scripts/generate_card_webp.py --from-r2 --dry-run --limit 20
+python3 scripts/generate_card_webp.py --from-r2
+```
+
+每日官方同步在补完 PNG 之后用 `--packs` 再跑一次，只补还没有的 WebP。失败只记日志，后面的 manifest 照常重建。
 
 后台脚本会碰到账号和邮件配置。不要把密钥写进脚本或提交到仓库。
 
