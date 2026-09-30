@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Copy card images that are not already on R2.
 
-The daily official sync runs this before ``scripts/build_card_image_manifest.py``.
+The daily official sync runs this before ``scripts/fill_missing_pack_images_from_r2.py``
+and ``scripts/build_card_image_manifest.py``.
 New art is uploaded with ``rclone copy --ignore-existing`` so an object that
 already exists on the remote is left untouched. ``rclone sync`` is not used:
 nothing on R2 is deleted, and hand-replaced art (EB05-016, EB05-048, OP18-112)

@@ -6,7 +6,7 @@
 
 - 效果审计与编译：`audit_*`、`compile_*`、`fix_*`、`review_*`、`run_full_effect_scan.py`、`build_effect_problem_queue.py`。命令和产物路径见 `README_EFFECTS.md`，不要在这里重抄。
 - 后台与运维：`admin_set_password.py`、`promote_forum_admin.py`、`configure_resend.py`、`send_daily_analytics_report.py`。
-- 卡图：`build_card_image_manifest.py`、`copy_new_pack_images_to_r2.py`。
+- 卡图：`build_card_image_manifest.py`、`copy_new_pack_images_to_r2.py`、`fill_missing_pack_images_from_r2.py`。
 - AI 评测：`build_ai_eval_pool.py`、`ai_selfplay_eval.py`、`ai_stuck_diagnose.py`，写出 `meta/ai_eval_*.json`。
 
 新增根目录 `sync_*.py` 时，改 `docs/INDEX.md` 的数据流，并在上面补一行分类。
@@ -23,7 +23,7 @@
 
 `fix_batch_*.py` 和 `fix_semantic_*.py` 是按批次改效果覆盖的历史脚本。新的修复优先走 `README_EFFECTS.md` 里的循环，不要再复制出一批新的 `fix_batch_*`。
 
-卡图相关还有 `build_card_image_manifest.py`（构建期校验清单）和 `copy_new_pack_images_to_r2.py`。它们不负责界面文案。
+卡图相关还有 `build_card_image_manifest.py`（构建期校验清单）、`copy_new_pack_images_to_r2.py`（packs→R2 只补缺）和 `fill_missing_pack_images_from_r2.py`（R2→packs 只补缺）。它们不负责界面文案。
 
 后台脚本会碰到账号和邮件配置。不要把密钥写进脚本或提交到仓库。
 

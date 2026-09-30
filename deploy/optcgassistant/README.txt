@@ -1,18 +1,18 @@
 optcgassistant.com — Ubuntu 24.04 部署备忘
 ========================================
 
-DNS（你已配置，核对即可）
-  A  @     → 165.245.180.246
-  A  www   → 165.245.180.246
-  A  api   → 165.245.180.246
+DNS（A 记录指向 VPS。地址是 GitHub Actions secret VPS_HOST，文档里写成 <VPS_IP>）
+  A  @     → <VPS_IP>
+  A  www   → <VPS_IP>
+  A  api   → <VPS_IP>
 
 代码目录（推荐，无空格）
   /opt/opcg/app
   = 本仓库根目录内的全部内容（含 app.py、frontend/、deploy/、cards/、meta/ 等）。
 
 一次性准备（在 VPS 上）
-  若仅用 root： mkdir -p /opt/opcg/app
-  若用 ubuntu：  sudo mkdir -p /opt/opcg && sudo chown ubuntu:ubuntu /opt/opcg
+  # 登录用户是 GitHub Actions secret VPS_USER，文档里写成 <DEPLOY_USER>
+  sudo mkdir -p /opt/opcg/app && sudo chown <DEPLOY_USER>:<DEPLOY_USER> /opt/opcg/app
   # 用 git clone + 拷贝，或 scp/rsync 把整个仓库同步到 /opt/opcg/app
 
   cd /opt/opcg/app
@@ -49,7 +49,15 @@ HTTPS 与反代
   sudo journalctl -u opcg-api -f
   sudo journalctl -u opcg-web -f
 
-日常更新（在 Mac 本机）
+日常更新
+  生产部署是推到 main，由 .github/workflows/deploy.yml 完成。
+  workflow 实际使用的 GitHub Actions secrets（只写名字，不写值）：
+    VPS_SSH_KEY   SSH 私钥。runner 运行时写到 ~/.ssh/deploy_key，结束后删除
+    VPS_HOST      主机，文档里写成 <VPS_IP>
+    VPS_USER      登录用户，文档里写成 <DEPLOY_USER>
+  下面的手动 rsync / ssh / scp 只用占位符 <DEPLOY_USER>@<VPS_IP>。
+  本机仓库根写成 <LOCAL_REPO>。不要写端口、密钥文件路径或真实账号。
+
   # 1) 本地构建前端
   cd frontend
   NEXT_PUBLIC_API_BASE_URL=https://api.optcgassistant.com \
@@ -71,15 +79,15 @@ HTTPS 与反代
     --exclude 'meta/replays/' \
     --exclude 'meta/market_prices.json' --exclude 'meta/yuyu_sync_cursor.json' \
     --exclude 'meta/photo_hash_index.json' --exclude 'meta/photo_clip_index.npz' \
-    "/Users/jayden/Documents/OPCG_Project/" \
-    root@165.245.180.246:/opt/opcg/app/
-  rsync -avz --delete frontend/.next/standalone/ root@165.245.180.246:/opt/opcg/app/frontend/.next/standalone/
-  rsync -avz --delete frontend/.next/static/ root@165.245.180.246:/opt/opcg/app/frontend/.next/static/
-  rsync -avz --delete frontend/public/ root@165.245.180.246:/opt/opcg/app/frontend/public/
+    "<LOCAL_REPO>/" \
+    <DEPLOY_USER>@<VPS_IP>:/opt/opcg/app/
+  rsync -avz --delete frontend/.next/standalone/ <DEPLOY_USER>@<VPS_IP>:/opt/opcg/app/frontend/.next/standalone/
+  rsync -avz --delete frontend/.next/static/ <DEPLOY_USER>@<VPS_IP>:/opt/opcg/app/frontend/.next/static/
+  rsync -avz --delete frontend/public/ <DEPLOY_USER>@<VPS_IP>:/opt/opcg/app/frontend/public/
 
   # 3) 依赖（尤其 OpenCC：缺了会导致简繁特征搜索失效）+ unit + 重启
   #    注意：不要 kill 正在跑的 sync_yuyutei_prices / sync_card_images
-  ssh root@165.245.180.246 'cd /opt/opcg/app && .venv/bin/pip install -r requirements.txt && \
+  ssh <DEPLOY_USER>@<VPS_IP> 'cd /opt/opcg/app && .venv/bin/pip install -r requirements.txt && \
     cp deploy/optcgassistant/opcg-api.service /etc/systemd/system/opcg-api.service && \
     systemctl daemon-reload && systemctl restart opcg-api opcg-web'
 
@@ -120,11 +128,18 @@ HTTPS 与反代
 
 每日官方卡表+卡图（VPS cron，10:00 HKT / 02:00 UTC）
   与抓价分开，避免 429 或官网超时把另一半一起杀掉。
-  卡表写入本地 packs/ 之后、重建 card-image manifest 之前：
-  rclone copy --ignore-existing 把 packs 里 R2 还没有的 <ID>.png 补到
-  OPCG_R2_RCLONE_REMOTE（不覆盖已有对象、不删除 R2 上任何东西）。
-  复制失败（rclone 缺失、remote 不可用、权限、超时）只记日志（退出码和复制数量），
-  仍会重建 manifest。墙钟超时默认 1200 秒。
+  卡表写入本地 packs/ 之后、重建 card-image manifest 之前，两步都用
+  rclone copy --ignore-existing（不覆盖、不删除）：
+  1. scripts/copy_new_pack_images_to_r2.py 把 packs 里 R2 还没有的 <ID>.png
+     补到 OPCG_R2_RCLONE_REMOTE。
+  2. scripts/fill_missing_pack_images_from_r2.py 从同一 remote 把本地没有的
+     卡图补回 packs/。只含 png/jpg/jpeg/webp/gif，排除「 2」重复文件、
+     *-HEROINES-* 和日期后缀备份。本地已有文件保持不动，包括和 R2 内容不同的异画。
+  manifest 哈希的是 R2 对象体，不是本地 packs，所以第 2 步不改变清单内容。
+  它放在第 1 步之后，是为了今天的新图先进入 R2 再被哈希；放在 manifest 之前，
+  是为了补缺失败时仍然继续建清单。
+  任一步失败（rclone 缺失、remote 不可用、权限、超时）只记日志（退出码、复制数量，
+  补缺还会逐个打出新文件名），仍会重建 manifest。墙钟超时默认 1200 秒。
   bash /opt/opcg/app/deploy/optcgassistant/run_daily_official_sync.sh
   日志：/opt/opcg/logs/daily_official_latest.log
   crontab:
@@ -140,14 +155,14 @@ HTTPS 与反代
   域名 DNS：python3 scripts/configure_resend.py --api-key re_...  把打印的记录加到 Cloudflare（灰云）。
   测试：python3 scripts/configure_resend.py --api-key re_... --test-to you@example.com
   漏发补寄（本机有 Gmail SMTP 时）：
-    scp root@165.245.180.246:/opt/opcg/app/meta/analytics.db /tmp/opcg-analytics.db
+    scp <DEPLOY_USER>@<VPS_IP>:/opt/opcg/app/meta/analytics.db /tmp/opcg-analytics.db
     cd /opt/opcg/app && ANALYTICS_DB_FILE=/tmp/opcg-analytics.db .venv/bin/python scripts/send_daily_analytics_report.py --day YYYY-MM-DD
   .env 需配置：ANALYTICS_ENABLED=1、ANALYTICS_REPORT_EMAIL、以及
   ANALYTICS_EXCLUDE_VISITOR_IDS / USERNAMES（排除你自己的测试流量）
 
 把线上价格拉回本机
-  rsync -avz root@165.245.180.246:/opt/opcg/app/meta/market_prices.json \
-    "/Users/jayden/Documents/OPCG_Project/meta/market_prices.json"
+  rsync -avz <DEPLOY_USER>@<VPS_IP>:/opt/opcg/app/meta/market_prices.json \
+    "<LOCAL_REPO>/meta/market_prices.json"
 
 卡图 CDN（img.optcgassistant.com）Cloudflare 缓存
   前端 CardImg 优先 img 子域；缺图才回退 api.../packs/ 与 /images/card/。
