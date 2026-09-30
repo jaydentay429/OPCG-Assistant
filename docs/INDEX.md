@@ -46,7 +46,7 @@ OPTCG 工具站：Python API 加 Next.js 前端，界面为繁中、简中、英
 
 ## 部署
 
-`.github/workflows/deploy.yml` 在 `main` 上构建前端并同步到 VPS。连接用 GitHub Actions secrets `VPS_SSH_KEY`、`VPS_HOST`、`VPS_USER`（只写名字，值在仓库 Secrets 里）。站点与 API 的反代、服务文件在 `deploy/optcgassistant/`。每日官方同步先把 packs 里 R2 还没有的 `<ID>.png` 补上 R2，再从 R2 只补本地缺失的卡图（不覆盖已有文件），然后为还没有的 WebP 衍生图补 w200、w320 和全尺寸（失败只记日志），最后按 R2 对象体重建 manifest。衍生图文件名带内容哈希，manifest 解析会跳过它们，清单仍然只记 PNG 的哈希。
+`.github/workflows/deploy.yml` 在 `main` 上构建前端并同步到 VPS。连接用 GitHub Actions secrets `VPS_SSH_KEY`、`VPS_HOST`、`VPS_USER`（只写名字，值在仓库 Secrets 里）。站点与 API 的反代、服务文件在 `deploy/optcgassistant/`。每日官方同步先把 packs 里 R2 还没有的 `<ID>.png` 补上 R2，再从 R2 只补本地缺失的卡图（不覆盖已有文件），然后为还没有的 WebP 衍生图补 w200、w320 和全尺寸（失败只记日志），最后按 R2 对象体重建 manifest。衍生图文件名带内容哈希，manifest 解析会跳过它们，清单仍然只记 PNG 的哈希。卡页图片和 og:image 用的是部署时打进前端的那份 manifest：先拉 VPS 清单，只补上仓库里有而 VPS 没有的卡号（已有条目以 VPS 为准，不删不改），再构建，并把新卡号写回 VPS。每日同步不重新部署前端。
 
 ## 大文件
 
