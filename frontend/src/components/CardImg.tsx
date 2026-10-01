@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { cardImageSources } from "@/lib/api";
+import { CARD_ART_HEIGHT, CARD_ART_WIDTH } from "@/lib/cardImageFrame";
 import { displayCardId } from "@/lib/cardId";
 import {
   heroCardImageAttrs,
@@ -47,6 +48,7 @@ function CardImagePlaceholder({ className }: { className?: string }) {
  * file 404s, the same element retries the PNG URL. `detailHero` (the card-page
  * main image) requests the full-size WebP and falls back the same way.
  * Variant thumbnails and every other caller stay on the PNG.
+ * Width and height default to the 5:7 card ratio so the slot does not collapse.
  */
 export function CardImg({
   cardId,
@@ -55,8 +57,8 @@ export function CardImg({
   localUrl,
   loading = "lazy",
   fetchPriority,
-  width,
-  height,
+  width = CARD_ART_WIDTH,
+  height = CARD_ART_HEIGHT,
   listThumb = false,
   detailHero = false,
 }: Props) {

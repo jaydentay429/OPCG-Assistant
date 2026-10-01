@@ -7,6 +7,7 @@ import { useAuth } from "@/lib/auth";
 import { useDeck } from "@/lib/deck";
 import { useI18n } from "@/lib/i18n";
 import { localizeCardName, localizeDonCardName } from "@/lib/cardLocale";
+import { cardWallImageFetchPriority, cardWallImageLoading } from "@/lib/cardImageFrame";
 import { displayCardId, isDonCardId } from "@/lib/cardId";
 import type { FilterCard } from "@/lib/types";
 import { flushCurrentScroll } from "@/lib/scrollRestore";
@@ -82,7 +83,7 @@ export function CardWall({ cards }: { cards: FilterCard[] }) {
 
   return (
     <div className="card-wall">
-      {cards.map((c) => {
+      {cards.map((c, index) => {
         const pickedVariant = c.id;
         const qty = deck.qtyOf(c.id);
         const colQty = Math.max(0, Math.floor(Number(owned[c.id]) || 0));
@@ -100,7 +101,14 @@ export function CardWall({ cards }: { cards: FilterCard[] }) {
               onPointerDown={() => flushCurrentScroll(c.id)}
               onClick={() => flushCurrentScroll(c.id)}
             >
-              <CardImg cardId={c.id} alt={displayName} localUrl={c.img_local_url} listThumb />
+              <CardImg
+                cardId={c.id}
+                alt={displayName}
+                localUrl={c.img_local_url}
+                listThumb
+                loading={cardWallImageLoading(index)}
+                fetchPriority={cardWallImageFetchPriority(index)}
+              />
             </Link>
             {isDon ? null : (
               <div className="id" title={displayCardId(c.id)}>

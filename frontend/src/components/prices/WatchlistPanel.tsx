@@ -94,9 +94,10 @@ export function WatchlistPanel({ watchlist, onWatchlistChange }: Props) {
         <p className="muted">{t("prices.watch_empty")}</p>
       ) : (
         <div className="price-wall">
-          {watchlist.map((id) => (
+          {watchlist.map((id, index) => (
             <PriceWallTile
               key={id}
+              imageIndex={index}
               card={{ id }}
               price={prices[id]?.current_price}
               lastChecked={prices[id]?.last_checked}
