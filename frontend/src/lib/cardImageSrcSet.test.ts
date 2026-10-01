@@ -4,6 +4,7 @@ import { PACKS_CDN_BASE, cardImageUrl } from "./api";
 import { cardJsonLd, cardOgImage, jsonLdScript } from "./seo";
 import {
   CARD_WALL_IMAGE_SIZES,
+  DETAIL_THUMB_IMAGE_SIZES,
   cardWebpObjectKey,
   clearHeroWebpMisses,
   clearListWebpMisses,
@@ -12,6 +13,8 @@ import {
   listCardImageAttrs,
   noteHeroWebpMiss,
   noteListWebpMiss,
+  prefetchHeroImage,
+  webpLoadAlreadyFailed,
 } from "./cardImageSrcSet";
 
 const PUBLIC_BASE = PACKS_CDN_BASE || "https://img.optcgassistant.com";
@@ -50,6 +53,21 @@ describe("list card webp srcset", () => {
     clearListWebpMisses();
     const again = listCardImageAttrs("OP13-001");
     assert.equal(again?.webp, true);
+  });
+
+  it("uses thumbnail webp for the detail strip sizes and still omits the full-size key", () => {
+    clearListWebpMisses();
+    const hash = "870e05eb";
+    const thumb = listCardImageAttrs("OP13-001", false, DETAIL_THUMB_IMAGE_SIZES);
+    assert.ok(thumb);
+    assert.equal(thumb.webp, true);
+    assert.equal(thumb.sizes, "80px");
+    assert.equal(DETAIL_THUMB_IMAGE_SIZES, "80px");
+    assert.match(thumb.srcSet ?? "", /OP13-001\.w200\.870e05eb\.webp/);
+    assert.match(thumb.srcSet ?? "", /OP13-001\.w320\.870e05eb\.webp/);
+    assert.equal((thumb.srcSet ?? "").includes(`OP13-001.${hash}.webp`), false);
+    assert.equal(thumb.src.includes(`OP13-001.${hash}.webp`), false);
+    assert.equal(thumb.src.endsWith(".png?h=870e05eb"), false);
   });
 
   it("returns nothing when the manifest has no png hash", () => {
@@ -116,5 +134,19 @@ describe("card page hero webp", () => {
     assert.equal(heroCardImageAttrs("OP18-112", true), null);
     assert.equal(heroPreloadHref("OP18-112"), "");
     assert.equal(cardOgImage("OP18-112"), null);
+  });
+
+  it("treats an image that already failed before mount as a miss", () => {
+    assert.equal(webpLoadAlreadyFailed(null), false);
+    assert.equal(webpLoadAlreadyFailed(undefined), false);
+    assert.equal(webpLoadAlreadyFailed({ complete: false, naturalWidth: 0 }), false);
+    assert.equal(webpLoadAlreadyFailed({ complete: true, naturalWidth: 600 }), false);
+    assert.equal(webpLoadAlreadyFailed({ complete: true, naturalWidth: 0 }), true);
+  });
+
+  it("skips hero prefetch when there is no browser", () => {
+    assert.equal(typeof window, "undefined");
+    prefetchHeroImage("OP13-001");
+    prefetchHeroImage("OP13-001-P1");
   });
 });
