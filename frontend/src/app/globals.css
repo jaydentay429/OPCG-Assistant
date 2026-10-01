@@ -156,6 +156,13 @@ img {
   display: block;
 }
 
+/* Default CardImg is 500×700. Without this, the height attribute paints
+   as 700px wherever a rule only sets width. aspect-ratio keeps the slot. */
+.card-img {
+  height: auto;
+  aspect-ratio: 5 / 7;
+}
+
 .app-shell {
   min-height: 100dvh;
   display: flex;
@@ -1352,6 +1359,12 @@ input[type="search"]::-webkit-search-cancel-button {
   border-radius: 4px;
   overflow: hidden;
   background: #0b1220;
+}
+
+.tournament-leader-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .tournament-leader-name {

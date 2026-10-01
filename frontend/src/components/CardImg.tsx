@@ -156,7 +156,7 @@ export function CardImg({
       <img
         ref={imgRef}
         key={visible.webp ? "webp" : "png"}
-        className={className}
+        className={joinClass("card-img", className)}
         src={visible.src}
         srcSet={visible.srcSet}
         sizes={visible.sizes}
@@ -196,7 +196,7 @@ export function CardImg({
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      className={className}
+      className={joinClass("card-img", className)}
       src={src}
       alt={altText}
       width={width}
