@@ -11,6 +11,7 @@ import {
   type DeckStatFields,
 } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
+import { cardWallImageFetchPriority, cardWallImageLoading } from "@/lib/cardImageFrame";
 import { cardIdSortKey, displayCardId } from "@/lib/cardId";
 import { cardMatchesCollectionQuery } from "@/lib/cardSearchMatch";
 import { useI18n } from "@/lib/i18n";
@@ -404,7 +405,7 @@ export function CollectorPageClient() {
               <p className="muted collector-empty">{t("collector.empty")}</p>
             ) : (
               <div className="collector-grid">
-                {entries.map(([id, cnt]) => {
+                {entries.map(([id, cnt], index) => {
                   const unit = unitPriceOf(priceMap, id);
                   const line = unit == null ? null : unit * Number(cnt);
                   return (
@@ -417,7 +418,12 @@ export function CollectorPageClient() {
                         onPointerDown={() => flushCurrentScroll(id)}
                         onClick={() => flushCurrentScroll(id)}
                       >
-                        <CardImg cardId={id} alt={id} />
+                        <CardImg
+                          cardId={id}
+                          alt={id}
+                          loading={cardWallImageLoading(index)}
+                          fetchPriority={cardWallImageFetchPriority(index)}
+                        />
                       </Link>
                       <div className="collector-meta">
                         <div className="collector-meta-row">

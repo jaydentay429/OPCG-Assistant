@@ -40,6 +40,7 @@ import {
   readPathScrollTarget,
   requestScrollRestore,
 } from "@/lib/scrollRestore";
+import { DETAIL_THUMB_IMAGE_SIZES, prefetchHeroImage } from "@/lib/cardImageSrcSet";
 import { CardImg } from "./CardImg";
 import { CardDetailExtras } from "./CardDetailExtras";
 
@@ -441,6 +442,34 @@ export function CardDetailClient({
       .map((m) => m.variantId);
   }, [card, baseId, selectedVariantId]);
 
+  useEffect(() => {
+    const others = thumbVariantIds
+      .map((id) => normalizeCardId(id))
+      .filter((id) => id && id !== shownId);
+    if (others.length === 0) return;
+    let cancelled = false;
+    const run = () => {
+      if (cancelled) return;
+      for (const id of others) prefetchHeroImage(id);
+    };
+    const idleWindow = window as Window & {
+      requestIdleCallback?: (cb: () => void) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+    if (typeof idleWindow.requestIdleCallback === "function") {
+      const handle = idleWindow.requestIdleCallback(run);
+      return () => {
+        cancelled = true;
+        idleWindow.cancelIdleCallback?.(handle);
+      };
+    }
+    const timer = window.setTimeout(run, 300);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [thumbVariantIds, shownId]);
+
   if (error) {
     return (
       <div className="stack">
@@ -598,12 +627,21 @@ export function CardDetailClient({
                     aria-label={thumbText}
                     title={thumbText}
                     onClick={(event) => onVariantClick(event, id)}
+                    onMouseEnter={() => prefetchHeroImage(id)}
+                    onFocus={() => prefetchHeroImage(id)}
                     onKeyDown={(event) => {
                       if (event.key !== "Enter") return;
                       onVariantClick(event, id);
                     }}
                   >
-                    <CardImg cardId={id} alt={thumbText} width={120} height={168} />
+                    <CardImg
+                      cardId={id}
+                      alt={thumbText}
+                      width={120}
+                      height={168}
+                      listThumb
+                      imageSizes={DETAIL_THUMB_IMAGE_SIZES}
+                    />
                   </a>
                 );
               })}

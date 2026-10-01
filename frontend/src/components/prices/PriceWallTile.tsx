@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { cardWallImageFetchPriority, cardWallImageLoading } from "@/lib/cardImageFrame";
 import { displayCardId, isDonCardId } from "@/lib/cardId";
 import { localizeCardName, localizeDonCardName } from "@/lib/cardLocale";
 import { useI18n } from "@/lib/i18n";
@@ -21,6 +22,8 @@ type Props = {
   lastChecked?: string | null;
   watched?: boolean;
   onToggleWatch?: (cardId: string) => void;
+  /** Position in the price wall. The first row is eager; omitted tiles stay lazy. */
+  imageIndex?: number;
 };
 
 function formatChecked(raw: string | null | undefined, fallback: string): string | null {
@@ -34,7 +37,7 @@ function formatChecked(raw: string | null | undefined, fallback: string): string
   }
 }
 
-export function PriceWallTile({ card, price, lastChecked, watched, onToggleWatch }: Props) {
+export function PriceWallTile({ card, price, lastChecked, watched, onToggleWatch, imageIndex }: Props) {
   const { t, lang } = useI18n();
   const yen = formatYen(price);
   const isDon = isDonCardId(card.id);
@@ -62,7 +65,13 @@ export function PriceWallTile({ card, price, lastChecked, watched, onToggleWatch
         onClick={() => flushCurrentScroll(card.id)}
       >
         <div className="price-tile-art">
-          <CardImg cardId={card.id} alt={name} localUrl={card.img_local_url || undefined} />
+          <CardImg
+            cardId={card.id}
+            alt={name}
+            localUrl={card.img_local_url || undefined}
+            loading={imageIndex == null ? "lazy" : cardWallImageLoading(imageIndex)}
+            fetchPriority={imageIndex == null ? undefined : cardWallImageFetchPriority(imageIndex)}
+          />
         </div>
         <div className="price-tile-meta">
           {isDonCardId(card.id) ? null : <strong>{displayCardId(card.id)}</strong>}

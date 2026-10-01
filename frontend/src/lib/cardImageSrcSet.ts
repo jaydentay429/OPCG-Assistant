@@ -12,6 +12,12 @@ const PUBLIC_CARD_IMAGE_HOST = "https://img.optcgassistant.com";
  */
 export const CARD_WALL_IMAGE_SIZES = "(max-width: 900px) 60px, 153px";
 
+/**
+ * Detail-page variant strip. Slots are about 56–80 CSS px, so 1x/2x pick the
+ * 200w thumbnail and only a 3x screen steps up to 320w. Never the full PNG.
+ */
+export const DETAIL_THUMB_IMAGE_SIZES = "80px";
+
 const listWebpMisses = new Set<string>();
 const heroWebpMisses = new Set<string>();
 
@@ -74,14 +80,18 @@ export type ListCardImage = {
 };
 
 /**
- * List-thumbnail request for the search card wall.
+ * Thumbnail request for the search card wall and the card-page variant strip.
  * WebP is tried first. After a load error (or a remembered miss) the src is
  * the same PNG URL cardImageUrl already publishes, with no srcSet, so a
  * deploy that lands before the WebP upload cannot leave a broken image.
  * The full-size WebP key is not included; the card page hero requests that
  * object through heroCardImageAttrs.
  */
-export function listCardImageAttrs(cardId: string, webpFailed = false): ListCardImage | null {
+export function listCardImageAttrs(
+  cardId: string,
+  webpFailed = false,
+  sizes: string = CARD_WALL_IMAGE_SIZES,
+): ListCardImage | null {
   const png = cardImageUrl(cardId);
   const hash = cardImageHash(cardId);
   if (!png || !hash) return null;
@@ -93,9 +103,20 @@ export function listCardImageAttrs(cardId: string, webpFailed = false): ListCard
   return {
     src: w320,
     srcSet: `${w200} 200w, ${w320} 320w`,
-    sizes: CARD_WALL_IMAGE_SIZES,
+    sizes,
     webp: true,
   };
+}
+
+/**
+ * The `<img>` is already in the SSR HTML, so its error event can fire before
+ * hydration attaches onError. A finished load with no pixels is that miss.
+ * An image that has not finished yet, or that decoded, is not a miss.
+ */
+export function webpLoadAlreadyFailed(
+  img: { complete: boolean; naturalWidth: number } | null | undefined,
+): boolean {
+  return !!img && img.complete && img.naturalWidth === 0;
 }
 
 /**
@@ -126,4 +147,34 @@ export function heroCardImageAttrs(cardId: string, webpFailed = false): ListCard
  */
 export function heroPreloadHref(cardId: string): string {
   return heroCardImageAttrs(cardId)?.src ?? "";
+}
+
+const prefetchedHeroUrls = new Set<string>();
+
+let shownHero: ListCardImage | null = null;
+
+/** Last hero that actually decoded. A variant navigation remounts the img, so this is what stays on screen. */
+export function rememberShownHero(image: ListCardImage): void {
+  if (!image.src) return;
+  shownHero = image;
+}
+
+export function previousHeroImage(nextSrc: string): ListCardImage | null {
+  if (!shownHero || !nextSrc || shownHero.src === nextSrc) return null;
+  return shownHero;
+}
+
+export function clearShownHero(): void {
+  shownHero = null;
+}
+
+/** Warm the full-size hero URL (WebP, or PNG after a remembered miss). Deduped per session. */
+export function prefetchHeroImage(cardId: string): void {
+  if (typeof window === "undefined") return;
+  const href = heroPreloadHref(cardId);
+  if (!href || prefetchedHeroUrls.has(href)) return;
+  prefetchedHeroUrls.add(href);
+  const img = new Image();
+  img.decoding = "async";
+  img.src = href;
 }

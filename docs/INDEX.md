@@ -26,7 +26,7 @@ OPTCG 工具站：Python API 加 Next.js 前端，界面为繁中、简中、英
 
 官方或第三方来源 → 根目录 `sync_official_cards.py`、`sync_yuyutei_prices.py`、`sync_limitless.py` 等，由 `sync_daily_pipeline.py` 串起来 → `index/*.json` → `app.py` → `frontend/`。
 
-卡图 WebP 由 `scripts/generate_card_webp.py` 从 PNG 另存到 R2（不覆盖原 PNG）。列表页用 manifest 里同一个 `?h=` 拼缩略图地址；单卡页主图用全尺寸 WebP。WebP 还没有时回退到 PNG。sitemap、og:image、twitter:image、JSON-LD 仍用 PNG。
+卡图 WebP 由 `scripts/generate_card_webp.py` 从 PNG 另存到 R2（不覆盖原 PNG）。列表页和单卡页异画缩略图用 manifest 里同一个 `?h=` 拼缩略图地址；单卡页主图用全尺寸 WebP。WebP 还没有时回退到 PNG。sitemap、og:image、twitter:image、JSON-LD 仍用 PNG。
 
 效果文本另外走 `scripts/compile_card_effects.py` 与审计脚本，人工修正落在 `index/card_effect_overrides.json`，对战引擎从这里读。界面简中卡名由 `frontend/scripts/generate-hans-names.mjs` 写入 locale 生成文件和 `meta/name_hans_by_en.json`。
 

@@ -311,9 +311,10 @@ export function MarketPanel({ watchlist, onWatchlistChange }: Props) {
         <p className="muted">{t("filter.no_results")}</p>
       ) : (
         <div className="price-wall">
-          {cards.map((c) => (
+          {cards.map((c, index) => (
             <PriceWallTile
               key={c.id}
+              imageIndex={index}
               card={c}
               price={prices[c.id]?.current_price}
               lastChecked={prices[c.id]?.last_checked}
