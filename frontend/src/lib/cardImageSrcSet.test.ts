@@ -11,9 +11,12 @@ import {
   heroCardImageAttrs,
   heroPreloadHref,
   listCardImageAttrs,
+  clearShownHero,
   noteHeroWebpMiss,
   noteListWebpMiss,
   prefetchHeroImage,
+  previousHeroImage,
+  rememberShownHero,
   webpLoadAlreadyFailed,
 } from "./cardImageSrcSet";
 
@@ -142,6 +145,18 @@ describe("card page hero webp", () => {
     assert.equal(webpLoadAlreadyFailed({ complete: false, naturalWidth: 0 }), false);
     assert.equal(webpLoadAlreadyFailed({ complete: true, naturalWidth: 600 }), false);
     assert.equal(webpLoadAlreadyFailed({ complete: true, naturalWidth: 0 }), true);
+  });
+
+  it("keeps the decoded hero so a remount can show it until the next url loads", () => {
+    clearShownHero();
+    const current = { src: "https://img.example/OP13-001.webp?h=870e05eb", webp: true };
+    const next = "https://img.example/OP13-001-P1.webp?h=a1625823";
+    assert.equal(previousHeroImage(next), null);
+    rememberShownHero(current);
+    assert.equal(previousHeroImage(current.src), null);
+    assert.deepEqual(previousHeroImage(next), current);
+    clearShownHero();
+    assert.equal(previousHeroImage(next), null);
   });
 
   it("skips hero prefetch when there is no browser", () => {

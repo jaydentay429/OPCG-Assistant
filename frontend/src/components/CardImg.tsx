@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { cardImageSources } from "@/lib/api";
 import { CARD_ART_HEIGHT, CARD_ART_WIDTH } from "@/lib/cardImageFrame";
 import { displayCardId } from "@/lib/cardId";
@@ -9,6 +9,8 @@ import {
   listCardImageAttrs,
   noteHeroWebpMiss,
   noteListWebpMiss,
+  previousHeroImage,
+  rememberShownHero,
   webpLoadAlreadyFailed,
   type ListCardImage,
 } from "@/lib/cardImageSrcSet";
@@ -89,6 +91,12 @@ export function CardImg({
     mode === "hero" && painted && enhanced && painted.src !== enhanced.src ? painted : null;
   const visible = heroHold ?? enhanced;
 
+  useLayoutEffect(() => {
+    if (mode !== "hero" || !enhanced || painted) return;
+    const prev = previousHeroImage(enhanced.src);
+    if (prev) setPainted(prev);
+  }, [mode, enhanced, painted]);
+
   useEffect(() => {
     if (mode === "png" || !enhanced || failed) return;
     const img = imgRef.current;
@@ -108,6 +116,7 @@ export function CardImg({
     if (mode !== "hero") return;
 
     if (showingTarget && img && img.complete && img.naturalWidth > 0) {
+      rememberShownHero(enhanced);
       setPainted((prev) => (prev?.src === enhanced.src ? prev : enhanced));
       return;
     }
@@ -117,7 +126,9 @@ export function CardImg({
     let cancelled = false;
     const probe = new Image();
     probe.onload = () => {
-      if (!cancelled) setPainted(enhanced);
+      if (cancelled) return;
+      rememberShownHero(enhanced);
+      setPainted(enhanced);
     };
     probe.onerror = () => {
       if (cancelled) return;
@@ -158,7 +169,8 @@ export function CardImg({
         onLoad={(event) => {
           if (mode !== "hero" || heroHold) return;
           const el = event.currentTarget;
-          if (el.naturalWidth > 0 && elementShowsSrc(el, enhanced?.src ?? "")) {
+          if (el.naturalWidth > 0 && enhanced && elementShowsSrc(el, enhanced.src)) {
+            rememberShownHero(enhanced);
             setPainted(enhanced);
           }
         }}

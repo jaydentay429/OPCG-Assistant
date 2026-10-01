@@ -151,6 +151,23 @@ export function heroPreloadHref(cardId: string): string {
 
 const prefetchedHeroUrls = new Set<string>();
 
+let shownHero: ListCardImage | null = null;
+
+/** Last hero that actually decoded. A variant navigation remounts the img, so this is what stays on screen. */
+export function rememberShownHero(image: ListCardImage): void {
+  if (!image.src) return;
+  shownHero = image;
+}
+
+export function previousHeroImage(nextSrc: string): ListCardImage | null {
+  if (!shownHero || !nextSrc || shownHero.src === nextSrc) return null;
+  return shownHero;
+}
+
+export function clearShownHero(): void {
+  shownHero = null;
+}
+
 /** Warm the full-size hero URL (WebP, or PNG after a remembered miss). Deduped per session. */
 export function prefetchHeroImage(cardId: string): void {
   if (typeof window === "undefined") return;
