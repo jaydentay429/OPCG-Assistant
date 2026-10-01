@@ -580,6 +580,7 @@ export function CardDetailClient({
             fetchPriority="high"
             width={733}
             height={1024}
+            detailHero
           />
           </div>
           {thumbVariantIds.length > 0 ? (

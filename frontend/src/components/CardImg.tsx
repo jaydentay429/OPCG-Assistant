@@ -1,9 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { cardImageSources } from "@/lib/api";
 import { displayCardId } from "@/lib/cardId";
-import { listCardImageAttrs, noteListWebpMiss } from "@/lib/cardImageSrcSet";
+import {
+  heroCardImageAttrs,
+  listCardImageAttrs,
+  noteHeroWebpMiss,
+  noteListWebpMiss,
+} from "@/lib/cardImageSrcSet";
 import { useI18n } from "@/lib/i18n";
 
 type Props = {
@@ -17,6 +22,8 @@ type Props = {
   height?: number;
   /** Search card wall only. WebP srcset; a failed load uses the PNG URL. */
   listThumb?: boolean;
+  /** Card-detail main image only. Full-size WebP; a failed load uses the PNG URL. */
+  detailHero?: boolean;
 };
 
 function joinClass(...parts: Array<string | false | undefined>): string {
@@ -37,8 +44,9 @@ function CardImagePlaceholder({ className }: { className?: string }) {
  * Card image loader. The only source is cardImageUrl(id) (CDN file with ?h=).
  * An empty URL (no manifest hash) or a failed load becomes a neutral placeholder.
  * `listThumb` (the search card wall) requests the WebP srcset first. If that
- * file 404s, the same element retries the PNG URL. Other callers, including
- * the card-page hero, stay on the PNG.
+ * file 404s, the same element retries the PNG URL. `detailHero` (the card-page
+ * main image) requests the full-size WebP and falls back the same way.
+ * Variant thumbnails and every other caller stay on the PNG.
  */
 export function CardImg({
   cardId,
@@ -50,34 +58,35 @@ export function CardImg({
   width,
   height,
   listThumb = false,
+  detailHero = false,
 }: Props) {
   const sources = useMemo(() => cardImageSources(cardId, localUrl), [cardId, localUrl]);
-  const [webpFailed, setWebpFailed] = useState(false);
-  const [failed, setFailed] = useState(false);
-  const listAttrs = useMemo(
-    () => (listThumb ? listCardImageAttrs(cardId, webpFailed) : null),
-    [listThumb, cardId, webpFailed],
-  );
-
-  useEffect(() => {
-    setWebpFailed(false);
-    setFailed(false);
-  }, [cardId, localUrl, listThumb]);
+  const mode = listThumb ? "list" : detailHero ? "hero" : "png";
+  const slot = `${mode}:${cardId}`;
+  const [webpMissSlot, setWebpMissSlot] = useState("");
+  const [deadSlot, setDeadSlot] = useState("");
+  const webpFailed = webpMissSlot === slot;
+  const failed = deadSlot === slot;
+  const enhanced = useMemo(() => {
+    if (mode === "list") return listCardImageAttrs(cardId, webpFailed);
+    if (mode === "hero") return heroCardImageAttrs(cardId, webpFailed);
+    return null;
+  }, [mode, cardId, webpFailed]);
 
   const altText = alt || displayCardId(cardId);
 
-  if (listThumb) {
-    if (!listAttrs || failed) {
+  if (mode !== "png") {
+    if (!enhanced || failed) {
       return <CardImagePlaceholder className={className} />;
     }
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img
-        key={listAttrs.webp ? "webp" : "png"}
+        key={enhanced.webp ? "webp" : "png"}
         className={className}
-        src={listAttrs.src}
-        srcSet={listAttrs.srcSet}
-        sizes={listAttrs.sizes}
+        src={enhanced.src}
+        srcSet={enhanced.srcSet}
+        sizes={enhanced.sizes}
         alt={altText}
         width={width}
         height={height}
@@ -85,12 +94,13 @@ export function CardImg({
         fetchPriority={fetchPriority}
         decoding="async"
         onError={() => {
-          if (listAttrs.webp) {
-            noteListWebpMiss(cardId);
-            setWebpFailed(true);
+          if (enhanced.webp) {
+            if (mode === "list") noteListWebpMiss(cardId);
+            else noteHeroWebpMiss(cardId);
+            setWebpMissSlot(slot);
             return;
           }
-          setFailed(true);
+          setDeadSlot(slot);
         }}
       />
     );
@@ -112,7 +122,7 @@ export function CardImg({
       loading={loading}
       fetchPriority={fetchPriority}
       decoding="async"
-      onError={() => setFailed(true)}
+      onError={() => setDeadSlot(slot)}
     />
   );
 }

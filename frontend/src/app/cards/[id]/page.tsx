@@ -5,7 +5,8 @@ import { cache } from "react";
 import { preload } from "react-dom";
 import { CardDetailClient } from "@/components/CardDetailClient";
 import { JsonLd } from "@/components/JsonLd";
-import { ApiError, cardImageSources, stripAbsentCardImageUrls, type CardTournamentAppearance } from "@/lib/api";
+import { ApiError, stripAbsentCardImageUrls, type CardTournamentAppearance } from "@/lib/api";
+import { heroPreloadHref } from "@/lib/cardImageSrcSet";
 import { getCachedCardDetail, getCachedCardTournaments } from "@/lib/cardPageData";
 import { catalogHasCard, missingCardShould404 } from "@/lib/cardCatalog";
 import { cardNotFoundMetadata } from "@/lib/cardNotFoundMetadata";
@@ -139,6 +140,13 @@ export default async function CardPage({
   const qp = await searchParams;
   const picked = firstQueryValue(qp.picked);
   const pickedVariant = firstQueryValue(qp.pickedVariant);
+  // Hash comes from the build manifest, so this can run before the card fetch.
+  // A preload registered after that await is too late for the document head.
+  const heroId = shownCardId(cardId, picked, pickedVariant);
+  const heroSrc = heroPreloadHref(heroId);
+  if (heroSrc && !/localhost|127\.0\.0\.1/i.test(heroSrc)) {
+    preload(heroSrc, { as: "image", fetchPriority: "high" });
+  }
   const card = await loadCard(cardId);
   if (!card) notFound();
   // Same payload the client uses: non-DON pages load the base card so every
@@ -301,12 +309,6 @@ export default async function CardPage({
       ) : null}
     </section>
   ) : null;
-
-  const heroId = shownCardId(cardId, picked, pickedVariant);
-  const heroSrc = cardImageSources(heroId)[0];
-  if (heroSrc && !/localhost|127\.0\.0\.1/i.test(heroSrc)) {
-    preload(heroSrc, { as: "image", fetchPriority: "high" });
-  }
 
   return (
     <div className="stack">
