@@ -98,6 +98,7 @@ export function CardWall({ cards }: { cards: FilterCard[] }) {
               className="thumb"
               aria-label={displayName}
               scroll={false}
+              prefetch={false}
               onPointerDown={() => flushCurrentScroll(c.id)}
               onClick={() => flushCurrentScroll(c.id)}
             >
