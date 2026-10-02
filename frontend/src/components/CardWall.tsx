@@ -98,6 +98,9 @@ export function CardWall({ cards }: { cards: FilterCard[] }) {
               className="thumb"
               aria-label={displayName}
               scroll={false}
+              // A search page renders 70 card links. Default viewport prefetch
+              // downloads each card route on the first screen.
+              prefetch={false}
               onPointerDown={() => flushCurrentScroll(c.id)}
               onClick={() => flushCurrentScroll(c.id)}
             >
