@@ -530,6 +530,10 @@ _AI_CRAWL_BOTS = {
 cards_by_id: dict[str, dict[str, Any]] = {}
 leader_name_index: list[tuple[str, str]] = []
 card_search_norm_by_id: dict[str, str] = {}
+# Normalized name variants (exact / prefix / contains), built with the search blob.
+card_search_name_norms_by_id: dict[str, tuple[str, ...]] = {}
+# Browser/shared cache for /filters/cards and /cards/filter without live prices.
+FILTER_CARDS_CACHE_CONTROL = "public, max-age=300, s-maxage=300"
 name_hans_by_en: dict[str, str] = {}
 name_aliases_by_en: dict[str, dict[str, Any]] = {}
 NAME_HANS_BY_EN_PATH = BASE_DIR / "meta" / "name_hans_by_en.json"
@@ -1345,7 +1349,8 @@ def expand_name_search_texts(*parts: str | None) -> list[str]:
     return out
 
 
-def build_card_search_blob(card_basic: dict[str, Any] | None) -> str:
+def _card_search_parts(card_basic: dict[str, Any] | None) -> tuple[str, tuple[str, ...]]:
+    """Blob plus per-name norms. OpenCC runs here, at index load, not per search."""
     basic = card_basic if isinstance(card_basic, dict) else {}
     name = str(basic.get("name") or "").strip()
     name_en = normalize_en_card_name(basic.get("name_en"))
@@ -1358,8 +1363,20 @@ def build_card_search_blob(card_basic: dict[str, Any] | None) -> str:
             trait_parts.extend(str(x).strip() for x in raw if str(x).strip())
         elif isinstance(raw, str) and raw.strip():
             trait_parts.extend(p.strip() for p in re.split(r"[,/|]", raw) if p.strip())
+    name_texts = expand_name_search_texts(name, name_en, hans, *alias_parts)
     texts = expand_name_search_texts(name, name_en, hans, *alias_parts, *trait_parts)
-    return normalize_name_for_match(" ".join(texts))
+    name_norms: list[str] = []
+    seen: set[str] = set()
+    for text in name_texts:
+        nn = normalize_name_for_match(text)
+        if nn and nn not in seen:
+            seen.add(nn)
+            name_norms.append(nn)
+    return normalize_name_for_match(" ".join(texts)), tuple(name_norms)
+
+
+def build_card_search_blob(card_basic: dict[str, Any] | None) -> str:
+    return _card_search_parts(card_basic)[0]
 
 
 def _nfkc_query(query: str) -> str:
@@ -1572,11 +1589,26 @@ def card_text_query_rank(
     norms = query_norms if query_norms is not None else expand_query_match_norms(q)
     cid_norm = normalize_card_id(str(card_id or ""))
     basic = cards_by_id.get(cid_norm) if isinstance(cards_by_id.get(cid_norm), dict) else {}
-    en = normalize_en_card_name(name_en or basic.get("name_en"))
-    hans = name_hans_by_en.get(en, "") if en else ""
-    alias_parts = _alias_texts_for_en(en)
-    for text in expand_name_search_texts(card_name or basic.get("name"), en, hans, *alias_parts):
-        nn = normalize_name_for_match(text)
+    catalog_name = str(basic.get("name") or "")
+    catalog_en = normalize_en_card_name(basic.get("name_en"))
+    passed_name = str(card_name or "")
+    passed_en = normalize_en_card_name(name_en if name_en is not None else basic.get("name_en"))
+    cached_names = card_search_name_norms_by_id.get(cid_norm)
+    if cached_names is not None and passed_name == catalog_name and passed_en == catalog_en:
+        name_norms = cached_names
+    else:
+        en = passed_en or catalog_en
+        hans = name_hans_by_en.get(en, "") if en else ""
+        alias_parts = _alias_texts_for_en(en)
+        live: list[str] = []
+        seen_live: set[str] = set()
+        for text in expand_name_search_texts(passed_name or catalog_name, en, hans, *alias_parts):
+            nn = normalize_name_for_match(text)
+            if nn and nn not in seen_live:
+                seen_live.add(nn)
+                live.append(nn)
+        name_norms = tuple(live)
+    for nn in name_norms:
         for qn in norms:
             rank = _name_match_rank(nn, qn)
             if rank is not None and (best is None or rank < best):
@@ -1686,11 +1718,16 @@ def _alias_texts_for_en(name_en: str | None) -> list[str]:
 
 
 def rebuild_card_search_index() -> None:
-    global card_search_norm_by_id
+    """Rebuild name/trait search text. Called from load_cards_index, so a reload drops stale norms."""
+    global card_search_norm_by_id, card_search_name_norms_by_id
     blob_map: dict[str, str] = {}
+    name_map: dict[str, tuple[str, ...]] = {}
     for cid, basic in cards_by_id.items():
-        blob_map[str(cid)] = build_card_search_blob(basic if isinstance(basic, dict) else {})
+        blob, name_norms = _card_search_parts(basic if isinstance(basic, dict) else {})
+        blob_map[str(cid)] = blob
+        name_map[str(cid)] = name_norms
     card_search_norm_by_id = blob_map
+    card_search_name_norms_by_id = name_map
 
 
 def rebuild_leader_name_index() -> None:
@@ -7869,11 +7906,12 @@ def filter_cards(
         matched.sort(key=lambda x: card_id_sort_key(x.id))
     total_matched = len(matched)
     response.headers["X-Total-Count"] = str(total_matched)
-    # Search is catalog-static; short CDN cache speeds repeat browsing.
+    # Catalog search changes only when the index reloads. Browsers keep a hit for
+    # five minutes; the next uncached request sees the rebuilt index.
     if need_price:
         response.headers["Cache-Control"] = "no-store"
     else:
-        response.headers["Cache-Control"] = "public, max-age=15, s-maxage=60"
+        response.headers["Cache-Control"] = FILTER_CARDS_CACHE_CONTROL
     return matched[offset : offset + limit]
 
 

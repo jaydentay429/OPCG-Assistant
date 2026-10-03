@@ -163,6 +163,29 @@ def test_letter_digit_names_search_names_and_traits():
     assert len(_search("DONEB")) == 10
 
 
+def test_search_reuses_precomputed_name_norms_and_cache_header():
+    """OpenCC runs when the index loads, not once per card on every query."""
+    assert app.FILTER_CARDS_CACHE_CONTROL == "public, max-age=300, s-maxage=300"
+    assert len(app.card_search_name_norms_by_id) == len(app.cards_by_id)
+
+    calls = {"n": 0}
+    original = app._opencc_convert
+
+    def _counting(text, converter):
+        calls["n"] += 1
+        return original(text, converter)
+
+    app._opencc_convert = _counting
+    try:
+        ids = _search("魯夫")
+    finally:
+        app._opencc_convert = original
+    assert ids[0] == "ST01-001"
+    assert len(ids) == 244
+    # Query-side conversion only. The old per-card loop was ~150k calls.
+    assert calls["n"] < 100
+
+
 def test_unknown_full_card_id_falls_back_to_name_and_trait():
     assert app.canonical_full_card_id("OP99-999") == "OP99-999"
     assert app.catalog_has_card_id_match("OP99-999") is False
