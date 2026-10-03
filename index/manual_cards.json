@@ -461,6 +461,98 @@
       "card_sets": [
         "補充包 OP-18【OP-18】"
       ]
+    },
+    "OP18-106": {
+      "card_id": "OP18-106",
+      "preview": true,
+      "manual_source": "screenshot",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "name": "鬥犬",
+      "name_en": "Doberman",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "黃"
+      ],
+      "colors_en": [
+        "Yellow"
+      ],
+      "cost": 7,
+      "power": 7000,
+      "life": null,
+      "counter": 2000,
+      "rarity": "C",
+      "attributes": [
+        "斬"
+      ],
+      "attributes_en": [
+        "Slash"
+      ],
+      "traits": [
+        "中將",
+        "海軍"
+      ],
+      "traits_en": [
+        "Vice Admiral",
+        "Navy"
+      ],
+      "effect": "【雙重攻擊】(這張卡片造成的傷害為2)",
+      "effect_en": "[Double Attack] (This card deals 2 damage.)",
+      "trigger": "",
+      "trigger_en": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ]
+    },
+    "EB05-049": {
+      "card_id": "EB05-049",
+      "preview": true,
+      "manual_source": "screenshot",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "EB-05",
+      "name": "特別鬼魂",
+      "name_en": "Special Hollow",
+      "card_type": "Event",
+      "category": "Event",
+      "card_type_en": "Event",
+      "category_en": "Event",
+      "colors": [
+        "黑"
+      ],
+      "colors_en": [
+        "Black"
+      ],
+      "cost": 1,
+      "power": null,
+      "life": null,
+      "counter": null,
+      "rarity": "C",
+      "attributes": [
+        "-"
+      ],
+      "attributes_en": [
+        "-"
+      ],
+      "traits": [
+        "恐怖三桅帆船海賊團"
+      ],
+      "traits_en": [
+        "Thriller Bark Pirates"
+      ],
+      "effect": "【主要】可以KO1張自己擁有《恐怖三桅帆船海賊團》特徵的角色卡：最多1張對手的角色卡，在這個回合，費用-3。\n【反擊】可以KO1張自己擁有《恐怖三桅帆船海賊團》特徵的角色卡：最多1張自己的領航卡或角色卡，在這場對戰中，力量值+4000。",
+      "effect_en": "[Main] You may K.O. 1 of your {Thriller Bark Pirates} type Characters: Give up to 1 of your opponent's Characters −3 cost during this turn.\n[Counter] You may K.O. 1 of your {Thriller Bark Pirates} type Characters: Up to 1 of your Leader or Characters gains +4000 power during this battle.",
+      "trigger": "",
+      "trigger_en": "",
+      "card_sets": [
+        "Heroines Edition vol.2【EB-05】"
+      ]
     }
   }
 }

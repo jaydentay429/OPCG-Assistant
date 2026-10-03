@@ -27,6 +27,8 @@ def test_seed_matches_index_and_ids_are_unique():
         "P-160",
         "OP18-089",
         "OP18-076",
+        "OP18-106",
+        "EB05-049",
     }
     assert cards["EB05-046"]["name"] == "大和"
     assert cards["EB05-046"]["name_en"] == "Yamato"
@@ -176,6 +178,43 @@ def test_seed_matches_index_and_ids_are_unique():
     assert "during this turn" in cards["OP18-076"]["effect_en"]
     assert cards["OP18-076"]["card_sets"] == ["補充包 OP-18【OP-18】"]
     assert cards["OP18-076"]["pack_id"] == "OP-18"
+    assert cards["OP18-106"]["name"] == "鬥犬"
+    assert cards["OP18-106"]["name_en"] == "Doberman"
+    assert cards["OP18-106"]["manual_source"] == "screenshot"
+    assert "suppress_pack_image" not in cards["OP18-106"]
+    assert cards["OP18-106"]["preview"] is True
+    assert cards["OP18-106"]["colors"] == ["黃"]
+    assert cards["OP18-106"]["colors_en"] == ["Yellow"]
+    assert cards["OP18-106"]["cost"] == 7
+    assert cards["OP18-106"]["power"] == 7000
+    assert cards["OP18-106"]["counter"] == 2000
+    assert cards["OP18-106"]["rarity"] == "C"
+    assert cards["OP18-106"]["attributes"] == ["斬"]
+    assert cards["OP18-106"]["attributes_en"] == ["Slash"]
+    assert cards["OP18-106"]["traits"] == ["中將", "海軍"]
+    assert cards["OP18-106"]["traits_en"] == ["Vice Admiral", "Navy"]
+    assert cards["OP18-106"]["effect"].startswith("【雙重攻擊】")
+    assert "This card deals 2 damage." in cards["OP18-106"]["effect_en"]
+    assert cards["OP18-106"]["card_sets"] == ["補充包 OP-18【OP-18】"]
+    assert cards["OP18-106"]["pack_id"] == "OP-18"
+    assert cards["EB05-049"]["name"] == "特別鬼魂"
+    assert cards["EB05-049"]["name_en"] == "Special Hollow"
+    assert cards["EB05-049"]["manual_source"] == "screenshot"
+    assert "suppress_pack_image" not in cards["EB05-049"]
+    assert cards["EB05-049"]["preview"] is True
+    assert cards["EB05-049"]["card_type"] == "Event"
+    assert cards["EB05-049"]["colors"] == ["黑"]
+    assert cards["EB05-049"]["colors_en"] == ["Black"]
+    assert cards["EB05-049"]["cost"] == 1
+    assert cards["EB05-049"]["power"] is None
+    assert cards["EB05-049"]["counter"] is None
+    assert cards["EB05-049"]["rarity"] == "C"
+    assert cards["EB05-049"]["traits"] == ["恐怖三桅帆船海賊團"]
+    assert cards["EB05-049"]["traits_en"] == ["Thriller Bark Pirates"]
+    assert "費用-3" in cards["EB05-049"]["effect"]
+    assert "{Thriller Bark Pirates}" in cards["EB05-049"]["effect_en"]
+    assert cards["EB05-049"]["card_sets"] == ["Heroines Edition vol.2【EB-05】"]
+    assert cards["EB05-049"]["pack_id"] == "EB-05"
     # Base id stays EB05-016. The stored SP row was the heroine parallel art;
     # the normal printing is SR, and EB05-016-P1 keeps the SP mark used by other -P1 rows.
     assert cards["EB05-016"]["card_id"] == "EB05-016"
@@ -209,6 +248,8 @@ def test_seed_matches_index_and_ids_are_unique():
     assert list(cards).count("P-160") == 1
     assert list(cards).count("OP18-089") == 1
     assert list(cards).count("OP18-076") == 1
+    assert list(cards).count("OP18-106") == 1
+    assert list(cards).count("EB05-049") == 1
     overrides = json.loads((ROOT / "index" / "card_effect_overrides.json").read_text(encoding="utf-8"))
     # New cards are catalog-only. Hedgehog keeps the rekeyed encoding, nothing new.
     assert "EB05-046" not in overrides["cards"]
@@ -219,6 +260,8 @@ def test_seed_matches_index_and_ids_are_unique():
     assert "P-160" not in overrides["cards"]
     assert "OP18-089" not in overrides["cards"]
     assert "OP18-076" not in overrides["cards"]
+    assert "OP18-106" not in overrides["cards"]
+    assert "EB05-049" not in overrides["cards"]
     assert "EB05-016-P1" not in overrides["cards"]
     assert overrides["cards"]["EB05-016"]["card_id"] == "EB05-016"
     assert overrides["cards"]["EB05-048"]["card_id"] == "EB05-048"
@@ -228,8 +271,8 @@ def test_seed_matches_index_and_ids_are_unique():
 
 def test_official_sync_overwrites_screenshot_row_without_duplicates():
     index: dict = {}
-    assert apply_manual_cards(index) == 10
-    assert apply_manual_cards(index) == 10
+    assert apply_manual_cards(index) == 12
+    assert apply_manual_cards(index) == 12
     assert list(index).count("EB05-046") == 1
     assert index["EB05-046"]["name"] == "大和"
 
@@ -284,6 +327,12 @@ def test_official_sync_overwrites_screenshot_row_without_duplicates():
     assert merged["OP18-076"]["name"] == "鯊魚潛水3號"
     assert merged["OP18-076"]["manual_source"] == "screenshot"
     assert list(merged).count("OP18-076") == 1
+    assert merged["OP18-106"]["name"] == "鬥犬"
+    assert merged["OP18-106"]["manual_source"] == "screenshot"
+    assert list(merged).count("OP18-106") == 1
+    assert merged["EB05-049"]["name"] == "特別鬼魂"
+    assert merged["EB05-049"]["manual_source"] == "screenshot"
+    assert list(merged).count("EB05-049") == 1
     assert merged["EB05-016"]["rarity"] == "SR"
     assert merged["EB05-016-P1"]["rarity"] == "SP"
 

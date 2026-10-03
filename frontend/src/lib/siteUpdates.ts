@@ -14,6 +14,24 @@ export type SiteUpdate = {
 /** Newest first. Keep this list short — homepage shows the latest few. */
 export const SITE_UPDATES: SiteUpdate[] = [
   {
+    id: "op18-106-eb05-049-2026-10-03",
+    date: "2026-10-03",
+    kind: "feature",
+    href: "/cards/OP18-106",
+    title: {
+      "zh-Hant": "OP18-106 鬥犬、EB05-049 特別鬼魂 已上線",
+      "zh-Hans": "OP18-106 斗犬、EB05-049 特别鬼魂 已上线",
+      en: "OP18-106 Doberman and EB05-049 Special Hollow added",
+    },
+    body: {
+      "zh-Hant":
+        "截圖暫收：OP18-106 黃 C 費用 7、力量 7000、反擊 +2000、屬性斬，《中將／海軍》，【雙重攻擊】。EB05-049 黑 C 事件費用 1，《恐怖三桅帆船海賊團》。卡圖為已上傳的 PNG。",
+      "zh-Hans":
+        "截图暂收：OP18-106 黄 C 费用 7、力量 7000、反击 +2000、属性斩，《中将／海军》，【双重攻击】。EB05-049 黑 C 事件费用 1，《恐怖三桅帆船海贼团》。卡图为已上传的 PNG。",
+      en: "Screenshot entries: OP18-106 yellow C, cost 7, power 7000, Counter +2000, Slash, {Vice Admiral}/{Navy}, [Double Attack]. EB05-049 black C Event, cost 1, {Thriller Bark Pirates}. Art is the uploaded PNGs.",
+    },
+  },
+  {
     id: "p160-op18-089-076-2026-10-03",
     date: "2026-10-03",
     kind: "feature",

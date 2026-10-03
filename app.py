@@ -1412,6 +1412,122 @@ def expand_query_match_norms(query: str) -> list[str]:
     return norms
 
 
+_CARD_ID_SEPARATORS = re.compile(r"[-_＿\s.．·・/／\\－—–−‐‑‒]+")
+
+
+def card_number_query(query: str) -> str | None:
+    """Whole query is a card number or set prefix, not a name that happens to contain digits.
+
+    ``P-160`` / ``p160`` / ``OP18`` / ``OP18-0`` qualify. ``鯊魚潛水3號`` does not: the
+    digit stays part of the name and is never stripped out and matched against ids.
+    """
+    raw = str(query or "").strip()
+    if not raw:
+        return None
+    compact = _CARD_ID_SEPARATORS.sub("", raw)
+    if not compact or re.search(r"[^A-Za-z0-9]", compact):
+        return None
+    upper = compact.upper()
+    if re.fullmatch(r"(?:OP|ST|EB|PRB|DON|P)", upper):
+        return upper
+    if not re.search(r"[A-Z]", upper) or not re.search(r"\d", upper):
+        return None
+    if not re.fullmatch(r"[A-Z]{1,6}\d+[A-Z0-9]*", upper):
+        return None
+    return normalize_card_id(raw)
+
+
+def card_id_match_rank(card_id: str, query: str) -> int | None:
+    """0 = exact id, 1 = set/id prefix. Never a compact substring (``P160`` inside ``OP160xx``)."""
+    if card_number_query(query) is None:
+        return None
+    cid = normalize_card_id(str(card_id or ""))
+    q = normalize_card_id(str(query or "").strip())
+    if not cid or not q:
+        return None
+    cid_compact = cid.replace("-", "")
+    q_compact = q.replace("-", "")
+    if cid == q or cid_compact == q_compact:
+        return 0
+    if cid.startswith(q) and len(cid) > len(q) and (q.endswith("-") or cid[len(q)] == "-"):
+        return 1
+    if len(q_compact) < len(cid_compact) and cid_compact.startswith(q_compact):
+        q_letters = re.match(r"[A-Z]+", q_compact)
+        cid_letters = re.match(r"[A-Z]+", cid_compact)
+        if q_letters and cid_letters and q_letters.group(0) == cid_letters.group(0):
+            return 1
+    return None
+
+
+def _name_match_rank(normalized_name: str, query_norm: str) -> int | None:
+    if not normalized_name or not query_norm:
+        return None
+    if normalized_name == query_norm:
+        return 2
+    if normalized_name.startswith(query_norm):
+        return 3
+    if query_norm in normalized_name:
+        return 4
+    return None
+
+
+def card_text_query_rank(
+    card_id: str,
+    card_name: str,
+    query: str,
+    name_en: str | None = None,
+    *,
+    query_norms: list[str] | None = None,
+) -> int | None:
+    """Lower is a better hit. None means no match.
+
+    Card-number queries match ids only (exact, then prefix). Name queries match
+    names and traits, with exact and prefix names ahead of substring hits, and
+    never treat a digit inside the name as a card number.
+    """
+    q = str(query or "").strip()
+    if not q:
+        return 0
+    id_rank = card_id_match_rank(card_id, q)
+    if card_number_query(q) is not None:
+        return id_rank
+
+    norms = query_norms if query_norms is not None else expand_query_match_norms(q)
+    cid_norm = normalize_card_id(str(card_id or ""))
+    basic = cards_by_id.get(cid_norm) if isinstance(cards_by_id.get(cid_norm), dict) else {}
+    en = normalize_en_card_name(name_en or basic.get("name_en"))
+    hans = name_hans_by_en.get(en, "") if en else ""
+    alias_parts = _alias_texts_for_en(en)
+    best: int | None = None
+    for text in expand_name_search_texts(card_name or basic.get("name"), en, hans, *alias_parts):
+        nn = normalize_name_for_match(text)
+        for qn in norms:
+            rank = _name_match_rank(nn, qn)
+            if rank is not None and (best is None or rank < best):
+                best = rank
+    if best is not None:
+        return best
+
+    blob = card_search_norm_by_id.get(cid_norm) or ""
+    if not blob:
+        blob = build_card_search_blob({"name": card_name, "name_en": name_en})
+    for qn in norms:
+        if qn and qn in blob:
+            return 4
+    if blob:
+        return None
+
+    q_lower = q.lower()
+    for text in expand_name_search_texts(card_name, name_en):
+        if q_lower in text.lower():
+            return 4
+        q_name = normalize_name_for_match(q)
+        rank = _name_match_rank(normalize_name_for_match(text), q_name)
+        if rank is not None:
+            return rank
+    return None
+
+
 def card_matches_text_query(
     card_id: str,
     card_name: str,
@@ -1420,49 +1536,13 @@ def card_matches_text_query(
     *,
     query_norms: list[str] | None = None,
 ) -> bool:
-    q = str(query or "").strip()
-    if not q:
-        return True
-    q_lower = q.lower()
-    cid_raw = str(card_id or "")
-    cid_lower = cid_raw.lower().replace("_", "-")
-    cid_norm = normalize_card_id(cid_raw)
-    q_id = normalize_card_id(q) if re.search(r"[A-Za-z0-9]", q) else ""
-    if q_id:
-        cid_compact = cid_norm.replace("-", "")
-        q_compact = q_id.replace("-", "")
-        if cid_norm.startswith(q_id) or q_compact in cid_compact or q_id in cid_norm:
-            return True
-    q_compact_lo = q_lower.replace("-", "").replace("_", "").replace(" ", "")
-    cid_compact_lo = cid_lower.replace("-", "").replace("_", "").replace(" ", "")
-    if q_compact_lo and q_compact_lo in cid_compact_lo:
-        return True
-
-    norms = query_norms if query_norms is not None else expand_query_match_norms(q)
-    blob = card_search_norm_by_id.get(cid_norm) or ""
-    if not blob:
-        blob = build_card_search_blob(
-            {
-                "name": card_name,
-                "name_en": name_en,
-            }
-        )
-    for qn in norms:
-        if qn and qn in blob:
-            return True
-
-    # Blob already includes TW/Hans/EN/alias norms — skip per-card OpenCC when present.
-    if blob:
-        return False
-
-    # Fallback: raw / normalized direct checks on TW + EN names.
-    for text in expand_name_search_texts(card_name, name_en):
-        if q_lower in text.lower():
-            return True
-        q_name = normalize_name_for_match(q)
-        if q_name and q_name in normalize_name_for_match(text):
-            return True
-    return False
+    return card_text_query_rank(
+        card_id,
+        card_name,
+        query,
+        name_en,
+        query_norms=query_norms,
+    ) is not None
 
 
 def load_name_hans_by_en() -> None:
@@ -7439,15 +7519,16 @@ def search_cards_by_name(
     if not keyword:
         raise HTTPException(status_code=422, detail="搜索关键字不能为空。")
 
-    results: list[CardResponse] = []
+    results: list[tuple[int, CardResponse]] = []
     q_norms = expand_query_match_norms(keyword)
     for card_id, card_basic in cards_by_id.items():
         card_name = str(card_basic.get("name") or "")
         card_name_en = str(card_basic.get("name_en") or "")
-        if card_matches_text_query(
+        rank = card_text_query_rank(
             card_id, card_name, keyword, name_en=card_name_en or None, query_norms=q_norms
-        ):
-            results.append(build_card_response(card_id, card_basic))
+        )
+        if rank is not None:
+            results.append((rank, build_card_response(card_id, card_basic)))
 
     if not results:
         raise HTTPException(
@@ -7455,7 +7536,8 @@ def search_cards_by_name(
             detail=f"没有找到名称包含“{name.strip()}”的卡牌。",
         )
 
-    return results[:20]
+    results.sort(key=lambda item: (item[0], card_id_sort_key(item[1].id)))
+    return [card for _rank, card in results[:20]]
 
 
 @app.get("/cards/filter", response_model=list[FilterCardResponse])
@@ -7578,6 +7660,7 @@ def filter_cards(
                 requested_keywords.add(k)
 
     matched: list[FilterCardResponse] = []
+    query_rank: dict[str, int] = {}
     q_text = str(q or "").strip()
     q_norms = expand_query_match_norms(q_text) if q_text else []
     index_rows = filter_index
@@ -7633,14 +7716,17 @@ def filter_cards(
             continue
         if requested_keywords and row.keywords.isdisjoint(requested_keywords):
             continue
-        if q_text and not card_matches_text_query(
-            row.id,
-            row.name,
-            q_text,
-            name_en=row.name_en or None,
-            query_norms=q_norms,
-        ):
-            continue
+        if q_text:
+            rank = card_text_query_rank(
+                row.id,
+                row.name,
+                q_text,
+                name_en=row.name_en or None,
+                query_norms=q_norms,
+            )
+            if rank is None:
+                continue
+            query_rank[str(row.id)] = rank
         matched.append(row.response)
 
     sort_mode = str(sort or "id").strip().lower()
@@ -7682,6 +7768,7 @@ def filter_cards(
     if sort_mode == "price_desc":
         matched.sort(
             key=lambda x: (
+                query_rank.get(str(x.id), 9) if q_text else 0,
                 0 if _price_of(str(x.id)) is not None else 1,
                 -(_price_of(str(x.id)) or 0),
                 card_id_sort_key(x.id),
@@ -7690,11 +7777,14 @@ def filter_cards(
     elif sort_mode == "price_asc":
         matched.sort(
             key=lambda x: (
+                query_rank.get(str(x.id), 9) if q_text else 0,
                 0 if _price_of(str(x.id)) is not None else 1,
                 _price_of(str(x.id)) or 0,
                 card_id_sort_key(x.id),
             )
         )
+    elif q_text:
+        matched.sort(key=lambda x: (query_rank.get(str(x.id), 9), card_id_sort_key(x.id)))
     elif index_presorted:
         # filter_index is already sorted by card id — keep encounter order.
         pass

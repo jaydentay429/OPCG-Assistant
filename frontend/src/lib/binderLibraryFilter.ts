@@ -20,23 +20,36 @@ function compactId(text: string): string {
 }
 
 /**
- * Card-number match: full or partial, case-insensitive, and tolerant of
- * separators users naturally type (`OP01-001`, `op01001`, `OP01 001`, `ST-01-001`).
+ * Card-number match: exact id, or a prefix of that id / set code.
+ * Compact form is allowed (`OP18076`, `p160`) but never as a substring,
+ * so `P160` does not match `OP16-001`. A name that contains digits is not
+ * a card number. A digits-only query matches that collector-number segment.
  */
 export function matchesCardId(cardId: string, query: string): boolean {
   const q = foldAscii(String(query || "")).trim().toLowerCase();
   if (!q) return true;
+  const compact = compactId(q);
+  if (!compact || !/^[a-z0-9]+$/.test(compact)) return false;
+
   const cidRaw = foldAscii(String(cardId || ""));
   const cidLower = cidRaw.toLowerCase().replace(/_/g, "-");
   const display = foldAscii(displayCardId(cidRaw)).toLowerCase();
-  const qHyphen = q.replace(ID_SEPARATOR, "-").replace(/-+/g, "-");
-  const qCompact = compactId(q);
   const cidCompact = compactId(cidLower);
   const displayCompact = compactId(display);
-  if (display.includes(q) || cidLower.includes(q)) return true;
-  if (qHyphen && (display.includes(qHyphen) || cidLower.includes(qHyphen))) return true;
-  if (qCompact && (cidCompact.includes(qCompact) || displayCompact.includes(qCompact))) return true;
-  return false;
+
+  if (/^\d+$/.test(compact)) {
+    const groups = `${cidLower} ${display}`.match(/\d+/g) || [];
+    return groups.some((group) => group === compact);
+  }
+
+  if (compact === cidCompact || compact === displayCompact) return true;
+  const qLetters = compact.match(/^[a-z]+/)?.[0] || "";
+  if (!qLetters) return false;
+  const prefixed = (target: string) => {
+    const letters = target.match(/^[a-z]+/)?.[0] || "";
+    return letters === qLetters && target.startsWith(compact) && compact.length < target.length;
+  };
+  return prefixed(cidCompact) || prefixed(displayCompact);
 }
 
 /**

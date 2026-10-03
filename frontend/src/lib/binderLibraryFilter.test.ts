@@ -65,4 +65,38 @@ describe("filterBinderLibrary", () => {
     assert.deepEqual(ids(filterBinderLibrary(FIXTURE, "nami", meta, matchName)), ["ST01-003"]);
     assert.deepEqual(ids(filterBinderLibrary(FIXTURE, "sanji", meta, matchName)), []);
   });
+
+  it("does not treat a card number as a substring of another id", () => {
+    const entries = [
+      ["OP16-001", 1],
+      ["OP16-001-P1", 1],
+      ["P-160", 1],
+      ["OP18-076", 1],
+    ] as const;
+    assert.deepEqual(ids(filterBinderLibrary(entries, "P-160", NO_META)), ["P-160"]);
+    assert.deepEqual(ids(filterBinderLibrary(entries, "p160", NO_META)), ["P-160"]);
+    assert.deepEqual(ids(filterBinderLibrary(entries, "OP18-076", NO_META)), ["OP18-076"]);
+    assert.deepEqual(ids(filterBinderLibrary(entries, "op18076", NO_META)), ["OP18-076"]);
+    assert.deepEqual(ids(filterBinderLibrary(entries, "OP18", NO_META)), ["OP18-076"]);
+  });
+
+  it("does not match card numbers from digits inside a name", () => {
+    const entries = [
+      ["OP16-003", 1],
+      ["ST01-002", 1],
+      ["OP18-076", 1],
+      ["OP18-078", 1],
+    ] as const;
+    const meta: Record<string, BinderLibraryMeta> = {
+      "OP16-003": { searchBlob: "其他卡" },
+      "ST01-002": { searchBlob: "其他" },
+      "OP18-076": { searchBlob: "鯊魚潛水3號sharksubmergeno3" },
+      "OP18-078": { searchBlob: "迷你梅利2號minimerryno2" },
+    };
+    const matchName = (_id: string, blob: string | null | undefined, query: string) =>
+      String(blob || "").includes(query.replace(/\s+/g, ""));
+    assert.deepEqual(ids(filterBinderLibrary(entries, "鯊魚潛水3號", meta, matchName)), ["OP18-076"]);
+    assert.deepEqual(ids(filterBinderLibrary(entries, "迷你梅利2號", meta, matchName)), ["OP18-078"]);
+    assert.deepEqual(ids(filterBinderLibrary(entries, "路飞", meta, matchName)), []);
+  });
 });

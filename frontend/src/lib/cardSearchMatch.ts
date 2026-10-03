@@ -1,10 +1,10 @@
-import { displayCardId } from "@/lib/cardId";
 import {
   convertToHansSync,
   convertToHantSync,
   ensureHansConverter,
   ensureHantConverter,
 } from "@/lib/openccLazy";
+import { matchesCardId } from "@/lib/binderLibraryFilter";
 
 const CJK_RE = /[\u4e00-\u9fff]/;
 
@@ -98,23 +98,7 @@ export function expandQueryNorms(query: string): string[] {
   return norms;
 }
 
-function matchesCardId(cardId: string, query: string): boolean {
-  const q = String(query || "").trim();
-  if (!q) return true;
-  const qLower = q.toLowerCase();
-  const cidRaw = String(cardId || "");
-  const cidLower = cidRaw.toLowerCase().replace(/_/g, "-");
-  const display = displayCardId(cidRaw).toLowerCase();
-  const qCompact = qLower.replace(/[-_\s]/g, "");
-  const cidCompact = cidLower.replace(/[-_\s]/g, "");
-  const displayCompact = display.replace(/[-_\s]/g, "");
-  if (display.includes(qLower) || cidLower.includes(qLower)) return true;
-  if (qCompact && (cidCompact.includes(qCompact) || displayCompact.includes(qCompact))) return true;
-  return false;
-}
-
-/**
- * Match collection/binder search against card id, multilingual names, and traits.
+/** Match collection/binder search against card id, multilingual names, and traits.
  * `searchBlob` should be the backend `search_blob` from deck-stats (pre-normalized).
  */
 export function cardMatchesCollectionQuery(
