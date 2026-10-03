@@ -55,7 +55,7 @@ async function resolveImportedDeck(raw: string): Promise<BattleInlineDeck | null
   const initial = parseDeckListText(raw);
   if (!initial) return null;
   let leader = initial.leader;
-  let cards = { ...initial.cards };
+  const cards = { ...initial.cards };
   if (!leader) {
     const ids = Object.keys(cards);
     if (!ids.length) return null;

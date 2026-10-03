@@ -76,7 +76,7 @@ function powerKeyNum(key: string): number {
   return Number.parseInt(key, 10) || 0;
 }
 
-export function orderedPowerKeys(bucket: Record<string, number>, _fillGaps = false): string[] {
+export function orderedPowerKeys(bucket: Record<string, number>): string[] {
   return Object.keys(bucket)
     .filter((k) => k !== "?" && k !== "12k+" && (bucket[k] || 0) > 0)
     .sort((a, b) => powerKeyNum(a) - powerKeyNum(b));
