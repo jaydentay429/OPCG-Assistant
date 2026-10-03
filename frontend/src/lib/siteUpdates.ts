@@ -14,6 +14,24 @@ export type SiteUpdate = {
 /** Newest first. Keep this list short — homepage shows the latest few. */
 export const SITE_UPDATES: SiteUpdate[] = [
   {
+    id: "p160-op18-089-076-2026-10-03",
+    date: "2026-10-03",
+    kind: "feature",
+    href: "/cards/P-160",
+    title: {
+      "zh-Hant": "P-160 納菲魯塔利・薇薇、OP18-089 多利、OP18-076 鯊魚潛水3號 已上線",
+      "zh-Hans": "P-160 奈菲特丽・薇薇、OP18-089 多利、OP18-076 鲨鱼潜水3号 已上线",
+      en: "P-160 Nefeltari Vivi, OP18-089 Dorry, and OP18-076 Shark Submerge No.3 added",
+    },
+    body: {
+      "zh-Hant":
+        "截圖暫收：P-160 黃 P 費用 3、力量 4000、反擊 +1000、屬性知，《阿拉巴斯坦王國》，含生命值 2 張以下的觸發器。OP18-089 黑 C 費用 4、力量 5000、反擊 +2000、屬性斬，《巨人族／艾爾帕布／巨兵海賊團》，費用 +12。OP18-076 紫 UC 舞台費用 5，《草帽一行人》。卡圖為已上傳的 PNG。",
+      "zh-Hans":
+        "截图暂收：P-160 黄 P 费用 3、力量 4000、反击 +1000、属性知，《阿拉巴斯坦王国》，含生命值 2 张以下的触发器。OP18-089 黑 C 费用 4、力量 5000、反击 +2000、属性斩，《巨人族／艾尔帕布／巨兵海贼团》，费用 +12。OP18-076 紫 UC 舞台费用 5，《草帽一行人》。卡图为已上传的 PNG。",
+      en: "Screenshot entries: P-160 yellow P, cost 3, power 4000, Counter +1000, Wisdom, {Alabasta}, with a Life 2 or less Trigger. OP18-089 black C, cost 4, power 5000, Counter +2000, Slash, {Giant}/{Elbaph}/{Giant Pirates}, +12 cost. OP18-076 purple UC Stage, cost 5, {Straw Hat Crew}. Art is the uploaded PNGs.",
+    },
+  },
+  {
     id: "op18-044-2026-09-30",
     date: "2026-09-30",
     kind: "feature",

@@ -322,6 +322,145 @@
       "card_sets": [
         "補充包 OP-18【OP-18】"
       ]
+    },
+    "P-160": {
+      "card_id": "P-160",
+      "preview": true,
+      "manual_source": "screenshot",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "P",
+      "name": "納菲魯塔利・薇薇",
+      "name_en": "Nefeltari Vivi",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "黃"
+      ],
+      "colors_en": [
+        "Yellow"
+      ],
+      "cost": 3,
+      "power": 4000,
+      "life": null,
+      "counter": 1000,
+      "rarity": "P",
+      "attributes": [
+        "知"
+      ],
+      "attributes_en": [
+        "Wisdom"
+      ],
+      "traits": [
+        "阿拉巴斯坦王國"
+      ],
+      "traits_en": [
+        "Alabasta"
+      ],
+      "effect": "【登場時】從自己的卡組上面查看5張卡片，公開最多1張持有屬性（知）的卡片，並加入手牌。之後，將其餘卡片依任意順序放到卡組下面，並廢棄1張自己的手牌。\n【觸發器】若自己的生命值卡在2張以下時，使這張卡片登場。",
+      "effect_en": "[On Play] Look at 5 cards from the top of your deck; reveal up to 1 card with the {Wisdom} attribute and add it to your hand. Then, place the rest at the bottom of your deck in any order and trash 1 card from your hand.\n[Trigger] If you have 2 or less Life cards, play this card.",
+      "trigger": "【觸發器】若自己的生命值卡在2張以下時，使這張卡片登場。",
+      "trigger_en": "[Trigger] If you have 2 or less Life cards, play this card.",
+      "card_sets": [
+        "推廣卡【P】"
+      ]
+    },
+    "OP18-089": {
+      "card_id": "OP18-089",
+      "preview": true,
+      "manual_source": "screenshot",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "name": "多利",
+      "name_en": "Dorry",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "黑"
+      ],
+      "colors_en": [
+        "Black"
+      ],
+      "cost": 4,
+      "power": 5000,
+      "life": null,
+      "counter": 2000,
+      "rarity": "C",
+      "attributes": [
+        "斬"
+      ],
+      "attributes_en": [
+        "Slash"
+      ],
+      "traits": [
+        "巨人族",
+        "艾爾帕布",
+        "巨兵海賊團"
+      ],
+      "traits_en": [
+        "Giant",
+        "Elbaph",
+        "Giant Pirates"
+      ],
+      "effect": "這張角色卡的費用+12。 【登場時】可以廢棄1張自己的手牌：對手廢棄1張自身的手牌。",
+      "effect_en": "This Character gains +12 cost. [On Play] You may trash 1 card from your hand: Your opponent trashes 1 card from their hand.",
+      "trigger": "",
+      "trigger_en": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ]
+    },
+    "OP18-076": {
+      "card_id": "OP18-076",
+      "preview": true,
+      "manual_source": "screenshot",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "name": "鯊魚潛水3號",
+      "name_en": "Shark Submerge No.3",
+      "card_type": "Stage",
+      "category": "Stage",
+      "card_type_en": "Stage",
+      "category_en": "Stage",
+      "colors": [
+        "紫"
+      ],
+      "colors_en": [
+        "Purple"
+      ],
+      "cost": 5,
+      "power": null,
+      "life": null,
+      "counter": null,
+      "rarity": "UC",
+      "attributes": [
+        "-"
+      ],
+      "attributes_en": [
+        "-"
+      ],
+      "traits": [
+        "草帽一行人"
+      ],
+      "traits_en": [
+        "Straw Hat Crew"
+      ],
+      "effect": "【登場時】抽1張卡片，並從咚‼卡組將最多1張咚‼卡以休息狀態追加。\n【對方攻擊時】可將這張舞台卡置為休息狀態：最多2張自己的角色卡，以及力量值5000以下的領航卡，在這個回合，力量值+1000。",
+      "effect_en": "[On Play] Draw 1 card and add up to 1 DON!! card as rested from your DON!! deck.\n[On Your Opponent's Attack] You may rest this Stage: Up to 2 of your Characters, and your Leader with a power of 5000 or less, gain +1000 power during this turn.",
+      "trigger": "",
+      "trigger_en": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ]
     }
   }
 }
