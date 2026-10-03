@@ -146,4 +146,36 @@ describe("filterBinderLibrary", () => {
     ]);
     assert.deepEqual(ids(filterBinderLibrary(entries, "CP9", meta, matchName)), []);
   });
+
+  it("matches set prefixes and fullwidth card numbers, not letter-digit names", () => {
+    const entries = [
+      ["P-160", 1],
+      ["OP01-001", 1],
+      ["OP10-001", 1],
+      ["OP18-076", 1],
+      ["PRB01-001", 1],
+      ["ST01-001", 1],
+      ["ST10-001", 1],
+      ["EB01-001", 1],
+      ["EB05-049", 1],
+    ] as const;
+    assert.deepEqual(ids(filterBinderLibrary(entries, "P-", NO_META)), ["P-160"]);
+    assert.deepEqual(ids(filterBinderLibrary(entries, "P", NO_META)), ["P-160"]);
+    assert.deepEqual(ids(filterBinderLibrary(entries, "OP1", NO_META)), ["OP10-001", "OP18-076"]);
+    assert.deepEqual(ids(filterBinderLibrary(entries, "Op", NO_META)), ["OP01-001", "OP10-001", "OP18-076"]);
+    assert.deepEqual(ids(filterBinderLibrary(entries, "PRB", NO_META)), ["PRB01-001"]);
+    assert.deepEqual(ids(filterBinderLibrary(entries, "PRB0", NO_META)), ["PRB01-001"]);
+    assert.deepEqual(ids(filterBinderLibrary(entries, "ST1", NO_META)), ["ST10-001"]);
+    assert.deepEqual(ids(filterBinderLibrary(entries, "EB0", NO_META)), ["EB01-001", "EB05-049"]);
+    assert.deepEqual(ids(filterBinderLibrary(entries, "ＯＰ１８－０７６", NO_META)), ["OP18-076"]);
+    assert.equal(queryLooksLikeCardNumber("P-"), true);
+    assert.equal(queryLooksLikeCardNumber("OP1"), true);
+    assert.equal(queryLooksLikeCardNumber("PRB"), true);
+    assert.equal(queryLooksLikeCardNumber("ＯＰ１８－０７６"), true);
+    assert.equal(queryLooksLikeCardNumber("CP9"), false);
+    assert.equal(queryLooksLikeCardNumber("DON!!"), false);
+    assert.equal(matchesCardId("OP01-001", "OP1"), false);
+    assert.equal(matchesCardId("PRB01-001", "P-"), false);
+    assert.equal(matchesCardId("OP18-076", "ＯＰ１８－０７６"), true);
+  });
 });

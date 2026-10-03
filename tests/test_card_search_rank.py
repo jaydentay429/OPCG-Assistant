@@ -89,6 +89,37 @@ def test_normal_name_search_ranks_exact_name_before_a_substring():
     assert "OP02-107" not in luffy
 
 
+def test_set_prefixes_and_fullwidth_card_numbers():
+    """Partial set codes match ids only. Counts are the live catalog."""
+    expected = {
+        "P-": (259, "P-001"),
+        "P": (259, "P-001"),
+        "OP": (3563, "OP01-001"),
+        "Op": (3563, "OP01-001"),
+        "OP1": (1403, "OP10-001"),
+        "OP18": (26, "OP18-001"),
+        "OP18-0": (21, "OP18-001"),
+        "PRB": (41, "PRB01-001"),
+        "PRB0": (41, "PRB01-001"),
+        "ST": (782, "ST01-001"),
+        "ST1": (220, "ST10-001"),
+        "EB": (439, "EB01-001"),
+        "EB0": (439, "EB01-001"),
+        "ＯＰ１８－０７６": (1, "OP18-076"),
+    }
+    for query, (count, first) in expected.items():
+        ids = _search(query)
+        assert len(ids) == count, query
+        assert ids[0] == first, (query, ids[0] if ids else None)
+
+    assert all(card_id.startswith("P-") for card_id in _search("P-"))
+    assert all(card_id.startswith("OP1") for card_id in _search("OP1"))
+    assert "OP01-001" not in _search("OP1")
+    assert "P-160" not in _search("Op")
+    assert "PRB01-001" not in _search("P")
+    assert _search("ＯＰ１８－０７６") == ["OP18-076"]
+
+
 def test_letter_digit_names_search_names_and_traits():
     """CP9 / Mr.1 / GERMA 66 are not card numbers. Counts are the live catalog."""
     expected = {
@@ -98,8 +129,17 @@ def test_letter_digit_names_search_names_and_traits():
         "Mr.2": (14, "ST08-013"),
         "Mr.3": (16, "ST30-014"),
         "GERMA 66": (58, "OP06-078"),
+        "Germa66": (58, "OP06-078"),
         "Don": (444, "ST03-009"),
+        "don": (444, "ST03-009"),
+        "DON": (444, "ST03-009"),
+        "DON!!": (444, "ST03-009"),
         "P-160": (1, "P-160"),
+        "OP18-076": (1, "OP18-076"),
+        "EB05-049": (1, "EB05-049"),
+        "OP18-106": (1, "OP18-106"),
+        "P-159": (2, "P-159"),
+        "ST01-001": (4, "ST01-001"),
         "鯊魚潛水3號": (1, "OP18-076"),
         "迷你梅利2號": (2, "OP18-078"),
         "OP18": (26, "OP18-001"),
