@@ -9,6 +9,11 @@ import {
   requestScrollRestore,
   scrollYForPersist,
 } from "@/lib/scrollRestore";
+import {
+  recallSearchResults,
+  rememberSearchResults,
+  searchResultsCacheKey,
+} from "@/lib/searchResultCache";
 import type { FilterCard, FilterOptions, FilterState } from "@/lib/types";
 import { CardWall, CardWallSkeleton } from "./CardWall";
 import { EMPTY_FILTERS, FilterBar } from "./FilterBar";
@@ -111,6 +116,13 @@ export function SearchPageClient({
       if (!hideHeader) restoreOnceRef.current = true;
     }
     skipPageResetRef.current = true;
+    const cached = recallSearchResults(storageKey, searchResultsCacheKey(storageKey, filtersToQuery(saved.filters, q0, saved.page)));
+    if (cached) {
+      setCards(cached.cards);
+      setTotal(cached.total);
+      setFetchedOnce(true);
+      setLoading(false);
+    }
     setRestored(true);
   }, [hideHeader, storageKey, initialQ]);
 
@@ -190,20 +202,33 @@ export function SearchPageClient({
     if (!restored) return;
     let cancelled = false;
     const ac = new AbortController();
-    setLoading(true);
-    setError("");
     const query = filtersToQuery(filters, debouncedQ, page);
+    const resultKey = searchResultsCacheKey(storageKey, query);
+    const cached = recallSearchResults(storageKey, resultKey);
+    if (cached) {
+      setCards(cached.cards);
+      setTotal(cached.total);
+      setFetchedOnce(true);
+      setLoading(false);
+    } else {
+      setCards([]);
+      setTotal(0);
+      setLoading(true);
+    }
+    setError("");
     fetchFilterCards(query, { signal: ac.signal })
       .then((res) => {
         if (cancelled) return;
         setCards(res.cards);
         setTotal(res.total);
         setFetchedOnce(true);
+        rememberSearchResults(storageKey, { key: resultKey, cards: res.cards, total: res.total });
       })
       .catch((e) => {
         if (cancelled) return;
         // Ignore aborts from superseded searches.
         if (e instanceof Error && /abort|408|超时/i.test(e.message)) return;
+        if (cached) return;
         setError(e instanceof Error ? e.message : String(e));
         setCards([]);
         setTotal(0);
@@ -217,7 +242,7 @@ export function SearchPageClient({
       cancelled = true;
       ac.abort();
     };
-  }, [filters, debouncedQ, page, restored, searchTick]);
+  }, [filters, debouncedQ, page, restored, searchTick, storageKey]);
 
   // Restore once after the wall has data — prefer the clicked card anchor.
   useLayoutEffect(() => {
