@@ -4,6 +4,7 @@ import base64
 import json
 import os
 import re
+import unicodedata
 import hashlib
 import hmac
 import secrets
@@ -1361,8 +1362,13 @@ def build_card_search_blob(card_basic: dict[str, Any] | None) -> str:
     return normalize_name_for_match(" ".join(texts))
 
 
+def _nfkc_query(query: str) -> str:
+    """Fold fullwidth letters, digits, and hyphens before matching."""
+    return unicodedata.normalize("NFKC", str(query or "")).strip()
+
+
 def expand_query_match_norms(query: str) -> list[str]:
-    raw = str(query or "").strip()
+    raw = _nfkc_query(query)
     if not raw:
         return []
     variants = expand_name_search_texts(raw)
@@ -1417,7 +1423,18 @@ _card_id_hit_cache: dict[str, bool] = {}
 
 
 def _query_compact_upper(query: str) -> str:
-    return _CARD_ID_SEPARATORS.sub("", str(query or "").strip()).upper()
+    return _CARD_ID_SEPARATORS.sub("", _nfkc_query(query)).upper()
+
+
+def _exclusive_set_prefix(compact: str) -> bool:
+    """Partial set code or card number. Bare ``DON`` is a word, not a prefix.
+
+    ``P`` / ``OP1`` / ``OP18-0`` / ``PRB`` qualify. ``CP9``, ``Mr.1``, and
+    ``GERMA66`` do not.
+    """
+    if not compact or re.search(r"[^A-Z0-9]", compact):
+        return False
+    return re.fullmatch(r"P\d{0,2}|(?:OP|ST|EB|PRB)\d*|DON(?:EB|PRB)\d*|DON\d+", compact) is not None
 
 
 def canonical_full_card_id(query: str) -> str | None:
@@ -1466,11 +1483,12 @@ def card_id_match_rank(card_id: str, query: str) -> int | None:
 
 
 def set_prefix_matches(card_id: str, query: str) -> bool:
-    """Set code prefix, including ``DON`` covering ``DONPRB`` and ``DONEB``.
+    """Set code or partial card number, matched on the compact id.
 
-    A full card id is not a set prefix. ``OP18`` matches ``OP18-``; ``OP18-0``
-    matches ``OP18-0``. Bare words such as ``Don`` still match here so DON-family
-    ids stay in the result, at the same rank as a name substring.
+    ``P`` / ``P-`` match promo ids. ``OP1`` matches ``OP10``–``OP19``, not
+    ``OP01``. ``OP18-0`` matches ``OP18-0``. Leading letters must be equal, so
+    ``P`` does not match ``PRB`` or ``OP16``. Bare ``DON`` still covers
+    ``DONPRB`` and ``DONEB``. A full card id is not a set prefix.
     """
     if canonical_full_card_id(query):
         return False
@@ -1480,23 +1498,21 @@ def set_prefix_matches(card_id: str, query: str) -> bool:
     cid = normalize_card_id(str(card_id or ""))
     if not cid:
         return False
-    if re.fullmatch(r"DON(?:EB|PRB)?\d{0,2}", compact):
-        if compact == "DON":
-            return cid.startswith("DON")
-        return cid.startswith(compact)
-    numbered = re.fullmatch(r"(OP|ST|EB|PRB)(\d{2})(\d{0,2})", compact)
-    if not numbered:
+    if compact == "DON":
+        return cid.startswith("DON")
+    if not _exclusive_set_prefix(compact):
         return False
-    prefix = f"{numbered.group(1)}{numbered.group(2)}"
-    extra = numbered.group(3)
-    if extra:
-        return cid.startswith(f"{prefix}-{extra}")
-    return cid.startswith(prefix + "-")
+    cid_compact = cid.replace("-", "")
+    q_letters = re.match(r"[A-Z]+", compact)
+    cid_letters = re.match(r"[A-Z]+", cid_compact)
+    if not q_letters or not cid_letters or q_letters.group(0) != cid_letters.group(0):
+        return False
+    return len(compact) < len(cid_compact) and cid_compact.startswith(compact)
 
 
 def catalog_has_card_id_match(query: str) -> bool:
     """True when at least one loaded card id matches this full card number."""
-    key = str(query or "").strip().lower()
+    key = _nfkc_query(query).lower()
     cached = _card_id_hit_cache.get(key)
     if cached is not None:
         return cached
@@ -1532,14 +1548,15 @@ def card_text_query_rank(
 ) -> int | None:
     """Lower is a better hit. None means no match.
 
-    A full card number (``OP18-089``, ``P-160``, ``p160``) is matched on the id
-    first. If that number is not in the catalog, the query falls through to
-    names and traits. Set codes (``OP18``, ``EB05``, ``DON``) and ordinary
-    words (``CP9``, ``Don``, ``Mr.1``) always search names and traits. A digit
-    inside a name is never stripped out and matched against ids. ``DON`` also
-    covers ``DONPRB`` and ``DONEB``.
+    The query is NFKC-normalized first, so ``ＯＰ１８－０７６`` is ``OP18-076``.
+    A full card number is matched on the id first. If that number is not in
+    the catalog, the query falls through to names and traits. Set codes and
+    partial numbers (``P-``, ``OP``, ``OP1``, ``OP18-0``, ``PRB``, ``ST``,
+    ``EB``) match ids only. Ordinary words (``CP9``, ``Mr.1``, ``GERMA 66``,
+    ``Don``) search names and traits. Bare ``DON`` also covers ``DONPRB`` and
+    ``DONEB``. A digit inside a name is never stripped out and matched against ids.
     """
-    q = str(query or "").strip()
+    q = _nfkc_query(query)
     if not q:
         return 0
     if canonical_full_card_id(q):
@@ -1548,6 +1565,8 @@ def card_text_query_rank(
             return id_rank
         if catalog_has_card_id_match(q):
             return None
+    elif _exclusive_set_prefix(_query_compact_upper(q)):
+        return 1 if set_prefix_matches(card_id, q) else None
 
     best: int | None = 4 if set_prefix_matches(card_id, q) else None
     norms = query_norms if query_norms is not None else expand_query_match_norms(q)

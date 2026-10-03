@@ -7,13 +7,18 @@ import { displayCardId } from "./cardId";
 const ID_SEPARATOR = /[-_＿\s.．·・/／\\－—–−‐‑‒]/g;
 
 function foldAscii(text: string): string {
-  return String(text || "").replace(/[\uFF01-\uFF5E]/g, (ch) =>
-    String.fromCharCode(ch.charCodeAt(0) - 0xfee0),
-  );
+  return String(text || "")
+    .normalize("NFKC")
+    .replace(/[\uFF01-\uFF5E]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0xfee0));
 }
 
 function compactId(text: string): string {
   return foldAscii(text).toLowerCase().replace(ID_SEPARATOR, "");
+}
+
+/** Partial set code. Bare DON is a word. CP9 / Mr.1 / GERMA66 are not prefixes. */
+function exclusiveSetPrefix(compactUpper: string): boolean {
+  return /^(?:P\d{0,2}|(?:OP|ST|EB|PRB)\d*|DON(?:EB|PRB)\d*|DON\d+)$/.test(compactUpper);
 }
 
 function catalogId(cardId: string): string {
@@ -46,23 +51,25 @@ function canonicalFullCardId(query: string): string | null {
   return null;
 }
 
-/** Set-code prefix. Bare `DON` covers `DONPRB` and `DONEB`. */
+/**
+ * Set code or partial card number on the compact id.
+ * `P` / `P-` match promos. `OP1` matches `OP10`–`OP19`, not `OP01`.
+ * Leading letters must match, so `P` does not match `PRB` or `OP16`.
+ * Bare `DON` covers `DONPRB` and `DONEB`.
+ */
 function setPrefixMatches(cardId: string, query: string): boolean {
   if (canonicalFullCardId(query)) return false;
   const compact = compactId(query).toUpperCase();
   if (!compact || /[^A-Z0-9]/.test(compact)) return false;
   const cid = catalogId(cardId);
   if (!cid) return false;
-  if (/^DON(?:EB|PRB)?\d{0,2}$/.test(compact)) {
-    if (compact === "DON") return cid.startsWith("DON");
-    return cid.startsWith(compact);
-  }
-  const numbered = compact.match(/^(OP|ST|EB|PRB)(\d{2})(\d{0,2})$/);
-  if (!numbered) return false;
-  const prefix = `${numbered[1]}${numbered[2]}`;
-  const extra = numbered[3] || "";
-  if (extra) return cid.startsWith(`${prefix}-${extra}`);
-  return cid.startsWith(`${prefix}-`);
+  if (compact === "DON") return cid.startsWith("DON");
+  if (!exclusiveSetPrefix(compact)) return false;
+  const cidCompact = cid.replace(/-/g, "");
+  const qLetters = compact.match(/^[A-Z]+/)?.[0] || "";
+  const cidLetters = cidCompact.match(/^[A-Z]+/)?.[0] || "";
+  if (!qLetters || qLetters !== cidLetters) return false;
+  return compact.length < cidCompact.length && cidCompact.startsWith(compact);
 }
 
 /**
@@ -103,18 +110,16 @@ export function matchesCardId(cardId: string, query: string): boolean {
  * True when the query can be decided from the card id alone.
  * Ordinary words (`Don`, `CP9`, `Mr.1`, `GERMA 66`) stay false so name and
  * trait matches are not hidden before deck-stats metadata loads. A full card
- * id, a collector number, or a set code such as `OP18` / `ST01` stays true.
- * Bare `DON` is a word; `DONPRB` and `DONEB` are still set prefixes.
+ * id, a collector number, or a set code such as `P-` / `OP1` / `PRB` / `ST`
+ * stays true. Bare `DON` is a word; `DONPRB` and `DONEB` are still set prefixes.
+ * Fullwidth letters and hyphens are folded with NFKC first.
  */
 export function queryLooksLikeCardNumber(query: string): boolean {
   const compact = compactId(String(query || "").trim());
   if (!compact || !/^[a-z0-9]+$/.test(compact)) return false;
   if (/^\d+$/.test(compact)) return true;
   if (canonicalFullCardId(query)) return true;
-  const upper = compact.toUpperCase();
-  if (/^DON(?:EB|PRB)?\d{0,2}$/.test(upper)) return upper !== "DON";
-  if (/^(?:OP|ST|EB|PRB|P)$/.test(upper)) return true;
-  return /^(?:OP|ST|EB|PRB)\d{2}\d{0,2}$/.test(upper);
+  return exclusiveSetPrefix(compact.toUpperCase());
 }
 
 export type BinderLibraryMeta = {
