@@ -71,6 +71,9 @@ def test_op18_025_png_is_kept_by_the_fill_filter(tmp_path: Path):
 
     assert kept("OP18-025.png") is True
     assert kept("OP18-044.png") is True
+    assert kept("OP18-076.png") is True
+    assert kept("OP18-089.png") is True
+    assert kept("P-160.png") is True
     assert kept("OP18-005.webp") is True
     assert kept("OP13-001.w320.870e05eb.webp") is False
     assert kept("OP13-001.w200.870e05eb.webp") is False
