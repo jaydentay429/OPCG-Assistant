@@ -497,7 +497,7 @@ function PostNode({
   depth?: number;
 }) {
   const { t, lang } = useI18n();
-  const { token, isLoggedIn, isAdmin, requestLogin } = useAuth();
+  const { token, isAdmin, requestLogin } = useAuth();
   const [replyOpen, setReplyOpen] = useState(false);
   const [reportConfirm, setReportConfirm] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);

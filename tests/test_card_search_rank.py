@@ -82,7 +82,53 @@ def test_normal_name_search_ranks_exact_name_before_a_substring():
     assert len(doberman) < 20
 
     luffy = _search("魯夫")
-    assert 20 < len(luffy) < 400
+    assert luffy[0] == "ST01-001"
+    assert len(luffy) == 244
     assert "OP18-076" not in luffy
     assert "P-160" not in luffy
     assert "OP02-107" not in luffy
+
+
+def test_letter_digit_names_search_names_and_traits():
+    """CP9 / Mr.1 / GERMA 66 are not card numbers. Counts are the live catalog."""
+    expected = {
+        "CP9": (44, "OP03-076"),
+        "CP0": (35, "ST29-003"),
+        "Mr.1": (13, "OP01-083"),
+        "Mr.2": (14, "ST08-013"),
+        "Mr.3": (16, "ST30-014"),
+        "GERMA 66": (58, "OP06-078"),
+        "Don": (444, "ST03-009"),
+        "P-160": (1, "P-160"),
+        "鯊魚潛水3號": (1, "OP18-076"),
+        "迷你梅利2號": (2, "OP18-078"),
+        "OP18": (26, "OP18-001"),
+        "EB05": (43, "EB05-001"),
+        "魯夫": (244, "ST01-001"),
+    }
+    for query, (count, first) in expected.items():
+        ids = _search(query)
+        assert len(ids) == count, query
+        assert ids[0] == first, query
+
+    don = _search("Don")
+    assert sum(card_id.startswith("DONPRB") for card_id in don) == 180
+    assert sum(card_id.startswith("DONEB") for card_id in don) == 10
+    assert sum(
+        card_id.startswith("DON") and not card_id.startswith(("DONPRB", "DONEB"))
+        for card_id in don
+    ) == 56
+    assert _search("DONPRB")[0].startswith("DONPRB")
+    assert len(_search("DONPRB")) == 180
+    assert len(_search("DONEB")) == 10
+
+
+def test_unknown_full_card_id_falls_back_to_name_and_trait():
+    assert app.canonical_full_card_id("OP99-999") == "OP99-999"
+    assert app.catalog_has_card_id_match("OP99-999") is False
+    assert app.card_text_query_rank("OP01-001", "OP99-999 special", "OP99-999") is not None
+    assert _search("OP99-999") == []
+    assert app.canonical_full_card_id("CP9") is None
+    assert app.canonical_full_card_id("Mr.1") is None
+    assert app.canonical_full_card_id("Don") is None
+    assert app.canonical_full_card_id("GERMA 66") is None

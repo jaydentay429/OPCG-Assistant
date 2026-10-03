@@ -1081,7 +1081,6 @@ function SideBoard({
   replaceHandIndex,
   selectedHandIndex,
   attackMark,
-  onSelectAttacker,
   onTarget,
   onAttach,
   donArmed = false,
@@ -1880,7 +1879,7 @@ export function BattleBoard({
         const seatFromIid = /^leader-(\d+)$/.exec(iid);
         const tk = String(state.pending_choice?.target_kind || "").toLowerCase();
         const controller = state.pending_choice?.seat;
-        let ownerSeat =
+        const ownerSeat =
           seatFromIid != null
             ? Number(seatFromIid[1])
             : tk.includes("opponent") && controller != null
