@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { filterBinderLibrary, type BinderLibraryMeta } from "./binderLibraryFilter";
+import {
+  filterBinderLibrary,
+  matchesCardId,
+  queryLooksLikeCardNumber,
+  type BinderLibraryMeta,
+} from "./binderLibraryFilter";
 
 /** QA account: ST01-001, ST01-002, ST01-003, one copy each. */
 const FIXTURE = [
@@ -98,5 +103,47 @@ describe("filterBinderLibrary", () => {
     assert.deepEqual(ids(filterBinderLibrary(entries, "鯊魚潛水3號", meta, matchName)), ["OP18-076"]);
     assert.deepEqual(ids(filterBinderLibrary(entries, "迷你梅利2號", meta, matchName)), ["OP18-078"]);
     assert.deepEqual(ids(filterBinderLibrary(entries, "路飞", meta, matchName)), []);
+  });
+
+  it("treats letter-digit names as words, and Don as every DON-family id", () => {
+    assert.equal(queryLooksLikeCardNumber("CP9"), false);
+    assert.equal(queryLooksLikeCardNumber("Mr.1"), false);
+    assert.equal(queryLooksLikeCardNumber("GERMA 66"), false);
+    assert.equal(queryLooksLikeCardNumber("Don"), false);
+    assert.equal(queryLooksLikeCardNumber("OP18-076"), true);
+    assert.equal(queryLooksLikeCardNumber("DONPRB"), true);
+    assert.equal(matchesCardId("ST01-003", "CP9"), false);
+    assert.equal(matchesCardId("DON01-10155", "Don"), true);
+    assert.equal(matchesCardId("DONPRB01-10216", "don"), true);
+    assert.equal(matchesCardId("DONEB03-10082", "Don"), true);
+    assert.equal(matchesCardId("OP18-076", "Don"), false);
+
+    const entries = [
+      ["ST01-001", 1],
+      ["DON01-10155", 1],
+      ["DONPRB01-10216", 1],
+      ["DONEB03-10082", 1],
+    ] as const;
+    const meta: Record<string, BinderLibraryMeta> = {
+      "ST01-001": { searchBlob: "蒙其d路飞donquixote" },
+      "DON01-10155": { searchBlob: "don" },
+      "DONPRB01-10216": { searchBlob: "don" },
+      "DONEB03-10082": { searchBlob: "don" },
+    };
+    const matchName = (_id: string, blob: string | null | undefined, query: string) =>
+      String(blob || "").includes(query.trim().toLowerCase());
+    assert.deepEqual(ids(filterBinderLibrary(entries, "Don", NO_META, matchName)), [
+      "ST01-001",
+      "DON01-10155",
+      "DONPRB01-10216",
+      "DONEB03-10082",
+    ]);
+    assert.deepEqual(ids(filterBinderLibrary(entries, "Don", meta, matchName)), [
+      "ST01-001",
+      "DON01-10155",
+      "DONPRB01-10216",
+      "DONEB03-10082",
+    ]);
+    assert.deepEqual(ids(filterBinderLibrary(entries, "CP9", meta, matchName)), []);
   });
 });
