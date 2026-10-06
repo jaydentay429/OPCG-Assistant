@@ -14,6 +14,24 @@ export type SiteUpdate = {
 /** Newest first. Keep this list short — homepage shows the latest few. */
 export const SITE_UPDATES: SiteUpdate[] = [
   {
+    id: "op18-eb05-batch-2026-10-06",
+    date: "2026-10-06",
+    kind: "feature",
+    href: "/cards/OP18-046",
+    title: {
+      "zh-Hant": "OP18、EB05 新卡與異畫已補錄",
+      "zh-Hans": "OP18、EB05 新卡与异画已补录",
+      en: "OP18 and EB05 cards and alternate arts added",
+    },
+    body: {
+      "zh-Hant":
+        "截圖暫收：OP18 角色與 EB05 事件、Heroines Edition vol.2 基礎卡，以及平行異畫與 SP。沒有基礎圖的卡使用既有缺圖占位，異畫圖不拿來充當基礎圖。OP18-065 反擊改為無、屬性改為？。",
+      "zh-Hans":
+        "截图暂收：OP18 角色与 EB05 事件、Heroines Edition vol.2 基础卡，以及平行异画与 SP。没有基础图的卡使用既有缺图占位，异画图不拿来充当基础图。OP18-065 反击改为无、属性改为？。",
+      en: "Screenshot entries for OP18 characters, EB05 events, Heroines Edition vol.2 base cards, parallel arts, and SP. Base cards with no base art use the existing missing-image placeholder. OP18-065 Counter is now none and its attribute is ?.",
+    },
+  },
+  {
     id: "op18-106-eb05-049-2026-10-03",
     date: "2026-10-03",
     kind: "feature",

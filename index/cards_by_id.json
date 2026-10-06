@@ -193986,10 +193986,10 @@
     "cost": 10,
     "power": 11000,
     "life": null,
-    "counter": 1000,
+    "counter": null,
     "rarity": "SR",
     "attributes_en": [
-      "Special"
+      "Unknown"
     ],
     "traits": [
       "天龍人",
@@ -194000,7 +194000,10 @@
       "Holy Knights"
     ],
     "effect": "【防禦】【登場時】咚‼−1：使最多1張自己廢棄區中力量值6000以下、擁有《天龍人》特徵的角色卡登場。",
-    "effect_en": "[Blocker] [On Play] DON!! −1: Play up to 1 Character card with a power of 6000 or less and the {Celestial Dragons} type from your Trash."
+    "effect_en": "[Blocker] [On Play] DON!! −1: Play up to 1 Character card with a power of 6000 or less and the {Celestial Dragons} type from your Trash.",
+    "attributes": [
+      "？"
+    ]
   },
   "OP18-078": {
     "card_id": "OP18-078",
@@ -205774,5 +205777,1874 @@
     "card_sets": [
       "Heroines Edition vol.2【EB-05】"
     ]
+  },
+  "OP18-017": {
+    "card_id": "OP18-017",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "name": "羅羅亞・索隆",
+    "name_en": "Roronoa Zoro",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "cost": 4,
+    "power": 4000,
+    "life": null,
+    "counter": 1000,
+    "rarity": "C",
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "traits": [
+      "阿拉巴斯坦王國",
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Alabasta",
+      "Straw Hat Crew"
+    ],
+    "effect": "【每回合1次】若自己擁有《阿拉巴斯坦王國》特徵的角色卡因對手的效果即將離開場上時，可以替換成自己的領航卡，在這個回合，力量值-2000。\n【攻擊時】最多1張自己擁有《阿拉巴斯坦王國》特徵的角色卡，在這個回合，獲得【速攻】。",
+    "effect_en": "[Once Per Turn] If one of your {Alabasta} type Characters would be removed from the field by your opponent's effect, you may give your Leader −2000 power during this turn instead.\n[When Attacking] Up to 1 of your {Alabasta} type Characters gains [Rush] during this turn.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "補充包 OP-18【OP-18】"
+    ]
+  },
+  "OP18-024": {
+    "card_id": "OP18-024",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "name": "可可羅",
+    "name_en": "Kokoro",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "綠"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "cost": 2,
+    "power": 0,
+    "life": null,
+    "counter": 1000,
+    "rarity": "C",
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "traits": [
+      "人魚族",
+      "W7"
+    ],
+    "traits_en": [
+      "Merfolk",
+      "Water Seven"
+    ],
+    "effect": "【防禦】【我方回合結束時】可以將這張角色卡放置到廢棄區：將自己的領航卡置為活動狀態。",
+    "effect_en": "[Blocker] [End of Your Turn] You may trash this Character: Set your Leader as active.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "補充包 OP-18【OP-18】"
+    ]
+  },
+  "OP18-055": {
+    "card_id": "OP18-055",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "name": "Mr.9&Miss星期三",
+    "name_en": "Mr.9 & Miss Wednesday",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "藍"
+    ],
+    "colors_en": [
+      "Blue"
+    ],
+    "cost": 3,
+    "power": 4000,
+    "life": null,
+    "counter": 1000,
+    "rarity": "C",
+    "attributes": [
+      "斬",
+      "打"
+    ],
+    "attributes_en": [
+      "Slash",
+      "Strike"
+    ],
+    "traits": [
+      "B・W"
+    ],
+    "traits_en": [
+      "Baroque Works"
+    ],
+    "effect": "【咚‼×1】這張角色卡力量值+1000。\n【登場時】將最多1張對手費用2以下的角色卡放回持有者的手牌。",
+    "effect_en": "[DON!! x1] This Character gains +1000 power.\n[On Play] Return up to 1 of your opponent's Characters with a cost of 2 or less to the owner's hand.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "補充包 OP-18【OP-18】"
+    ]
+  },
+  "OP18-011": {
+    "card_id": "OP18-011",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "name": "納菲魯塔利・薇薇",
+    "name_en": "Nefeltari Vivi",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "cost": 2,
+    "power": 0,
+    "life": null,
+    "counter": 1000,
+    "rarity": "SR",
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "traits": [
+      "阿拉巴斯坦王國"
+    ],
+    "traits_en": [
+      "Alabasta"
+    ],
+    "effect": "自己同時擁有《動物》和《阿拉巴斯坦王國》特徵的角色卡全部力量值+1000。\n【對方回合中】這張角色卡獲得【防禦】，力量值+6000。",
+    "effect_en": "All of your Characters with both the {Animal} and {Alabasta} types gain +1000 power.\n[Opponent's Turn] This Character gains [Blocker] and +6000 power.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "補充包 OP-18【OP-18】"
+    ]
+  },
+  "OP18-034": {
+    "card_id": "OP18-034",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "name": "佛朗基",
+    "name_en": "Franky",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "綠"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "cost": 6,
+    "power": 7000,
+    "life": null,
+    "counter": null,
+    "rarity": "SR",
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "traits": [
+      "W7",
+      "佛朗基一家",
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Water Seven",
+      "Franky Family",
+      "Straw Hat Crew"
+    ],
+    "effect": "【登場時】使最多1張自己手牌中費用5以下、擁有《佛朗基一家》或《草帽一行人》特徵的卡片登場。之後，若自己有費用5以上的舞台卡時，將最多1張對手費用6以下的角色卡置為休息狀態。",
+    "effect_en": "[On Play] Play up to 1 card with a cost of 5 or less and the {Franky Family} or {Straw Hat Crew} type from your hand. Then, if you have a Stage with a cost of 5 or more, rest up to 1 of your opponent's Characters with a cost of 6 or less.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "補充包 OP-18【OP-18】"
+    ]
+  },
+  "OP18-046": {
+    "card_id": "OP18-046",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "name": "Mr.0&Miss All星期天",
+    "name_en": "Mr.0 & Miss All Sunday",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "藍"
+    ],
+    "colors_en": [
+      "Blue"
+    ],
+    "cost": 9,
+    "power": 10000,
+    "life": null,
+    "counter": null,
+    "rarity": "SR",
+    "attributes": [
+      "特",
+      "知"
+    ],
+    "attributes_en": [
+      "Special",
+      "Wisdom"
+    ],
+    "traits": [
+      "王下七武海",
+      "B・W"
+    ],
+    "traits_en": [
+      "The Seven Warlords of the Sea",
+      "Baroque Works"
+    ],
+    "effect": "【登場時】抽2張卡片，並附加最多各2張休息狀態的咚‼卡在自己的領航卡和自己全數的角色卡。\n【對方攻擊時】可以廢棄1張自己的手牌：自己擁有包含『B・W』特徵的領航卡原本的力量值，在這個回合變更成7000。",
+    "effect_en": "[On Play] Draw 2 cards and give your Leader and all of your Characters up to 2 rested DON!! cards each.\n[On Your Opponent's Attack] You may trash 1 card from your hand: Your Leader with a type including \"Baroque Works\" has its base power become 7000 during this turn.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "補充包 OP-18【OP-18】"
+    ]
+  },
+  "OP18-048": {
+    "card_id": "OP18-048",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "name": "Mr.1&Miss雙手指",
+    "name_en": "Mr.1 & Miss Doublefinger",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "藍"
+    ],
+    "colors_en": [
+      "Blue"
+    ],
+    "cost": 6,
+    "power": 6000,
+    "life": null,
+    "counter": null,
+    "rarity": "SR",
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "traits": [
+      "B・W"
+    ],
+    "traits_en": [
+      "Baroque Works"
+    ],
+    "effect": "【速攻】【登場時】使最多1張自己手牌中費用5以下、擁有包含『B・W』特徵的角色卡登場。",
+    "effect_en": "[Rush] [On Play] Play up to 1 Character card with a cost of 5 or less and a type including \"Baroque Works\" from your hand.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "補充包 OP-18【OP-18】"
+    ]
+  },
+  "OP18-084": {
+    "card_id": "OP18-084",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "name": "軍子宮",
+    "name_en": "Gunko",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黑"
+    ],
+    "colors_en": [
+      "Black"
+    ],
+    "cost": 1,
+    "power": 2000,
+    "life": null,
+    "counter": null,
+    "rarity": "SR",
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "traits": [
+      "天龍人",
+      "神之騎士團"
+    ],
+    "traits_en": [
+      "Celestial Dragons",
+      "Holy Knights"
+    ],
+    "effect": "【登場時】從自己的卡組上面查看4張卡片，公開最多1張擁有《神之騎士團》特徵的卡片，並加入手牌。之後，將其餘卡片放置到廢棄區。\n【啟動主要】可以將4張自己的咚‼卡置為休息狀態：使最多1張自己廢棄區中費用6以下、擁有《神之騎士團》特徵的角色卡登場。",
+    "effect_en": "[On Play] Look at 4 cards from the top of your deck; reveal up to 1 {Holy Knights} type card and add it to your hand. Then, trash the rest.\n[Activate: Main] You may rest 4 of your DON!! cards: Play up to 1 {Holy Knights} type Character card with a cost of 6 or less from your trash.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "補充包 OP-18【OP-18】"
+    ]
+  },
+  "OP18-061": {
+    "card_id": "OP18-061",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "name": "艾斯巴古",
+    "name_en": "Iceburg",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紫"
+    ],
+    "colors_en": [
+      "Purple"
+    ],
+    "cost": 2,
+    "power": 0,
+    "life": null,
+    "counter": 1000,
+    "rarity": "SR",
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "traits": [
+      "W7",
+      "GC"
+    ],
+    "traits_en": [
+      "Water Seven",
+      "Galley-La Company"
+    ],
+    "effect": "【登場時】從自己的卡組上面查看5張卡片，公開合計最多2張舞台卡或擁有《W7》特徵的卡片，並加入手牌。之後，將其餘卡片依任意順序放到卡組下面。",
+    "effect_en": "[On Play] Look at 5 cards from the top of your deck; reveal up to a total of 2 Stage cards or {Water Seven} type cards and add them to your hand. Then, place the rest at the bottom of your deck in any order.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "補充包 OP-18【OP-18】"
+    ]
+  },
+  "OP18-100": {
+    "card_id": "OP18-100",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "name": "卡莉法",
+    "name_en": "Kalifa",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黃"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "cost": 6,
+    "power": 7000,
+    "life": null,
+    "counter": 1000,
+    "rarity": "SR",
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "traits": [
+      "CP9"
+    ],
+    "traits_en": [
+      "CP9"
+    ],
+    "effect": "【登場時】抽1張卡片，並將最多1張自己手牌中擁有包含『CP』特徵的卡片，以正面朝上加入自己的生命值區上面或下面。\n【觸發器】若自己的領航卡擁有包含『CP』特徵時，抽1張卡片，並將最多1張對手的領航卡或角色卡置為休息狀態。",
+    "effect_en": "[On Play] Draw 1 card and add up to 1 card with a type including \"CP\" from your hand to the top or bottom of your Life cards face-up.\n[Trigger] If your Leader has a type including \"CP\", draw 1 card and rest up to 1 of your opponent's Leader or Characters.",
+    "trigger": "【觸發器】若自己的領航卡擁有包含『CP』特徵時，抽1張卡片，並將最多1張對手的領航卡或角色卡置為休息狀態。",
+    "trigger_en": "[Trigger] If your Leader has a type including \"CP\", draw 1 card and rest up to 1 of your opponent's Leader or Characters.",
+    "card_sets": [
+      "補充包 OP-18【OP-18】"
+    ]
+  },
+  "OP18-113": {
+    "card_id": "OP18-113",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "name": "羅布・路基",
+    "name_en": "Rob Lucci",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黃"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "cost": 8,
+    "power": 10000,
+    "life": null,
+    "counter": null,
+    "rarity": "SR",
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "traits": [
+      "CP9"
+    ],
+    "traits_en": [
+      "CP9"
+    ],
+    "effect": "【登場時】/【KO時】將最多1張對手生命值區上面的卡片放置到廢棄區。\n【觸發器】若自己的領航卡擁有包含『CP』特徵時，抽1張卡片，並將最多1張費用8以下的角色卡放置到持有者的卡組下面。",
+    "effect_en": "[On Play] / [On K.O.] Trash up to 1 card from the top of your opponent's Life cards.\n[Trigger] If your Leader has a type including \"CP\", draw 1 card and place up to 1 Character with a cost of 8 or less at the bottom of the owner's deck.",
+    "trigger": "【觸發器】若自己的領航卡擁有包含『CP』特徵時，抽1張卡片，並將最多1張費用8以下的角色卡放置到持有者的卡組下面。",
+    "trigger_en": "[Trigger] If your Leader has a type including \"CP\", draw 1 card and place up to 1 Character with a cost of 8 or less at the bottom of the owner's deck.",
+    "card_sets": [
+      "補充包 OP-18【OP-18】"
+    ]
+  },
+  "EB05-030": {
+    "card_id": "EB05-030",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "大家保重♡",
+    "name_en": "Take Care, Everybody. ♡",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "藍"
+    ],
+    "colors_en": [
+      "Blue"
+    ],
+    "cost": 2,
+    "power": null,
+    "life": null,
+    "counter": null,
+    "rarity": "R",
+    "attributes": [
+      "-"
+    ],
+    "attributes_en": [
+      "-"
+    ],
+    "traits": [
+      "東方藍",
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "East Blue",
+      "Straw Hat Crew"
+    ],
+    "effect": "【主要】若自己的領航卡是「娜美」時，將最多1張費用5以下的角色卡放回持有者的手牌。\n【反擊】抽1張卡片，並使最多1張自己的領航卡或角色卡，在這個回合，力量值+1000。",
+    "effect_en": "[Main] If your Leader is [Nami], return up to 1 Character with a cost of 5 or less to the owner's hand.\n[Counter] Draw 1 card, and up to 1 of your Leader or Characters gains +1000 power during this turn.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
+  },
+  "EB05-019": {
+    "card_id": "EB05-019",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "我選擇向世界開放這個國家!!我想站在你們這邊戰鬥!!!",
+    "name_en": "I Choose to Open This Country to the World!! I Want to Fight on Your Side!!!",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "綠"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "cost": 1,
+    "power": null,
+    "life": null,
+    "counter": null,
+    "rarity": "C",
+    "attributes": [
+      "-"
+    ],
+    "attributes_en": [
+      "-"
+    ],
+    "traits": [
+      "和之國"
+    ],
+    "traits_en": [
+      "Land of Wano"
+    ],
+    "effect": "【反擊】可以將1張自己的卡片置為休息狀態：最多1張自己擁有《和之國》特徵的領航卡或角色卡，在這場對戰中，力量值+4000。\n【觸發器】若對手的生命值卡在3張以下時，使最多1張自己手牌中力量值6000以下、擁有《和之國》特徵的角色卡登場。",
+    "effect_en": "[Counter] You may rest 1 of your cards: Up to 1 of your {Land of Wano} type Leader or Characters gains +4000 power during this battle.\n[Trigger] If your opponent has 3 or less Life cards, play up to 1 {Land of Wano} type Character card with 6000 power or less from your hand.",
+    "trigger": "【觸發器】若對手的生命值卡在3張以下時，使最多1張自己手牌中力量值6000以下、擁有《和之國》特徵的角色卡登場。",
+    "trigger_en": "[Trigger] If your opponent has 3 or less Life cards, play up to 1 {Land of Wano} type Character card with 6000 power or less from your hand.",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
+  },
+  "EB05-004": {
+    "card_id": "EB05-004",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "BABY5",
+    "name_en": "Baby 5",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "cost": 4,
+    "power": 6000,
+    "life": null,
+    "counter": null,
+    "rarity": "R",
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "traits": [
+      "龐克哈薩特",
+      "唐吉訶德海賊團"
+    ],
+    "traits_en": [
+      "Punk Hazard",
+      "Donquixote Pirates"
+    ],
+    "effect": "【登場時】可以公開2張自己手牌中的事件卡：抽2張卡片。\n【KO時】使最多1張自己手牌中力量值6000以下的角色卡，以休息狀態登場。",
+    "effect_en": "[On Play] You may reveal 2 Event cards from your hand: Draw 2 cards.\n[On K.O.] Play up to 1 Character card with 6000 power or less from your hand rested.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
+  },
+  "EB05-018": {
+    "card_id": "EB05-018",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "蕾貝卡",
+    "name_en": "Rebecca",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "綠"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "cost": 1,
+    "power": 1000,
+    "life": null,
+    "counter": 2000,
+    "rarity": "R",
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "traits": [
+      "多雷斯羅薩"
+    ],
+    "traits_en": [
+      "Dressrosa"
+    ],
+    "effect": "【登場時】最多1張對手休息狀態費用6以下的角色卡，在下一個對手的重整階段無法為活動狀態。",
+    "effect_en": "[On Play] Up to 1 of your opponent's rested Characters with a cost of 6 or less will not become active in your opponent's next Refresh Phase.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
+  },
+  "EB05-043": {
+    "card_id": "EB05-043",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "培羅娜",
+    "name_en": "Perona",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黑"
+    ],
+    "colors_en": [
+      "Black"
+    ],
+    "cost": 4,
+    "power": 5000,
+    "life": null,
+    "counter": 2000,
+    "rarity": "R",
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "traits": [
+      "恐怖三桅帆船海賊團"
+    ],
+    "traits_en": [
+      "Thriller Bark Pirates"
+    ],
+    "effect": "【KO時】將最多1張對手費用6以下的角色卡KO、或置為休息狀態。",
+    "effect_en": "[On K.O.] K.O. or rest up to 1 of your opponent's Characters with a cost of 6 or less.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
+  },
+  "EB05-061": {
+    "card_id": "EB05-061",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "娜美",
+    "name_en": "Nami",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "cost": 3,
+    "power": 4000,
+    "life": null,
+    "counter": 2000,
+    "rarity": "SEC",
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "traits": [
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Straw Hat Crew"
+    ],
+    "effect": "【每回合1次】若自己原本力量值6000以下的角色卡即將因對手離開場上時，可以替換成將1張自己生命值區上面的卡片加入手牌。\n【登場時】使最多1張自己手牌中費用2以下的紅色角色卡登場。",
+    "effect_en": "[Once Per Turn] If one of your Characters with 6000 base power or less would be removed from the field by your opponent, you may add 1 card from the top of your Life cards to your hand instead.\n[On Play] Play up to 1 red Character card with a cost of 2 or less from your hand.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
+  },
+  "EB05-031": {
+    "card_id": "EB05-031",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "賓什莫克・麗珠",
+    "name_en": "Vinsmoke Reiju",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紫"
+    ],
+    "colors_en": [
+      "Purple"
+    ],
+    "cost": 4,
+    "power": 5000,
+    "life": null,
+    "counter": 1000,
+    "rarity": "R",
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "traits": [
+      "賓什莫克家",
+      "杰爾馬66"
+    ],
+    "traits_en": [
+      "The Vinsmoke Family",
+      "GERMA 66"
+    ],
+    "effect": "【登場時】咚‼−1：若自己的領航卡擁有《賓什莫克家》特徵時，將自己卡組上面的10張卡片放置到廢棄區。\n【啟動主要】可以將這張角色卡放置到廢棄區：若對手有原本力量值8000以上的角色卡時，從咚‼卡組將最多4張咚‼卡以活動狀態追加。",
+    "effect_en": "[On Play] DON!! −1: If your Leader has the {The Vinsmoke Family} type, trash 10 cards from the top of your deck.\n[Activate: Main] You may trash this Character: If your opponent has a Character with 8000 base power or more, add up to 4 DON!! cards as active from your DON!! deck.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
+  },
+  "EB05-004-P1": {
+    "card_id": "EB05-004-P1",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "BABY5",
+    "name_en": "Baby 5",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "cost": 4,
+    "power": 6000,
+    "life": null,
+    "counter": null,
+    "rarity": "R",
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "traits": [
+      "龐克哈薩特",
+      "唐吉訶德海賊團"
+    ],
+    "traits_en": [
+      "Punk Hazard",
+      "Donquixote Pirates"
+    ],
+    "effect": "【登場時】可以公開2張自己手牌中的事件卡：抽2張卡片。\n【KO時】使最多1張自己手牌中力量值6000以下的角色卡，以休息狀態登場。",
+    "effect_en": "[On Play] You may reveal 2 Event cards from your hand: Draw 2 cards.\n[On K.O.] Play up to 1 Character card with 6000 power or less from your hand rested.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
+  },
+  "EB05-018-P1": {
+    "card_id": "EB05-018-P1",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "蕾貝卡",
+    "name_en": "Rebecca",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "綠"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "cost": 1,
+    "power": 1000,
+    "life": null,
+    "counter": 2000,
+    "rarity": "R",
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "traits": [
+      "多雷斯羅薩"
+    ],
+    "traits_en": [
+      "Dressrosa"
+    ],
+    "effect": "【登場時】最多1張對手休息狀態費用6以下的角色卡，在下一個對手的重整階段無法為活動狀態。",
+    "effect_en": "[On Play] Up to 1 of your opponent's rested Characters with a cost of 6 or less will not become active in your opponent's next Refresh Phase.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
+  },
+  "EB05-028-P1": {
+    "name": "波雅・漢考克",
+    "card_id": "EB05-028-P1",
+    "pack_id": "EB-05",
+    "colors": [
+      "藍"
+    ],
+    "cost": 4,
+    "category": "Character",
+    "power": 5000,
+    "counter": 1000,
+    "img_full_url": "",
+    "img_url": "",
+    "rarity": "R",
+    "card_type": "Character",
+    "traits": [
+      "推進城",
+      "王下七武海",
+      "九蛇海賊團"
+    ],
+    "attributes": [
+      "特"
+    ],
+    "effect": "【登場時】若對手的手牌有9張以上時，對手廢棄4張自身的手牌。",
+    "trigger": "",
+    "block_number": 5,
+    "life": 5,
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ],
+    "name_en": "Boa Hancock",
+    "effect_en": "[On Play] If your opponent has 9 or more cards in their hand, they trash 4 cards from their hand.",
+    "trigger_en": "",
+    "traits_en": [
+      "Impel Down",
+      "The Seven Warlords of the Sea",
+      "Kuja Pirates"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "colors_en": [
+      "Blue"
+    ],
+    "preview": true,
+    "manual_source": "screenshot"
+  },
+  "EB05-037-P1": {
+    "name": "黑瑪麗亞",
+    "card_id": "EB05-037-P1",
+    "pack_id": "EB-05",
+    "colors": [
+      "紫"
+    ],
+    "cost": 1,
+    "category": "Character",
+    "power": 2000,
+    "counter": 2000,
+    "img_full_url": "",
+    "img_url": "",
+    "rarity": "R",
+    "card_type": "Character",
+    "traits": [
+      "百獸海賊團"
+    ],
+    "attributes": [
+      "特"
+    ],
+    "effect": "【登場時】從自己的卡組上面查看3張卡片，公開最多1張擁有《百獸海賊團》特徵的卡片，並加入手牌。之後，將其餘卡片依任意順序放到卡組下面。",
+    "trigger": "",
+    "block_number": 5,
+    "life": 5,
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ],
+    "name_en": "Black Maria",
+    "effect_en": "[On Play] Look at 3 cards from the top of your deck; reveal up to 1 {Animal Kingdom Pirates} type card and add it to your hand. Then, place the rest at the bottom of the deck in any order.",
+    "trigger_en": "",
+    "traits_en": [
+      "Animal Kingdom Pirates"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "colors_en": [
+      "Purple"
+    ],
+    "preview": true,
+    "manual_source": "screenshot"
+  },
+  "EB05-043-P1": {
+    "card_id": "EB05-043-P1",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "培羅娜",
+    "name_en": "Perona",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黑"
+    ],
+    "colors_en": [
+      "Black"
+    ],
+    "cost": 4,
+    "power": 5000,
+    "life": null,
+    "counter": 2000,
+    "rarity": "R",
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "traits": [
+      "恐怖三桅帆船海賊團"
+    ],
+    "traits_en": [
+      "Thriller Bark Pirates"
+    ],
+    "effect": "【KO時】將最多1張對手費用6以下的角色卡KO、或置為休息狀態。",
+    "effect_en": "[On K.O.] K.O. or rest up to 1 of your opponent's Characters with a cost of 6 or less.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
+  },
+  "EB05-057-P1": {
+    "name": "虹子",
+    "card_id": "EB05-057-P1",
+    "pack_id": "EB-05",
+    "colors": [
+      "黃"
+    ],
+    "cost": 2,
+    "category": "Character",
+    "power": 0,
+    "counter": 2000,
+    "img_full_url": "",
+    "img_url": "",
+    "rarity": "R",
+    "card_type": "Character",
+    "traits": [
+      "東方藍"
+    ],
+    "attributes": [
+      "知"
+    ],
+    "effect": "【啟動主要】【每回合1次】將最多1張休息狀態的咚‼給予1張自己擁有屬性《特》或《知》的領航卡或角色卡。",
+    "trigger": "【觸發器】若自己的生命值在2張以下時，使最多1張自己手牌中力量值6000以下、擁有【觸發器】的角色卡登場。",
+    "block_number": 5,
+    "life": 2,
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ],
+    "name_en": "Nojiko",
+    "effect_en": "[Activate: Main] [Once Per Turn] Give up to 1 rested DON!! card to 1 of your Leader or Character cards with the {Special} or {Wisdom} attribute.",
+    "trigger_en": "[Trigger] If you have 2 or less Life cards, play up to 1 Character card with 6000 power or less and a [Trigger] from your hand.",
+    "traits_en": [
+      "East Blue"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "colors_en": [
+      "Yellow"
+    ],
+    "preview": true,
+    "manual_source": "screenshot"
+  },
+  "EB05-001-P1": {
+    "name": "珠寶・波妮",
+    "card_id": "EB05-001-P1",
+    "pack_id": "EB-05",
+    "colors": [
+      "紅"
+    ],
+    "cost": 5,
+    "category": "Character",
+    "power": 7000,
+    "counter": null,
+    "img_full_url": "",
+    "img_url": "",
+    "rarity": "SR",
+    "card_type": "Character",
+    "traits": [
+      "超新星",
+      "波妮海賊團"
+    ],
+    "attributes": [
+      "特"
+    ],
+    "effect": "【登場時】若自己的領航卡擁有《超新星》特徵時，抽2張卡，並使最多2張自己手牌中力量值2000以下的角色卡登場。【啟動主要】【每回合1次】使最多1張對手力量值6000以上的領航卡或角色卡，在下一個對手的結束階段結束時前，力量值-1000。",
+    "trigger": "",
+    "block_number": 5,
+    "life": 5,
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ],
+    "name_en": "Jewelry Bonney",
+    "effect_en": "[On Play] If your Leader has the {Supernovas} type, draw 2 cards and play up to 2 Character cards with 2000 power or less from your hand.\n[Activate: Main] [Once Per Turn] Give up to 1 of your opponent's Leader or Characters with 6000 power or more −1000 power until the end of your opponent's next End Phase.",
+    "trigger_en": "",
+    "traits_en": [
+      "Supernovas",
+      "Bonney Pirates"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "colors_en": [
+      "Red"
+    ],
+    "preview": true,
+    "manual_source": "screenshot"
+  },
+  "EB05-014-P2": {
+    "name": "白星",
+    "card_id": "EB05-014-P2",
+    "pack_id": "EB-05",
+    "colors": [
+      "綠"
+    ],
+    "cost": 1,
+    "category": "Character",
+    "power": 0,
+    "counter": null,
+    "img_full_url": "",
+    "img_url": "",
+    "rarity": "SR",
+    "card_type": "Character",
+    "traits": [
+      "人魚族",
+      "魚人島"
+    ],
+    "attributes": [
+      "知"
+    ],
+    "effect": "【登場時】從自己的卡組上面查看5張卡片，公開合計最多2張「梅加羅」或擁有《海王類》特徵的卡牌加入手牌。之後，將其餘卡片放到廢棄區。【啟動主要】可將這張角色卡置為休息狀態：使最多1張自己力量值6000以下擁有《海王類》特徵的角色卡，在這個回合中獲得【速攻】。",
+    "trigger": "",
+    "block_number": "X",
+    "life": 5,
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ],
+    "name_en": "Shirahoshi",
+    "effect_en": "[On Play] Look at 5 cards from the top of your deck; reveal up to a total of 2 [Megalo] or {Neptunian} type cards and add them to your hand. Then, trash the rest.\n[Activate: Main] You may rest this Character: Up to 1 of your {Neptunian} type Characters with 6000 power or less gains Rush during this turn.",
+    "trigger_en": "",
+    "traits_en": [
+      "Merfolk",
+      "Fish-Man Island"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "colors_en": [
+      "Green"
+    ],
+    "preview": true,
+    "manual_source": "screenshot"
+  },
+  "EB05-006-P1": {
+    "name": "巴基漢・絲媞希小姐",
+    "card_id": "EB05-006-P1",
+    "pack_id": "EB-05",
+    "colors": [
+      "紅"
+    ],
+    "cost": 2,
+    "category": "Character",
+    "power": 2000,
+    "counter": 2000,
+    "img_full_url": "",
+    "img_url": "",
+    "rarity": "SR",
+    "card_type": "Character",
+    "traits": [
+      "洛克斯海賊團"
+    ],
+    "attributes": [
+      "知"
+    ],
+    "effect": "【啟動主要】【每回合1次】可將1張自己生命值區上面的卡片加入手牌：選擇1項。・使最多1張角色卡在這個回合中力量值+3000。・使最多1張角色卡在這個回合中力量值-4000。",
+    "trigger": "",
+    "block_number": 5,
+    "life": 5,
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ],
+    "name_en": "Miss Buckingham Stussy",
+    "effect_en": "[Activate: Main] [Once Per Turn] You may add 1 card from the top of your Life cards to your hand: Choose one:\n• Give up to 1 Character +3000 power during this turn.\n• Give up to 1 Character −4000 power during this turn.",
+    "trigger_en": "",
+    "traits_en": [
+      "Rocks Pirates"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "colors_en": [
+      "Red"
+    ],
+    "preview": true,
+    "manual_source": "screenshot"
+  },
+  "EB05-021-P1": {
+    "name": "亞爾麗塔",
+    "card_id": "EB05-021-P1",
+    "pack_id": "EB-05",
+    "colors": [
+      "藍"
+    ],
+    "cost": 9,
+    "category": "Character",
+    "power": 7000,
+    "counter": 1000,
+    "img_full_url": "",
+    "img_url": "",
+    "rarity": "SR",
+    "card_type": "Character",
+    "traits": [
+      "十字公會"
+    ],
+    "attributes": [
+      "打"
+    ],
+    "effect": "【登場時】抽2張卡，並使最多1張自己手牌中費用8以下擁有《十字公會》特徵的角色卡登場。之後，這個回合中自己無法使角色卡登場。【攻擊時】使最多1張對手的角色卡，在這個回合中效果無效。",
+    "trigger": "",
+    "block_number": 5,
+    "life": 5,
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ],
+    "name_en": "Alvida",
+    "effect_en": "[On Play] Draw 2 cards and play up to 1 {Cross Guild} type Character card with a cost of 8 or less from your hand. Then, you cannot play Character cards during this turn.\n[When Attacking] Negate the effect of up to 1 of your opponent's Characters during this turn.",
+    "trigger_en": "",
+    "traits_en": [
+      "Cross Guild"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "colors_en": [
+      "Blue"
+    ],
+    "preview": true,
+    "manual_source": "screenshot"
+  },
+  "EB05-034-P1": {
+    "name": "砂糖",
+    "card_id": "EB05-034-P1",
+    "pack_id": "EB-05",
+    "colors": [
+      "紫"
+    ],
+    "cost": 2,
+    "category": "Character",
+    "power": 0,
+    "counter": 2000,
+    "img_full_url": "",
+    "img_url": "",
+    "rarity": "SR",
+    "card_type": "Character",
+    "traits": [
+      "唐吉訶德海賊團"
+    ],
+    "attributes": [
+      "特"
+    ],
+    "effect": "【登場時】【咚‼-2】若自己場上有7張以上的咚‼卡時，使最多1張對手的角色卡在這個回合中力量值-4000。",
+    "trigger": "",
+    "block_number": 5,
+    "life": 5,
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ],
+    "name_en": "Sugar",
+    "effect_en": "[On Play] DON!! −2: If you have 7 or more DON!! cards on your field, give up to 1 of your opponent's Characters −4000 power during this turn.",
+    "trigger_en": "",
+    "traits_en": [
+      "Donquixote Pirates"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "colors_en": [
+      "Purple"
+    ],
+    "preview": true,
+    "manual_source": "screenshot"
+  },
+  "EB05-052-P1": {
+    "name": "嘉蘭",
+    "card_id": "EB05-052-P1",
+    "pack_id": "EB-05",
+    "colors": [
+      "黃"
+    ],
+    "cost": 4,
+    "category": "Character",
+    "power": 6000,
+    "counter": null,
+    "img_full_url": "",
+    "img_url": "",
+    "rarity": "SR",
+    "card_type": "Character",
+    "traits": [
+      "亞馬遜百合",
+      "洛克斯海賊團"
+    ],
+    "attributes": [
+      "知"
+    ],
+    "effect": "若自己即將受到傷害時，可替換成將這張角色卡放置在廢棄區。",
+    "trigger": "【觸發器】抽2張卡，廢棄1張自己的手牌。",
+    "block_number": 5,
+    "life": 5,
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ],
+    "name_en": "Gloriosa",
+    "effect_en": "If you would take damage, you may trash this Character instead.",
+    "trigger_en": "[Trigger] Draw 2 cards and trash 1 card from your hand.",
+    "traits_en": [
+      "Amazon Lily",
+      "Rocks Pirates"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "colors_en": [
+      "Yellow"
+    ],
+    "preview": true,
+    "manual_source": "screenshot"
+  },
+  "EB05-046-P1": {
+    "card_id": "EB05-046-P1",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "大和",
+    "name_en": "Yamato",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黑"
+    ],
+    "colors_en": [
+      "Black"
+    ],
+    "cost": 4,
+    "power": 5000,
+    "life": null,
+    "counter": 1000,
+    "rarity": "SR",
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "traits": [
+      "和之國"
+    ],
+    "traits_en": [
+      "Land of Wano"
+    ],
+    "effect": "若對手有原本力量值8000以上的角色卡時，這張角色卡獲得【防禦】，力量值+3000。\n【對方攻擊時】可以廢棄1張自己的手牌：若自己廢棄區有10張以上卡片時，自己的領航卡原本的力量值，在這個回合變更成7000。",
+    "effect_en": "If your opponent has a Character with a base power of 8000 or more, this Character gains [Blocker] and +3000 power.\n[On Your Opponent's Attack] You may trash 1 card from your hand: If you have 10 or more cards in your trash, your Leader's base power becomes 7000 during this turn.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
+  },
+  "EB05-055-P1": {
+    "name": "娜美",
+    "card_id": "EB05-055-P1",
+    "pack_id": "EB-05",
+    "colors": [
+      "黃"
+    ],
+    "cost": 5,
+    "category": "Character",
+    "power": 6000,
+    "counter": null,
+    "img_full_url": "",
+    "img_url": "",
+    "rarity": "SR",
+    "card_type": "Character",
+    "traits": [
+      "東海",
+      "草帽一行人"
+    ],
+    "attributes": [
+      "知"
+    ],
+    "effect": "【自己的回合中】【登場時】若自己的領航卡擁有〈知〉屬性時，將最多1張自己卡組上面的卡片加入生命值區上面。",
+    "trigger": "【觸發器】可廢棄1張自己的手牌：若自己的生命值為2張以下時，使這張卡片登場。",
+    "block_number": 5,
+    "life": 5,
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ],
+    "name_en": "Nami",
+    "effect_en": "[Your Turn] [On Play] If your Leader has the <Wisdom> attribute, add up to 1 card from the top of your deck to the top of your Life cards.",
+    "trigger_en": "[Trigger] You may trash 1 card from your hand: If you have 2 or less Life cards, play this card.",
+    "traits_en": [
+      "East Blue",
+      "Straw Hat Crew"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "colors_en": [
+      "Yellow"
+    ],
+    "preview": true,
+    "manual_source": "screenshot"
+  },
+  "EB05-016-P2": {
+    "card_id": "EB05-016-P2",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "妮可・羅賓",
+    "name_en": "Nico Robin",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "綠"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "cost": 6,
+    "power": 6000,
+    "life": null,
+    "counter": 1000,
+    "rarity": "SR",
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "traits": [
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Straw Hat Crew"
+    ],
+    "effect": "【我方回合中】【登場時】使最多1張自己手牌中費用5以下、持有屬性（知）的角色卡登場。【觸發】將最多1張對手費用6以下的角色卡置為休息狀態。",
+    "effect_en": "[Your Turn] [On Play] Play up to 1 Character card with a cost of 5 or less and the {Wisdom} attribute from your hand. [Trigger] Rest up to 1 of your opponent's Characters with a cost of 6 or less.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
+  },
+  "EB05-061-P1": {
+    "card_id": "EB05-061-P1",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "娜美",
+    "name_en": "Nami",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "cost": 3,
+    "power": 4000,
+    "life": null,
+    "counter": 2000,
+    "rarity": "SEC",
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "traits": [
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Straw Hat Crew"
+    ],
+    "effect": "【每回合1次】若自己原本力量值6000以下的角色卡即將因對手離開場上時，可以替換成將1張自己生命值區上面的卡片加入手牌。\n【登場時】使最多1張自己手牌中費用2以下的紅色角色卡登場。",
+    "effect_en": "[Once Per Turn] If one of your Characters with 6000 base power or less would be removed from the field by your opponent, you may add 1 card from the top of your Life cards to your hand instead.\n[On Play] Play up to 1 red Character card with a cost of 2 or less from your hand.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
+  },
+  "EB05-010-P2": {
+    "card_id": "EB05-010-P2",
+    "preview": true,
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "妮可・羅賓",
+    "name_en": "Nico Robin",
+    "card_type": "Leader",
+    "category": "Leader",
+    "card_type_en": "Leader",
+    "category_en": "Leader",
+    "colors": [
+      "綠",
+      "黃"
+    ],
+    "colors_en": [
+      "Green",
+      "Yellow"
+    ],
+    "cost": 4,
+    "power": 5000,
+    "life": 4,
+    "counter": null,
+    "rarity": "L",
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "traits": [
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Straw Hat Crew"
+    ],
+    "effect": "【每回合1次】自己持有屬性（知）、且未持有【防禦】的角色卡遭到KO時，將最多1張自己卡組上面的卡片加入生命值區上面。【啟動主要】【每回合1次】將最多1張自己力量值6000以下、持有屬性（知）的角色卡置為活動狀態。",
+    "effect_en": "[Once Per Turn] When one of your Characters with the {Wisdom} attribute and without [Blocker] is K.O.'d, add up to 1 card from the top of your deck to the top of your Life cards. [Activate: Main] [Once Per Turn] Set up to 1 of your Characters with the {Wisdom} attribute and a power of 6000 or less as active.",
+    "manual_source": "screenshot"
+  },
+  "EB05-006-P2": {
+    "name": "巴基漢・絲媞希小姐",
+    "card_id": "EB05-006-P2",
+    "pack_id": "EB-05",
+    "colors": [
+      "紅"
+    ],
+    "cost": 2,
+    "category": "Character",
+    "power": 2000,
+    "counter": 2000,
+    "img_full_url": "",
+    "img_url": "",
+    "rarity": "SP",
+    "card_type": "Character",
+    "traits": [
+      "洛克斯海賊團"
+    ],
+    "attributes": [
+      "知"
+    ],
+    "effect": "【啟動主要】【每回合1次】可將1張自己生命值區上面的卡片加入手牌：選擇1項。・使最多1張角色卡在這個回合中力量值+3000。・使最多1張角色卡在這個回合中力量值-4000。",
+    "trigger": "",
+    "block_number": 5,
+    "life": 5,
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ],
+    "name_en": "Miss Buckingham Stussy",
+    "effect_en": "[Activate: Main] [Once Per Turn] You may add 1 card from the top of your Life cards to your hand: Choose one:\n• Give up to 1 Character +3000 power during this turn.\n• Give up to 1 Character −4000 power during this turn.",
+    "trigger_en": "",
+    "traits_en": [
+      "Rocks Pirates"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "colors_en": [
+      "Red"
+    ],
+    "preview": true,
+    "manual_source": "screenshot"
+  },
+  "EB05-031-P1": {
+    "card_id": "EB05-031-P1",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "賓什莫克・麗珠",
+    "name_en": "Vinsmoke Reiju",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紫"
+    ],
+    "colors_en": [
+      "Purple"
+    ],
+    "cost": 4,
+    "power": 5000,
+    "life": null,
+    "counter": 1000,
+    "rarity": "SP",
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "traits": [
+      "賓什莫克家",
+      "杰爾馬66"
+    ],
+    "traits_en": [
+      "The Vinsmoke Family",
+      "GERMA 66"
+    ],
+    "effect": "【登場時】咚‼−1：若自己的領航卡擁有《賓什莫克家》特徵時，將自己卡組上面的10張卡片放置到廢棄區。\n【啟動主要】可以將這張角色卡放置到廢棄區：若對手有原本力量值8000以上的角色卡時，從咚‼卡組將最多4張咚‼卡以活動狀態追加。",
+    "effect_en": "[On Play] DON!! −1: If your Leader has the {The Vinsmoke Family} type, trash 10 cards from the top of your deck.\n[Activate: Main] You may trash this Character: If your opponent has a Character with 8000 base power or more, add up to 4 DON!! cards as active from your DON!! deck.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
+  },
+  "OP14-033-P3": {
+    "name": "培羅娜",
+    "card_id": "OP14-033-P3",
+    "pack_id": "554114",
+    "colors": [
+      "綠"
+    ],
+    "cost": 5,
+    "category": "Character",
+    "power": 6000,
+    "counter": 1000,
+    "img_full_url": "",
+    "img_url": "",
+    "rarity": "SP",
+    "card_type": "Character",
+    "traits": [
+      "西凱阿爾王國",
+      "恐怖三桅帆船海賊團"
+    ],
+    "effect": "【登場時】最多2張對手費用5以下的角色卡，在下一個對手結束階段結束前，無法置為休息狀態。 【KO時】可將1張自己的卡片置為休息狀態：使最多1張自己手牌中費用5以下綠色的角色卡登場。",
+    "block_number": 4,
+    "life": 5,
+    "card_sets": [
+      "蒼海的七傑【OP-14】"
+    ],
+    "name_en": "Perona",
+    "effect_en": "[On Play] Up to 2 of your opponent's Characters with a cost of 5 or less cannot be rested until the end of your opponent's next End Phase. [On K.O.] You may rest 1 of your cards: Play up to 1 green Character card with a cost of 5 or less from your hand.",
+    "traits_en": [
+      "Muggy Kingdom",
+      "Thriller Bark Pirates"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "colors_en": [
+      "Green"
+    ],
+    "preview": true,
+    "manual_source": "screenshot"
+  },
+  "ST17-004-P3": {
+    "name": "波雅・漢考克",
+    "card_id": "ST17-004-P3",
+    "pack_id": "554017",
+    "colors": [
+      "藍"
+    ],
+    "cost": 4,
+    "category": "Character",
+    "power": 6000,
+    "counter": null,
+    "img_full_url": "",
+    "img_url": "",
+    "rarity": "SP",
+    "card_type": "Character",
+    "traits": [
+      "王下七武海",
+      "九蛇海賊團"
+    ],
+    "effect": "【防禦】(對手攻擊後，將這張卡片置為休息狀態即可使攻擊的對象換成這張卡片) 【登場時】從自己的卡組上面查看3張卡片，並任意變換排列順序放到卡組上面或下面。之後，附加最多1張休息狀態的咚‼卡在1張自己擁有《王下七武海》特徵的領航卡或角色卡。",
+    "block_number": 3,
+    "life": 4,
+    "card_sets": [
+      "藍 唐吉訶德・多佛朗明哥【ST-17】"
+    ],
+    "name_en": "Boa Hancock",
+    "effect_en": "[Blocker] (After your opponent declares an attack, you may rest this card to make it the new target of the attack.) [On Play] Look at 3 cards from the top of your deck and place them at the top or bottom of your deck in any order. Then, give up to 1 rested DON!! card to 1 of your {The Seven Warlords of the Sea} type Leader or Character cards.",
+    "traits_en": [
+      "The Seven Warlords of the Sea",
+      "Kuja Pirates"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "colors_en": [
+      "Blue"
+    ],
+    "preview": true,
+    "manual_source": "screenshot"
+  },
+  "OP17-081-P1": {
+    "card_id": "OP17-081-P1",
+    "name_en": "Gerd",
+    "name": "桂樂茲",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors_en": [
+      "Black"
+    ],
+    "colors": [
+      "黑"
+    ],
+    "cost": 2,
+    "power": 3000,
+    "counter": 2000,
+    "rarity": "SP",
+    "attributes_en": [
+      "Slash"
+    ],
+    "traits_en": [
+      "Giant",
+      "Elbaph",
+      "New Giant Pirates"
+    ],
+    "effect_en": "If your Leader has the {Elbaph} type, this Character gains +12 cost. [On Play] You may trash 1 card from your hand: Add up to 1 Character card with a cost of 8 or less other than [Gerd] from your trash to your hand.",
+    "effect": "若自己的領航卡擁有《艾爾帕布》特徵時，這張角色卡的費用+12。 【登場時】可以廢棄1張自己的手牌：將最多1張自己廢棄區中除了「桂樂茲」以外費用8以下的角色卡，加入手牌。",
+    "img_url": "",
+    "img_full_url": "",
+    "card_sets": [
+      "補充包 世界最強的戰士【OP-17】"
+    ],
+    "block_number": 5,
+    "pack_id": "OP-17",
+    "traits": [
+      "巨人族",
+      "艾爾帕布",
+      "新巨兵海賊團"
+    ],
+    "life": 2,
+    "preview": true,
+    "manual_source": "screenshot"
+  },
+  "OP17-109-P1": {
+    "card_id": "OP17-109-P1",
+    "name_en": "Charlotte Pudding",
+    "name": "夏洛特・普琳",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors_en": [
+      "Yellow"
+    ],
+    "colors": [
+      "黃"
+    ],
+    "cost": 3,
+    "power": 4000,
+    "counter": 1000,
+    "rarity": "SP",
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "traits_en": [
+      "Big Mom Pirates"
+    ],
+    "effect_en": "[On Play] You may trash 1 card with a [Trigger] from your hand: Draw 3 cards.\n[Trigger] Look at 5 cards from the top of your deck; reveal up to 1 {Big Mom Pirates} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+    "effect": "【登場時】可以廢棄1張自己手牌中持有【觸發器】的卡片：抽3張卡片。\n【觸發器】從自己的卡組上面查看5張卡片，公開最多1張擁有《BIG MOM海賊團》特徵的卡片，並加入手牌。之後，將其餘卡片依任意順序放到卡組下面。",
+    "img_url": "",
+    "img_full_url": "",
+    "card_sets": [
+      "補充包 世界最強的戰士【OP-17】"
+    ],
+    "block_number": 5,
+    "pack_id": "OP-17",
+    "traits": [
+      "BIG MOM海賊團"
+    ],
+    "trigger": "【觸發器】從自己的卡組上面查看5張卡片，公開最多1張擁有《BIG MOM海賊團》特徵的卡片，並加入手牌。之後，將其餘卡片依任意順序放到卡組下面。",
+    "life": 3,
+    "trigger_en": "[Trigger] Look at 5 cards from the top of your deck; reveal up to 1 {Big Mom Pirates} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
+    "preview": true,
+    "manual_source": "screenshot"
   }
 }
