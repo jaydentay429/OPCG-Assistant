@@ -2,30 +2,51 @@ import fs from "fs";
 import path from "path";
 import type { MetadataRoute } from "next";
 import bundledCardIds from "@/generated/card-ids.json";
-import { toBaseCardId } from "@/lib/cardId";
+import { normalizeCardId, toBaseCardId } from "@/lib/cardId";
 import { sitemapCardIds } from "@/lib/parallelArts";
-import { SITE_URL, cardOgImage } from "@/lib/seo";
+import { sitemapCardImageLoc } from "@/lib/resolveCardImage";
+import { SITE_URL } from "@/lib/seo";
 import { allSets } from "@/lib/sets";
+
+const INDEX_CANDIDATES = [
+  path.join(process.cwd(), "..", "index", "cards_by_id.json"),
+  path.join(process.cwd(), "index", "cards_by_id.json"),
+  path.join(process.cwd(), "..", "..", "index", "cards_by_id.json"),
+];
+
+function readCardIndex(): Record<string, unknown> | null {
+  for (const file of INDEX_CANDIDATES) {
+    try {
+      if (!fs.existsSync(file)) continue;
+      return JSON.parse(fs.readFileSync(file, "utf8")) as Record<string, unknown>;
+    } catch {
+      // try next candidate
+    }
+  }
+  return null;
+}
 
 function loadCardIds(): string[] {
   if (Array.isArray(bundledCardIds) && bundledCardIds.length) {
     return bundledCardIds.filter(Boolean);
   }
-  const candidates = [
-    path.join(process.cwd(), "..", "index", "cards_by_id.json"),
-    path.join(process.cwd(), "index", "cards_by_id.json"),
-    path.join(process.cwd(), "..", "..", "index", "cards_by_id.json"),
-  ];
-  for (const file of candidates) {
-    try {
-      if (!fs.existsSync(file)) continue;
-      const raw = JSON.parse(fs.readFileSync(file, "utf8")) as Record<string, unknown>;
-      return Object.keys(raw).filter(Boolean).sort();
-    } catch {
-      // try next candidate
-    }
+  const raw = readCardIndex();
+  return raw ? Object.keys(raw).filter(Boolean).sort() : [];
+}
+
+/** Catalog ids whose stored img_url is non-empty. Step ① needs that gate. */
+function loadIdsWithImgUrl(): Set<string> {
+  const raw = readCardIndex();
+  const ids = new Set<string>();
+  if (!raw) return ids;
+  for (const [key, value] of Object.entries(raw)) {
+    if (!value || typeof value !== "object") continue;
+    const row = value as { img_url?: unknown; card_id?: unknown; id?: unknown };
+    if (!String(row.img_url || "").trim()) continue;
+    const id = normalizeCardId(String(row.card_id || row.id || key));
+    if (id) ids.add(id);
   }
-  return [];
+  return ids;
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -66,16 +87,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   }
 
+  const withImgUrl = loadIdsWithImgUrl();
   for (const cardId of sitemapCardIds(loadCardIds())) {
-    const img = cardOgImage(cardId);
-    const base = toBaseCardId(cardId);
-    const isParallel = base !== cardId;
+    const id = normalizeCardId(cardId);
+    const base = toBaseCardId(id);
+    const isParallel = base !== id;
+    const image = sitemapCardImageLoc({
+      id,
+      img_url: withImgUrl.has(id) ? "present" : "",
+    });
     entries.push({
       url: new URL(`/cards/${encodeURIComponent(cardId)}`, `${SITE_URL}/`).toString(),
       lastModified,
       changeFrequency: "weekly",
       priority: isParallel ? 0.55 : 0.72,
-      ...(img ? { images: [img.url] } : {}),
+      ...(image ? { images: [image] } : {}),
     });
   }
 
