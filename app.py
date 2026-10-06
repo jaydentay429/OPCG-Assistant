@@ -4209,9 +4209,12 @@ def build_card_response(card_id: str, card_basic: dict[str, Any]) -> CardRespons
         img_url=img_url,
         img_full_url=img_full_url,
         alt_image_urls=alt_image_urls,
-        cost=_zero_cost_if_event_or_stage(
-            card_type,
-            _first_int(full_card.get("cost"), card_basic.get("cost"), snapshot_card.get("cost")),
+        cost=_printed_cost_for_response(
+            type_hint,
+            _zero_cost_if_event_or_stage(
+                card_type,
+                _first_int(full_card.get("cost"), card_basic.get("cost"), snapshot_card.get("cost")),
+            ),
         ),
         effect=effect_text,
         effect_en=effect_en_text,
@@ -4229,7 +4232,10 @@ def build_card_response(card_id: str, card_basic: dict[str, Any]) -> CardRespons
         card_sets=resolve_card_sets(card_id, card_basic, snapshot_card),
         variant_card_sets=collect_variant_card_sets(card_id),
         market_price=get_market_price_info(card_id),
-        life=_to_int(card_basic.get("life") or full_card.get("life") or snapshot_card.get("life")),
+        life=_printed_life_for_response(
+            type_hint,
+            _first_int(card_basic.get("life"), full_card.get("life"), snapshot_card.get("life")),
+        ),
     )
 
 
@@ -4314,6 +4320,24 @@ def _first_int(*values: Any) -> int | None:
         parsed = _to_int(value)
         if parsed is not None:
             return parsed
+    return None
+
+
+def _is_leader_type_text(card_type: Any) -> bool:
+    return bool(re.search(r"leader|領袖|领袖|领航", str(card_type or ""), flags=re.I))
+
+
+def _printed_cost_for_response(card_type: Any, cost: int | None) -> int | None:
+    """Leaders do not have a play cost. Snapshot fallback must not copy life into cost."""
+    if _is_leader_type_text(card_type):
+        return None
+    return cost
+
+
+def _printed_life_for_response(card_type: Any, life: int | None) -> int | None:
+    """Characters, events, and stages do not have life. Ignore a copied cost."""
+    if _is_leader_type_text(card_type):
+        return life
     return None
 
 

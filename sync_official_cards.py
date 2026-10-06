@@ -133,6 +133,39 @@ def safe_int(value: Any) -> int | None:
         return None
 
 
+def is_leader_card_type(*parts: Any) -> bool:
+    """Printed life belongs on leaders. The cardlist uses one number box for both."""
+    text = " ".join(str(part or "") for part in parts)
+    return bool(re.search(r"leader|領袖|领袖|领航", text, flags=re.I))
+
+
+def is_play_cost_card_type(*parts: Any) -> bool:
+    """Character, Event, and Stage print cost in that same number box."""
+    text = " ".join(str(part or "") for part in parts)
+    return bool(re.search(r"character|角色|event|事件|stage|舞台|场地|場地", text, flags=re.I))
+
+
+def clear_wrong_printed_stat(row: dict[str, Any]) -> bool:
+    """Leaders keep life and drop cost. Other printed-cost types keep cost and drop life.
+
+    Does not invent a replacement number. A stale life that disagrees with cost
+    is cleared; the existing cost stays.
+    """
+    if not isinstance(row, dict):
+        return False
+    parts = (row.get("card_type"), row.get("category"), row.get("card_type_en"), row.get("category_en"))
+    changed = False
+    if is_leader_card_type(*parts):
+        if row.get("cost") is not None:
+            row["cost"] = None
+            changed = True
+        return changed
+    if is_play_cost_card_type(*parts) and row.get("life") is not None:
+        row["life"] = None
+        changed = True
+    return changed
+
+
 def split_multi(value: str) -> list[str]:
     text = str(value or "").strip()
     if not text:
@@ -667,24 +700,32 @@ def merge_index(existing: dict[str, Any], parsed_cards: dict[str, ParsedCard], b
         block_int = safe_int(pc.fields.get("block_icon"))
         if block_int is not None:
             current["block_number"] = block_int
-        # Official asia cardlist often stores Character/Event/Stage cost in the
-        # "Life" field. Leaders keep real life separately.
+        # The cardlist has one number box (CSS class "cost"). The parser stores
+        # that text on fields["life"]. It is printed cost for Character/Event/Stage
+        # and printed life for Leader. Never keep both.
         cost_int = safe_int(pc.fields.get("cost"))
         life_int = safe_int(pc.fields.get("life"))
-        card_type_u = str(pc.card_type or current.get("card_type") or current.get("category") or "").upper()
-        is_leader = "LEADER" in card_type_u or "領袖" in card_type_u or "领航" in card_type_u
-        if cost_int is not None:
-            current["cost"] = cost_int
-        elif not is_leader:
-            if life_int is not None:
+        type_parts = (
+            pc.card_type,
+            current.get("card_type"),
+            current.get("category"),
+        )
+        if is_leader_card_type(*type_parts):
+            printed_life = life_int if life_int is not None else cost_int
+            if printed_life is not None:
+                current["life"] = printed_life
+            current["cost"] = None
+        else:
+            if cost_int is not None:
+                current["cost"] = cost_int
+            elif life_int is not None:
                 current["cost"] = life_int
             else:
                 raw = str(pc.fields.get("life") or pc.fields.get("cost") or "").strip()
                 # Official asia cardlist stores printed 0 as "-" in the cost node.
                 if raw in {"", "-", "—", "－"}:
                     current["cost"] = 0
-        if life_int is not None:
-            current["life"] = life_int
+            current["life"] = None
 
         if pc.card_sets:
             current["card_sets"] = pc.card_sets

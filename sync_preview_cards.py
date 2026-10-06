@@ -28,6 +28,8 @@ from urllib.parse import urljoin, urlparse
 import requests
 from bs4 import BeautifulSoup
 
+from sync_official_cards import clear_wrong_printed_stat, is_leader_card_type, is_play_cost_card_type
+
 
 BASE_DIR = Path(__file__).resolve().parent
 INDEX_PATH = BASE_DIR / "index" / "cards_by_id.json"
@@ -391,9 +393,11 @@ def parse_limitless_card_html(html: str, card_id: str) -> dict[str, Any] | None:
         "colors": colors_zh or colors_en,
         "preview": True,
     }
-    if life is not None:
-        out["life"] = life
-    if cost is not None and not is_leader:
+    # Same box rule as official sync: leaders store life, everyone else stores cost.
+    if is_leader:
+        if life is not None:
+            out["life"] = life
+    elif cost is not None:
         out["cost"] = cost
     if power is not None:
         out["power"] = power
@@ -486,6 +490,19 @@ def merge_preview_card(existing: dict[str, Any] | None, incoming: dict[str, Any]
     current.setdefault("block_number", 5)
     if not current.get("traits") and current.get("traits_en"):
         current["traits"] = list(current["traits_en"])
+    # A re-scrape must not leave the other printed stat stuck on the row.
+    type_parts = (
+        current.get("card_type"),
+        current.get("category"),
+        current.get("card_type_en"),
+        current.get("category_en"),
+    )
+    if is_leader_card_type(*type_parts):
+        current["cost"] = None
+    elif is_play_cost_card_type(*type_parts):
+        current["life"] = None
+    else:
+        clear_wrong_printed_stat(current)
     return current
 
 
