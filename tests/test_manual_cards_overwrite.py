@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from manual_cards import apply_manual_cards, load_manual_cards, row_is_official  # noqa: E402
+from sync_limited_variants import is_manual_catalog_row  # noqa: E402
 from sync_official_cards import ParsedCard, merge_index  # noqa: E402
 
 
@@ -29,6 +30,47 @@ def test_seed_matches_index_and_ids_are_unique():
         "OP18-076",
         "OP18-106",
         "EB05-049",
+        "OP18-017",
+        "OP18-024",
+        "OP18-055",
+        "OP18-011",
+        "OP18-034",
+        "OP18-046",
+        "OP18-048",
+        "OP18-084",
+        "OP18-061",
+        "OP18-100",
+        "OP18-113",
+        "EB05-030",
+        "EB05-019",
+        "EB05-004",
+        "EB05-018",
+        "EB05-043",
+        "EB05-061",
+        "EB05-031",
+        "EB05-004-P1",
+        "EB05-018-P1",
+        "EB05-028-P1",
+        "EB05-037-P1",
+        "EB05-043-P1",
+        "EB05-057-P1",
+        "EB05-001-P1",
+        "EB05-014-P2",
+        "EB05-006-P1",
+        "EB05-021-P1",
+        "EB05-034-P1",
+        "EB05-052-P1",
+        "EB05-046-P1",
+        "EB05-055-P1",
+        "EB05-016-P2",
+        "EB05-061-P1",
+        "EB05-010-P2",
+        "EB05-006-P2",
+        "EB05-031-P1",
+        "OP14-033-P3",
+        "ST17-004-P3",
+        "OP17-081-P1",
+        "OP17-109-P1",
     }
     assert cards["EB05-046"]["name"] == "大和"
     assert cards["EB05-046"]["name_en"] == "Yamato"
@@ -215,6 +257,47 @@ def test_seed_matches_index_and_ids_are_unique():
     assert "{Thriller Bark Pirates}" in cards["EB05-049"]["effect_en"]
     assert cards["EB05-049"]["card_sets"] == ["Heroines Edition vol.2【EB-05】"]
     assert cards["EB05-049"]["pack_id"] == "EB-05"
+    assert cards["OP18-046"]["name"] == "Mr.0&Miss All星期天"
+    assert cards["OP18-046"]["name_en"] == "Mr.0 & Miss All Sunday"
+    assert cards["OP18-046"]["counter"] is None
+    assert cards["OP18-046"]["attributes"] == ["特", "知"]
+    assert cards["OP18-046"]["life"] is None
+    assert cards["OP18-046"]["img_url"] == ""
+    assert cards["EB05-061"]["name"] == "娜美"
+    assert cards["EB05-061"]["rarity"] == "SEC"
+    assert cards["EB05-061"]["img_url"] == ""
+    assert cards["EB05-061"]["life"] is None
+    assert cards["EB05-031"]["traits"] == ["賓什莫克家", "杰爾馬66"]
+    assert cards["EB05-031"]["traits_en"] == ["The Vinsmoke Family", "GERMA 66"]
+    assert cards["EB05-004"]["img_url"] == ""
+    assert "EB05-004-P1" not in cards["EB05-004"]["img_url"]
+    p_nami = cards["EB05-061-P1"]
+    assert p_nami["rarity"] == "SEC"
+    assert p_nami["name"] == cards["EB05-061"]["name"]
+    assert p_nami["effect"] == cards["EB05-061"]["effect"]
+    assert p_nami["card_sets"] == cards["EB05-061"]["card_sets"]
+    assert p_nami["img_url"] == ""
+    pudding = cards["OP17-109-P1"]
+    assert pudding["name"] == "夏洛特・普琳"
+    assert pudding["name_en"] == "Charlotte Pudding"
+    assert pudding["rarity"] == "SP"
+    assert pudding["effect"] == cards["OP17-109"]["effect"]
+    assert pudding["card_sets"] == cards["OP17-109"]["card_sets"]
+    assert pudding["manual_source"] == "screenshot"
+    assert cards["EB05-006-P2"]["rarity"] == "SP"
+    assert cards["EB05-006-P2"]["effect"] == cards["EB05-006"]["effect"]
+    assert cards["EB05-016-P2"]["rarity"] == "SR"
+    assert cards["EB05-016-P2"]["effect"] == cards["EB05-016"]["effect"]
+    assert cards["EB05-010-P2"]["rarity"] == "L"
+    assert cards["EB05-014-P1"]["rarity"] == "SP"
+    assert cards["OP14-033-P1"]["rarity"] == "SR"
+    assert cards["OP14-033-P2"]["img_url"] == "images/cardlist/card/OP14-033_p2.png"
+    assert "manual_source" not in cards["OP14-033-P1"]
+    assert cards["OP18-065"]["counter"] is None
+    assert cards["OP18-065"]["attributes"] == ["？"]
+    assert cards["OP18-065"]["attributes_en"] == ["Unknown"]
+    assert cards["OP18-065"]["img_url"] == "https://api.optcgassistant.com/packs/OP18-065.png"
+    assert cards["OP18-031"]["img_url"] == "https://api.optcgassistant.com/packs/OP18-031.png"
     # Base id stays EB05-016. The stored SP row was the heroine parallel art;
     # the normal printing is SR, and EB05-016-P1 keeps the SP mark used by other -P1 rows.
     assert cards["EB05-016"]["card_id"] == "EB05-016"
@@ -271,8 +354,8 @@ def test_seed_matches_index_and_ids_are_unique():
 
 def test_official_sync_overwrites_screenshot_row_without_duplicates():
     index: dict = {}
-    assert apply_manual_cards(index) == 12
-    assert apply_manual_cards(index) == 12
+    assert apply_manual_cards(index) == 53
+    assert apply_manual_cards(index) == 53
     assert list(index).count("EB05-046") == 1
     assert index["EB05-046"]["name"] == "大和"
 
@@ -367,6 +450,12 @@ def test_official_sync_overwrites_screenshot_row_without_duplicates():
     assert merged["OP18-016"]["manual_source"] == "screenshot"
     assert list(merged).count("EB05-016") == 1
     assert list(merged).count("EB05-016-P1") == 1
+
+
+def test_limited_sync_keeps_manual_rows():
+    assert is_manual_catalog_row({"manual_source": "screenshot", "name": "娜美"}) is True
+    assert is_manual_catalog_row({"name": "官方", "effect": "效果"}) is False
+    assert is_manual_catalog_row(None) is False
 
 
 def test_apply_does_not_replace_an_existing_official_card():

@@ -251,6 +251,11 @@ def download_image(card_id: str, urls: list[str], session: requests.Session, ove
     return "failed"
 
 
+def is_manual_catalog_row(row: Any) -> bool:
+    """Screenshot rows are re-applied by manual_cards and must not be replaced."""
+    return isinstance(row, dict) and bool(row.get("manual_source"))
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="同步日文官网限定/宣传异画到索引和图库")
     parser.add_argument(
@@ -285,9 +290,15 @@ def main() -> None:
     replaced = 0
     skipped = 0
     failed = 0
+    kept_manual = 0
     overwrite = not args.no_overwrite_images
 
     for card_id, variant in sorted(variants.items()):
+        existing_row = index.get(card_id)
+        if is_manual_catalog_row(existing_row):
+            kept_manual += 1
+            print(f"[limited] keep manual {card_id}", flush=True)
+            continue
         existed = card_id in index
         record = clone_variant_record(index, variant)
         if not args.dry_run:
@@ -320,6 +331,7 @@ def main() -> None:
     print(f"图片覆盖: {replaced}")
     print(f"图片跳过: {skipped}")
     print(f"图片失败: {failed}")
+    print(f"保留手工条目: {kept_manual}")
     print(f"索引总卡牌: {len(index)}")
     print(f"dry_run={bool(args.dry_run)} overwrite_images={overwrite}")
 
