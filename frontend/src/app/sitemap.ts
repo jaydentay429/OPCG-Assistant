@@ -4,7 +4,7 @@ import type { MetadataRoute } from "next";
 import bundledCardIds from "@/generated/card-ids.json";
 import { normalizeCardId, toBaseCardId } from "@/lib/cardId";
 import { sitemapCardIds } from "@/lib/parallelArts";
-import { sitemapCardImageLoc } from "@/lib/resolveCardImage";
+import { manifestOwnImageCount, sitemapCardImageLoc } from "@/lib/resolveCardImage";
 import { SITE_URL } from "@/lib/seo";
 import { allSets } from "@/lib/sets";
 
@@ -32,21 +32,6 @@ function loadCardIds(): string[] {
   }
   const raw = readCardIndex();
   return raw ? Object.keys(raw).filter(Boolean).sort() : [];
-}
-
-/** Catalog ids whose stored img_url is non-empty. Step ① needs that gate. */
-function loadIdsWithImgUrl(): Set<string> {
-  const raw = readCardIndex();
-  const ids = new Set<string>();
-  if (!raw) return ids;
-  for (const [key, value] of Object.entries(raw)) {
-    if (!value || typeof value !== "object") continue;
-    const row = value as { img_url?: unknown; card_id?: unknown; id?: unknown };
-    if (!String(row.img_url || "").trim()) continue;
-    const id = normalizeCardId(String(row.card_id || row.id || key));
-    if (id) ids.add(id);
-  }
-  return ids;
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -87,15 +72,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   }
 
-  const withImgUrl = loadIdsWithImgUrl();
-  for (const cardId of sitemapCardIds(loadCardIds())) {
+  const listed = sitemapCardIds(loadCardIds());
+  let imageCount = 0;
+  for (const cardId of listed) {
     const id = normalizeCardId(cardId);
     const base = toBaseCardId(id);
     const isParallel = base !== id;
-    const image = sitemapCardImageLoc({
-      id,
-      img_url: withImgUrl.has(id) ? "present" : "",
-    });
+    const image = sitemapCardImageLoc({ id });
+    if (image) imageCount += 1;
     entries.push({
       url: new URL(`/cards/${encodeURIComponent(cardId)}`, `${SITE_URL}/`).toString(),
       lastModified,
@@ -103,6 +87,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: isParallel ? 0.55 : 0.72,
       ...(image ? { images: [image] } : {}),
     });
+  }
+
+  const floor = manifestOwnImageCount(listed);
+  if (imageCount < floor) {
+    throw new Error(
+      `sitemap image:loc count ${imageCount} is below ${floor} own manifest hashes`,
+    );
   }
 
   return entries;

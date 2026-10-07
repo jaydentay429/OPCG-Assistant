@@ -8,7 +8,7 @@ export const CARD_SHARE_IMAGE_HOST = "https://img.optcgassistant.com";
 export type CardImageInput = {
   id?: string | null;
   card_id?: string | null;
-  /** Gate for step ①. The share URL is built from the id and the manifest hash, not from this string. */
+  /** Not used. A manifest hash means the PNG exists, even when this field is empty. */
   img_url?: string | null;
 };
 
@@ -32,10 +32,6 @@ const HASH_RE = /^[0-9a-f]{8}$/;
 
 function cardKey(card: CardImageInput): string {
   return normalizeCardId(String(card.id || card.card_id || ""));
-}
-
-function hasPrintedImageUrl(card: CardImageInput): boolean {
-  return String(card.img_url || "").trim() !== "";
 }
 
 function hashFor(id: string, hashes: Readonly<Record<string, string>> | undefined): string {
@@ -81,9 +77,10 @@ function parallelsByBase(hashes: Readonly<Record<string, string>> | undefined): 
 
 /**
  * Share image for one card, in order:
- * ① its own PNG when `img_url` is non-empty and the manifest has a hash;
+ * ① its own PNG when the manifest has a hash for this id;
  * ② otherwise the first same-number alternate (`-P1`, `-P2`, …) with a hash;
  * ③ otherwise null.
+ * `img_url` is not a gate. Manual rows often leave it empty while the file is on R2.
  */
 export function resolveCardImage(
   card: CardImageInput | null | undefined,
@@ -94,11 +91,9 @@ export function resolveCardImage(
   if (!id) return null;
   const hashes = options?.hashes;
 
-  if (hasPrintedImageUrl(card)) {
-    const own = hashFor(id, hashes);
-    if (own) {
-      return { url: publicPngUrl(id, own), alt: id, kind: "base", id };
-    }
+  const own = hashFor(id, hashes);
+  if (own) {
+    return { url: publicPngUrl(id, own), alt: id, kind: "base", id };
   }
 
   const base = toBaseCardId(id);
@@ -111,8 +106,8 @@ export function resolveCardImage(
 }
 
 /**
- * Sitemap `<image:loc>`. Only step ①. An empty `img_url`, or a hash that
- * exists only on an alternate, does not emit `<image:image>`.
+ * Sitemap `<image:loc>`. Only step ①. A hash that exists only on an alternate
+ * does not emit `<image:image>`.
  */
 export function sitemapCardImageLoc(
   card: CardImageInput | null | undefined,
@@ -121,4 +116,18 @@ export function sitemapCardImageLoc(
   const resolved = resolveCardImage(card, options);
   if (resolved?.kind !== "base") return null;
   return resolved.url;
+}
+
+/** Non-parallel sitemap ids that have their own manifest hash. */
+export function manifestOwnImageCount(
+  cardIds: readonly string[],
+  options?: ResolveCardImageOptions,
+): number {
+  let count = 0;
+  for (const raw of cardIds) {
+    const id = normalizeCardId(raw);
+    if (!id || isParallelArtId(id)) continue;
+    if (hashFor(id, options?.hashes)) count += 1;
+  }
+  return count;
 }
