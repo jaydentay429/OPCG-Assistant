@@ -23,7 +23,7 @@ import {
   breadcrumbJsonLd,
   buildPageMetadata,
   cardJsonLd,
-  cardOgImage,
+  cardSharePresentation,
   faqPageJsonLd,
   visibleCardEffect,
 } from "@/lib/seo";
@@ -94,10 +94,10 @@ export async function generateMetadata({
   const qp = await searchParams;
   const shownId = shownCardId(cardId, firstQueryValue(qp.picked), firstQueryValue(qp.pickedVariant));
   const canonicalUrl = cardCanonicalUrl(cardId);
-  const ogImage = cardOgImage(cardId);
   const card = await loadCard(cardId);
 
   if (!card) return cardNotFoundMetadata;
+  const share = cardSharePresentation(card);
 
   const seo = cardSeoFields(card, cardId);
   const description = cardMetaDescription({
@@ -124,7 +124,8 @@ export async function generateMetadata({
       presentMetaText(seo.rarity),
       presentMetaText(seo.series),
     ].filter(Boolean) as string[],
-    images: ogImage ? [ogImage] : null,
+    images: share.images,
+    twitterCard: share.twitterCard,
   });
 }
 
@@ -163,7 +164,7 @@ export default async function CardPage({
     }
   }
   const seo = card ? cardSeoFields(card, cardId) : null;
-  const ogImage = cardOgImage(cardId);
+  const share = cardSharePresentation(card);
   const editorNote = cardEditorNote(cardId);
   const printedStat = printedCostOrLife(card);
 
@@ -206,7 +207,7 @@ export default async function CardPage({
           name: seo.name,
           nameEn: seo.nameEn,
           description: (seo.effect || seo.name).replace(/\s+/g, " ").slice(0, 240),
-          imageUrl: ogImage?.url,
+          imageUrl: share.jsonLdImage,
           rarity: presentMetaText(seo.rarity) || undefined,
           series: presentMetaText(seo.series) || undefined,
           url: canonicalUrl,

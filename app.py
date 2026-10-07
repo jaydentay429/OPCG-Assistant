@@ -312,6 +312,7 @@ class FilterCardResponse(BaseModel):
     img_url: str | None = None
     img_full_url: str | None = None
     img_local_url: str | None = None
+    life: int | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -6805,9 +6806,24 @@ def build_filter_card_response(card_id: str, card_basic: dict[str, Any]) -> Filt
             img_full_url = img_full_url or rewritten
     if not local_img_url:
         local_img_url = card_image_proxy_url(card_id)
-    cost = _zero_cost_if_event_or_stage(
-        card_basic.get("category") or snapshot_card.get("category"),
-        _first_int(card_basic.get("cost"), snapshot_card.get("cost")),
+    type_hint = (
+        card_basic.get("category")
+        or card_basic.get("card_type")
+        or snapshot_card.get("category")
+        or ""
+    )
+    # Snapshot still copies the printed life box into cost. Same rule as the
+    # detail API: leaders return that number as life and leave cost empty.
+    cost = _printed_cost_for_response(
+        type_hint,
+        _zero_cost_if_event_or_stage(
+            type_hint,
+            _first_int(card_basic.get("cost"), snapshot_card.get("cost")),
+        ),
+    )
+    life = _printed_life_for_response(
+        type_hint,
+        _first_int(card_basic.get("life"), snapshot_card.get("life")),
     )
     power = _to_int(card_basic.get("power"))
     if power is None:
@@ -6844,6 +6860,7 @@ def build_filter_card_response(card_id: str, card_basic: dict[str, Any]) -> Filt
         img_url=img_url,
         img_full_url=img_full_url,
         img_local_url=local_img_url,
+        life=life,
     )
 
 

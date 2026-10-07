@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import { cardImageUrl } from "./api";
+import {
+  resolveCardImage,
+  type CardImageInput,
+  type ResolveCardImageOptions,
+  type ResolvedCardImage,
+} from "./resolveCardImage";
 
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://optcgassistant.com").replace(
   /\/$/,
@@ -81,9 +87,46 @@ type PageMetaInput = {
   type?: "website" | "article";
   /** `null` omits og:image and twitter:image. Omit the field to use the site image. */
   images?: Array<{ url: string; width?: number; height?: number; alt?: string }> | null;
+  /** Card pages pass `summary` only when the image is the site default. */
+  twitterCard?: "summary" | "summary_large_image";
   noIndex?: boolean;
   absoluteTitle?: boolean;
 };
+
+export type CardSharePresentation = {
+  images: Array<{ url: string; width?: number; height?: number; alt?: string }>;
+  twitterCard: "summary" | "summary_large_image";
+  /** Product.image. Null when the picture is the site default, which is not this card. */
+  jsonLdImage: string | null;
+  resolved: ResolvedCardImage | null;
+};
+
+/**
+ * Open Graph / Twitter / JSON-LD images for a card page.
+ * A resolved card or alternate uses `summary_large_image`.
+ * No file yet uses the site image and `summary`.
+ */
+export function cardSharePresentation(
+  card: CardImageInput | null | undefined,
+  options?: ResolveCardImageOptions,
+): CardSharePresentation {
+  const resolved = resolveCardImage(card, options);
+  if (!resolved) {
+    const site = defaultOgImage();
+    return {
+      images: [site],
+      twitterCard: "summary",
+      jsonLdImage: null,
+      resolved: null,
+    };
+  }
+  return {
+    images: [{ url: resolved.url, alt: resolved.alt }],
+    twitterCard: "summary_large_image",
+    jsonLdImage: resolved.url,
+    resolved,
+  };
+}
 
 /** Shared page metadata with OG + Twitter + canonical. */
 export function buildPageMetadata(input: PageMetaInput): Metadata {
@@ -116,7 +159,7 @@ export function buildPageMetadata(input: PageMetaInput): Metadata {
       images,
     },
     twitter: {
-      card: "summary_large_image",
+      card: input.twitterCard || "summary_large_image",
       title: input.title,
       description: input.description,
       images: images.map((img) => img.url),

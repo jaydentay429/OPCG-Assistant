@@ -189,3 +189,88 @@ def test_card_api_hides_character_life_and_leader_cost():
     known = app.build_card_response("ST01-001", app.cards_by_id["ST01-001"])
     assert known.life == 5
     assert known.cost is None
+
+
+def test_filter_leader_cost_is_null_even_when_snapshot_copies_life():
+    """B46-1: /filters/cards must not treat a leader's printed life as cost."""
+    import app
+    from starlette.responses import Response
+
+    app.load_cards_index()
+    saved = dict(app.official_snapshot_map)
+    try:
+        app.official_snapshot_map["ST01-001"] = {
+            "card_id": "ST01-001",
+            "card_type": "Leader",
+            "fields": {"life": "5"},
+        }
+        app.rebuild_filter_index()
+
+        leader = app.build_filter_card_response("ST01-001", app.cards_by_id["ST01-001"])
+        assert leader.cost is None
+        assert leader.life == 5
+
+        leaders = [row for row in app.filter_index if row.card_type == "leader"]
+        assert leaders
+        assert all(row.cost is None and row.response.cost is None for row in leaders)
+        assert all(
+            row.response.life == (app.cards_by_id[row.id] or {}).get("life") for row in leaders
+        )
+
+        character_id = next(
+            cid
+            for cid, row in app.cards_by_id.items()
+            if isinstance(row, dict)
+            and str(row.get("category") or "").lower() == "character"
+            and row.get("cost") == 5
+        )
+        character = app.build_filter_card_response(character_id, app.cards_by_id[character_id])
+        assert character.cost == 5
+        assert character.life is None
+
+        def run_filter(**kwargs):
+            response = Response()
+            rows = app.filter_cards(
+                response,
+                color=None,
+                colors=None,
+                cost=None,
+                counter=None,
+                counters=None,
+                power=None,
+                powers=None,
+                card_type=None,
+                attribute=None,
+                attributes=None,
+                series=None,
+                serieses=None,
+                rarity=None,
+                rarities=None,
+                block=None,
+                blocks=None,
+                keyword=None,
+                keywords=None,
+                q=None,
+                price_min=None,
+                price_max=None,
+                sort=None,
+                priced_only=False,
+                offset=0,
+                limit=300,
+                **kwargs,
+            )
+            return response, rows
+
+        response, matched = run_filter(costs="5", card_types="Leader")
+        assert matched == []
+        assert response.headers["X-Total-Count"] == "0"
+
+        kept, still = run_filter(costs="5", card_types="Character")
+        assert still
+        assert still[0].cost == 5
+        assert still[0].card_type
+        assert "leader" not in still[0].card_type.lower()
+        assert int(kept.headers["X-Total-Count"]) > 0
+    finally:
+        app.official_snapshot_map = saved
+        app.rebuild_filter_index()
