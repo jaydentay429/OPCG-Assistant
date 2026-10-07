@@ -33,7 +33,9 @@ from topdecks_normalize import (
     norm_host,
     norm_placement,
     norm_tournament,
+    parse_topdeck_record,
     placement_labels,
+    placement_sort_rank,
     tournament_labels,
 )
 import topdecks_likes
@@ -579,7 +581,7 @@ topdecks_facets_cache: dict[str, list[dict[str, Any]]] = {}
 topdecks_meta_blob_by_id: dict[str, str] = {}
 # base card id → deck ids that include it as leader or main deck (alt arts share base)
 topdecks_by_card_base: dict[str, set[str]] = {}
-# base card id → newest-first appearances: (date_tuple, deck_id, qty, is_leader)
+# base card id → appearances ordered by topdeck_sort_key: (date_tuple, deck_id, qty, is_leader)
 topdecks_appearances_by_card: dict[str, list[tuple[tuple[int, int, int], str, int, bool]]] = {}
 official_snapshot_map: dict[str, dict[str, Any]] = {}
 variant_id_map: dict[str, list[str]] = {}
@@ -1928,6 +1930,32 @@ def _parse_topdeck_date(raw: Any) -> tuple[int, int, int]:
     return (year, month, day)
 
 
+def topdeck_sort_key(row: Any) -> tuple:
+    """Shared display order for the deck list and the card tournament list.
+
+    Ascending is the display order (do not reverse):
+
+    1. Date, newest first. Unparsed dates sink.
+    2. Placement: 1st < 2nd < 3rd < top cuts (T4 < T8 < T16 < T32 < T64) < other Nth < NA/unknown.
+    3. Record: a parsed ``(W-L)`` before none; then more games, more wins, fewer losses.
+    4. Deck id, so a tie is deterministic.
+    """
+    data = row if isinstance(row, dict) else {}
+    year, month, day = _parse_topdeck_date(data.get("date"))
+    record = parse_topdeck_record(data.get("placement"))
+    if record is None:
+        record_key: tuple[int, int, int, int] = (1, 0, 0, 0)
+    else:
+        games, wins, losses = record
+        record_key = (0, -games, -wins, losses)
+    return (
+        (-year, -month, -day),
+        placement_sort_rank(data.get("placement")),
+        record_key,
+        str(data.get("id") or ""),
+    )
+
+
 def load_topdecks_data() -> None:
     """Load cached tournament decks from sync_topdecks.py output."""
     global topdecks_payload, topdecks_mtime, topdecks_by_id, topdecks_by_card_base
@@ -2009,16 +2037,8 @@ def load_topdecks_data() -> None:
                 (date_key, did, int(qty), bool(leader_base and base == leader_base))
             )
     for rows in appearances.values():
-        rows.sort(key=lambda x: (x[0], x[1]), reverse=True)
-    sorted_rows.sort(
-        key=lambda row: (
-            _parse_topdeck_date(row.get("date")),
-            str(row.get("placement") or ""),
-            str(row.get("name") or ""),
-            str(row.get("id") or ""),
-        ),
-        reverse=True,
-    )
+        rows.sort(key=lambda item: topdeck_sort_key(by_id[item[1]]))
+    sorted_rows.sort(key=topdeck_sort_key)
     payload["decks"] = sorted_rows
     topdecks_payload = payload
     topdecks_by_id = by_id
