@@ -332,16 +332,41 @@ def tournament_labels(key: str) -> dict[str, str]:
 
 # --- placement ---------------------------------------------------------------
 
-_PLACE_ORDINAL = {
-    "1st": "1st",
-    "2nd": "2nd",
-    "3rd": "3rd",
-    "4th": "4th",
-    "5th": "5th",
-    "6th": "6th",
-    "7th": "7th",
-    "8th": "8th",
+_FULLWIDTH_DIGITS = str.maketrans("０１２３４５６７８９", "0123456789")
+_CN_NUM = {
+    "一": 1,
+    "二": 2,
+    "三": 3,
+    "四": 4,
+    "五": 5,
+    "六": 6,
+    "七": 7,
+    "八": 8,
+    "九": 9,
+    "十": 10,
 }
+# Keep the space so "T32 Swiss" still has a boundary after the cut size.
+_TOP_RE = re.compile(r"^(?:top|t)[\s-]*(\d+)\b")
+_ORDINAL_RE = re.compile(r"^(\d+)\s*(st|nd|rd|th)\b")
+# Source typos: "1s Place", "1ts Place", "2d Place", "5h Place".
+_ORDINAL_TYPO_RE = re.compile(r"^(\d+)\s*(s|ts|d|h)\b")
+_CN_TOP_RE = re.compile(r"^前\s*(\d+)\s*名?")
+_CN_ORDINAL_RE = re.compile(r"^第\s*(\d+|[一二三四五六七八九十])\s*名")
+_RECORD_RE = re.compile(r"\((\d+)\s*-\s*(\d+)")
+
+
+def _ordinal_key(n: int) -> str:
+    if n <= 0:
+        return ""
+    if n == 1:
+        return "1st"
+    if n == 2:
+        return "2nd"
+    if n == 3:
+        return "3rd"
+    if n <= 8:
+        return f"{n}th"
+    return f"place_{n}"
 
 
 def norm_placement(raw: Any) -> str:
@@ -349,32 +374,95 @@ def norm_placement(raw: Any) -> str:
     if not text:
         return ""
     base = strip_parens(text)
-    low = _SPACE_RE.sub(" ", base.lower()).strip()
-    if not low or low in {"na", "n/a", "-"}:
+    low = _SPACE_RE.sub(" ", base.lower()).strip().translate(_FULLWIDTH_DIGITS)
+    if not low or low in {"na", "n/a", "-", "n.a", "n.a."}:
+        return "na"
+    # "NA (8-2)Swiss" strips to "NA Swiss".
+    if re.match(r"^n/?a\b", low):
         return "na"
 
-    # Top-8 / Top 8 / T8 / top-4
-    m = re.match(r"^(?:top[-\s]?|t)(\d+)\b", low.replace(" ", ""))
+    if low.startswith("冠军") or low.startswith("冠軍"):
+        return "1st"
+    if low.startswith("亚军") or low.startswith("亞軍"):
+        return "2nd"
+    if low.startswith("季军") or low.startswith("季軍"):
+        return "3rd"
+    m = _CN_TOP_RE.match(low)
+    if m:
+        return f"top_{int(m.group(1))}"
+    m = _CN_ORDINAL_RE.match(low)
+    if m:
+        token = m.group(1)
+        n = _CN_NUM[token] if token in _CN_NUM else int(token)
+        key = _ordinal_key(n)
+        if key:
+            return key
+
+    # Top-8 / Top 8 / T8 / top-4 / Top8 / "T32 Swiss"
+    m = _TOP_RE.match(low)
+    if not m:
+        m = re.match(r"^(?:top[-\s]?|t)(\d+)\b", low.replace(" ", ""))
     if not m:
         m = re.match(r"^top[-\s]?(\d+)\b", low)
     if m:
         return f"top_{int(m.group(1))}"
 
-    m = re.match(r"^(1st|2nd|3rd|[4-9]th|\d+th)\b", low)
+    # 1st/2nd/3rd, 22nd/23rd/21st, and ordinal typos (23th, 1th, 3th, 4rd, 2rd).
+    m = _ORDINAL_RE.match(low) or _ORDINAL_TYPO_RE.match(low)
     if m:
-        token = m.group(1)
-        if token in _PLACE_ORDINAL:
-            return _PLACE_ORDINAL[token]
-        # 10th, 11th...
-        num = re.match(r"^(\d+)", token)
-        if num:
-            return f"place_{int(num.group(1))}"
+        key = _ordinal_key(int(m.group(1)))
+        if key:
+            return key
 
     compact = _compact(low)
     if compact.startswith("t") and compact[1:].isdigit():
         return f"top_{int(compact[1:])}"
 
     return base or text
+
+
+def placement_sort_rank(raw: Any) -> tuple[int, int]:
+    """Smaller is better: 1st, then top cuts, then other Nth, then NA/unknown.
+
+    Band 0 is the podium (1st, 2nd, 3rd).
+    Band 1 is a top cut (T2, T4, 4th, T8, T16, T32, T64, ...) ordered by size.
+    Band 2 is any other ordinal (5th, 10th, 22nd, ...) ordered by the number.
+    Band 3 is NA or a string ``norm_placement`` does not recognize.
+    """
+    key = norm_placement(raw)
+    if key == "1st":
+        return (0, 1)
+    if key == "2nd":
+        return (0, 2)
+    if key == "3rd":
+        return (0, 3)
+    if key == "4th":
+        return (1, 4)
+    if key.startswith("top_"):
+        n = key.split("_", 1)[1]
+        if n.isdigit():
+            return (1, int(n))
+    if key in {"5th", "6th", "7th", "8th"}:
+        return (2, int(key[0]))
+    if key.startswith("place_"):
+        n = key.split("_", 1)[1]
+        if n.isdigit():
+            return (2, int(n))
+    return (3, 0)
+
+
+def parse_topdeck_record(raw: Any) -> tuple[int, int, int] | None:
+    """First ``(W-L)`` in a placement string, as ``(games, wins, losses)``.
+
+    ``(W-L-D)`` keeps the first two numbers. ``(3)``, ``(9 wins)``, and a bare
+    ``8-0`` do not match, so those rows sort after any parsed record.
+    """
+    m = _RECORD_RE.search(str(raw or ""))
+    if not m:
+        return None
+    wins = int(m.group(1))
+    losses = int(m.group(2))
+    return (wins + losses, wins, losses)
 
 
 _PLACEMENT_LABELS: dict[str, dict[str, str]] = {
