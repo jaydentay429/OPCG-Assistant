@@ -27,7 +27,7 @@ export const SITE_UPDATES: SiteUpdate[] = [
       "zh-Hant":
         "截圖暫收：紫 C 費用 1、力量 2000、反擊 +2000、屬性打，《動物／W7／佛朗基一家》。若自己擁有《佛朗基一家》特徵的角色卡即將遭到KO時，可以替換成咚‼−1，並將這張角色卡置為休息狀態。卡圖為已上傳的 OP18-069.png。",
       "zh-Hans":
-        "截图暂收：紫 C 费用 1、力量 2000、反击 +2000、属性打，《动物／W7／佛朗基一家》。若自己拥有《佛朗基一家》特征的角色卡即将遭到KO时，可以替换成咚‼−1，并将这张角色卡置为休息状态。卡图为已上传的 OP18-069.png。",
+        "截图暂收：紫 C 费用 1、力量 2000、反击 +2000、属性打，《动物／W7／弗兰奇一家》。若自己拥有《弗兰奇一家》特征的角色卡即将遭到KO时，可以替换成咚‼−1，并将这张角色卡置为休息状态。卡图为已上传的 OP18-069.png。",
       en: "Screenshot entry: purple C, cost 1, power 2000, Counter +2000, Strike, {Animal}/{Water Seven}/{Franky Family}. If your {Franky Family} type Character would be K.O.'d, you may DON!! −1 and rest this Character instead. Art is the uploaded OP18-069.png.",
     },
   },
