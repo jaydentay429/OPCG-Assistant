@@ -14,6 +14,24 @@ export type SiteUpdate = {
 /** Newest first. Keep this list short — homepage shows the latest few. */
 export const SITE_UPDATES: SiteUpdate[] = [
   {
+    id: "op18-069-2026-10-07",
+    date: "2026-10-07",
+    kind: "feature",
+    href: "/cards/OP18-069",
+    title: {
+      "zh-Hant": "OP18-069 索德姆&哥摩拉 已上線",
+      "zh-Hans": "OP18-069 索德姆&哥摩拉 已上线",
+      en: "OP18-069 Sodom & Gomorrah added",
+    },
+    body: {
+      "zh-Hant":
+        "截圖暫收：紫 C 費用 1、力量 2000、反擊 +2000、屬性打，《動物／W7／佛朗基一家》。若自己擁有《佛朗基一家》特徵的角色卡即將遭到KO時，可以替換成咚‼−1，並將這張角色卡置為休息狀態。卡圖為已上傳的 OP18-069.png。",
+      "zh-Hans":
+        "截图暂收：紫 C 费用 1、力量 2000、反击 +2000、属性打，《动物／W7／弗兰奇一家》。若自己拥有《弗兰奇一家》特征的角色卡即将遭到KO时，可以替换成咚‼−1，并将这张角色卡置为休息状态。卡图为已上传的 OP18-069.png。",
+      en: "Screenshot entry: purple C, cost 1, power 2000, Counter +2000, Strike, {Animal}/{Water Seven}/{Franky Family}. If your {Franky Family} type Character would be K.O.'d, you may DON!! −1 and rest this Character instead. Art is the uploaded OP18-069.png.",
+    },
+  },
+  {
     id: "op18-eb05-batch-2026-10-06",
     date: "2026-10-06",
     kind: "feature",

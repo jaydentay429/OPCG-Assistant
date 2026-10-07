@@ -25,6 +25,7 @@ def test_seed_matches_index_and_ids_are_unique():
         "OP18-016",
         "OP18-025",
         "OP18-044",
+        "OP18-069",
         "P-160",
         "OP18-089",
         "OP18-076",
@@ -159,6 +160,33 @@ def test_seed_matches_index_and_ids_are_unique():
     assert "trash 1 card from your hand" in cards["OP18-044"]["effect_en"]
     assert cards["OP18-044"]["card_sets"] == ["補充包 OP-18【OP-18】"]
     assert cards["OP18-044"]["pack_id"] == "OP-18"
+    assert cards["OP18-069"]["name"] == "索德姆&哥摩拉"
+    assert cards["OP18-069"]["name_en"] == "Sodom & Gomorrah"
+    assert cards["OP18-069"]["manual_source"] == "screenshot"
+    assert "suppress_pack_image" not in cards["OP18-069"]
+    assert cards["OP18-069"]["img_url"] == ""
+    assert cards["OP18-069"]["img_full_url"] == ""
+    assert cards["OP18-069"]["preview"] is True
+    assert cards["OP18-069"]["colors"] == ["紫"]
+    assert cards["OP18-069"]["colors_en"] == ["Purple"]
+    assert cards["OP18-069"]["cost"] == 1
+    assert cards["OP18-069"]["power"] == 2000
+    assert cards["OP18-069"]["life"] is None
+    assert cards["OP18-069"]["counter"] == 2000
+    assert cards["OP18-069"]["rarity"] == "C"
+    assert cards["OP18-069"]["attributes"] == ["打"]
+    assert cards["OP18-069"]["attributes_en"] == ["Strike"]
+    assert cards["OP18-069"]["traits"] == ["動物", "W7", "佛朗基一家"]
+    assert cards["OP18-069"]["traits_en"] == ["Animal", "Water Seven", "Franky Family"]
+    assert cards["OP18-069"]["card_type"] == "Character"
+    assert cards["OP18-069"]["effect"] == (
+        "若自己擁有《佛朗基一家》特徵的角色卡即將遭到KO時，可以替換成咚‼−1，並將這張角色卡置為休息狀態。"
+    )
+    assert cards["OP18-069"]["effect_en"] == (
+        "If your {Franky Family} type Character would be K.O.'d, you may DON!! −1 and rest this Character instead."
+    )
+    assert cards["OP18-069"]["card_sets"] == ["補充包 OP-18【OP-18】"]
+    assert cards["OP18-069"]["pack_id"] == "OP-18"
     assert cards["P-160"]["name"] == "納菲魯塔利・薇薇"
     assert cards["P-160"]["name_en"] == "Nefeltari Vivi"
     assert cards["P-160"]["manual_source"] == "screenshot"
@@ -328,6 +356,7 @@ def test_seed_matches_index_and_ids_are_unique():
     assert list(cards).count("OP18-016") == 1
     assert list(cards).count("OP18-025") == 1
     assert list(cards).count("OP18-044") == 1
+    assert list(cards).count("OP18-069") == 1
     assert list(cards).count("P-160") == 1
     assert list(cards).count("OP18-089") == 1
     assert list(cards).count("OP18-076") == 1
@@ -340,6 +369,7 @@ def test_seed_matches_index_and_ids_are_unique():
     assert "OP18-016" not in overrides["cards"]
     assert "OP18-025" not in overrides["cards"]
     assert "OP18-044" not in overrides["cards"]
+    assert "OP18-069" not in overrides["cards"]
     assert "P-160" not in overrides["cards"]
     assert "OP18-089" not in overrides["cards"]
     assert "OP18-076" not in overrides["cards"]
@@ -354,8 +384,8 @@ def test_seed_matches_index_and_ids_are_unique():
 
 def test_official_sync_overwrites_screenshot_row_without_duplicates():
     index: dict = {}
-    assert apply_manual_cards(index) == 53
-    assert apply_manual_cards(index) == 53
+    assert apply_manual_cards(index) == 54
+    assert apply_manual_cards(index) == 54
     assert list(index).count("EB05-046") == 1
     assert index["EB05-046"]["name"] == "大和"
 
@@ -401,6 +431,9 @@ def test_official_sync_overwrites_screenshot_row_without_duplicates():
     assert merged["OP18-044"]["name"] == "Mr.賓茲&Miss凱瑟蓮娜"
     assert merged["OP18-044"]["manual_source"] == "screenshot"
     assert list(merged).count("OP18-044") == 1
+    assert merged["OP18-069"]["name"] == "索德姆&哥摩拉"
+    assert merged["OP18-069"]["manual_source"] == "screenshot"
+    assert list(merged).count("OP18-069") == 1
     assert merged["P-160"]["name"] == "納菲魯塔利・薇薇"
     assert merged["P-160"]["manual_source"] == "screenshot"
     assert list(merged).count("P-160") == 1
