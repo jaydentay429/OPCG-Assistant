@@ -323,6 +323,55 @@
         "補充包 OP-18【OP-18】"
       ]
     },
+    "OP18-069": {
+      "card_id": "OP18-069",
+      "preview": true,
+      "manual_source": "screenshot",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "name": "索德姆&哥摩拉",
+      "name_en": "Sodom & Gomorrah",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "紫"
+      ],
+      "colors_en": [
+        "Purple"
+      ],
+      "cost": 1,
+      "power": 2000,
+      "life": null,
+      "counter": 2000,
+      "rarity": "C",
+      "attributes": [
+        "打"
+      ],
+      "attributes_en": [
+        "Strike"
+      ],
+      "traits": [
+        "動物",
+        "W7",
+        "佛朗基一家"
+      ],
+      "traits_en": [
+        "Animal",
+        "Water Seven",
+        "Franky Family"
+      ],
+      "effect": "若自己擁有《佛朗基一家》特徵的角色卡即將遭到KO時，可以替換成咚‼−1，並將這張角色卡置為休息狀態。",
+      "effect_en": "If your {Franky Family} type Character would be K.O.'d, you may DON!! −1 and rest this Character instead.",
+      "trigger": "",
+      "trigger_en": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ]
+    },
     "P-160": {
       "card_id": "P-160",
       "preview": true,
