@@ -172,12 +172,17 @@ def test_committed_snapshot_matches_known_cdn_bytes():
     assert data["OP18-025"] == "136e365c"
     assert data["OP18-044"] == "274c36d9"
     assert data["OP18-069"] == "fcd4d10c"
+    assert data["OP18-091"] == "6bbff4a3"
+    assert data["OP18-111"] == "f16bf32c"
+    assert data["EB05-059"] == "e273b916"
+    assert data["EB05-008"] == "fff2c706"
+    assert data["EB05-040"] == "35fd44ef"
     assert data["OP18-076"] == "a09c5157"
     assert data["OP18-089"] == "02533aad"
     assert data["P-160"] == "aee899d7"
     assert data["OP18-106"] == "c6bb3598"
     assert data["EB05-049"] == "b5ea7367"
-    assert len(data) == 5282
+    assert len(data) == 5287
     for missing in ("OP18-112", "OP16-098-P2"):
         assert missing not in data
 

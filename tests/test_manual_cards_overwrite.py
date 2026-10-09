@@ -26,6 +26,11 @@ def test_seed_matches_index_and_ids_are_unique():
         "OP18-025",
         "OP18-044",
         "OP18-069",
+        "OP18-091",
+        "OP18-111",
+        "EB05-059",
+        "EB05-008",
+        "EB05-040",
         "P-160",
         "OP18-089",
         "OP18-076",
@@ -187,6 +192,67 @@ def test_seed_matches_index_and_ids_are_unique():
     )
     assert cards["OP18-069"]["card_sets"] == ["補充包 OP-18【OP-18】"]
     assert cards["OP18-069"]["pack_id"] == "OP-18"
+    assert cards["OP18-091"] == seed["OP18-091"]
+    assert cards["OP18-091"]["name"] == "布洛基"
+    assert cards["OP18-091"]["name_en"] == "Brogy"
+    assert cards["OP18-091"]["colors"] == ["黑"]
+    assert cards["OP18-091"]["cost"] == 4
+    assert cards["OP18-091"]["power"] == 5000
+    assert cards["OP18-091"]["counter"] == 2000
+    assert cards["OP18-091"]["life"] is None
+    assert cards["OP18-091"]["attributes"] == ["斬"]
+    assert cards["OP18-091"]["traits"] == ["巨人族", "艾爾帕布", "巨兵海賊團"]
+    assert cards["OP18-091"]["effect"].startswith("這張角色卡的費用+12。")
+    assert "cost of 2 or less from your trash" in cards["OP18-091"]["effect_en"]
+    assert cards["OP18-111"] == seed["OP18-111"]
+    assert cards["OP18-111"]["name"] == "飛鼠"
+    assert cards["OP18-111"]["name_en"] == "Momonga"
+    assert cards["OP18-111"]["colors"] == ["黃"]
+    assert cards["OP18-111"]["cost"] == 7
+    assert cards["OP18-111"]["power"] == 7000
+    assert cards["OP18-111"]["counter"] == 2000
+    assert cards["OP18-111"]["traits"] == ["中將", "海軍"]
+    assert cards["OP18-111"]["effect"].startswith("【速攻】")
+    assert cards["OP18-111"]["effect_en"].startswith("[Rush]")
+    assert cards["EB05-059"] == seed["EB05-059"]
+    assert cards["EB05-059"]["name"] == "夏洛特・普琳!!"
+    assert cards["EB05-059"]["name_en"] == "Charlotte Pudding!!"
+    assert cards["EB05-059"]["card_type"] == "Event"
+    assert cards["EB05-059"]["colors"] == ["黃"]
+    assert cards["EB05-059"]["cost"] == 1
+    assert cards["EB05-059"]["power"] is None
+    assert cards["EB05-059"]["counter"] is None
+    assert cards["EB05-059"]["rarity"] == "R"
+    assert cards["EB05-059"]["traits"] == ["BIG MOM海賊團"]
+    assert cards["EB05-059"]["effect"].startswith("【主要】抽1張卡片")
+    assert "{Big Mom Pirates}" in cards["EB05-059"]["effect_en"]
+    assert cards["EB05-008"] == seed["EB05-008"]
+    assert cards["EB05-008"]["name"] == "魯夫，就是現在"
+    assert cards["EB05-008"]["name_en"] == "Luffy, Now's Your Chance"
+    assert cards["EB05-008"]["card_type"] == "Event"
+    assert cards["EB05-008"]["colors"] == ["紅"]
+    assert cards["EB05-008"]["cost"] == 1
+    assert cards["EB05-008"]["rarity"] == "C"
+    assert cards["EB05-008"]["traits"] == ["王下七武海", "九蛇海賊團"]
+    assert "力量值-7000" in cards["EB05-008"]["effect"]
+    assert "−7000 power" in cards["EB05-008"]["effect_en"]
+    assert cards["EB05-040"] == seed["EB05-040"]
+    assert cards["EB05-040"]["name"] == "你需要我吧？！！♡"
+    assert cards["EB05-040"]["name_en"] == "You Need Me, Don't You?!!♡"
+    assert cards["EB05-040"]["card_type"] == "Event"
+    assert cards["EB05-040"]["colors"] == ["紫"]
+    assert cards["EB05-040"]["cost"] == 0
+    assert cards["EB05-040"]["rarity"] == "R"
+    assert cards["EB05-040"]["traits"] == ["唐吉訶德海賊團"]
+    assert cards["EB05-040"]["effect"].startswith("【主要】可以將1張自己活動狀態的咚‼卡放回咚‼卡組")
+    assert "draw 3 cards" in cards["EB05-040"]["effect_en"]
+    for cid in ("OP18-091", "OP18-111", "EB05-059", "EB05-008", "EB05-040"):
+        assert cards[cid]["manual_source"] == "screenshot"
+        assert cards[cid]["preview"] is True
+        assert cards[cid]["img_url"] == ""
+        assert cards[cid]["img_full_url"] == ""
+        assert "suppress_pack_image" not in cards[cid]
+        assert cards[cid]["life"] is None
     assert cards["P-160"]["name"] == "納菲魯塔利・薇薇"
     assert cards["P-160"]["name_en"] == "Nefeltari Vivi"
     assert cards["P-160"]["manual_source"] == "screenshot"
@@ -357,6 +423,11 @@ def test_seed_matches_index_and_ids_are_unique():
     assert list(cards).count("OP18-025") == 1
     assert list(cards).count("OP18-044") == 1
     assert list(cards).count("OP18-069") == 1
+    assert list(cards).count("OP18-091") == 1
+    assert list(cards).count("OP18-111") == 1
+    assert list(cards).count("EB05-059") == 1
+    assert list(cards).count("EB05-008") == 1
+    assert list(cards).count("EB05-040") == 1
     assert list(cards).count("P-160") == 1
     assert list(cards).count("OP18-089") == 1
     assert list(cards).count("OP18-076") == 1
@@ -370,6 +441,11 @@ def test_seed_matches_index_and_ids_are_unique():
     assert "OP18-025" not in overrides["cards"]
     assert "OP18-044" not in overrides["cards"]
     assert "OP18-069" not in overrides["cards"]
+    assert "OP18-091" not in overrides["cards"]
+    assert "OP18-111" not in overrides["cards"]
+    assert "EB05-059" not in overrides["cards"]
+    assert "EB05-008" not in overrides["cards"]
+    assert "EB05-040" not in overrides["cards"]
     assert "P-160" not in overrides["cards"]
     assert "OP18-089" not in overrides["cards"]
     assert "OP18-076" not in overrides["cards"]
@@ -384,8 +460,8 @@ def test_seed_matches_index_and_ids_are_unique():
 
 def test_official_sync_overwrites_screenshot_row_without_duplicates():
     index: dict = {}
-    assert apply_manual_cards(index) == 54
-    assert apply_manual_cards(index) == 54
+    assert apply_manual_cards(index) == 59
+    assert apply_manual_cards(index) == 59
     assert list(index).count("EB05-046") == 1
     assert index["EB05-046"]["name"] == "大和"
 
@@ -434,6 +510,14 @@ def test_official_sync_overwrites_screenshot_row_without_duplicates():
     assert merged["OP18-069"]["name"] == "索德姆&哥摩拉"
     assert merged["OP18-069"]["manual_source"] == "screenshot"
     assert list(merged).count("OP18-069") == 1
+    assert merged["OP18-091"]["name"] == "布洛基"
+    assert merged["OP18-111"]["name"] == "飛鼠"
+    assert merged["EB05-059"]["name"] == "夏洛特・普琳!!"
+    assert merged["EB05-008"]["name"] == "魯夫，就是現在"
+    assert merged["EB05-040"]["name"] == "你需要我吧？！！♡"
+    for cid in ("OP18-091", "OP18-111", "EB05-059", "EB05-008", "EB05-040"):
+        assert merged[cid]["manual_source"] == "screenshot"
+        assert list(merged).count(cid) == 1
     assert merged["P-160"]["name"] == "納菲魯塔利・薇薇"
     assert merged["P-160"]["manual_source"] == "screenshot"
     assert list(merged).count("P-160") == 1
