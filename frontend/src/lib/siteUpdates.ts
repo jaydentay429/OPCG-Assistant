@@ -14,6 +14,24 @@ export type SiteUpdate = {
 /** Newest first. Keep this list short — homepage shows the latest few. */
 export const SITE_UPDATES: SiteUpdate[] = [
   {
+    id: "op18-eb05-five-2026-10-09",
+    date: "2026-10-09",
+    kind: "feature",
+    href: "/cards/OP18-091",
+    title: {
+      "zh-Hant": "OP18-091 布洛基、OP18-111 飛鼠與 EB05 三張事件已上線",
+      "zh-Hans": "OP18-091 布洛基、OP18-111 飞鼠与 EB05 三张事件已上线",
+      en: "OP18-091 Brogy, OP18-111 Momonga, and three EB05 events added",
+    },
+    body: {
+      "zh-Hant":
+        "截圖暫收：OP18-091 黑 C 布洛基，費用 4、力量 5000、反擊 +2000、屬性斬，《巨人族／艾爾帕布／巨兵海賊團》，費用 +12。OP18-111 黃 C 飛鼠，費用 7、力量 7000、反擊 +2000、屬性斬，《中將／海軍》，【速攻】。EB05-059 黃 R 事件夏洛特・普琳!!，費用 1，《BIG MOM海賊團》。EB05-008 紅 C 事件魯夫，就是現在，費用 1，《王下七武海／九蛇海賊團》。EB05-040 紫 R 事件你需要我吧？！！♡，費用 0，《唐吉訶德海賊團》。卡圖為已上傳的 PNG。",
+      "zh-Hans":
+        "截图暂收：OP18-091 黑 C 布洛基，费用 4、力量 5000、反击 +2000、属性斩，《巨人族／艾尔帕布／巨兵海贼团》，费用 +12。OP18-111 黄 C 飞鼠，费用 7、力量 7000、反击 +2000、属性斩，《中将／海军》，【速攻】。EB05-059 黄 R 事件夏洛特・普琳!!，费用 1，《BIG MOM海贼团》。EB05-008 红 C 事件鲁夫，就是现在，费用 1，《王下七武海／九蛇海贼团》。EB05-040 紫 R 事件你需要我吧？！！♡，费用 0，《唐吉诃德海贼团》。卡图为已上传的 PNG。",
+      en: "Screenshot entries: OP18-091 black C Brogy, cost 4, power 5000, Counter +2000, Slash, {Giant}/{Elbaph}/{Giant Pirates}, +12 cost. OP18-111 yellow C Momonga, cost 7, power 7000, Counter +2000, Slash, {Vice Admiral}/{Navy}, [Rush]. EB05-059 yellow R Event Charlotte Pudding!!, cost 1, {Big Mom Pirates}. EB05-008 red C Event Luffy, Now's Your Chance, cost 1, {The Seven Warlords of the Sea}/{Kuja Pirates}. EB05-040 purple R Event You Need Me, Don't You?!!♡, cost 0, {Donquixote Pirates}. Art is the uploaded PNGs.",
+    },
+  },
+  {
     id: "op18-069-2026-10-07",
     date: "2026-10-07",
     kind: "feature",

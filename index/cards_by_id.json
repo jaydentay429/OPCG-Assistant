@@ -205596,6 +205596,239 @@
       "補充包 OP-18【OP-18】"
     ]
   },
+  "OP18-091": {
+    "card_id": "OP18-091",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "name": "布洛基",
+    "name_en": "Brogy",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黑"
+    ],
+    "colors_en": [
+      "Black"
+    ],
+    "cost": 4,
+    "power": 5000,
+    "life": null,
+    "counter": 2000,
+    "rarity": "C",
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "traits": [
+      "巨人族",
+      "艾爾帕布",
+      "巨兵海賊團"
+    ],
+    "traits_en": [
+      "Giant",
+      "Elbaph",
+      "Giant Pirates"
+    ],
+    "effect": "這張角色卡的費用+12。\n【攻擊時】可以廢棄1張自己的手牌：將最多1張自己廢棄區中費用2以下的角色卡加入手牌。",
+    "effect_en": "This Character gains +12 cost.\n[When Attacking] You may trash 1 card from your hand: Add up to 1 Character card with a cost of 2 or less from your trash to your hand.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "補充包 OP-18【OP-18】"
+    ]
+  },
+  "OP18-111": {
+    "card_id": "OP18-111",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "name": "飛鼠",
+    "name_en": "Momonga",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黃"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "cost": 7,
+    "power": 7000,
+    "life": null,
+    "counter": 2000,
+    "rarity": "C",
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "traits": [
+      "中將",
+      "海軍"
+    ],
+    "traits_en": [
+      "Vice Admiral",
+      "Navy"
+    ],
+    "effect": "【速攻】(這張卡片在登場的回合即可攻擊)",
+    "effect_en": "[Rush] (This card can attack the turn it is played.)",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "補充包 OP-18【OP-18】"
+    ]
+  },
+  "EB05-059": {
+    "card_id": "EB05-059",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "夏洛特・普琳!!",
+    "name_en": "Charlotte Pudding!!",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "黃"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "cost": 1,
+    "power": null,
+    "life": null,
+    "counter": null,
+    "rarity": "R",
+    "attributes": [
+      "-"
+    ],
+    "attributes_en": [
+      "-"
+    ],
+    "traits": [
+      "BIG MOM海賊團"
+    ],
+    "traits_en": [
+      "Big Mom Pirates"
+    ],
+    "effect": "【主要】抽1張卡片，且自己原本力量值4000、擁有《BIG MOM海賊團》特徵的角色卡全數，在下一個對手回合結束前，在對戰中不會遭到KO。\n【觸發器】抽1張卡片，並使最多1張自己手牌中力量值4000且持有【觸發器】的角色卡登場。",
+    "effect_en": "[Main] Draw 1 card, and all of your Characters with 4000 base power and the {Big Mom Pirates} type cannot be K.O.'d in battle until the end of your opponent's next End Phase.\n[Trigger] Draw 1 card, and play up to 1 Character card with 4000 power and a [Trigger] from your hand.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
+  },
+  "EB05-008": {
+    "card_id": "EB05-008",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "魯夫，就是現在",
+    "name_en": "Luffy, Now's Your Chance",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "cost": 1,
+    "power": null,
+    "life": null,
+    "counter": null,
+    "rarity": "C",
+    "attributes": [
+      "-"
+    ],
+    "attributes_en": [
+      "-"
+    ],
+    "traits": [
+      "王下七武海",
+      "九蛇海賊團"
+    ],
+    "traits_en": [
+      "The Seven Warlords of the Sea",
+      "Kuja Pirates"
+    ],
+    "effect": "【主要】可以附加1張活動狀態的咚‼卡在1張自己的領航卡，並公開2張自己手牌中的紅色事件卡：最多1張對手休息狀態的角色卡，在這個回合，力量值-7000。\n【反擊】若自己沒有費用5以上的角色卡時，最多1張自己的領航卡或角色卡，在這場對戰中，力量值+4000。",
+    "effect_en": "[Main] You may give 1 active DON!! card to 1 of your Leader and reveal 2 red Event cards from your hand: Give up to 1 of your opponent's rested Characters −7000 power during this turn.\n[Counter] If you have no Characters with a cost of 5 or more, up to 1 of your Leader or up to 1 of your Characters gains +4000 power during this battle.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
+  },
+  "EB05-040": {
+    "card_id": "EB05-040",
+    "preview": true,
+    "manual_source": "screenshot",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "pack_id": "EB-05",
+    "name": "你需要我吧？！！♡",
+    "name_en": "You Need Me, Don't You?!!♡",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "紫"
+    ],
+    "colors_en": [
+      "Purple"
+    ],
+    "cost": 0,
+    "power": null,
+    "life": null,
+    "counter": null,
+    "rarity": "R",
+    "attributes": [
+      "-"
+    ],
+    "attributes_en": [
+      "-"
+    ],
+    "traits": [
+      "唐吉訶德海賊團"
+    ],
+    "traits_en": [
+      "Donquixote Pirates"
+    ],
+    "effect": "【主要】可以將1張自己活動狀態的咚‼卡放回咚‼卡組：若自己的領航卡擁有《唐吉訶德海賊團》特徵時，抽3張卡片，並廢棄1張自己的手牌。\n【反擊】自己的領航卡，在這場對戰中，力量值+2000。",
+    "effect_en": "[Main] You may return 1 of your active DON!! cards to your DON!! deck: If your Leader has the {Donquixote Pirates} type, draw 3 cards and trash 1 card from your hand.\n[Counter] Your Leader gains +2000 power during this battle.",
+    "trigger": "",
+    "trigger_en": "",
+    "card_sets": [
+      "Heroines Edition vol.2【EB-05】"
+    ]
+  },
   "P-160": {
     "card_id": "P-160",
     "preview": true,
