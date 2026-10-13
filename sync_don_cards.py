@@ -19,11 +19,23 @@ from urllib.parse import quote_plus, urljoin
 import requests
 from bs4 import BeautifulSoup
 
+from atomic_io import atomic_write_text
+
 BASE_DIR = Path(__file__).resolve().parent
 INDEX_PATH = BASE_DIR / "index" / "cards_by_id.json"
 PACKS_DIR = BASE_DIR / "packs"
 PRICE_PATH = BASE_DIR / "meta" / "market_prices.json"
 SEARCH_URL = "https://yuyu-tei.jp/sell/opc/s/search?search_word={query}"
+
+
+def write_market_price_file(payload: Any) -> None:
+    """Replace market_prices.json atomically so the API never reads a torn file."""
+    atomic_write_text(
+        PRICE_PATH,
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+    )
+
+
 REQUEST_HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X) OPCG-DonSync/1.0",
     "Accept-Language": "ja,en-US;q=0.8,en;q=0.6",
@@ -712,8 +724,7 @@ def main() -> None:
 
     INDEX_PATH.write_text(json.dumps(index, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     prices = merge_prices(items, ts)
-    PRICE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    PRICE_PATH.write_text(json.dumps(prices, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    write_market_price_file(prices)
     cards = prices.get("cards") if isinstance(prices.get("cards"), dict) else {}
     with_sets = sum(1 for i in items if i.get("card_sets"))
     print(f"Index: +{added} new, ~{updated} updated -> {INDEX_PATH}")
