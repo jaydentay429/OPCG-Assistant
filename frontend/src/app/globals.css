@@ -621,6 +621,18 @@ body.battle-active .play-seo-intro {
   overflow-wrap: anywhere;
 }
 
+.detail-ban-badge {
+  display: inline-block;
+  margin: 0.55rem 0 0;
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  background: #991b1b;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
 .card-seo-more {
   margin: 0;
   padding: 0.85rem 0.95rem 1rem;
@@ -2852,6 +2864,22 @@ a.detail-thumb {
   margin: 0 0 0.55rem;
   color: #fde68a;
   font-size: 0.82rem;
+}
+
+.deck-ban-warn {
+  margin: 0 0 0.75rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid #f87171;
+  border-radius: 10px;
+  background: rgba(127, 29, 29, 0.45);
+  color: #fee2e2;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.deck-ban-warn p {
+  margin: 0.15rem 0;
 }
 
 .deck-details-backdrop {

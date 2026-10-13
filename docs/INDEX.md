@@ -33,6 +33,7 @@ OPTCG 工具站：Python API 加 Next.js 前端，界面为繁中、简中、英
 ## 关键文件
 
 - `app.py`：HTTP API
+- `index/official_restriction_list.json`：官方禁用、限制与禁用组合（`official_restriction.py`）
 - `sync_daily_pipeline.py`：每日同步入口
 - `battle/ai.py`：对战 AI 选着
 - `frontend/src/lib/i18n.tsx`：界面语言

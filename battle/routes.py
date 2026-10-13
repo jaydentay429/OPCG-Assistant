@@ -14,6 +14,7 @@ from pydantic import BaseModel, Field
 from battle.ai_decks import get_ai_deck, load_ai_decks
 from battle.effect_library import ensure_loaded, library_stats
 from battle.engine import public_view, ranked_deck_ban_error, validate_battle_deck
+from official_restriction import official_restriction_error
 from battle.replay import list_replays_for_user, load_replay
 from battle.matchmaking import Matchmaker, RankedMatchmaker
 from battle.rank import (
@@ -367,6 +368,9 @@ def mount_battle(
     def _inline_deck_payload(user: dict[str, Any], deck: InlineDeck) -> dict[str, Any]:
         leader = str(deck.leader_card_id or "").strip()
         cards = {str(k): int(v) for k, v in (deck.cards or {}).items() if int(v or 0) > 0}
+        official = official_restriction_error(leader, cards, lang="en")
+        if official:
+            raise HTTPException(status_code=400, detail=official)
         err = validate_battle_deck(leader, cards, catalog)
         if err:
             raise HTTPException(status_code=400, detail=err)
@@ -388,6 +392,9 @@ def mount_battle(
             raise HTTPException(status_code=404, detail="Deck not found.")
         leader = str(deck.get("leader_card_id") or "")
         cards = {str(k): int(v) for k, v in (deck.get("cards") or {}).items() if int(v or 0) > 0}
+        official = official_restriction_error(leader, cards, lang="en")
+        if official:
+            raise HTTPException(status_code=400, detail=official)
         err = validate_battle_deck(leader, cards, catalog)
         if err:
             raise HTTPException(status_code=400, detail=err)

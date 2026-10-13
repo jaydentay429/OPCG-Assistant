@@ -24,6 +24,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from dotenv import dotenv_values, load_dotenv
+from official_restriction import official_restriction_error
 from opcg_attributes import normalize_attributes, resolve_card_attributes
 from filter_keywords import FILTER_KEYWORD_IDS, card_filter_keywords
 from topdecks_normalize import (
@@ -1183,7 +1184,14 @@ def _validate_deck_contents(
             )
     if _deck_non_leader_count(cards) > 50:
         raise HTTPException(status_code=400, detail="非 Leader 卡总数最多 50 张。")
+    _raise_if_restricted_deck(leader, cards)
     return leader, cards
+
+
+def _raise_if_restricted_deck(leader: str | None, cards: dict[str, Any] | None) -> None:
+    message = official_restriction_error(leader or "", cards or {}, lang="zh")
+    if message:
+        raise HTTPException(status_code=400, detail=message)
 
 
 def _serialize_deck(deck: dict[str, Any]) -> DeckResponse:
@@ -8240,6 +8248,7 @@ def set_deck_leader(deck_id: str, request: Request, payload: DeckCardChangeReque
         deck = _find_deck_mutable(user_decks, did)
         if deck is None:
             raise HTTPException(status_code=404, detail="未找到该卡组。")
+        _raise_if_restricted_deck(cid, deck.get("cards"))
         deck["leader_card_id"] = cid
         deck["updated_at"] = now_iso()
         _save_decks_store(store)
@@ -8275,6 +8284,7 @@ def add_deck_card(deck_id: str, request: Request, payload: DeckCardChangeRequest
         if current_non_leader + add_count > 50:
             raise HTTPException(status_code=400, detail="非 Leader 卡总数最多 50 张。")
         cards[cid] = current + add_count
+        _raise_if_restricted_deck(deck.get("leader_card_id"), cards)
         deck["cards"] = cards
         deck["updated_at"] = now_iso()
         _save_decks_store(store)
