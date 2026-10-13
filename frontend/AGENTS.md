@@ -9,7 +9,7 @@ Next.js 15 App Router。页面在 `src/app`，客户端界面在 `src/components
 - `/builder` 构筑器，`/collector` 收藏，`/binder` 与 `/binder/s/[token]` 卡册
 - `/prices` 价格，`/tournaments` 比赛卡组，`/photo` 拍照识卡
 - `/community`、`/community/new`、`/community/[id]`、`/community/me`、`/community/admin`
-- `/play` 对战（`[[...slug]]`）
+- `/play` 对战大厅（房间、匹配、AI）；`/play/rank` 排位；`/play/history` 与 `/play/history/[id]` 记录和回放；`/play/spectate` 观战。这些页面 `noindex,follow`，不进 sitemap
 - `/reset-password`，`/legal/terms`、`/legal/privacy`、`/legal/disclaimer`
 - `/internal/exclude-me` 不公开、不索引。token 不对返回 404。不要把带 token 的地址写进公开说明
 

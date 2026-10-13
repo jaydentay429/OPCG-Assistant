@@ -14,6 +14,7 @@ from pydantic import BaseModel, Field
 from battle.ai_decks import get_ai_deck, load_ai_decks
 from battle.effect_library import ensure_loaded, library_stats
 from battle.engine import public_view, ranked_deck_ban_error, validate_battle_deck
+from battle.set_legality import casual_deck_legality_error
 from official_restriction import official_restriction_error
 from battle.replay import list_replays_for_user, load_replay
 from battle.matchmaking import Matchmaker, RankedMatchmaker
@@ -374,6 +375,9 @@ def mount_battle(
         err = validate_battle_deck(leader, cards, catalog)
         if err:
             raise HTTPException(status_code=400, detail=err)
+        legality = casual_deck_legality_error(leader, cards)
+        if legality:
+            raise HTTPException(status_code=400, detail=legality)
         name = str(deck.name or "Imported").strip()[:80] or "Imported"
         return {
             "user_id": str(user["user_id"]),
@@ -398,6 +402,9 @@ def mount_battle(
         err = validate_battle_deck(leader, cards, catalog)
         if err:
             raise HTTPException(status_code=400, detail=err)
+        legality = casual_deck_legality_error(leader, cards)
+        if legality:
+            raise HTTPException(status_code=400, detail=legality)
         return {
             "user_id": str(user["user_id"]),
             "username": str(user.get("username") or "Player"),
@@ -434,6 +441,9 @@ def mount_battle(
         err = validate_battle_deck(str(deck["leader_card_id"]), dict(deck["cards"]), catalog)
         if err:
             raise HTTPException(status_code=400, detail=f"AI deck invalid: {err}")
+        legality = casual_deck_legality_error(str(deck["leader_card_id"]), dict(deck["cards"]))
+        if legality:
+            raise HTTPException(status_code=400, detail=legality)
         return {
             "name": deck["name"],
             "leader_card_id": deck["leader_card_id"],

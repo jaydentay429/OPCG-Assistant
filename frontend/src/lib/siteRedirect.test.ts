@@ -32,15 +32,27 @@ describe("canonicalRedirect", () => {
     }
   });
 
-  it("does not redirect /play, a trailing slash, a nested path, or a query", () => {
+  it("308s a trailing slash on /play the same way as other routes and keeps the query", () => {
     assert.equal(canonicalRedirect("/play"), null);
-    assert.equal(canonicalRedirect("/play/"), null);
-    assert.equal(canonicalRedirect("/play/", "?x=1"), null);
-    assert.equal(canonicalRedirect("/play/rank"), null);
-    assert.equal(canonicalRedirect("/play/rank/"), null);
-    assert.equal(canonicalRedirect("/play/room/xxx"), null);
-    assert.equal(canonicalRedirect("/play/room/xxx/", "?x=1"), null);
     assert.equal(canonicalRedirect("/play", "?x=1"), null);
+    assert.equal(canonicalRedirect("/play/rank"), null);
+    assert.equal(canonicalRedirect("/play/room/xxx"), null);
+    assert.deepEqual(canonicalRedirect("/play/"), {
+      status: 308,
+      location: `${CANONICAL_ORIGIN}/play`,
+    });
+    assert.deepEqual(canonicalRedirect("/play/", "?x=1"), {
+      status: 308,
+      location: `${CANONICAL_ORIGIN}/play?x=1`,
+    });
+    assert.deepEqual(canonicalRedirect("/play/rank/"), {
+      status: 308,
+      location: `${CANONICAL_ORIGIN}/play/rank`,
+    });
+    assert.deepEqual(canonicalRedirect("/play/room/xxx/", "?x=1"), {
+      status: 308,
+      location: `${CANONICAL_ORIGIN}/play/room/xxx?x=1`,
+    });
   });
 
   it("308s trailing slashes on other routes and keeps the query", () => {
@@ -86,6 +98,10 @@ describe("canonicalRedirect", () => {
       ["/cards/OP01%20065/", ""],
       ["/cards/%E8%B7%AF%E9%A3%9E", ""],
       ["/cards/%E8%B7%AF%E9%A3%9E/", "?q=1"],
+      ["/play/", ""],
+      ["/play/", "?x=1"],
+      ["/play/rank/", ""],
+      ["/play/room/xxx/", "?x=1"],
       ["/search/", ""],
       ["/search/", "?q=luffy"],
       ["/sets/", ""],

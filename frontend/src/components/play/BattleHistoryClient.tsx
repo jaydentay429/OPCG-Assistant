@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { CardImg } from "@/components/CardImg";
 import { fetchBattleReplays, type BattleReplaySummary } from "@/lib/api";
+import { BattleAvailabilityGate } from "@/components/play/BattleAvailability";
 import { useAuth } from "@/lib/auth";
 import { useI18n } from "@/lib/i18n";
 
@@ -24,7 +25,7 @@ function modeLabel(mode: string, t: (k: string) => string): string {
   return t("play.history_mode_pvp");
 }
 
-export function BattleHistoryClient() {
+function BattleHistoryLive() {
   const { t, lang } = useI18n();
   const { token, isLoggedIn, ready } = useAuth();
   const [rows, setRows] = useState<BattleReplaySummary[]>([]);
@@ -111,5 +112,13 @@ export function BattleHistoryClient() {
         })}
       </ul>
     </section>
+  );
+}
+
+export function BattleHistoryClient() {
+  return (
+    <BattleAvailabilityGate>
+      <BattleHistoryLive />
+    </BattleAvailabilityGate>
   );
 }

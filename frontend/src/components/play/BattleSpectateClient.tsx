@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { BattleAvailabilityGate, BattleUnavailableNotice } from "@/components/play/BattleAvailability";
 import { BattleBoard } from "@/components/play/BattleBoard";
 import {
   fetchBattleGuestToken,
@@ -15,6 +16,7 @@ import {
 } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { collectCardIdsFromLogs } from "@/lib/battleLogCards";
+import { isBattleDisabledError } from "@/lib/battleAvailability";
 import { connectBattleWs, type BattleChatMessage, type BattleState } from "@/lib/battleWs";
 import { useI18n } from "@/lib/i18n";
 
@@ -22,7 +24,7 @@ const GUEST_TOKEN_KEY = "opcg_battle_guest_token";
 
 type ModeFilter = "all" | "ai" | "pvp" | "hotseat";
 
-export function BattleSpectateClient() {
+function BattleSpectateLive() {
   const { t } = useI18n();
   const router = useRouter();
   const { token, ready } = useAuth();
@@ -33,6 +35,7 @@ export function BattleSpectateClient() {
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [serviceDown, setServiceDown] = useState(false);
   const [state, setState] = useState<BattleState | null>(null);
   const [names, setNames] = useState<Record<string, DeckStatFields>>({});
   const [activeCode, setActiveCode] = useState<string | null>(null);
@@ -68,6 +71,10 @@ export function BattleSpectateClient() {
       const list = await fetchLiveSpectatableRooms(filter);
       setRooms(list);
     } catch (e) {
+      if (isBattleDisabledError(e)) {
+        setServiceDown(true);
+        return;
+      }
       setError(e instanceof Error ? e.message : String(e));
     } finally {
       setListLoading(false);
@@ -75,11 +82,11 @@ export function BattleSpectateClient() {
   }, [filter]);
 
   useEffect(() => {
-    if (!ready) return;
+    if (!ready || serviceDown) return;
     void loadList();
     const timer = window.setInterval(() => void loadList(), 5000);
     return () => window.clearInterval(timer);
-  }, [ready, loadList]);
+  }, [ready, loadList, serviceDown]);
 
   useEffect(() => {
     if (!state) return;
@@ -133,6 +140,7 @@ export function BattleSpectateClient() {
           setState(null);
         },
         onError: (message) => setError(message),
+        onHandshakeFailed: () => setServiceDown(true),
         onClose: () => {
           if (wsRef.current === sock) wsRef.current = null;
           setActiveCode(null);
@@ -166,6 +174,10 @@ export function BattleSpectateClient() {
       }
       connectSpectate(trimmed, battleToken);
     } catch (e) {
+      if (isBattleDisabledError(e)) {
+        setServiceDown(true);
+        return;
+      }
       setError(e instanceof Error ? e.message : String(e));
     } finally {
       setBusy(false);
@@ -180,6 +192,17 @@ export function BattleSpectateClient() {
     }),
     [t],
   );
+
+  if (serviceDown) {
+    return (
+      <BattleUnavailableNotice
+        onRetry={() => {
+          setServiceDown(false);
+          setError(null);
+        }}
+      />
+    );
+  }
 
   if (state && activeCode) {
     return (
@@ -266,5 +289,13 @@ export function BattleSpectateClient() {
         </ul>
       </div>
     </section>
+  );
+}
+
+export function BattleSpectateClient() {
+  return (
+    <BattleAvailabilityGate>
+      <BattleSpectateLive />
+    </BattleAvailabilityGate>
   );
 }

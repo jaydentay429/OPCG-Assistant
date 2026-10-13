@@ -1,0 +1,19 @@
+{
+  "timezone": "Asia/Kuala_Lumpur",
+  "note": "Dates are calendar days in Malaysia time (UTC+8). Casual and AI play open on release_date. Ranked play opens on tournament_legal_date. A card in one of these sets is playable only when that date has arrived and the card has battle effect data.",
+  "sets": [
+    {
+      "code": "EB05",
+      "release_date": "2026-10-30",
+      "tournament_legal_date": "2026-11-06",
+      "tournament_legal_assumed": false
+    },
+    {
+      "code": "OP18",
+      "release_date": "2026-11-20",
+      "tournament_legal_date": "2026-11-27",
+      "tournament_legal_assumed": true,
+      "note": "Tournament-legal date is assumed from the 7-day rule (release date plus 7 days). Confirm against the official announcement."
+    }
+  ]
+}

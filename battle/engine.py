@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import random
 import re
+from datetime import date
 from typing import Any, Callable
 
 from battle.effects import (
@@ -202,53 +203,39 @@ def expand_deck(cards: dict[str, int]) -> list[str]:
     return out
 
 
-# Unreleased / preview sets — allowed in casual & AI, blocked in ranked.
-RANKED_BANNED_SET_PREFIXES: frozenset[str] = frozenset({"OP18", "EB05"})
+def deck_has_ranked_banned_cards(
+    leader_id: str,
+    cards: dict[str, int],
+    *,
+    on_date: date | None = None,
+) -> list[str]:
+    """Sorted card ids blocked in ranked play on ``on_date`` (Malaysia time)."""
+    from battle.set_legality import ranked_blocked_card_ids
+
+    return ranked_blocked_card_ids(leader_id, cards, on_date=on_date)
 
 
-def _ranked_banned_set_of(card_id: str) -> str | None:
-    text = str(card_id or "").strip().upper()
-    for prefix in RANKED_BANNED_SET_PREFIXES:
-        if text == prefix or text.startswith(f"{prefix}-"):
-            return prefix
-    return None
-
-
-def deck_has_ranked_banned_cards(leader_id: str, cards: dict[str, int]) -> list[str]:
-    """Return sorted unique card ids from leader + main deck that are ranked-banned."""
-    banned: set[str] = set()
-    lid = str(leader_id or "").strip()
-    if lid and _ranked_banned_set_of(lid):
-        banned.add(lid)
-    for cid, qty in (cards or {}).items():
-        if int(qty or 0) <= 0:
-            continue
-        cid_s = str(cid or "").strip()
-        if cid_s and _ranked_banned_set_of(cid_s):
-            banned.add(cid_s)
-    return sorted(banned)
-
-
-def ranked_deck_ban_error(leader_id: str, cards: dict[str, int]) -> str | None:
+def ranked_deck_ban_error(
+    leader_id: str,
+    cards: dict[str, int],
+    *,
+    on_date: date | None = None,
+) -> str | None:
     """Human-readable ranked ban error, or None if the deck is ranked-legal.
 
-    Unreleased preview sets stay ranked-only. Official banned cards and banned
-    pairs from ``official_restriction`` are rejected here as well.
+    Set release and tournament-legal dates come from ``index/set_legality.json``.
+    Official banned cards and banned pairs from ``official_restriction`` are
+    rejected here as well.
     """
+    from battle.set_legality import ranked_set_legality_error
+
     parts: list[str] = []
-    official = official_restriction_error(leader_id, cards, lang="en")
+    official = official_restriction_error(leader_id, cards, lang="en", on_date=on_date)
     if official:
         parts.append(official)
-    banned = deck_has_ranked_banned_cards(leader_id, cards)
-    if banned:
-        sets = sorted({s for cid in banned if (s := _ranked_banned_set_of(cid))})
-        set_label = " / ".join(sets) if sets else "unreleased"
-        sample = ", ".join(banned[:6])
-        more = f" (+{len(banned) - 6} more)" if len(banned) > 6 else ""
-        parts.append(
-            f"Ranked decks cannot include unreleased set(s) {set_label} "
-            f"(e.g. {sample}{more}). Use casual / room play instead."
-        )
+    set_error = ranked_set_legality_error(leader_id, cards, on_date=on_date)
+    if set_error:
+        parts.append(set_error)
     if not parts:
         return None
     return " ".join(parts)
