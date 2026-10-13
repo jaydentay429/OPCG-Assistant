@@ -16,6 +16,8 @@ from urllib.parse import urljoin
 import requests
 from bs4 import BeautifulSoup
 
+from atomic_io import atomic_write_text
+
 try:
     import imagehash
     from PIL import Image
@@ -35,6 +37,13 @@ INDEX_PATH = BASE_DIR / "index" / "cards_by_id.json"
 PACKS_DIR = BASE_DIR / "packs"
 PRICE_PATH = BASE_DIR / "meta" / "market_prices.json"
 CURSOR_PATH = BASE_DIR / "meta" / "yuyu_sync_cursor.json"
+
+
+def write_market_price_file(payload: Any) -> None:
+    """Replace market_prices.json atomically so the API never reads a torn file."""
+    atomic_write_text(PRICE_PATH, json.dumps(payload, ensure_ascii=False, indent=2))
+
+
 SEARCH_TEMPLATE = os.getenv(
     "YUYUTEI_SEARCH_URL_TEMPLATE",
     "https://yuyu-tei.jp/sell/opc/s/search?search_word={query}",
@@ -2673,8 +2682,7 @@ def main() -> None:
         payload["source"] = "yuyu-tei"
         payload["updated_at"] = now_iso()
         payload["cards"] = cards
-        PRICE_PATH.parent.mkdir(parents=True, exist_ok=True)
-        PRICE_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        write_market_price_file(payload)
         print(label)
 
     stopped_on_429 = False
@@ -2840,8 +2848,7 @@ def main() -> None:
     payload["source"] = "yuyu-tei"
     payload["updated_at"] = now_iso()
     payload["cards"] = cards
-    PRICE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    PRICE_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    write_market_price_file(payload)
 
     # Recompute final stats after optional second pass.
     final_found = 0

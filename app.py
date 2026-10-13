@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import base64
 import json
+import logging
 import os
 import re
 import unicodedata
@@ -570,6 +571,9 @@ card_analysis_cache: dict[str, dict[str, Any]] = {}
 market_price_map: dict[str, dict[str, Any]] = {}
 market_price_mtime: float = 0.0
 market_price_updated_at: str = ""
+# One in-flight reload. Other requests keep serving the previous snapshot.
+_market_price_reload_lock = threading.Lock()
+_log = logging.getLogger(__name__)
 topdecks_payload: dict[str, Any] = {}
 topdecks_mtime: float = 0.0
 topdecks_by_id: dict[str, dict[str, Any]] = {}
@@ -1887,6 +1891,7 @@ def load_card_cooccurrence() -> None:
 
 
 def load_market_price_data() -> None:
+    """Load market prices. A failed read keeps the previous snapshot and its mtime."""
     global market_price_map, market_price_mtime, market_price_updated_at
     if not MARKET_PRICE_FILE.exists():
         market_price_map = {}
@@ -1894,29 +1899,37 @@ def load_market_price_data() -> None:
         market_price_updated_at = ""
         return
     try:
+        mtime_before = MARKET_PRICE_FILE.stat().st_mtime
         payload = json.loads(MARKET_PRICE_FILE.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        market_price_map = {}
-        market_price_mtime = 0.0
-        market_price_updated_at = ""
+        mtime_after = MARKET_PRICE_FILE.stat().st_mtime
+    except (OSError, ValueError) as exc:
+        _log.warning(
+            "market_prices.json read failed (%s); keeping previous price data",
+            exc,
+        )
         return
-    cards = payload.get("cards") if isinstance(payload, dict) else {}
-    market_price_updated_at = (
-        str(payload.get("updated_at") or "").strip() if isinstance(payload, dict) else ""
-    )
-    if isinstance(cards, dict):
-        market_price_map = {
-            normalize_card_id(str(k)): v
-            for k, v in cards.items()
-            if isinstance(v, dict)
-        }
-        try:
-            market_price_mtime = MARKET_PRICE_FILE.stat().st_mtime
-        except OSError:
-            market_price_mtime = 0.0
-    else:
-        market_price_map = {}
-        market_price_mtime = 0.0
+    if mtime_before != mtime_after:
+        _log.warning(
+            "market_prices.json changed while reading; keeping previous price data"
+        )
+        return
+    if not isinstance(payload, dict):
+        _log.warning(
+            "market_prices.json payload is %s; keeping previous price data",
+            type(payload).__name__,
+        )
+        return
+    cards = payload.get("cards")
+    if not isinstance(cards, dict):
+        _log.warning("market_prices.json has no cards object; keeping previous price data")
+        return
+    market_price_updated_at = str(payload.get("updated_at") or "").strip()
+    market_price_map = {
+        normalize_card_id(str(k)): v
+        for k, v in cards.items()
+        if isinstance(v, dict)
+    }
+    market_price_mtime = mtime_after
 
 
 def _parse_topdeck_date(raw: Any) -> tuple[int, int, int]:
@@ -2107,13 +2120,25 @@ def ensure_topdecks_data_fresh() -> None:
 
 
 def ensure_market_price_data_fresh() -> None:
-    global market_price_mtime
     try:
         current_mtime = MARKET_PRICE_FILE.stat().st_mtime
     except OSError:
         current_mtime = 0.0
-    if current_mtime > market_price_mtime:
-        load_market_price_data()
+    if current_mtime <= market_price_mtime:
+        return
+    # Concurrent requests must not parse the file together. Whoever loses the
+    # race keeps serving the snapshot already in memory.
+    if not _market_price_reload_lock.acquire(blocking=False):
+        return
+    try:
+        try:
+            current_mtime = MARKET_PRICE_FILE.stat().st_mtime
+        except OSError:
+            current_mtime = 0.0
+        if current_mtime > market_price_mtime:
+            load_market_price_data()
+    finally:
+        _market_price_reload_lock.release()
 
 
 def _is_hard_miss_price_status(status: str) -> bool:
