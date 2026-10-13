@@ -14,6 +14,24 @@ export type SiteUpdate = {
 /** Newest first. Keep this list short — homepage shows the latest few. */
 export const SITE_UPDATES: SiteUpdate[] = [
   {
+    id: "op18-four-uc-2026-10-13",
+    date: "2026-10-13",
+    kind: "feature",
+    href: "/cards/OP18-010",
+    title: {
+      "zh-Hant": "OP18-010 喬巴、OP18-032 巴其、OP18-052 與 OP18-063 已上線",
+      "zh-Hans": "OP18-010 乔巴、OP18-032 巴其、OP18-052 与 OP18-063 已上线",
+      en: "OP18-010 Chopper, OP18-032 Buggy, OP18-052, and OP18-063 added",
+    },
+    body: {
+      "zh-Hant":
+        "截圖暫收：OP18-010 紅 UC 多尼多尼・喬巴，費用 4、力量 5000、反擊 +2000、屬性打，《動物／阿拉巴斯坦王國／草帽一行人》。OP18-032 綠 UC 巴其，費用 5、力量 6000、反擊 +1000、屬性斬，《東方藍／巴其海賊團》。OP18-052 藍 UC Mr.5&Miss情人節，費用 5、力量 4000、反擊 +2000、屬性打／特，《B・W》。OP18-063 紫 UC 基威&摩茲，費用 3、力量 1000、反擊 +2000、屬性斬，《W7／佛朗基一家》。卡圖為已上傳的 PNG。EB05-059 的【觸發器】改列在觸發欄。",
+      "zh-Hans":
+        "截图暂收：OP18-010 红 UC 多尼多尼・乔巴，费用 4、力量 5000、反击 +2000、属性打，《动物／阿拉巴斯坦王国／草帽一行人》。OP18-032 绿 UC 巴其，费用 5、力量 6000、反击 +1000、属性斩，《东方蓝／巴其海贼团》。OP18-052 蓝 UC Mr.5&Miss情人节，费用 5、力量 4000、反击 +2000、属性打／特，《B・W》。OP18-063 紫 UC 基威&摩兹，费用 3、力量 1000、反击 +2000、属性斩，《W7／弗兰奇一家》。卡图为已上传的 PNG。EB05-059 的【触发器】改列在触发栏。",
+      en: "Screenshot entries: OP18-010 red UC Tony Tony.Chopper, cost 4, power 5000, Counter +2000, Strike, {Animal}/{Alabasta}/{Straw Hat Crew}. OP18-032 green UC Buggy, cost 5, power 6000, Counter +1000, Slash, {East Blue}/{Buggy Pirates}. OP18-052 blue UC Mr.5 & Miss.Valentine, cost 5, power 4000, Counter +2000, Strike/Special, {Baroque Works}. OP18-063 purple UC Kiwi & Mozu, cost 3, power 1000, Counter +2000, Slash, {Water Seven}/{Franky Family}. Art is the uploaded PNGs. EB05-059's [Trigger] now sits in the trigger field.",
+    },
+  },
+  {
     id: "op18-eb05-five-2026-10-09",
     date: "2026-10-09",
     kind: "feature",

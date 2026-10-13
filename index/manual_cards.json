@@ -505,10 +505,10 @@
       "traits_en": [
         "Big Mom Pirates"
       ],
-      "effect": "【主要】抽1張卡片，且自己原本力量值4000、擁有《BIG MOM海賊團》特徵的角色卡全數，在下一個對手回合結束前，在對戰中不會遭到KO。\n【觸發器】抽1張卡片，並使最多1張自己手牌中力量值4000且持有【觸發器】的角色卡登場。",
-      "effect_en": "[Main] Draw 1 card, and all of your Characters with 4000 base power and the {Big Mom Pirates} type cannot be K.O.'d in battle until the end of your opponent's next End Phase.\n[Trigger] Draw 1 card, and play up to 1 Character card with 4000 power and a [Trigger] from your hand.",
-      "trigger": "",
-      "trigger_en": "",
+      "effect": "【主要】抽1張卡片，且自己原本力量值4000、擁有《BIG MOM海賊團》特徵的角色卡全數，在下一個對手回合結束前，在對戰中不會遭到KO。",
+      "effect_en": "[Main] Draw 1 card, and all of your Characters with 4000 base power and the {Big Mom Pirates} type cannot be K.O.'d in battle until the end of your opponent's next End Phase.",
+      "trigger": "【觸發器】抽1張卡片，並使最多1張自己手牌中力量值4000且持有【觸發器】的角色卡登場。",
+      "trigger_en": "[Trigger] Draw 1 card, and play up to 1 Character card with 4000 power and a [Trigger] from your hand.",
       "card_sets": [
         "Heroines Edition vol.2【EB-05】"
       ]
@@ -603,6 +603,196 @@
       "trigger_en": "",
       "card_sets": [
         "Heroines Edition vol.2【EB-05】"
+      ]
+    },
+    "OP18-010": {
+      "card_id": "OP18-010",
+      "preview": true,
+      "manual_source": "screenshot",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "name": "多尼多尼・喬巴",
+      "name_en": "Tony Tony.Chopper",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "紅"
+      ],
+      "colors_en": [
+        "Red"
+      ],
+      "cost": 4,
+      "power": 5000,
+      "life": null,
+      "counter": 2000,
+      "rarity": "UC",
+      "attributes": [
+        "打"
+      ],
+      "attributes_en": [
+        "Strike"
+      ],
+      "traits": [
+        "動物",
+        "阿拉巴斯坦王國",
+        "草帽一行人"
+      ],
+      "traits_en": [
+        "Animal",
+        "Alabasta",
+        "Straw Hat Crew"
+      ],
+      "effect": "【KO時】將最多1張自己廢棄區中力量值4000以下的角色卡，加入手牌。",
+      "effect_en": "[On K.O.] Add up to 1 Character card with 4000 power or less from your trash to your hand.",
+      "trigger": "",
+      "trigger_en": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ]
+    },
+    "OP18-032": {
+      "card_id": "OP18-032",
+      "preview": true,
+      "manual_source": "screenshot",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "name": "巴其",
+      "name_en": "Buggy",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "綠"
+      ],
+      "colors_en": [
+        "Green"
+      ],
+      "cost": 5,
+      "power": 6000,
+      "life": null,
+      "counter": 1000,
+      "rarity": "UC",
+      "attributes": [
+        "斬"
+      ],
+      "attributes_en": [
+        "Slash"
+      ],
+      "traits": [
+        "東方藍",
+        "巴其海賊團"
+      ],
+      "traits_en": [
+        "East Blue",
+        "Buggy Pirates"
+      ],
+      "effect": "【登場時】/【KO時】最多1張對手休息狀態、力量值8000以下的角色卡，在下一個對手的重整階段無法為活動狀態。",
+      "effect_en": "[On Play]/[On K.O.] Up to 1 of your opponent's rested Characters with 8000 power or less will not become active in your opponent's next Refresh Phase.",
+      "trigger": "",
+      "trigger_en": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ]
+    },
+    "OP18-052": {
+      "card_id": "OP18-052",
+      "preview": true,
+      "manual_source": "screenshot",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "name": "Mr.5&Miss情人節",
+      "name_en": "Mr.5 & Miss.Valentine",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "藍"
+      ],
+      "colors_en": [
+        "Blue"
+      ],
+      "cost": 5,
+      "power": 4000,
+      "life": null,
+      "counter": 2000,
+      "rarity": "UC",
+      "attributes": [
+        "打",
+        "特"
+      ],
+      "attributes_en": [
+        "Strike",
+        "Special"
+      ],
+      "traits": [
+        "B・W"
+      ],
+      "traits_en": [
+        "Baroque Works"
+      ],
+      "effect": "【咚‼×1】這張角色卡力量值+1000。\n【登場時】使最多1張自己手牌中費用3以下、擁有包含『B・W』特徵的角色卡登場。",
+      "effect_en": "[DON!! x1] This Character gains +1000 power.\n[On Play] Play up to 1 Character card with a cost of 3 or less and a type including \"Baroque Works\" from your hand.",
+      "trigger": "",
+      "trigger_en": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ]
+    },
+    "OP18-063": {
+      "card_id": "OP18-063",
+      "preview": true,
+      "manual_source": "screenshot",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "name": "基威&摩茲",
+      "name_en": "Kiwi & Mozu",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "紫"
+      ],
+      "colors_en": [
+        "Purple"
+      ],
+      "cost": 3,
+      "power": 1000,
+      "life": null,
+      "counter": 2000,
+      "rarity": "UC",
+      "attributes": [
+        "斬"
+      ],
+      "attributes_en": [
+        "Slash"
+      ],
+      "traits": [
+        "W7",
+        "佛朗基一家"
+      ],
+      "traits_en": [
+        "Water Seven",
+        "Franky Family"
+      ],
+      "effect": "【登場時】可將1張自己費用5以下的舞台卡KO：從咚‼卡組將最多1張咚‼卡以休息狀態追加。",
+      "effect_en": "[On Play] You may K.O. 1 of your Stage cards with a cost of 5 or less: Add up to 1 DON!! card as rested from your DON!! deck.",
+      "trigger": "",
+      "trigger_en": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
       ]
     },
     "P-160": {
