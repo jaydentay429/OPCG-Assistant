@@ -33,7 +33,7 @@ import {
 import { localizeCardList, localizeCardName, localizeCardSources, localizeCardText, localizeDonCardName, preferLangText, toSimplifiedText } from "@/lib/cardLocale";
 import { usePinnedDocumentTitle } from "@/lib/pinnedDocumentTitle";
 import { localizeFilterToken, localizeFilterTokens } from "@/lib/filterLabels";
-import { formatEffectLines } from "@/lib/formatEffect";
+import { splitEffectTrigger } from "@/lib/formatEffect";
 import type { Card, CardPriceResponse, PriceHistoryPoint } from "@/lib/types";
 import {
   clearCardDetailScroll,
@@ -496,20 +496,7 @@ export function CardDetailClient({
     : localizeCardName(card.name, card.name_en, lang) || displayCardId(card.id);
   const rawEffect = localizeCardText(card.effect, lang, card.effect_en);
   const rawTrigger = localizeCardText(card.trigger || card.trigger_en, lang, card.trigger_en);
-  const { body: effect, trigger } = (() => {
-    const effectText = String(rawEffect || "").trim();
-    let triggerText = String(rawTrigger || "").trim();
-    if (!triggerText) {
-      const m = effectText.match(/(?:^|\n)\s*((?:【觸發器】|【触发】|\[Trigger\])[^\n]*)/);
-      if (m) triggerText = m[1].trim();
-    }
-    let body = effectText;
-    if (triggerText && body.includes(triggerText)) {
-      body = body.replace(triggerText, "").replace(/\n{2,}/g, "\n").trim();
-    }
-    body = formatEffectLines(body);
-    return { body, trigger: triggerText };
-  })();
+  const { body: effect, trigger } = splitEffectTrigger(rawEffect, rawTrigger);
   const colors =
     lang === "en"
       ? card.colors_en?.length

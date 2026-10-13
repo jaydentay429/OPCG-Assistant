@@ -23,6 +23,14 @@ describe("isSuppressedCardImage", () => {
     assert.equal(isSuppressedCardImage("OP18-025"), false);
     assert.equal(hasCardImage("OP18-044"), true);
     assert.equal(isSuppressedCardImage("OP18-044"), false);
+    assert.equal(hasCardImage("OP18-010"), true);
+    assert.equal(isSuppressedCardImage("OP18-010"), false);
+    assert.equal(hasCardImage("OP18-032"), true);
+    assert.equal(isSuppressedCardImage("OP18-032"), false);
+    assert.equal(hasCardImage("OP18-052"), true);
+    assert.equal(isSuppressedCardImage("OP18-052"), false);
+    assert.equal(hasCardImage("OP18-063"), true);
+    assert.equal(isSuppressedCardImage("OP18-063"), false);
     assert.equal(hasCardImage("OP18-069"), true);
     assert.equal(isSuppressedCardImage("OP18-069"), false);
     assert.equal(hasCardImage("OP18-091"), true);

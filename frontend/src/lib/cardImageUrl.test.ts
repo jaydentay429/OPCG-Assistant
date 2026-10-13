@@ -71,6 +71,18 @@ describe("cardImageUrl", () => {
     assert.equal(cardImageHash("OP18-044"), "274c36d9");
     assert.equal(cardImageUrl("OP18-044"), `${PUBLIC_BASE}/OP18-044.png?h=274c36d9`);
     assert.equal(cardOgImage("OP18-044")?.url, `${PUBLIC_BASE}/OP18-044.png?h=274c36d9`);
+    assert.equal(cardImageHash("OP18-010"), "b72d2fa2");
+    assert.equal(cardImageUrl("OP18-010"), `${PUBLIC_BASE}/OP18-010.png?h=b72d2fa2`);
+    assert.equal(cardOgImage("OP18-010")?.url, `${PUBLIC_BASE}/OP18-010.png?h=b72d2fa2`);
+    assert.equal(cardImageHash("OP18-032"), "30be3766");
+    assert.equal(cardImageUrl("OP18-032"), `${PUBLIC_BASE}/OP18-032.png?h=30be3766`);
+    assert.equal(cardOgImage("OP18-032")?.url, `${PUBLIC_BASE}/OP18-032.png?h=30be3766`);
+    assert.equal(cardImageHash("OP18-052"), "6d56efdd");
+    assert.equal(cardImageUrl("OP18-052"), `${PUBLIC_BASE}/OP18-052.png?h=6d56efdd`);
+    assert.equal(cardOgImage("OP18-052")?.url, `${PUBLIC_BASE}/OP18-052.png?h=6d56efdd`);
+    assert.equal(cardImageHash("OP18-063"), "003c071f");
+    assert.equal(cardImageUrl("OP18-063"), `${PUBLIC_BASE}/OP18-063.png?h=003c071f`);
+    assert.equal(cardOgImage("OP18-063")?.url, `${PUBLIC_BASE}/OP18-063.png?h=003c071f`);
     assert.equal(cardImageHash("OP18-069"), "fcd4d10c");
     assert.equal(cardImageUrl("OP18-069"), `${PUBLIC_BASE}/OP18-069.png?h=fcd4d10c`);
     assert.equal(cardOgImage("OP18-069")?.url, `${PUBLIC_BASE}/OP18-069.png?h=fcd4d10c`);
