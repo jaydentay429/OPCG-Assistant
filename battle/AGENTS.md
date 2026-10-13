@@ -5,6 +5,7 @@
 ## 分层
 
 - 对局：`engine.py` 处理动作与合法性，`state.py` 保存局面。`rooms.py`、`routes.py`、`matchmaking.py` 管房间和接口。另有 `replay.py`、`spectator.py`、`rank.py`。
+- 卡组合法：`official_restriction.py` 读取 `index/official_restriction_list.json`。玩家提交的卡组若含已生效的官方禁用卡、超过张数的限制卡或禁用组合，房间、匹配、排位和卡组写入都会拒绝。未发售系列 OP18 / EB05 仍只拦排位。内置 AI 卡组不走这道提交检查。
 - 效果：`effects.py`、`effect_library.py`、`effect_schema.py`、`effect_fidelity.py`、`effect_audit.py`。
 - AI：`ai.py`、`ai_decks.py`。
 - 规则：`rules/catalog.py` 记录规则条目和实现状态，`rules/checkpoints.py` 是规则处理点，`rules/timings.py` 把关键词时机映射到引擎 timing。

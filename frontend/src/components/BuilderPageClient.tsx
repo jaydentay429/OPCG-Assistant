@@ -21,6 +21,7 @@ import { buildDeckShareUrl, buildDeckShareUrlCompact, parseDeckListText, parseDe
 import { summarizeDeckStructure } from "@/lib/deckStructure";
 import { localizeFilterToken } from "@/lib/filterLabels";
 import { useI18n } from "@/lib/i18n";
+import { deckRestrictionWarnings } from "@/lib/restriction";
 import { formatYen, loadUnitPrices, sumPricedCopies, unitPriceOf } from "@/lib/priceCalc";
 import { consumeSkipScrollRestore, flushCurrentScroll, readPathScrollTarget, requestScrollRestore, scrollYForPersist } from "@/lib/scrollRestore";
 import type { Deck } from "@/lib/types";
@@ -548,6 +549,10 @@ export function BuilderPageClient() {
     () => summarizeDeckStructure(draft.leader, draft.cards, statsMap, lang),
     [draft.leader, draft.cards, statsMap, lang],
   );
+  const restrictionWarnings = useMemo(
+    () => deckRestrictionWarnings(draft.leader, draft.cards, lang),
+    [draft.leader, draft.cards, lang],
+  );
 
   async function openShare() {
     if (!draft.leader && !Object.keys(draft.cards).length) {
@@ -719,6 +724,14 @@ export function BuilderPageClient() {
             </p>
           </div>
         </div>
+
+        {restrictionWarnings.length ? (
+          <div className="deck-ban-warn" role="alert">
+            {restrictionWarnings.map((warning) => (
+              <p key={`${warning.kind}-${warning.ids.join("-")}`}>{warning.text}</p>
+            ))}
+          </div>
+        ) : null}
 
         <div className="deck-editor-top">
           {draft.leader ? (

@@ -31,6 +31,7 @@ import {
   type CardTitleLang,
 } from "@/lib/cardPageView";
 import { localizeCardList, localizeCardName, localizeCardSources, localizeCardText, localizeDonCardName, preferLangText, toSimplifiedText } from "@/lib/cardLocale";
+import { bannedBadgeText, restrictedBadgeText } from "@/lib/restriction";
 import { usePinnedDocumentTitle } from "@/lib/pinnedDocumentTitle";
 import { localizeFilterToken, localizeFilterTokens } from "@/lib/filterLabels";
 import { splitEffectTrigger } from "@/lib/formatEffect";
@@ -539,6 +540,7 @@ export function CardDetailClient({
   const leaderCard = isLeaderCardType(card.card_type, card.card_type_en);
   const headingZh = lang === "zh-Hans" ? toSimplifiedText(card.name || "") : String(card.name || "");
   const heading = cardHeadingText(headingZh, String(card.name_en || ""), shownId, titleLang);
+  const banLabel = bannedBadgeText(shownId, lang) || restrictedBadgeText(shownId, lang);
 
   function onVariantClick(event: { button?: number; metaKey?: boolean; ctrlKey?: boolean; shiftKey?: boolean; altKey?: boolean; defaultPrevented?: boolean; preventDefault: () => void }, id: string) {
     if (shouldDeferVariantClick(event)) return;
@@ -569,6 +571,11 @@ export function CardDetailClient({
             <div className="card-page-heading">
               {cardTitle}
               <h1>{heading}</h1>
+              {banLabel ? (
+                <p className="detail-ban-badge" role="status">
+                  {banLabel}
+                </p>
+              ) : null}
             </div>
             {isParallelArtId(shownId) ? (
               <p className="detail-base-link">

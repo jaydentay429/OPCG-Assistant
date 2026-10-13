@@ -30,6 +30,7 @@ from battle.effect_library import (
     resolve_activate_spec,
     resolve_trigger_ops,
 )
+from official_restriction import official_restriction_error
 from battle.rules.checkpoints import (
     cancel_battle,
     combatants_present,
@@ -229,18 +230,28 @@ def deck_has_ranked_banned_cards(leader_id: str, cards: dict[str, int]) -> list[
 
 
 def ranked_deck_ban_error(leader_id: str, cards: dict[str, int]) -> str | None:
-    """Human-readable ranked ban error, or None if the deck is ranked-legal."""
+    """Human-readable ranked ban error, or None if the deck is ranked-legal.
+
+    Unreleased preview sets stay ranked-only. Official banned cards and banned
+    pairs from ``official_restriction`` are rejected here as well.
+    """
+    parts: list[str] = []
+    official = official_restriction_error(leader_id, cards, lang="en")
+    if official:
+        parts.append(official)
     banned = deck_has_ranked_banned_cards(leader_id, cards)
-    if not banned:
+    if banned:
+        sets = sorted({s for cid in banned if (s := _ranked_banned_set_of(cid))})
+        set_label = " / ".join(sets) if sets else "unreleased"
+        sample = ", ".join(banned[:6])
+        more = f" (+{len(banned) - 6} more)" if len(banned) > 6 else ""
+        parts.append(
+            f"Ranked decks cannot include unreleased set(s) {set_label} "
+            f"(e.g. {sample}{more}). Use casual / room play instead."
+        )
+    if not parts:
         return None
-    sets = sorted({s for cid in banned if (s := _ranked_banned_set_of(cid))})
-    set_label = " / ".join(sets) if sets else "unreleased"
-    sample = ", ".join(banned[:6])
-    more = f" (+{len(banned) - 6} more)" if len(banned) > 6 else ""
-    return (
-        f"Ranked decks cannot include unreleased set(s) {set_label} "
-        f"(e.g. {sample}{more}). Use casual / room play instead."
-    )
+    return " ".join(parts)
 
 
 def validate_battle_deck(leader_id: str, cards: dict[str, int], catalog: CatalogFn) -> str | None:
