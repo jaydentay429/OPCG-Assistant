@@ -5,10 +5,12 @@ import { cache } from "react";
 import { preload } from "react-dom";
 import { CardDetailClient } from "@/components/CardDetailClient";
 import { JsonLd } from "@/components/JsonLd";
-import { ApiError, stripAbsentCardImageUrls, type CardTournamentAppearance } from "@/lib/api";
+import { stripAbsentCardImageUrls, type CardTournamentAppearance } from "@/lib/api";
 import { heroPreloadHref } from "@/lib/cardImageSrcSet";
+import { catalogCard, catalogHasCard, normalizeCatalogCardId } from "@/lib/cardCatalog";
+import { cardUnavailableMetadata, resolveCardPageLoad, type CardPageLoad } from "@/lib/cardPageFallback";
 import { getCachedCardDetail, getCachedCardTournaments } from "@/lib/cardPageData";
-import { catalogHasCard, missingCardShould404 } from "@/lib/cardCatalog";
+import { markCardPageUnavailable } from "@/lib/cardPageStatus";
 import { cardNotFoundMetadata } from "@/lib/cardNotFoundMetadata";
 import { tournamentFaqAnswer } from "@/lib/cardTournamentFaq";
 import { cardEditorNote } from "@/lib/cardEditorNotes";
@@ -50,27 +52,49 @@ function cardSeoFields(card: Card, fallbackId: string) {
   return { id, name, nameEn, rarity, series, cardType, effect, colors, traits };
 }
 
-const loadCard = cache(async (cardId: string): Promise<Card | null> => {
-  try {
-    const data = await getCachedCardDetail(cardId);
-    if (data.card) return data.card;
-    if (!missingCardShould404(null, catalogHasCard(cardId))) {
-      throw new Error(`Card API returned no card for catalogued id ${cardId}`);
-    }
-    return null;
-  } catch (error) {
-    // Only 404/422 can be a real miss. 5xx and timeouts must throw so they are
-    // not published as a not-found page for an id that may still exist.
-    if (
-      error instanceof ApiError &&
-      (error.status === 404 || error.status === 422) &&
-      missingCardShould404(error.status, catalogHasCard(cardId))
-    ) {
-      return null;
-    }
-    throw error;
-  }
+const lastSuccessfulCards = new Map<string, Card>();
+
+/**
+ * One API read per id (React cache plus the 5s no-retry fetch). A short outage
+ * reuses the last success or the bundled index row. No data becomes a retry
+ * state, not a thrown 500 and not a 404 for an id that may exist.
+ */
+const loadCard = cache(async (cardId: string): Promise<CardPageLoad> => {
+  return resolveCardPageLoad(cardId, () => getCachedCardDetail(cardId), {
+    knownInCatalog: () => catalogHasCard(cardId),
+    readStatic: (id) => catalogCard(id),
+    memory: lastSuccessfulCards,
+  });
 });
+
+function cardRetryPath(cardId: string, picked: string, pickedVariant: string): string {
+  const params = new URLSearchParams();
+  if (picked) params.set("picked", picked);
+  if (pickedVariant) params.set("pickedVariant", pickedVariant);
+  const query = params.toString();
+  return `/cards/${encodeURIComponent(cardId)}${query ? `?${query}` : ""}`;
+}
+
+function CardRetryState({ cardId, picked, pickedVariant, retryAfterSeconds }: {
+  cardId: string;
+  picked: string;
+  pickedVariant: string;
+  retryAfterSeconds: number;
+}) {
+  return (
+    <div className="stack" role="status">
+      <h1 className="page-title">卡牌暫時無法載入</h1>
+      <p className="muted">
+        資料服務暫時沒有回應。請約 {retryAfterSeconds} 秒後再試，這個頁面會重新讀取卡牌。
+      </p>
+      <p className="legal-links">
+        <a href={cardRetryPath(cardId, picked, pickedVariant)}>重試</a>
+        {" · "}
+        <Link href="/search">前往卡牌搜索</Link>
+      </p>
+    </div>
+  );
+}
 
 function firstQueryValue(value: string | string[] | undefined): string {
   const raw = Array.isArray(value) ? value[0] : value;
@@ -94,9 +118,10 @@ export async function generateMetadata({
   const qp = await searchParams;
   const shownId = shownCardId(cardId, firstQueryValue(qp.picked), firstQueryValue(qp.pickedVariant));
   const canonicalUrl = cardCanonicalUrl(cardId);
-  const card = await loadCard(cardId);
-
-  if (!card) return cardNotFoundMetadata;
+  const loaded = await loadCard(cardId);
+  if (loaded.kind === "unavailable") return cardUnavailableMetadata;
+  if (loaded.kind === "missing") return cardNotFoundMetadata;
+  const card = loaded.card;
   const share = cardSharePresentation(card);
 
   const seo = cardSeoFields(card, cardId);
@@ -148,19 +173,37 @@ export default async function CardPage({
   if (heroSrc && !/localhost|127\.0\.0\.1/i.test(heroSrc)) {
     preload(heroSrc, { as: "image", fetchPriority: "high" });
   }
-  const card = await loadCard(cardId);
-  if (!card) notFound();
+  const loaded = await loadCard(cardId);
+  if (loaded.kind === "missing") notFound();
+  if (loaded.kind === "unavailable") {
+    markCardPageUnavailable(loaded.retryAfterSeconds);
+    return (
+      <CardRetryState
+        cardId={cardId}
+        picked={picked}
+        pickedVariant={pickedVariant}
+        retryAfterSeconds={loaded.retryAfterSeconds}
+      />
+    );
+  }
+  const card = loaded.card;
   // Same payload the client uses: non-DON pages load the base card so every
   // alternate-art thumbnail is present. The URL card still supplies the price
-  // of the printing this page opened on.
+  // of the printing this page opened on. A fallback already means the API
+  // missed, so the base card is read locally instead of starting another call.
   const baseId = toBaseCardId(cardId);
   let detailCard = card;
   if (!isDonCardId(cardId) && baseId !== normalizeCardId(cardId)) {
-    try {
-      const baseCard = await loadCard(baseId);
+    if (loaded.source === "api") {
+      try {
+        const baseLoaded = await loadCard(baseId);
+        if (baseLoaded.kind === "card") detailCard = baseLoaded.card;
+      } catch {
+        detailCard = card;
+      }
+    } else {
+      const baseCard = lastSuccessfulCards.get(normalizeCatalogCardId(baseId)) || catalogCard(baseId);
       if (baseCard) detailCard = baseCard;
-    } catch {
-      detailCard = card;
     }
   }
   const seo = card ? cardSeoFields(card, cardId) : null;
@@ -170,12 +213,16 @@ export default async function CardPage({
 
   let appearances: CardTournamentAppearance[] = [];
   let initialTournaments: { items: CardTournamentAppearance[]; total: number } | undefined;
-  try {
-    const tour = await getCachedCardTournaments(cardId, 10);
-    appearances = tour.items || [];
-    initialTournaments = { items: appearances, total: tour.total_matched || 0 };
-  } catch {
-    appearances = [];
+  // The card fetch already failed over. Another tournament request would only
+  // wait out the same outage; the section is omitted until the API answers.
+  if (loaded.source === "api") {
+    try {
+      const tour = await getCachedCardTournaments(cardId, 10);
+      appearances = tour.items || [];
+      initialTournaments = { items: appearances, total: tour.total_matched || 0 };
+    } catch {
+      appearances = [];
+    }
   }
 
   const faqItems: Array<{ question: string; answer: string }> = [];

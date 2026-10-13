@@ -7,8 +7,9 @@ import { withTransientRetry } from "./transientRetry";
  * Thrown when the card API did not give a definitive answer (5xx, timeout,
  * connection failure, or retries exhausted). This is not a 404.
  *
- * Next.js App Router turns an uncaught page error into HTTP 500. There is no
- * supported way for a Server Component to set 503 without middleware.
+ * The card page catches this, serves bundled card data or the last successful
+ * response, and only then renders a retry state. A throw must not be stored
+ * in the data cache, so a later request tries the API again.
  */
 export class CardTemporarilyUnavailableError extends Error {
   readonly retryAfterSeconds = 10;
