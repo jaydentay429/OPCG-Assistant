@@ -789,6 +789,18 @@ export async function setBattleRoomReady(
   );
 }
 
+export async function leaveBattleRoom(
+  token: string | null | undefined,
+  code: string,
+): Promise<{ ok: boolean; status: string }> {
+  return apiSend<{ ok: boolean; status: string }>(
+    `/battle/rooms/${encodeURIComponent(code)}/leave`,
+    "POST",
+    {},
+    token,
+  );
+}
+
 export async function fetchBattleRoom(code: string): Promise<BattleRoomInfo> {
   const { data } = await apiGet<BattleRoomInfo>(`/battle/rooms/${encodeURIComponent(code)}`);
   return data;

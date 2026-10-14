@@ -17,6 +17,7 @@ import {
   joinBattleRoom,
   leaveBattleMatchmaking,
   leaveBattleRanked,
+  leaveBattleRoom,
   prefetchCardImages,
   setBattleRoomDeck,
   setBattleRoomReady,
@@ -36,6 +37,7 @@ import { displayCardId } from "@/lib/cardId";
 import { isLeaderType } from "@/lib/deck";
 import { parseDeckListText } from "@/lib/deckShare";
 import { isBattleDisabledError, shouldReconnectBattleSocket } from "@/lib/battleAvailability";
+import { localizeBattleApiError } from "@/lib/battleErrors";
 import { connectBattleWs, type BattleAction, type BattleChatMessage, type BattleState, type WaitingRoom } from "@/lib/battleWs";
 import { battleDateBlocks, formatBattleDateBlocks } from "@/lib/setLegality";
 import { useI18n } from "@/lib/i18n";
@@ -145,6 +147,7 @@ function PlayPageLive() {
   const lastSelfRef = useRef<RematchSelf | null>(null);
   const lastMatchRef = useRef<RematchMatch | null>(null);
   const socketRef = useRef<ReturnType<typeof connectBattleWs> | null>(null);
+  const leavingRef = useRef(false);
   const handshakeFailed = useRef(false);
   const [serviceDown, setServiceDown] = useState(false);
   const roomMetaRef = useRef(roomMeta);
@@ -228,7 +231,8 @@ function PlayPageLive() {
       disconnect();
       return;
     }
-    setError(error instanceof Error ? error.message : String(error));
+    const raw = error instanceof Error ? error.message : String(error);
+    setError(localizeBattleApiError(raw, t));
   }
 
   function dateBlockMessage(pick: PlayDeckPick, mode: "casual" | "ranked"): string | null {
@@ -239,7 +243,9 @@ function PlayPageLive() {
   }
 
   const connect = useCallback(
-    (code: string, authToken?: string | null) => {
+    (code: string, authToken?: string | null, opts?: { force?: boolean }) => {
+      if (leavingRef.current && !opts?.force) return;
+      if (opts?.force) leavingRef.current = false;
       const tok = authToken || battleToken;
       if (!tok) return;
       disconnect();
@@ -350,6 +356,7 @@ function PlayPageLive() {
                 handshakeFailed: handshakeFailed.current,
                 serviceDown: false,
                 hasSocket: Boolean(socketRef.current),
+                leaving: leavingRef.current,
               })
             ) {
               connect(roomCode);
@@ -426,7 +433,7 @@ function PlayPageLive() {
     setMatchWindow(null);
     setRoomMeta({ vs_ai: false, hotseat: false, ranked: Boolean(lastMatchRef.current?.ranked), status: "playing" });
     setWaiting(null);
-    connect(code, authToken);
+    connect(code, authToken, { force: true });
   }
 
   useEffect(() => {
@@ -513,7 +520,7 @@ function PlayPageLive() {
         spectatorShowHands: sp.showHands,
       });
       rememberGuestToken(room);
-      connect(room.room_code, room.guest_token || battleToken);
+      connect(room.room_code, room.guest_token || battleToken, { force: true });
     } catch (e) {
       failBattle(e);
     } finally {
@@ -527,7 +534,7 @@ function PlayPageLive() {
     try {
       const room = await joinBattleRoom(battleToken, code);
       rememberGuestToken(room);
-      connect(room.room_code, room.guest_token || battleToken);
+      connect(room.room_code, room.guest_token || battleToken, { force: true });
     } catch (e) {
       failBattle(e);
     } finally {
@@ -639,7 +646,7 @@ function PlayPageLive() {
       rememberGuestToken(room);
       setRoomMeta({ vs_ai: true, hotseat: false, status: room.status });
       if (room.status === "playing") setWaiting(null);
-      connect(room.room_code, room.guest_token || battleToken);
+      connect(room.room_code, room.guest_token || battleToken, { force: true });
     } catch (e) {
       failBattle(e);
     } finally {
@@ -670,7 +677,7 @@ function PlayPageLive() {
       rememberGuestToken(room);
       setRoomMeta({ vs_ai: false, hotseat: true, status: room.status });
       if (room.status === "playing") setWaiting(null);
-      connect(room.room_code, room.guest_token || battleToken);
+      connect(room.room_code, room.guest_token || battleToken, { force: true });
     } catch (e) {
       failBattle(e);
     } finally {
@@ -787,6 +794,16 @@ function PlayPageLive() {
   }
 
   function leave() {
+    leavingRef.current = true;
+    const code = state?.room_code || roomCode || sessionStorage.getItem(ROOM_KEY);
+    if (code && battleToken) {
+      void leaveBattleRoom(battleToken, code).catch(() => undefined);
+    }
+    try {
+      socketRef.current?.sendLeave();
+    } catch {
+      /* ignore */
+    }
     if (matching) void cancelMatchmaking();
     if (rankedMatching) void cancelRankedMatchmaking();
     disconnect();

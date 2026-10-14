@@ -27,6 +27,8 @@ export function collectCardIdsFromLogs(log: Array<string | BattleLogEntry> | und
     }
     if (entry.id != null) addRaw(entry.id);
     if (entry.ids != null) addRaw(entry.ids);
+    if (entry.attacker != null) addRaw(entry.attacker);
+    if (entry.target != null) addRaw(entry.target);
   }
   return [...ids];
 }

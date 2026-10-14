@@ -45,6 +45,7 @@ class SeatSlot:
     deck_id: str | None = None
     deck_name: str | None = None
     ready: bool = False
+    departed: bool = False
     ws: WebSocket | None = None
 
     @property
@@ -439,6 +440,38 @@ class RoomManager:
                 room.spectator_show_hands = bool(spectator_show_hands)
             room.updated_at = time.time()
             return room, kick
+
+    def depart_user(self, room: Room, user_id: str) -> str:
+        """Leave a room. Waiting guest clears the seat; waiting host closes the room.
+
+        During a match the seat stays occupied and is marked departed so the same
+        user cannot reattach.
+        """
+        close = False
+        with room.lock:
+            seat = self.seat_for_user(room, user_id)
+            if seat is None:
+                return "absent"
+            slot = room.seats[seat]
+            if slot is None:
+                return "absent"
+            playing = bool(room.match and str(getattr(room.match, "status", "") or "") == "playing")
+            slot.ws = None
+            if playing:
+                slot.departed = True
+                room.updated_at = time.time()
+                return "departed"
+            if str(user_id) == str(room.host_user_id) and not room.vs_ai and not room.hotseat:
+                close = True
+            else:
+                room.seats[seat] = None
+                room.updated_at = time.time()
+                return "left"
+        if close:
+            with self.lock:
+                self.rooms.pop(room.code, None)
+            return "closed"
+        return "absent"
 
     def seat_for_user(self, room: Room, user_id: str) -> int | None:
         for i, slot in enumerate(room.seats):

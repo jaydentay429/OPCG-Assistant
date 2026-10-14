@@ -191,7 +191,13 @@ export function connectBattleWs(opts: {
   /** Socket closed before it opened, or the server rejected the handshake. Do not reconnect in a loop. */
   onHandshakeFailed?: () => void;
   onChat?: (messages: BattleChatMessage[]) => void;
-}): { sendAction: (action: BattleAction) => void; sendSync: () => void; sendChat: (text: string) => void; close: () => void } {
+}): {
+  sendAction: (action: BattleAction) => void;
+  sendSync: () => void;
+  sendChat: (text: string) => void;
+  sendLeave: () => void;
+  close: () => void;
+} {
   const ws = new WebSocket(battleWsUrl(opts.token, opts.room, opts.role));
   let pingTimer: ReturnType<typeof setInterval> | null = null;
   let closedByClient = false;
@@ -270,6 +276,9 @@ export function connectBattleWs(opts: {
       if (ws.readyState === WebSocket.OPEN) {
         ws.send(JSON.stringify({ type: "sync" }));
       }
+    },
+    sendLeave() {
+      if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify({ type: "leave" }));
     },
     sendChat(text) {
       const body = text.trim();

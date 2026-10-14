@@ -38,8 +38,9 @@ export function shouldReconnectBattleSocket(opts: {
   handshakeFailed: boolean;
   serviceDown: boolean;
   hasSocket: boolean;
+  leaving?: boolean;
 }): boolean {
-  return !opts.handshakeFailed && !opts.serviceDown && !opts.hasSocket;
+  return !opts.leaving && !opts.handshakeFailed && !opts.serviceDown && !opts.hasSocket;
 }
 
 export function shouldPollBattle(status: BattleServiceStatus): boolean {

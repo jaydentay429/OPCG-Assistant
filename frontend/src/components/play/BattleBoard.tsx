@@ -6,6 +6,7 @@ import { CardImg } from "@/components/CardImg";
 import { fetchCardBrief } from "@/lib/api";
 import type { BattleAction, BattleChar, BattleChatMessage, BattleLogEntry, BattlePlayerView, BattleState } from "@/lib/battleWs";
 import { BATTLE_CARD_ID_ONE, BATTLE_CARD_ID_RE } from "@/lib/battleLogCards";
+import { effectLogKey, humanizeBattleUnit, humanizeEffectSummary } from "@/lib/battleLogText";
 import { displayCardId } from "@/lib/cardId";
 import { hasCjk, localizeCardName, localizeCardText, preferLangText } from "@/lib/cardLocale";
 import { localizeFilterToken } from "@/lib/filterLabels";
@@ -241,11 +242,20 @@ function localizeEffectOptionLabel(
   return raw;
 }
 
+function visibleCardName(
+  cardId: string,
+  names: Record<string, DeckStatFields>,
+  lang: Lang,
+): string {
+  return localizeCardName(names[cardId]?.name, names[cardId]?.name_en, lang) || displayCardId(cardId);
+}
+
 function displayEffectSummary(
   summary: string | null | undefined,
   lang: Lang,
+  t: (key: string, vars?: Record<string, string | number>) => string,
 ): string {
-  return localizeCardText(summary, lang) || "";
+  return humanizeEffectSummary(summary, lang, t);
 }
 
 function skipEffectLabel(
@@ -493,26 +503,42 @@ function renderBattleLog(
   const stringVars: Record<string, string | number> = {};
   let idRaw: string | null = null;
   let idsRaw: string | null = null;
+  let summaryText = "";
   for (const [k, v] of Object.entries(rest)) {
     if (v == null) continue;
     let value: string | number = typeof v === "boolean" ? (v ? "1" : "0") : (v as string | number);
-    if ((k === "target" || k === "attacker") && value === "leader") {
-      value = t("play.zone_leader");
+    if (k === "target" || k === "attacker") {
+      value = humanizeBattleUnit(String(value), names, lang, t);
     } else if (k === "id") {
-      idRaw = String(value);
-      value = localizeLogCardId(idRaw, names, lang);
+      const rawId = String(value);
+      if (BATTLE_CARD_ID_ONE.test(rawId)) {
+        idRaw = rawId;
+        value = localizeLogCardId(rawId, names, lang);
+      } else {
+        value = humanizeBattleUnit(rawId, names, lang, t);
+      }
     } else if (k === "ids") {
       idsRaw = String(value);
       value = idsRaw
         .split(/[,，、]/)
-        .map((part) => localizeLogCardId(part.trim(), names, lang))
+        .map((part) => {
+          const bit = part.trim();
+          return BATTLE_CARD_ID_ONE.test(bit)
+            ? localizeLogCardId(bit, names, lang)
+            : humanizeBattleUnit(bit, names, lang, t);
+        })
         .filter(Boolean)
         .join(lang === "en" ? ", " : "、");
     } else if (k === "summary") {
-      const s = String(value);
-      value = displayEffectSummary(s, lang) || (lang === "en" ? "" : s);
+      summaryText = humanizeEffectSummary(String(value), lang, t);
+      value = summaryText;
     }
     stringVars[k] = value;
+  }
+  if (key === "play.log.effect_applied" || key === "play.log.effect_pending") {
+    logKey = effectLogKey(key, Boolean(idRaw), summaryText);
+    if (!summaryText) delete stringVars.summary;
+    if (!idRaw && String(logKey).endsWith("_bare")) stringVars.id = t("play.log.card_unnamed");
   }
   const MARK_ID = "⟦CARD_ID⟧";
   const MARK_IDS = "⟦CARD_IDS⟧";
@@ -1666,6 +1692,7 @@ export function BattleBoard({
   const [appealStatus, setAppealStatus] = useState<string | null>(null);
   /** Phone / short landscape: keep battle log drawer closed by default. */
   const [hudMoreOpen, setHudMoreOpen] = useState(false);
+  const [leaveAsk, setLeaveAsk] = useState(false);
   const [compactBattle, setCompactBattle] = useState(() => {
     if (typeof window === "undefined") return false;
     return window.matchMedia(
@@ -2517,7 +2544,17 @@ export function BattleBoard({
                 {t("play.concede")}
               </button>
               ) : null}
-              <button type="button" className="secondary" onClick={onLeave}>
+              <button
+                type="button"
+                className="secondary"
+                onClick={() => {
+                  if (state.status === "playing") {
+                    setLeaveAsk(true);
+                    return;
+                  }
+                  onLeave();
+                }}
+              >
                 {t("play.leave")}
               </button>
             </>
@@ -2568,6 +2605,10 @@ export function BattleBoard({
                       className="secondary"
                       onClick={() => {
                         setHudMoreOpen(false);
+                        if (state.status === "playing") {
+                          setLeaveAsk(true);
+                          return;
+                        }
                         onLeave();
                       }}
                     >
@@ -2588,6 +2629,28 @@ export function BattleBoard({
             {t("play.menu_close")}
           </button>
         </div>
+      ) : null}
+
+      {leaveAsk ? (
+        <BattleModal layerClassName="is-topmost" modalClassName="is-decision-prompt">
+          <h3>{t("play.leave_confirm_title")}</h3>
+          <p className="muted">{t("play.leave_confirm")}</p>
+          <div className="play-actions">
+            <button type="button" className="ghost" onClick={() => setLeaveAsk(false)}>
+              {t("play.menu_close")}
+            </button>
+            <button
+              type="button"
+              className="secondary"
+              onClick={() => {
+                setLeaveAsk(false);
+                onLeave();
+              }}
+            >
+              {t("play.leave")}
+            </button>
+          </div>
+        </BattleModal>
       ) : null}
 
       {error ? (
@@ -3147,9 +3210,10 @@ export function BattleBoard({
                   type="button"
                   className="ux-search-card is-eligible"
                   onClick={() => void openCardDetail(cid)}
-                  title={localizeCardName(names[cid]?.name, names[cid]?.name_en, lang) || displayCardId(cid)}
+                  title={visibleCardName(cid, names, lang)}
                 >
                   <CardImg cardId={cid} className="ux-search-card-img" loading="eager" />
+                  <span className="ux-search-card-name">{visibleCardName(cid, names, lang)}</span>
                 </button>
               ))}
             </div>
@@ -3255,9 +3319,15 @@ export function BattleBoard({
           </div>
           <p className="muted">
             {(() => {
-              const summary = displayEffectSummary(state.pending_trigger.summary, lang);
+              const summary = displayEffectSummary(state.pending_trigger.summary, lang, t);
               if (summary) return formatEffectForPanel(summary);
-              return t("play.trigger_hint", { id: displayCardId(state.pending_trigger.card_id) });
+              const cardName =
+                localizeCardName(
+                  names[state.pending_trigger.card_id]?.name,
+                  names[state.pending_trigger.card_id]?.name_en,
+                  lang,
+                ) || t("play.log.card_unnamed");
+              return t("play.trigger_hint", { id: cardName });
             })()}
           </p>
           <div className="play-actions">
@@ -3459,9 +3529,10 @@ export function BattleBoard({
                 <div className="ux-search-order-row" aria-label={t("play.search_order_chosen")}>
                   {(state.pending_search!.bottom_order || []).map((cid, i) =>
                     cid ? (
-                      <div key={`ord-${cid}-${i}`} className="ux-search-card is-ordered" title={`${i + 1}`}>
+                      <div key={`ord-${cid}-${i}`} className="ux-search-card is-ordered" title={`${i + 1}. ${visibleCardName(cid, names, lang)}`}>
                         <span className="ux-search-order-num">{i + 1}</span>
                         <CardImg cardId={cid} className="ux-search-card-img" loading="eager" />
+                        <span className="ux-search-card-name">{visibleCardName(cid, names, lang)}</span>
                       </div>
                     ) : (
                       <div key={`ord-hid-${i}`} className="ux-search-card is-hidden" />
@@ -3480,9 +3551,10 @@ export function BattleBoard({
                       type="button"
                       className="ux-search-card is-eligible"
                       onClick={() => onAction({ type: "order_search_bottom", index: i })}
-                      title={`${localizeCardName(names[cid]?.name, names[cid]?.name_en, lang) || displayCardId(cid)} · ${t("play.search_order_pick")}`}
+                      title={`${visibleCardName(cid, names, lang)} · ${t("play.search_order_pick")}`}
                     >
                       <CardImg cardId={cid} className="ux-search-card-img" loading="eager" />
+                      <span className="ux-search-card-name">{visibleCardName(cid, names, lang)}</span>
                     </button>
                   );
                 })}
@@ -3553,11 +3625,12 @@ export function BattleBoard({
                       }}
                       title={
                         eligible
-                          ? `${localizeCardName(names[cid]?.name, names[cid]?.name_en, lang) || displayCardId(cid)} · ${t("play.search_detail_hint")}`
+                          ? `${visibleCardName(cid, names, lang)} · ${t("play.search_detail_hint")}`
                           : t("play.search_ineligible")
                       }
                     >
                       <CardImg cardId={cid} className="ux-search-card-img" loading="eager" />
+                      <span className="ux-search-card-name">{visibleCardName(cid, names, lang)}</span>
                       {menuOpen && eligible ? (
                         <span className="ux-search-card-overlay">
                           <span
@@ -3654,7 +3727,7 @@ export function BattleBoard({
               ? t("play.choice_effect_title")
               : (() => {
                   const purpose = choicePurposeKey(state.pending_choice.purpose);
-                  const summary = displayEffectSummary(state.pending_choice.summary, lang);
+                  const summary = displayEffectSummary(state.pending_choice.summary, lang, t);
                   // Prefer effect summary as the title when choosing grant/cost targets.
                   if (
                     summary &&
@@ -3678,10 +3751,10 @@ export function BattleBoard({
               : state.pending_choice.target_kind === "effect_option" ||
                   state.pending_choice.target_kind === "life_position" ||
                   state.pending_choice.target_kind === "life_owner"
-                ? displayEffectSummary(state.pending_choice.summary, lang) || t("play.choice_hint")
+                ? displayEffectSummary(state.pending_choice.summary, lang, t) || t("play.choice_hint")
                 : (() => {
                     const purpose = choicePurposeKey(state.pending_choice.purpose);
-                    const summary = displayEffectSummary(state.pending_choice.summary, lang);
+                    const summary = displayEffectSummary(state.pending_choice.summary, lang, t);
                     const hint = t(`play.choice_purpose_hint_${purpose}`);
                     // When summary is already the title, don't repeat it in parentheses.
                     if (
@@ -3837,11 +3910,7 @@ export function BattleBoard({
                 if (!target) {
                   return (
                     <button key={iid} type="button" onClick={() => onAction({ type: "select_choice", target_iid: iid })}>
-                      {iid === "leader" || /^leader-\d+$/.test(iid)
-                        ? t("play.zone_leader")
-                        : iid === "don"
-                          ? "DON!!"
-                          : iid}
+                      {humanizeBattleUnit(iid, names, lang, t)}
                     </button>
                   );
                 }

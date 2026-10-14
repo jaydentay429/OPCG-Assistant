@@ -9790,6 +9790,7 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
             cost_eq = op.get("cost_eq")
             cost_lte = op.get("cost_lte")
             cost_gte = op.get("cost_gte")
+            power_lte = op.get("power_lte")
             # Indexed tokens so the player can choose when optional / multi-pick.
             cand_tokens: list[str] = []
             for idx, cid in enumerate(list(player.trash)):
@@ -9821,6 +9822,8 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                     continue
                 if cost_gte is not None and printed < int(cost_gte):
                     continue
+                if power_lte is not None and _printed_power(info) > int(power_lte):
+                    continue
                 cand_tokens.append(f"trash:{idx}:{cid}")
             if not cand_tokens:
                 continue
@@ -9843,6 +9846,7 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                     "cost_lte",
                     "cost_eq",
                     "cost_gte",
+                    "power_lte",
                     "require_trigger",
                     "destination",
                     "face",

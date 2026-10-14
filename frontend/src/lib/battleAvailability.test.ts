@@ -54,6 +54,10 @@ describe("battle unavailable state", () => {
     assert.equal(status, "unavailable");
     assert.equal(shouldReconnectBattleSocket({ handshakeFailed: true, serviceDown: true, hasSocket: false }), false);
     assert.equal(shouldReconnectBattleSocket({ handshakeFailed: false, serviceDown: false, hasSocket: false }), true);
+    assert.equal(
+      shouldReconnectBattleSocket({ handshakeFailed: false, serviceDown: false, hasSocket: false, leaving: true }),
+      false,
+    );
     assert.equal(reduceBattleService("unavailable", "retry"), "loading");
     assert.equal(reduceBattleService("loading", "disabled-response"), "unavailable");
   });
