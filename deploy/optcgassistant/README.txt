@@ -70,6 +70,10 @@ HTTPS 与反代
   # 2) 同步代码（务必排除 .env、用户数据、以及 VPS 正在写的市价）
   #    图片：浏览器优先 img.optcgassistant.com（CDN）；API /packs/ 作 fallback。
   #    卡图文件在 VPS /opt/opcg/app/packs/ + R2；缺图在 VPS 跑 sync_card_images。
+  #    index/card_effects.json 只在 VPS 上由 scripts/compile_card_effects.py 生成。
+  #    仓库里是 0 字节占位。下面这条 rsync 带 --delete，必须排除该文件及其
+  #    .tmp / .new，以及原子写入产生的 .card_effects.json.*.tmp，否则会覆盖或删掉服务器副本。
+  #    部署不要重编译，也不要加 --llm。
   rsync -avz --delete \
     --exclude '.venv' --exclude '__pycache__/' --exclude '.git' --exclude '.DS_Store' \
     --exclude '.env' --exclude 'packs/' --exclude 'preview/images/' --exclude 'rclone*' \
@@ -79,6 +83,8 @@ HTTPS 与反代
     --exclude 'meta/replays/' \
     --exclude 'meta/market_prices.json' --exclude 'meta/yuyu_sync_cursor.json' \
     --exclude 'meta/photo_hash_index.json' --exclude 'meta/photo_clip_index.npz' \
+    --exclude 'index/card_effects.json' --exclude 'index/card_effects.json.tmp' \
+    --exclude 'index/card_effects.json.new' --exclude 'index/.card_effects.json.*.tmp' \
     "<LOCAL_REPO>/" \
     <DEPLOY_USER>@<VPS_IP>:/opt/opcg/app/
   rsync -avz --delete frontend/.next/standalone/ <DEPLOY_USER>@<VPS_IP>:/opt/opcg/app/frontend/.next/standalone/

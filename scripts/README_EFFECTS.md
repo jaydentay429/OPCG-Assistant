@@ -66,6 +66,9 @@ Flags (compile_card_effects):
 
 Outputs:
   index/card_effects.json
+    Replaced atomically (same-directory temp file, fsync, os.replace).
+    A missing, empty, or whitespace-only existing file is treated as {}
+    with a warning. Non-empty corrupt JSON aborts before that replace.
   meta/effect_compile_report.json
   meta/effect_gap_tracker.json / .md
   meta/effect_audit_report.json / .md
