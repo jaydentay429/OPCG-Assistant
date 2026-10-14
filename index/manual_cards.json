@@ -2894,6 +2894,51 @@
       "trigger_en": "[Trigger] Look at 5 cards from the top of your deck; reveal up to 1 {Big Mom Pirates} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
       "preview": true,
       "manual_source": "screenshot"
+    },
+    "OP18-085": {
+      "card_id": "OP18-085",
+      "preview": true,
+      "manual_source": "screenshot",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "name": "塞伯拉斯",
+      "name_en": "Cerberus",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "黑"
+      ],
+      "colors_en": [
+        "Black"
+      ],
+      "cost": 1,
+      "power": 0,
+      "life": null,
+      "counter": 2000,
+      "rarity": "UC",
+      "attributes": [
+        "斬"
+      ],
+      "attributes_en": [
+        "Slash"
+      ],
+      "traits": [
+        "神之騎士團"
+      ],
+      "traits_en": [
+        "Holy Knights"
+      ],
+      "effect": "【啟動主要】可以將這張角色卡放回持有者的手牌：最多1張自己的「夏姆洛克聖」，在這個回合，獲得【速攻】或【消失】或【防禦不可】。",
+      "effect_en": "[Activate: Main] You may return this Character to the owner's hand: Up to 1 of your [Saint Shamrock] Characters gains [Rush], [Banish], or [Unblockable] during this turn.",
+      "trigger": "",
+      "trigger_en": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ]
     }
   }
 }

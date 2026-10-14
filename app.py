@@ -4187,9 +4187,11 @@ def build_card_response(card_id: str, card_basic: dict[str, Any]) -> CardRespons
     )
     trigger_en_text = normalize_effect_text(card_basic.get("trigger_en"))
     effect_en_text = normalize_effect_text(card_basic.get("effect_en"))
-    # Trigger stays on trigger / trigger_en. Manual cards such as EB05-059
-    # already store the main text alone; folding the trigger line back on
-    # makes effect and effect_en end with it.
+    # Trigger stays on trigger / trigger_en. Do not fold it back on, and drop
+    # a copy that official rows still leave at the end of effect / effect_en
+    # (EB05-059 stored it split; ST22-016 repeats the line in both places).
+    effect_text = _strip_split_trigger(effect_text, trigger_text)
+    effect_en_text = _strip_split_trigger(effect_en_text, trigger_en_text)
 
     traits = (
         full_card.get("types")
@@ -4298,6 +4300,24 @@ def normalize_effect_text(effect: Any) -> str | None:
     text = str(effect)
     text = re.sub(r"<br\s*/?>", "\n", text, flags=re.IGNORECASE)
     return text.strip() or None
+
+
+def _strip_split_trigger(effect: str | None, trigger: str | None) -> str | None:
+    """Remove a trigger line that already lives on the trigger field.
+
+    Only whole lines that equal the trigger text are removed. A mid-line
+    「持有【觸發器】」 / "card with a [Trigger]" stays in the effect body.
+    """
+    effect_s = str(effect or "").replace("\r\n", "\n").strip()
+    trigger_s = str(trigger or "").replace("\r\n", "\n").strip()
+    if not effect_s or not trigger_s:
+        return effect_s or None
+    lines = effect_s.split("\n")
+    kept = [ln for ln in lines if ln.strip() != trigger_s]
+    if len(kept) == len(lines):
+        return effect_s
+    body = "\n".join(kept).strip()
+    return body or None
 
 
 def _compose_effect_with_trigger(effect: str | None, trigger: str | None) -> str | None:

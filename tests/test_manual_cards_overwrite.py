@@ -48,6 +48,7 @@ def test_seed_matches_index_and_ids_are_unique():
         "OP18-046",
         "OP18-048",
         "OP18-084",
+        "OP18-085",
         "OP18-061",
         "OP18-100",
         "OP18-113",
@@ -529,12 +530,34 @@ def test_seed_matches_index_and_ids_are_unique():
     assert overrides["cards"]["EB05-048"]["card_id"] == "EB05-048"
     hog_timings = {a["timing"] for a in overrides["cards"]["EB05-048"]["abilities"]}
     assert hog_timings == {"on_play", "counter_event"}
+    cerb = cards["OP18-085"]
+    assert cerb == seed["OP18-085"]
+    assert cerb["name"] == "塞伯拉斯"
+    assert cerb["name_en"] == "Cerberus"
+    assert cerb["colors"] == ["黑"]
+    assert cerb["colors_en"] == ["Black"]
+    assert cerb["cost"] == 1
+    assert cerb["power"] == 0
+    assert cerb["counter"] == 2000
+    assert cerb["rarity"] == "UC"
+    assert cerb["attributes"] == ["斬"]
+    assert cerb["attributes_en"] == ["Slash"]
+    assert cerb["traits"] == ["神之騎士團"]
+    assert cerb["traits_en"] == ["Holy Knights"]
+    assert cerb["effect"].startswith("【啟動主要】可以將這張角色卡放回持有者的手牌")
+    assert "Saint Shamrock" in cerb["effect_en"]
+    assert "[Rush], [Banish], or [Unblockable]" in cerb["effect_en"]
+    assert cerb["manual_source"] == "screenshot"
+    assert cerb["preview"] is True
+    assert cerb["life"] is None
+    assert cerb["img_url"] == ""
+    assert "OP18-085" in overrides["cards"]
 
 
 def test_official_sync_overwrites_screenshot_row_without_duplicates():
     index: dict = {}
-    assert apply_manual_cards(index) == 63
-    assert apply_manual_cards(index) == 63
+    assert apply_manual_cards(index) == 64
+    assert apply_manual_cards(index) == 64
     assert list(index).count("EB05-046") == 1
     assert index["EB05-046"]["name"] == "大和"
 
@@ -587,6 +610,9 @@ def test_official_sync_overwrites_screenshot_row_without_duplicates():
     assert merged["OP18-032"]["name"] == "巴其"
     assert merged["OP18-052"]["name"] == "Mr.5&Miss情人節"
     assert merged["OP18-063"]["name"] == "基威&摩茲"
+    assert merged["OP18-085"]["name"] == "塞伯拉斯"
+    assert merged["OP18-085"]["manual_source"] == "screenshot"
+    assert list(merged).count("OP18-085") == 1
     assert merged["OP18-091"]["name"] == "布洛基"
     assert merged["OP18-111"]["name"] == "飛鼠"
     assert merged["EB05-059"]["name"] == "夏洛特・普琳!!"

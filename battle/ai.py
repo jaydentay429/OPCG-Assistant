@@ -357,6 +357,103 @@ def _leader_aura_pumps_combat(state: MatchState, seat: int, catalog: CatalogFn) 
     return False
 
 
+def _named_grant_targets(
+    state: MatchState, seat: int, op: dict[str, Any], catalog: CatalogFn
+) -> list[CardInst]:
+    """Own characters that match a grant_keyword name filter."""
+    from battle.effects import _card_matches_name_contains
+
+    needle = str(op.get("name_contains") or "").strip()
+    out: list[CardInst] = []
+    for ch in state.player(seat).characters:
+        info = catalog(ch.card_id) or {}
+        if needle and not _card_matches_name_contains(info, needle):
+            continue
+        out.append(ch)
+    return out
+
+
+def _can_swing_this_turn(inst: CardInst, info: dict[str, Any]) -> bool:
+    from battle.effects import has_rush
+
+    if inst.rested:
+        return False
+    if inst.summoning_sick and not has_rush(info, inst):
+        return False
+    return True
+
+
+def _keyword_grant_value(
+    state: MatchState,
+    seat: int,
+    keyword: str,
+    targets: list[CardInst],
+    catalog: CatalogFn,
+) -> float:
+    """Value of giving one keyword to the best matching character this turn."""
+    from battle.effects import has_banish, has_blockerless, has_rush
+
+    kw = str(keyword or "").strip().lower()
+    if not targets:
+        return 0.0
+    foe_blockers = _ready_blocker_iids(state, state.other(seat), catalog)
+    best = 0.0
+    for inst in targets:
+        info = catalog(inst.card_id) or {}
+        swing = _can_swing_this_turn(inst, info)
+        sick = bool(inst.summoning_sick) and not has_rush(info, inst) and not inst.rested
+        if kw == "rush":
+            if has_rush(info, inst):
+                best = max(best, 2.0)
+            elif sick:
+                best = max(best, 30.0)
+            else:
+                best = max(best, 6.0)
+        elif kw == "banish":
+            if has_banish(info, inst):
+                best = max(best, 2.0)
+            elif swing:
+                best = max(best, 24.0)
+            else:
+                best = max(best, 5.0)
+        elif kw in {"blockerless", "unblockable"}:
+            if has_blockerless(info, inst):
+                best = max(best, 2.0)
+            elif swing and foe_blockers:
+                best = max(best, 28.0)
+            elif swing:
+                best = max(best, 12.0)
+            else:
+                best = max(best, 4.0)
+    return best
+
+
+def _choose_one_keyword_worth(
+    state: MatchState, seat: int, op: dict[str, Any], catalog: CatalogFn
+) -> float | None:
+    """Worth of a choose_one whose branches only grant a keyword. None if mixed."""
+    options = [o for o in (op.get("options") or []) if isinstance(o, dict)]
+    if len(options) < 2:
+        return None
+    branches: list[list[dict[str, Any]]] = []
+    for opt in options:
+        ops = [x for x in (opt.get("ops") or []) if isinstance(x, dict)]
+        if not ops or any(str(x.get("op") or "") != "grant_keyword" for x in ops):
+            return None
+        branches.append(ops)
+    best = 0.0
+    any_target = False
+    for ops in branches:
+        for grant in ops:
+            targets = _named_grant_targets(state, seat, grant, catalog)
+            if targets:
+                any_target = True
+            best = max(best, _keyword_grant_value(state, seat, str(grant.get("keyword") or ""), targets, catalog))
+    if not any_target:
+        return 0.0
+    return best
+
+
 def _followup_worth(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: CatalogFn) -> float:
     """Rough value of remaining effect ops (after an optional cost)."""
     if not ops:
@@ -425,7 +522,8 @@ def _followup_worth(state: MatchState, seat: int, ops: list[dict[str, Any]], cat
         elif kind == "look_opp_deck":
             score += 4
         elif kind in {"choose_one", "choose_effect"}:
-            score += 8
+            specialized = _choose_one_keyword_worth(state, seat, op, catalog)
+            score += 8 if specialized is None else specialized
         else:
             score += 3
     return score
@@ -524,7 +622,14 @@ def _activate_spec_value(
     )
     # Self-trash / rest-self with nothing to do afterwards is a trap.
     self_pay = any(
-        o.get("op") in {"trash", "ko"} and str(o.get("target_kind") or "") in {"self", "source", "own_character"}
+        (
+            o.get("op") in {"trash", "ko"}
+            and str(o.get("target_kind") or "") in {"self", "source", "own_character"}
+        )
+        or (
+            o.get("op") == "return_to_hand"
+            and str(o.get("target_kind") or "") in {"self", "source"}
+        )
         for o in costs
         or ops[:1]
     )
@@ -663,6 +768,13 @@ def _score_choice(
     foe = state.player(state.other(seat))
 
     if tk == "effect_option" or tid.startswith("opt:"):
+        branch = [x for x in ((pending.option_branches or {}).get(tid) or []) if isinstance(x, dict)]
+        grants = [x for x in branch if str(x.get("op") or "") == "grant_keyword"]
+        if grants and len(grants) == len(branch):
+            targets = _named_grant_targets(state, seat, grants[0], catalog)
+            return _keyword_grant_value(
+                state, seat, str(grants[0].get("keyword") or ""), targets, catalog
+            )
         label = str((pending.option_labels or {}).get(tid) or "").lower()
         if any(x in label for x in ("draw", "抽", "don", "咚", "ko", "擊破", "击破")):
             return 24.0
@@ -756,6 +868,21 @@ def _score_choice(
                     pass
                 if own.summoning_sick:
                     bonus += 18.0
+            if purpose == "grant_keyword" and kw in {"banish", "blockerless"}:
+                try:
+                    from battle.effects import has_banish, has_blockerless, has_rush
+
+                    info = catalog(own.card_id) or {}
+                    already = has_banish(info, own) if kw == "banish" else has_blockerless(info, own)
+                    if already:
+                        return -20.0
+                    swing = (not own.rested) and (not own.summoning_sick or has_rush(info, own))
+                    if swing:
+                        bonus += 16.0
+                    elif own.summoning_sick:
+                        bonus -= 8.0
+                except Exception:
+                    pass
             if purpose == "attach_don":
                 n_don = 1
                 ops_src = list(pending.remaining_ops or [])

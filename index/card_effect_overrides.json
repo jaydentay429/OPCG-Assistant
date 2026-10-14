@@ -125089,6 +125089,86 @@
       ],
       "status": "verified"
     },
+    "OP18-085": {
+      "card_id": "OP18-085",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "activate_main",
+          "summary": "You may return this Character to the owner's hand: up to 1 [Saint Shamrock] gains Rush, Banish, or Unblockable this turn",
+          "ops": [
+            {
+              "op": "return_to_hand",
+              "target_kind": "self",
+              "as_cost": true,
+              "optional": true,
+              "summary": "Return this Character to the owner's hand"
+            },
+            {
+              "op": "choose_one",
+              "optional": true,
+              "summary": "Rush, Banish, or Unblockable",
+              "options": [
+                {
+                  "id": "rush",
+                  "label": "Rush / 【速攻】",
+                  "ops": [
+                    {
+                      "op": "grant_keyword",
+                      "keyword": "rush",
+                      "target_kind": "own_character",
+                      "count": 1,
+                      "optional": true,
+                      "duration": "turn",
+                      "name_contains": "夏姆洛克聖|Saint Shamrock|シャムロック聖",
+                      "summary": "Up to 1 [Saint Shamrock] gains Rush this turn"
+                    }
+                  ]
+                },
+                {
+                  "id": "banish",
+                  "label": "Banish / 【消失】",
+                  "ops": [
+                    {
+                      "op": "grant_keyword",
+                      "keyword": "banish",
+                      "target_kind": "own_character",
+                      "count": 1,
+                      "optional": true,
+                      "duration": "turn",
+                      "name_contains": "夏姆洛克聖|Saint Shamrock|シャムロック聖",
+                      "summary": "Up to 1 [Saint Shamrock] gains Banish this turn"
+                    }
+                  ]
+                },
+                {
+                  "id": "unblockable",
+                  "label": "Unblockable / 【防禦不可】",
+                  "ops": [
+                    {
+                      "op": "grant_keyword",
+                      "keyword": "blockerless",
+                      "target_kind": "own_character",
+                      "count": 1,
+                      "optional": true,
+                      "duration": "turn",
+                      "name_contains": "夏姆洛克聖|Saint Shamrock|シャムロック聖",
+                      "summary": "Up to 1 [Saint Shamrock] gains Unblockable this turn"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95,
+          "cost_don": 0,
+          "rest_self": false,
+          "once": false
+        }
+      ],
+      "status": "verified"
+    },
     "OP18-086": {
       "card_id": "OP18-086",
       "version": 1,

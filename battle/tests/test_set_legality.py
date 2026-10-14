@@ -55,6 +55,16 @@ def test_op18_ranked_date_is_marked_assumed():
     assert missing and "OP18-011" in missing and "battle effect data is missing" in missing
 
 
+def test_op18_085_uses_op18_release_and_tournament_dates():
+    assert card_legality_block("OP18-085", mode="casual", on_date=BEFORE) == "unreleased"
+    assert card_legality_block("OP18-085", mode="ranked", on_date=BEFORE) == "unreleased"
+    assert card_has_battle_effect_data("OP18-085")
+    assert card_legality_block("OP18-085", mode="casual", on_date=OP18_RELEASE) is None
+    assert card_legality_block("OP18-085", mode="ranked", on_date=OP18_RELEASE) == "not_ranked_legal"
+    assert card_legality_block("OP18-085", mode="casual", on_date=OP18_LEGAL) is None
+    assert card_legality_block("OP18-085", mode="ranked", on_date=OP18_LEGAL) is None
+
+
 def test_parallel_art_uses_base_effect_data_and_old_sets_stay_open():
     assert card_has_battle_effect_data("OP18-001-P1")
     assert card_legality_block("OP18-001-P1", mode="casual", on_date=OP18_RELEASE) is None
