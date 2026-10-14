@@ -1348,6 +1348,11 @@ def _clear_turn_duration_effects(state: MatchState) -> None:
             ch.power_mod = 0
             ch.base_power_override = None
             ch.cannot_be_ko = False
+            ch.battle_ko_shields = [
+                e
+                for e in (getattr(ch, "battle_ko_shields", None) or [])
+                if int(e.get("expire_seat", -1)) != ending_seat
+            ]
             ch.effects_negated = False
             ch.effects_negated_until_end = [
                 e for e in (ch.effects_negated_until_end or []) if int(e.get("expire_seat", -1)) != ending_seat
@@ -3037,6 +3042,9 @@ def apply_battle_character_ko(
     catalog: CatalogFn,
 ) -> None:
     """Finish a battle K.O. after replace_leave was declined or did not apply."""
+    if getattr(inst, "battle_ko_shields", None):
+        state.add_log("play.log.effect_applied", summary="cannot_battle_ko", id=inst.card_id)
+        return
     defender = state.player(def_seat)
     ko_cid = inst.card_id
     target_iid = inst.iid

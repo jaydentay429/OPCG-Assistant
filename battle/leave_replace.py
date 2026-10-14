@@ -167,6 +167,8 @@ def _pay_replace_cost(
         return True
     if cost == "return_don":
         n = max(1, min(5, int(op.get("don_count") or op.get("count") or 1)))
+        if op.get("also_rest_self") and (src_inst is None or src_inst.rested):
+            return False
         returned = 0
         # Prefer rested DON on field, then active.
         for _ in range(n):
@@ -178,7 +180,11 @@ def _pay_replace_cost(
                 returned += 1
             else:
                 break
-        return returned >= n
+        if returned < n:
+            return False
+        if op.get("also_rest_self") and src_inst is not None:
+            src_inst.rested = True
+        return True
     if cost == "rest_don":
         n = max(1, min(5, int(op.get("rest_count") or op.get("don_count") or op.get("count") or 1)))
         rested = 0
@@ -854,6 +860,7 @@ def try_replace_leave(
     by_opponent: bool,
     catalog: CatalogFn,
     by_ko: bool = True,
+    by_effect: bool = False,
 ) -> bool:
     """
     If a replace_leave shield applies and its cost can be paid, pay cost and keep victim.
@@ -911,6 +918,10 @@ def try_replace_leave(
                         continue
                 elif trigger == "opp_remove":
                     if not by_opponent:
+                        continue
+                elif trigger == "opp_effect":
+                    # Opponent's effect (KO or bounce), not a battle K.O.
+                    if not by_opponent or not by_effect:
                         continue
                 else:
                     if not by_ko:
