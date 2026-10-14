@@ -81,6 +81,13 @@ jobs:
           cp -R .next/static .next/standalone/.next/static
           cp -R public .next/standalone/public
 
+      # index/card_effects.json is generated on the server by
+      # scripts/compile_card_effects.py. The committed copy is a 0-byte
+      # placeholder, so it must not be uploaded. The same excludes cover
+      # .tmp/.new siblings and the atomic writer's index/.card_effects.json.*.tmp
+      # files. This rsync does not use --delete; exclude (without
+      # --delete-excluded) is what would also keep those paths if --delete
+      # is added later.
       - name: "Sync backend code (no --delete, keeps server-only files like packs/, .env, dbs)"
         run: |
           rsync -avz \
@@ -96,6 +103,10 @@ jobs:
             --exclude 'meta/*.log' \
             --exclude 'cards/cards/' --exclude 'cards/official_sync/' \
             --exclude 'frontend/src/generated/card-image-manifest.json' \
+            --exclude 'index/card_effects.json' \
+            --exclude 'index/card_effects.json.tmp' \
+            --exclude 'index/card_effects.json.new' \
+            --exclude 'index/.card_effects.json.*.tmp' \
             --exclude '.venv' --exclude '__pycache__/' --exclude '*.pyc' \
             -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes" \
             ./ "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/opt/opcg/app/"
@@ -181,6 +192,35 @@ jobs:
           systemctl restart opcg-web || { journalctl -u opcg-web -n 50 --no-pager || true; exit 1; }
           bash deploy/optcgassistant/wait-http.sh http://127.0.0.1:3000/ opcg-web
           EOF
+
+      # Read-only. Missing or 0-byte card_effects.json is a warning, not a
+      # failure: do not delete the file and do not run compile_card_effects.py.
+      - name: Warn if server card_effects.json is missing or empty
+        run: |
+          remote_path="/opt/opcg/app/index/card_effects.json"
+          target="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
+          if ! status="$(ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes -o BatchMode=yes -o ConnectTimeout=20 \
+            "$target" "if [ ! -e '$remote_path' ]; then printf missing; elif [ ! -s '$remote_path' ]; then printf empty; else printf ok; fi")"; then
+            status="probe-failed"
+          fi
+          case "$status" in
+            ok)
+              echo "card_effects.json is present and non-empty on the server; this deploy did not modify it"
+              ;;
+            missing)
+              echo "::warning title=card_effects.json missing::/opt/opcg/app/index/card_effects.json is missing. This deploy did not create, delete, or regenerate it."
+              echo "WARNING: /opt/opcg/app/index/card_effects.json is missing. Deploy left it untouched and did not regenerate it."
+              ;;
+            empty)
+              echo "::warning title=card_effects.json empty::/opt/opcg/app/index/card_effects.json is 0 bytes. This deploy did not overwrite, delete, or regenerate it."
+              echo "WARNING: /opt/opcg/app/index/card_effects.json is 0 bytes. Deploy left it untouched and did not regenerate it."
+              ;;
+            *)
+              echo "::warning title=card_effects.json check inconclusive::Could not confirm /opt/opcg/app/index/card_effects.json (probe: ${status}). Deploy continues without changing the file."
+              echo "WARNING: card_effects.json size check was inconclusive (${status}). Deploy continues; the file was not modified."
+              ;;
+          esac
+          exit 0
 
       - name: Smoke test
         run: |

@@ -31,6 +31,7 @@ try:
 except Exception:
     pass
 
+from atomic_io import atomic_write_text  # noqa: E402
 from battle.effect_library import (  # noqa: E402
     card_has_timing_gaps,
     compile_card_from_templates,
@@ -55,13 +56,69 @@ def load_catalog() -> dict[str, dict]:
 
 
 def load_existing(path: Path) -> dict[str, dict]:
+    """Load a previously compiled library.
+
+    A missing, empty, or whitespace-only file is an empty library (a warning
+    is printed). Non-empty corrupt JSON raises SystemExit before the caller
+    writes, so the on-disk file is left untouched.
+    """
     if not path.is_file():
+        print(
+            f"WARNING: effect library {path} is missing; treating it as an empty library.",
+            file=sys.stderr,
+        )
         return {}
-    with path.open("r", encoding="utf-8") as f:
-        data = json.load(f)
+    try:
+        raw = path.read_text(encoding="utf-8")
+    except UnicodeDecodeError as exc:
+        raise SystemExit(
+            f"ERROR: {path} is non-empty but not valid UTF-8 ({exc}). "
+            "Refusing to continue so the file is not overwritten."
+        ) from exc
+    if not raw.strip():
+        kind = "empty" if raw == "" else "whitespace-only"
+        print(
+            f"WARNING: effect library {path} is {kind}; treating it as an empty library.",
+            file=sys.stderr,
+        )
+        return {}
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        raise SystemExit(
+            f"ERROR: {path} is non-empty but not valid JSON ({exc}). "
+            "Refusing to continue so the file is not overwritten."
+        ) from exc
     if isinstance(data, dict) and isinstance(data.get("cards"), dict):
         return data["cards"]
     return data if isinstance(data, dict) else {}
+
+
+def write_library_atomic(path: Path, payload: dict) -> None:
+    """Replace the effect library via a same-directory temp file, fsync, then os.replace."""
+    text = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+    atomic_write_text(path, text)
+
+
+def write_compile_report(report: dict) -> Path:
+    report_path = ROOT / "meta" / "effect_compile_report.json"
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    with report_path.open("w", encoding="utf-8") as f:
+        json.dump(report, f, ensure_ascii=False, indent=2)
+    return report_path
+
+
+def refresh_gap_tracker() -> None:
+    try:
+        import subprocess
+
+        subprocess.run(
+            [sys.executable, str(ROOT / "scripts" / "track_effect_gaps.py")],
+            check=False,
+            cwd=str(ROOT),
+        )
+    except Exception as exc:
+        print(f"gap tracker refresh skipped: {exc}", file=sys.stderr)
 
 
 def llm_compile_ability(card_id: str, info: dict, ask) -> list[dict]:
@@ -342,19 +399,14 @@ def main() -> int:
     report["by_reason"] = dict(reason_counter.most_common(50))
     report["timing_gaps"] = dict(gap_counter.most_common())
 
-    lib_path.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "version": 1,
         "generated_at": report["generated_at"],
         "cards": cards_out,
     }
-    with lib_path.open("w", encoding="utf-8") as f:
-        json.dump(payload, f, ensure_ascii=False, indent=None, separators=(",", ":"))
+    write_library_atomic(lib_path, payload)
 
-    report_path = ROOT / "meta" / "effect_compile_report.json"
-    report_path.parent.mkdir(parents=True, exist_ok=True)
-    with report_path.open("w", encoding="utf-8") as f:
-        json.dump(report, f, ensure_ascii=False, indent=2)
+    report_path = write_compile_report(report)
 
     print(f"Wrote {lib_path} ({len(cards_out)} cards)")
     print(f"Wrote {report_path}")
@@ -362,16 +414,7 @@ def main() -> int:
     print("timing_gaps", json.dumps(report["timing_gaps"], ensure_ascii=False))
 
     # Keep gap tracker in sync with the library we just wrote.
-    try:
-        import subprocess
-
-        subprocess.run(
-            [sys.executable, str(ROOT / "scripts" / "track_effect_gaps.py")],
-            check=False,
-            cwd=str(ROOT),
-        )
-    except Exception as exc:
-        print(f"gap tracker refresh skipped: {exc}", file=sys.stderr)
+    refresh_gap_tracker()
     return 0
 
 
