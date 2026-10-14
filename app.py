@@ -4187,10 +4187,9 @@ def build_card_response(card_id: str, card_basic: dict[str, Any]) -> CardRespons
     )
     trigger_en_text = normalize_effect_text(card_basic.get("trigger_en"))
     effect_en_text = normalize_effect_text(card_basic.get("effect_en"))
-    if trigger_text:
-        effect_text = _compose_effect_with_trigger(effect_text, trigger_text)
-    if trigger_en_text:
-        effect_en_text = _compose_effect_with_trigger(effect_en_text, trigger_en_text)
+    # Trigger stays on trigger / trigger_en. Manual cards such as EB05-059
+    # already store the main text alone; folding the trigger line back on
+    # makes effect and effect_en end with it.
 
     traits = (
         full_card.get("types")
