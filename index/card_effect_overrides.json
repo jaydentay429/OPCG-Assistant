@@ -125717,6 +125717,563 @@
             "confidence": 0.95
           }
         ]
+      },
+      "EB05-004": {
+        "card_id": "EB05-004",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "on_play",
+            "summary": "[On Play] Reveal 2 Event cards from your hand: Draw 2 / 【登場時】公開2張手牌中的事件卡：抽2張卡片。",
+            "ops": [
+              {
+                "op": "reveal_hand",
+                "count": 2,
+                "card_type": "event",
+                "as_cost": true,
+                "optional": true,
+                "summary": "Reveal 2 Event cards from your hand / 公開2張手牌中的事件卡"
+              },
+              {
+                "op": "draw",
+                "count": 2
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          },
+          {
+            "timing": "on_ko",
+            "summary": "[On K.O.] Play up to 1 Character with 6000 power or less from your hand rested / 【KO時】使最多1張手牌中力量值6000以下的角色卡以休息狀態登場。",
+            "ops": [
+              {
+                "op": "play_from_hand",
+                "card_type": "character",
+                "power_lte": 6000,
+                "as_rested": true,
+                "optional": true,
+                "count": 1
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "EB05-019": {
+        "card_id": "EB05-019",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "counter_event",
+            "summary": "[Counter] Rest 1 of your cards: up to 1 of your {Land of Wano} Leader or Characters gains +4000 power during this battle / 【反擊】將1張自己的卡片置為休息：和之國領航卡或角色卡這場對戰力量+4000。",
+            "ops": [
+              {
+                "op": "rest_character",
+                "target_kind": "own_character",
+                "include_leader": true,
+                "include_don": true,
+                "include_stage": true,
+                "as_cost": true,
+                "optional": true,
+                "summary": "Rest 1 of your cards / 將1張自己的卡片置為休息"
+              },
+              {
+                "op": "buff",
+                "amount": 4000,
+                "target_kind": "own_leader_or_character",
+                "trait_contains": "和之國|Land of Wano",
+                "duration": "battle",
+                "optional": true,
+                "summary": "Up to 1 Land of Wano Leader or Character +4000 this battle / 和之國領航卡或角色卡這場對戰+4000"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          },
+          {
+            "timing": "trigger",
+            "summary": "[Trigger] If your opponent has 3 or less Life, play up to 1 {Land of Wano} Character with 6000 power or less from your hand / 【觸發器】對手生命值3張以下時，使手牌中力量6000以下的和之國角色登場。",
+            "require_opp_life_lte": 3,
+            "ops": [
+              {
+                "op": "play_from_hand",
+                "card_type": "character",
+                "trait_contains": "和之國|Land of Wano",
+                "power_lte": 6000,
+                "optional": true,
+                "count": 1
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "EB05-030": {
+        "card_id": "EB05-030",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "on_play",
+            "summary": "[Main] If your Leader is [Nami], return up to 1 Character with a cost of 5 or less to the owner's hand / 【主要】若領航卡是娜美，將費用5以下的角色卡放回持有者手牌。",
+            "require_leader_name": "Nami|娜美",
+            "ops": [
+              {
+                "op": "return_to_hand",
+                "target_kind": "any_character",
+                "cost_lte": 5,
+                "optional": true,
+                "summary": "Return up to 1 Character with cost 5 or less to its owner's hand / 將費用5以下的角色卡放回持有者手牌"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          },
+          {
+            "timing": "counter_event",
+            "summary": "[Counter] Draw 1, and up to 1 of your Leader or Characters gains +1000 power during this turn / 【反擊】抽1張，自己的領航卡或角色卡這個回合力量+1000。",
+            "ops": [
+              {
+                "op": "draw",
+                "count": 1
+              },
+              {
+                "op": "buff",
+                "amount": 1000,
+                "target_kind": "own_leader_or_character",
+                "duration": "turn",
+                "optional": true,
+                "summary": "Up to 1 of your Leader or Characters +1000 this turn / 自己的領航卡或角色卡這個回合+1000"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "EB05-040": {
+        "card_id": "EB05-040",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "on_play",
+            "summary": "[Main] Return 1 active DON!! to your DON!! deck: if your Leader has {Donquixote Pirates}, draw 3 and trash 1 from your hand / 【主要】將1張活動咚‼放回卡組：唐吉訶德海賊團領航卡時抽3並廢棄1張手牌。",
+            "require_leader_trait": "唐吉訶德海賊團|Donquixote Pirates",
+            "ops": [
+              {
+                "op": "return_don",
+                "count": 1,
+                "active_only": true,
+                "as_cost": true,
+                "optional": true,
+                "summary": "Return 1 active DON!! to your DON!! deck / 將1張活動狀態的咚‼放回咚‼卡組"
+              },
+              {
+                "op": "draw",
+                "count": 3
+              },
+              {
+                "op": "trash_hand",
+                "count": 1,
+                "optional": false,
+                "owner": "self"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          },
+          {
+            "timing": "counter_event",
+            "summary": "[Counter] Your Leader gains +2000 power during this battle / 【反擊】自己的領航卡這場對戰力量+2000。",
+            "ops": [
+              {
+                "op": "buff",
+                "amount": 2000,
+                "target_kind": "leader",
+                "duration": "battle",
+                "optional": false
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "EB05-049": {
+        "card_id": "EB05-049",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "on_play",
+            "summary": "[Main] K.O. 1 of your {Thriller Bark Pirates} Characters: give up to 1 opponent Character −3 cost this turn / 【主要】KO自己的恐怖三桅帆船海賊團角色：對手角色這個回合費用-3。",
+            "ops": [
+              {
+                "op": "ko",
+                "target_kind": "own_character",
+                "trait_contains": "恐怖三桅帆船海賊團|Thriller Bark Pirates",
+                "as_cost": true,
+                "optional": true,
+                "count": 1,
+                "summary": "K.O. 1 of your Thriller Bark Pirates Characters / KO自己的恐怖三桅帆船海賊團角色"
+              },
+              {
+                "op": "reduce_cost",
+                "amount": -3,
+                "target_kind": "opponent_character",
+                "duration": "turn",
+                "optional": true,
+                "count": 1
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          },
+          {
+            "timing": "counter_event",
+            "summary": "[Counter] K.O. 1 of your {Thriller Bark Pirates} Characters: up to 1 of your Leader or Characters gains +4000 power during this battle / 【反擊】KO恐怖三桅帆船海賊團角色：自己的領航卡或角色卡這場對戰+4000。",
+            "ops": [
+              {
+                "op": "ko",
+                "target_kind": "own_character",
+                "trait_contains": "恐怖三桅帆船海賊團|Thriller Bark Pirates",
+                "as_cost": true,
+                "optional": true,
+                "count": 1,
+                "summary": "K.O. 1 of your Thriller Bark Pirates Characters / KO自己的恐怖三桅帆船海賊團角色"
+              },
+              {
+                "op": "buff",
+                "amount": 4000,
+                "target_kind": "own_leader_or_character",
+                "duration": "battle",
+                "optional": true
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "OP18-011": {
+        "card_id": "OP18-011",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "your_turn",
+            "summary": "Your Characters with both {Animal} and {Alabasta} gain +1000 power / 同時擁有動物與阿拉巴斯坦王國的角色卡力量+1000。",
+            "ops": [
+              {
+                "op": "buff",
+                "amount": 1000,
+                "all": true,
+                "target_kind": "own_character",
+                "trait_all": [
+                  "動物|Animal",
+                  "阿拉巴斯坦王國|Alabasta"
+                ]
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          },
+          {
+            "timing": "opponent_turn",
+            "summary": "[Opponent's Turn] This Character gains [Blocker] and +6000 power. Your Animal and Alabasta Characters gain +1000 / 【對方回合中】這張角色獲得防禦與力量+6000，動物＋阿拉巴斯坦角色+1000。",
+            "ops": [
+              {
+                "op": "buff",
+                "amount": 1000,
+                "all": true,
+                "target_kind": "own_character",
+                "trait_all": [
+                  "動物|Animal",
+                  "阿拉巴斯坦王國|Alabasta"
+                ]
+              },
+              {
+                "op": "grant_keyword",
+                "keyword": "blocker",
+                "target_kind": "self",
+                "duration": "turn",
+                "optional": false
+              },
+              {
+                "op": "buff_self",
+                "amount": 6000
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "OP18-034": {
+        "card_id": "OP18-034",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "on_play",
+            "summary": "[On Play] Play up to 1 cost 5 or less {Franky Family} or {Straw Hat Crew} card from your hand. Then, if you have a Stage with cost 5 or more, rest up to 1 opponent Character with cost 6 or less / 【登場時】從手牌使費用5以下佛朗基一家或草帽一行人卡片登場。若有費用5以上舞台，休息對手費用6以下角色。",
+            "ops": [
+              {
+                "op": "play_from_hand",
+                "card_type": "character_or_stage",
+                "cost_lte": 5,
+                "trait_any": [
+                  "佛朗基一家|Franky Family",
+                  "草帽一行人|Straw Hat Crew"
+                ],
+                "optional": true,
+                "count": 1
+              },
+              {
+                "op": "rest_character",
+                "target_kind": "opponent_character",
+                "cost_lte": 6,
+                "optional": true,
+                "require_own_stage_cost_gte": 5,
+                "summary": "Rest up to 1 opponent Character with cost 6 or less / 將對手費用6以下的角色卡置為休息"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "OP18-061": {
+        "card_id": "OP18-061",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "on_play",
+            "summary": "[On Play] Look at 5 cards from the top of your deck; reveal up to 2 Stage cards or {Water Seven} cards and add them to your hand. Place the rest on the bottom in any order / 【登場時】查看卡組上5張，公開最多2張舞台或W7加入手牌，其餘放到卡組下。",
+            "ops": [
+              {
+                "op": "search_deck",
+                "top_n": 5,
+                "max_add": 2,
+                "card_type": "stage",
+                "type_or_trait": true,
+                "trait_contains": "W7|Water Seven",
+                "order_bottom": true,
+                "destination": "hand",
+                "reveal_adds": true
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "OP18-063": {
+        "card_id": "OP18-063",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "on_play",
+            "summary": "[On Play] K.O. 1 of your Stage cards with a cost of 5 or less: add up to 1 DON!! card as rested from your DON!! deck / 【登場時】KO費用5以下的舞台卡：從咚‼卡組追加1張休息狀態的咚‼。",
+            "ops": [
+              {
+                "op": "ko",
+                "target_kind": "own_stage",
+                "cost_lte": 5,
+                "as_cost": true,
+                "optional": true,
+                "count": 1,
+                "summary": "K.O. 1 of your Stages with cost 5 or less / KO自己費用5以下的舞台卡"
+              },
+              {
+                "op": "gain_don",
+                "count": 1,
+                "as_rested": true
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "OP18-076": {
+        "card_id": "OP18-076",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "on_play",
+            "summary": "[On Play] Draw 1 and add up to 1 DON!! card as rested from your DON!! deck / 【登場時】抽1張，並從咚‼卡組追加1張休息狀態的咚‼。",
+            "ops": [
+              {
+                "op": "draw",
+                "count": 1
+              },
+              {
+                "op": "gain_don",
+                "count": 1,
+                "as_rested": true
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          },
+          {
+            "timing": "on_opponent_attack",
+            "summary": "[On Your Opponent's Attack] Rest this Stage: up to 2 of your Characters, and your Leader with 5000 power or less, gain +1000 this turn / 【對方攻擊時】休息這張舞台：最多2張角色，以及力量5000以下的領航卡，這個回合+1000。",
+            "ops": [
+              {
+                "op": "rest_character",
+                "target_kind": "self",
+                "as_cost": true,
+                "optional": true,
+                "summary": "Rest this Stage / 將這張舞台卡置為休息"
+              },
+              {
+                "op": "buff",
+                "amount": 1000,
+                "target_kind": "own_character",
+                "duration": "turn",
+                "optional": true,
+                "summary": "Up to 1 of your Characters +1000 this turn / 自己的角色卡這個回合+1000"
+              },
+              {
+                "op": "buff",
+                "amount": 1000,
+                "target_kind": "own_character",
+                "duration": "turn",
+                "optional": true,
+                "summary": "Up to 1 of your Characters +1000 this turn / 自己的角色卡這個回合+1000"
+              },
+              {
+                "op": "buff",
+                "amount": 1000,
+                "target_kind": "leader",
+                "power_lte": 5000,
+                "duration": "turn",
+                "optional": false,
+                "summary": "Your Leader with 5000 power or less +1000 this turn / 力量5000以下的領航卡這個回合+1000"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "OP18-084": {
+        "card_id": "OP18-084",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "on_play",
+            "summary": "[On Play] Look at 4 cards from the top of your deck; reveal up to 1 {Holy Knights} card and add it to your hand. Trash the rest / 【登場時】查看卡組上4張，公開最多1張神之騎士團加入手牌，其餘放置到廢棄區。",
+            "ops": [
+              {
+                "op": "search_deck",
+                "top_n": 4,
+                "max_add": 1,
+                "trait_contains": "神之騎士團|Holy Knights",
+                "trash_rest": true,
+                "destination": "hand",
+                "reveal_adds": true
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          },
+          {
+            "timing": "activate_main",
+            "summary": "[Activate: Main] Rest 4 of your DON!! cards: play up to 1 {Holy Knights} Character with a cost of 6 or less from your trash / 【啟動主要】將4張咚‼置為休息：使廢棄區中費用6以下的神之騎士團角色登場。",
+            "ops": [
+              {
+                "op": "rest_don",
+                "count": 4,
+                "as_cost": true,
+                "optional": true,
+                "summary": "Rest 4 of your DON!! cards / 將4張自己的咚‼卡置為休息"
+              },
+              {
+                "op": "play_from_hand",
+                "from_zone": "trash",
+                "card_type": "character",
+                "cost_lte": 6,
+                "trait_contains": "神之騎士團|Holy Knights",
+                "optional": true,
+                "count": 1
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "OP18-091": {
+        "card_id": "OP18-091",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "your_turn",
+            "summary": "This Character gains +12 cost / 這張角色卡的費用+12。",
+            "ops": [
+              {
+                "op": "grant_cost",
+                "amount": 12,
+                "target_kind": "self",
+                "duration": "permanent"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          },
+          {
+            "timing": "opponent_turn",
+            "summary": "This Character gains +12 cost / 這張角色卡的費用+12。",
+            "ops": [
+              {
+                "op": "grant_cost",
+                "amount": 12,
+                "target_kind": "self",
+                "duration": "permanent"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          },
+          {
+            "timing": "when_attacking",
+            "summary": "[When Attacking] Trash 1 card from your hand: add up to 1 Character with a cost of 2 or less from your trash to your hand / 【攻擊時】廢棄1張手牌：將廢棄區中費用2以下的角色卡加入手牌。",
+            "ops": [
+              {
+                "op": "trash_hand",
+                "count": 1,
+                "as_cost": true,
+                "optional": true,
+                "owner": "self",
+                "summary": "Trash 1 card from your hand / 廢棄1張自己的手牌"
+              },
+              {
+                "op": "add_from_trash",
+                "card_type": "character",
+                "cost_lte": 2,
+                "count": 1,
+                "optional": true,
+                "destination": "hand",
+                "summary": "Add up to 1 Character with cost 2 or less from your trash / 將費用2以下的角色卡從廢棄區加入手牌"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
       }
   }
 }

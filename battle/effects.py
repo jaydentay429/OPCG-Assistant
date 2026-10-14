@@ -5508,7 +5508,11 @@ def _parse_play_from_hand(chunk: str) -> dict[str, Any] | None:
 
 def _hand_card_matches_play_op(info: dict[str, Any], op: dict[str, Any]) -> bool:
     want_type = str(op.get("card_type") or "character").lower()
-    if card_type_of(info) != want_type:
+    ctype = card_type_of(info)
+    if want_type == "character_or_stage":
+        if ctype not in {"character", "stage"}:
+            return False
+    elif ctype != want_type:
         return False
     if op.get("cost_eq") is not None:
         if _printed_cost(info) != int(op.get("cost_eq") or 0):
@@ -6413,6 +6417,11 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                 return logs
             continue
         kind = str(op.get("op") or "")
+        stage_need = op.get("require_own_stage_cost_gte")
+        if stage_need is not None:
+            need = int(stage_need)
+            if not any(_printed_cost(catalog(s.card_id) if catalog else {}) >= need for s in player.stages):
+                continue
         if kind == "unsupported":
             logs.append({"key": "play.log.effect_unsupported", "id": str(op.get("reason") or "")})
             continue
@@ -11938,6 +11947,16 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                     from battle.engine import _info_has_trait
 
                     trait_ok = _info_has_trait(info, needle_trait)
+                type_or_trait = bool(op.get("type_or_trait"))
+                want_type_early = str(op.get("card_type") or "").lower()
+                if type_or_trait:
+                    type_hit = (
+                        bool(want_type_early)
+                        and want_type_early not in {"any", "*"}
+                        and card_type_of(info) == want_type_early
+                    )
+                    if not (type_hit or (bool(needle_trait) and trait_ok)):
+                        return False
                 attr_opts = [x.strip().lower() for x in needle_attr.split("|") if x.strip()] if needle_attr else []
                 attr_ok = (not attr_opts) or any(
                     any(k in attrs for k in attr_alias_keys(a)) for a in attr_opts
@@ -11959,7 +11978,7 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                             return False
                     elif needle_name and not name_ok:
                         return False
-                    if needle_trait and not trait_ok:
+                    if needle_trait and not trait_ok and not type_or_trait:
                         return False
                     if needle_attr and not op.get("or_event") and not attr_ok:
                         return False
@@ -11984,7 +12003,7 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                     if power_eq is not None and pow_v != int(power_eq):
                         return False
                 want_type = str(op.get("card_type") or "").lower()
-                if want_type and want_type not in {"any", "*"}:
+                if want_type and want_type not in {"any", "*"} and not type_or_trait:
                     if op.get("or_event") and want_type == "character":
                         if not ((card_type_of(info) == "character") or event_ok):
                             return False
@@ -12197,6 +12216,27 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
     return logs
 
 
+def _leader_power_options(
+    state: MatchState,
+    lead_seat: int,
+    catalog: CatalogFn | None,
+    filters: dict[str, Any],
+) -> list[str]:
+    """Leader target, dropped when a power filter excludes the live leader."""
+    if catalog and (filters.get("power_lte") is not None or filters.get("power_gte") is not None):
+        try:
+            from battle.engine import inst_power
+
+            live_lead = inst_power(state, lead_seat, "leader", catalog)
+        except Exception:
+            live_lead = 0
+        if filters.get("power_lte") is not None and live_lead > int(filters["power_lte"]):
+            return []
+        if filters.get("power_gte") is not None and live_lead < int(filters["power_gte"]):
+            return []
+    return ["leader"]
+
+
 def _choice_options(state: MatchState, seat: int, target_kind: str, catalog: CatalogFn | None = None, filters: dict[str, Any] | None = None) -> list[str]:
     player = state.player(seat)
     foe = state.player(state.other(seat))
@@ -12226,9 +12266,9 @@ def _choice_options(state: MatchState, seat: int, target_kind: str, catalog: Cat
     elif kind == "any_character":
         cands = list(player.characters) + list(foe.characters)
     elif kind == "leader":
-        return ["leader"]
+        return _leader_power_options(state, seat, catalog, filters)
     elif kind == "opponent_leader":
-        return ["leader"]
+        return _leader_power_options(state, state.other(seat), catalog, filters)
     elif kind in {"self", "source"}:
         # Self rest costs are resolved via source_iid — never opponent board.
         return []
