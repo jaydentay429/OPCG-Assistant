@@ -36,7 +36,9 @@ describe("canonicalRedirect", () => {
     assert.equal(canonicalRedirect("/play"), null);
     assert.equal(canonicalRedirect("/play", "?x=1"), null);
     assert.equal(canonicalRedirect("/play/rank"), null);
-    assert.equal(canonicalRedirect("/play/room/xxx"), null);
+    assert.equal(canonicalRedirect("/play/history"), null);
+    assert.equal(canonicalRedirect("/play/history/abc"), null);
+    assert.equal(canonicalRedirect("/play/spectate"), null);
     assert.deepEqual(canonicalRedirect("/play/"), {
       status: 308,
       location: `${CANONICAL_ORIGIN}/play`,
@@ -49,10 +51,38 @@ describe("canonicalRedirect", () => {
       status: 308,
       location: `${CANONICAL_ORIGIN}/play/rank`,
     });
-    assert.deepEqual(canonicalRedirect("/play/room/xxx/", "?x=1"), {
+    assert.deepEqual(canonicalRedirect("/play/history/", "?x=1"), {
       status: 308,
-      location: `${CANONICAL_ORIGIN}/play/room/xxx?x=1`,
+      location: `${CANONICAL_ORIGIN}/play/history?x=1`,
     });
+    assert.deepEqual(canonicalRedirect("/play/history/abc/"), {
+      status: 308,
+      location: `${CANONICAL_ORIGIN}/play/history/abc`,
+    });
+    assert.deepEqual(canonicalRedirect("/play/spectate/"), {
+      status: 308,
+      location: `${CANONICAL_ORIGIN}/play/spectate`,
+    });
+  });
+
+  it("308s retired /play/room links to /play in one hop and keeps the query", () => {
+    const toPlay = (search = "") => ({
+      status: 308 as const,
+      location: `${CANONICAL_ORIGIN}/play${search}`,
+    });
+    for (const path of ["/play/room", "/play/room/", "/play/room/abc", "/play/room/abc/", "/play/room/abc/extra", "/play/room/abc//"]) {
+      assert.deepEqual(canonicalRedirect(path), toPlay(), path);
+    }
+    assert.deepEqual(canonicalRedirect("/play/room/abc", "?x=1"), toPlay("?x=1"));
+    assert.deepEqual(canonicalRedirect("/play/room/abc/", "?x=1"), toPlay("?x=1"));
+    assert.deepEqual(canonicalRedirect("/play/room/", "?join=1"), toPlay("?join=1"));
+    assert.equal(canonicalRedirect("/play/rooms"), null);
+    assert.deepEqual(canonicalRedirect("/play/rooms/"), {
+      status: 308,
+      location: `${CANONICAL_ORIGIN}/play/rooms`,
+    });
+    assert.equal(canonicalRedirect("/play/Room/abc"), null);
+    assert.equal(canonicalRedirect("/playground/room/abc"), null);
   });
 
   it("308s trailing slashes on other routes and keeps the query", () => {
@@ -101,7 +131,15 @@ describe("canonicalRedirect", () => {
       ["/play/", ""],
       ["/play/", "?x=1"],
       ["/play/rank/", ""],
+      ["/play/history/", "?x=1"],
+      ["/play/history/abc/", ""],
+      ["/play/spectate/", ""],
+      ["/play/room", ""],
+      ["/play/room/", ""],
+      ["/play/room/", "?join=1"],
+      ["/play/room/xxx", ""],
       ["/play/room/xxx/", "?x=1"],
+      ["/play/room/xxx/extra/", "?x=1"],
       ["/search/", ""],
       ["/search/", "?q=luffy"],
       ["/sets/", ""],
@@ -127,6 +165,8 @@ describe("canonicalRedirect", () => {
       canonicalRedirect("/cards/op01-065", "?a=1")?.location,
       canonicalRedirect("/search/")?.location,
       canonicalRedirect("/sets/")?.location,
+      canonicalRedirect("/play/room/abc")?.location,
+      canonicalRedirect("/play/room/abc/", "?x=1")?.location,
     ];
     for (const location of samples) {
       assert.equal(location?.startsWith(`${CANONICAL_ORIGIN}/`), true, location);

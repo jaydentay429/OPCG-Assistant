@@ -37,12 +37,19 @@ export function siteAbsoluteUrl(pathname: string, search = ""): string {
 const CARD_PATH = /^\/cards\/([^/]+)\/?$/;
 /** Card ids we will case-fold. Anything else (spaces, `%`, unicode) must not redirect. */
 const SAFE_CARD_ID = /^[A-Za-z0-9_-]+$/;
+/** Old `/play/room` and `/play/room/<id>` links. `/play/rooms` does not match. */
+const PLAY_ROOM_PATH = /^\/play\/room(?:\/.*)?$/;
 
 /**
  * Canonical card URLs are uppercase and have no trailing slash.
  * Only a raw path segment matching [A-Za-z0-9_-]+ is case-folded. The segment
  * is not decoded: decoding `%20` / `%E8%...` and uppercasing produces a path
  * that `new URL()` encodes back to the request, which 301s forever.
+ * Retired battle room URLs (`/play/room` and `/play/room/...`, with or without
+ * a trailing slash) 308 once to `/play`. The lobby no longer has a path per
+ * room, so the move is permanent (308, not a temporary 307). The match runs
+ * before the generic slash strip: `/play/room/<id>/` lands on `/play` in one
+ * hop instead of bouncing through `/play/room/<id>`.
  * Other trailing slashes 308 once to the slash-less path. Already-canonical
  * paths, and card ids outside the safe set with no trailing slash, return null.
  */
@@ -63,6 +70,10 @@ export function canonicalRedirect(pathname: string, search = ""): RedirectPlan |
       }
     }
     return null;
+  }
+
+  if (PLAY_ROOM_PATH.test(pathname)) {
+    return { location: siteAbsoluteUrl("/play", search), status: 308 };
   }
 
   if (pathname.length > 1 && pathname.endsWith("/")) {
