@@ -14,6 +14,24 @@ export type SiteUpdate = {
 /** Newest first. Keep this list short — homepage shows the latest few. */
 export const SITE_UPDATES: SiteUpdate[] = [
   {
+    id: "op18-085-2026-10-14",
+    date: "2026-10-14",
+    kind: "feature",
+    href: "/cards/OP18-085",
+    title: {
+      "zh-Hant": "OP18-085 塞伯拉斯已上線",
+      "zh-Hans": "OP18-085 塞伯拉斯已上线",
+      en: "OP18-085 Cerberus added",
+    },
+    body: {
+      "zh-Hant":
+        "截圖暫收：OP18-085 黑 UC 塞伯拉斯，費用 1、力量 0、反擊 +2000、屬性斬，《神之騎士團》。【啟動主要】可以將這張角色卡放回持有者的手牌：最多1張自己的「夏姆洛克聖」，在這個回合，獲得【速攻】或【消失】或【防禦不可】。卡名與特徵沿用站內譯名；效果為自譯，官方卡表同步會覆蓋。卡圖 hash 41f659a5。休閒對戰自 2026-11-20，比賽自 2026-11-27。",
+      "zh-Hans":
+        "截图暂收：OP18-085 黑 UC 塞伯拉斯，费用 1、力量 0、反击 +2000、属性斩，《神之骑士团》。【启动主要】可以将这张角色卡放回持有者的手牌：最多1张自己的「夏姆洛克圣」，在这个回合，获得【速攻】或【消失】或【防御不可】。卡名与特征沿用站内译名；效果为自译，官方卡表同步会覆盖。卡图 hash 41f659a5。休闲对战自 2026-11-20，比赛自 2026-11-27。",
+      en: "Screenshot entry: OP18-085 black UC Cerberus, cost 1, power 0, Counter +2000, Slash, {Holy Knights}. [Activate: Main] You may return this Character to the owner's hand: Up to 1 of your [Saint Shamrock] Characters gains [Rush], [Banish], or [Unblockable] during this turn. Name and type reuse existing terms; the effect is self-translated and official sync will overwrite it. Art hash 41f659a5. Casual play from 2026-11-20, tournaments from 2026-11-27.",
+    },
+  },
+  {
     id: "op18-four-uc-2026-10-13",
     date: "2026-10-13",
     kind: "feature",

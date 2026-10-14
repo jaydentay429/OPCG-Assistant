@@ -472,9 +472,11 @@ def detect_keywords(info: dict[str, Any]) -> list[str]:
     # Strip "gains [Keyword]" grant clauses so cards that *give* Blocker/Rush
     # to another unit are not treated as having that keyword themselves (OP16-048).
     stripped = re.sub(
-        r"(?:最多\s*\d+\s*張)?(?:自己的?)?「[^」]+」[^。\n]{0,48}(?:獲得|获得)\s*【(?:防禦不可|防御不可|防禦|防御|速攻|雙重攻擊|双重攻击|不可阻擋|不可阻挡|流放|消滅|消灭)】|"
+        r"(?:最多\s*\d+\s*張)?(?:自己的?)?「[^」]+」[^。\n]{0,48}(?:獲得|获得)\s*【(?:防禦不可|防御不可|防禦|防御|速攻|雙重攻擊|双重攻击|不可阻擋|不可阻挡|流放|消滅|消灭|消失)】"
+        r"(?:\s*(?:或|或者|，|,|、)\s*【(?:防禦不可|防御不可|防禦|防御|速攻|雙重攻擊|双重攻击|不可阻擋|不可阻挡|流放|消滅|消灭|消失)】)*|"
         r"(?:up to\s+\d+\s+of\s+)?your\s+\[[^\]]+\][^\.\n]{0,60}gains?\s+\["
-        r"(?:Blocker|Rush|Double Attack|Banish|Blockerless|Unblockable)\]|"
+        r"(?:Blocker|Rush|Double Attack|Banish|Blockerless|Unblockable)\]"
+        r"(?:\s*(?:，|,)\s*(?:or\s+)?\[(?:Blocker|Rush|Double Attack|Banish|Blockerless|Unblockable)\])*|"
         r"(?:獲得|获得)\s*【(?:防禦不可|防御不可|防禦|防御|速攻|雙重攻擊|双重攻击|不可阻擋|不可阻挡)】|"
         r"gains?\s+\[(?:Blocker|Rush|Double Attack|Banish|Blockerless|Unblockable)\]|"
         # Keyword reminder text attached to grants (OP16-095 etc.)
@@ -8546,6 +8548,29 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
             tk = str(op.get("target_kind") or "opponent_character")
             if not op.get("target_iid"):
                 setattr(player, "_last_return_to_hand_count", 0)
+            # Optional colon-cost: return THIS character to its owner's hand.
+            # Cards on your field are yours; the engine has no separate owner.
+            if not target and tk in {"self", "source"}:
+                src = str(op.get("source_iid") or "")
+                if not src:
+                    if op.get("as_cost"):
+                        return logs
+                    continue
+                if op.get("as_cost") and bool(op.get("optional")) and not state.pending_choice:
+                    state.pending_choice = PendingChoice(
+                        seat=seat,
+                        card_id=str(op.get("card_id") or ""),
+                        source_iid=src,
+                        target_kind="own_character",
+                        options=[src],
+                        remaining_ops=[dict(op), *queue],
+                        optional=True,
+                        summary=str(op.get("summary") or "Return this Character to the owner's hand"),
+                        purpose=purpose_from_op(op),
+                    )
+                    logs.append({"key": "play.log.choice_offer", "name": player.username})
+                    return logs
+                target = src
             # Stage return: paper 「舞台卡」must target stages, not Characters.
             if ctype == "stage" and tk not in {"own_stage", "opponent_stage", "any_stage"}:
                 tk = "any_stage"

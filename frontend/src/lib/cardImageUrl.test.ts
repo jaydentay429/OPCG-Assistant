@@ -71,6 +71,9 @@ describe("cardImageUrl", () => {
     assert.equal(cardImageHash("OP18-044"), "274c36d9");
     assert.equal(cardImageUrl("OP18-044"), `${PUBLIC_BASE}/OP18-044.png?h=274c36d9`);
     assert.equal(cardOgImage("OP18-044")?.url, `${PUBLIC_BASE}/OP18-044.png?h=274c36d9`);
+    assert.equal(cardImageHash("OP18-085"), "41f659a5");
+    assert.equal(cardImageUrl("OP18-085"), `${PUBLIC_BASE}/OP18-085.png?h=41f659a5`);
+    assert.equal(cardOgImage("OP18-085")?.url, `${PUBLIC_BASE}/OP18-085.png?h=41f659a5`);
     assert.equal(cardImageHash("OP18-010"), "b72d2fa2");
     assert.equal(cardImageUrl("OP18-010"), `${PUBLIC_BASE}/OP18-010.png?h=b72d2fa2`);
     assert.equal(cardOgImage("OP18-010")?.url, `${PUBLIC_BASE}/OP18-010.png?h=b72d2fa2`);
