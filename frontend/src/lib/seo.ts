@@ -48,6 +48,7 @@ export const BRAND_KEYWORDS = [
   "卡組構築",
   "卡牌搜索",
   "賽事卡組",
+  "即時對戰",
 ] as const;
 
 /** Absolute URL helper. */
@@ -236,7 +237,7 @@ export function rootJsonLd(): Record<string, unknown> {
         url: SITE_URL,
         logo: absoluteUrl("/opengraph-image"),
         description:
-          "Unofficial ONE PIECE CARD GAME (OPCG / OPTCG) fan toolkit: card database, deck builder, tournament deck lists, and collection tools. Also known as OPCG Assistant / optcgassistant.",
+          "Unofficial ONE PIECE CARD GAME (OPCG / OPTCG) fan toolkit: card database, deck builder, tournament deck lists, collection tools, and browser practice battles. Also known as OPCG Assistant / optcgassistant.",
       },
       {
         "@type": "WebSite",
@@ -266,7 +267,7 @@ export function rootJsonLd(): Record<string, unknown> {
         inLanguage: ["zh-HK", "zh-CN", "en"],
         isPartOf: { "@id": `${SITE_URL}/#website` },
         description:
-          "ONE PIECE CARD GAME（OPCG）工具網站 optcgassistant.com：卡牌資料庫、卡組構築、賽事卡組（OP17 / OP16 deck list）、收藏與卡冊、市場價格。",
+          "ONE PIECE CARD GAME（OPCG）工具網站 optcgassistant.com：卡牌資料庫、卡組構築、賽事卡組（OP17 / OP16 deck list）、收藏與卡冊、市場價格，以及瀏覽器即時對戰（房間對戰與 AI 對戰）。",
         featureList: [
           "卡牌搜索與篩選",
           "卡組構築 / deck builder",
@@ -274,6 +275,8 @@ export function rootJsonLd(): Record<string, unknown> {
           "收藏管理",
           "卡冊排版",
           "市場價格",
+          "即時對戰（房間 PvP）",
+          "AI 對戰",
         ],
         offers: {
           "@type": "Offer",

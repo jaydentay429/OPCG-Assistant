@@ -307,7 +307,7 @@ describe("chunk recovery", () => {
     detach();
     clearPendingNavigation();
     storage.delete(CHUNK_RELOAD_STORAGE_KEY);
-    documentTarget.dispatch("click", { button: 0, target: anchor({ href: "/community" }, href) }, true);
+    documentTarget.dispatch("click", { button: 0, target: anchor({ href: "/play" }, href) }, true);
     windowTarget.dispatch("unhandledrejection", { reason: chunkError() });
     assert.deepEqual(assigned, [`${ORIGIN}/search`, `${ORIGIN}/prices`]);
   });

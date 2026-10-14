@@ -188,6 +188,8 @@ export function connectBattleWs(opts: {
   onWaiting: (room: WaitingRoom) => void;
   onError: (message: string) => void;
   onClose: () => void;
+  /** Socket closed before it opened, or the server rejected the handshake. Do not reconnect in a loop. */
+  onHandshakeFailed?: () => void;
   onChat?: (messages: BattleChatMessage[]) => void;
 }): { sendAction: (action: BattleAction) => void; sendSync: () => void; sendChat: (text: string) => void; close: () => void } {
   const ws = new WebSocket(battleWsUrl(opts.token, opts.room, opts.role));
@@ -228,10 +230,14 @@ export function connectBattleWs(opts: {
   // Browser websocket `error` has no useful detail and can fire transiently
   // during reload/network jitter. Surface user-facing errors from close path.
   ws.onerror = () => undefined;
-  ws.onclose = () => {
+  ws.onclose = (ev) => {
     if (pingTimer) clearInterval(pingTimer);
-    if (!closedByClient && openedOnce) {
+    const pausedClose = ev.code === 1008 || String(ev.reason || "").includes("对战功能已暂停");
+    if (!closedByClient && openedOnce && !pausedClose) {
       opts.onError("WebSocket disconnected");
+    }
+    if (!closedByClient && (!openedOnce || pausedClose)) {
+      opts.onHandshakeFailed?.();
     }
     opts.onClose();
   };

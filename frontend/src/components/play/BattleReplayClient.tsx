@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { BattleAvailabilityGate } from "@/components/play/BattleAvailability";
 import { BattleBoard } from "@/components/play/BattleBoard";
 import { ReplayControls } from "@/components/play/ReplayControls";
 import {
@@ -133,7 +134,7 @@ function collectCardIdsFromFrame(
   return [...ids];
 }
 
-export function BattleReplayClient({ replayId }: Props) {
+function BattleReplayLive({ replayId }: Props) {
   const { t } = useI18n();
   const router = useRouter();
   const { token, isLoggedIn, ready } = useAuth();
@@ -285,5 +286,13 @@ export function BattleReplayClient({ replayId }: Props) {
         }
       />
     </div>
+  );
+}
+
+export function BattleReplayClient({ replayId }: Props) {
+  return (
+    <BattleAvailabilityGate>
+      <BattleReplayLive replayId={replayId} />
+    </BattleAvailabilityGate>
   );
 }

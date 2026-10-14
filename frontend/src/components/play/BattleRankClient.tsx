@@ -13,6 +13,7 @@ import {
 } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { useI18n } from "@/lib/i18n";
+import { BattleAvailabilityGate } from "@/components/play/BattleAvailability";
 import {
   eliteBlockClass,
   eliteTitleClass,
@@ -57,7 +58,7 @@ function EliteBlock({
   );
 }
 
-export function BattleRankClient() {
+function BattleRankLive() {
   const { t } = useI18n();
   const { token, isLoggedIn, ready, requestLogin } = useAuth();
   const [profile, setProfile] = useState<BattleRankProfile | null>(null);
@@ -209,5 +210,13 @@ export function BattleRankClient() {
         </>
       ) : null}
     </section>
+  );
+}
+
+export function BattleRankClient() {
+  return (
+    <BattleAvailabilityGate>
+      <BattleRankLive />
+    </BattleAvailabilityGate>
   );
 }

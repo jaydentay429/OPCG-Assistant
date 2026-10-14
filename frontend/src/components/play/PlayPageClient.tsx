@@ -35,9 +35,12 @@ import { useAuth } from "@/lib/auth";
 import { displayCardId } from "@/lib/cardId";
 import { isLeaderType } from "@/lib/deck";
 import { parseDeckListText } from "@/lib/deckShare";
+import { isBattleDisabledError, shouldReconnectBattleSocket } from "@/lib/battleAvailability";
 import { connectBattleWs, type BattleAction, type BattleChatMessage, type BattleState, type WaitingRoom } from "@/lib/battleWs";
+import { battleDateBlocks, formatBattleDateBlocks } from "@/lib/setLegality";
 import { useI18n } from "@/lib/i18n";
 import type { Deck } from "@/lib/types";
+import { BattleAvailabilityGate, BattleUnavailableNotice } from "./BattleAvailability";
 import { BattleBoard } from "./BattleBoard";
 import { DeckImportBlock } from "./DeckImportBlock";
 import { PlayLobby, type PlayDeckPick } from "./PlayLobby";
@@ -83,7 +86,7 @@ function pickToCreateOpts(pick: PlayDeckPick): { deckId?: string; deck?: BattleI
   return pick.kind === "saved" ? { deckId: pick.deckId } : { deck: pick.deck };
 }
 
-export function PlayPageClient() {
+function PlayPageLive() {
   const { t } = useI18n();
   const router = useRouter();
   const { token, username, isLoggedIn, ready } = useAuth();
@@ -142,6 +145,8 @@ export function PlayPageClient() {
   const lastSelfRef = useRef<RematchSelf | null>(null);
   const lastMatchRef = useRef<RematchMatch | null>(null);
   const socketRef = useRef<ReturnType<typeof connectBattleWs> | null>(null);
+  const handshakeFailed = useRef(false);
+  const [serviceDown, setServiceDown] = useState(false);
   const roomMetaRef = useRef(roomMeta);
   roomMetaRef.current = roomMeta;
 
@@ -216,6 +221,23 @@ export function PlayPageClient() {
     socketRef.current = null;
   }, []);
 
+  function failBattle(error: unknown) {
+    if (isBattleDisabledError(error)) {
+      handshakeFailed.current = true;
+      setServiceDown(true);
+      disconnect();
+      return;
+    }
+    setError(error instanceof Error ? error.message : String(error));
+  }
+
+  function dateBlockMessage(pick: PlayDeckPick, mode: "casual" | "ranked"): string | null {
+    if (pick.kind !== "inline") return null;
+    return formatBattleDateBlocks(battleDateBlocks(pick.deck.leader_card_id, pick.deck.cards, mode), (key, vars) =>
+      t(key, vars),
+    );
+  }
+
   const connect = useCallback(
     (code: string, authToken?: string | null) => {
       const tok = authToken || battleToken;
@@ -269,6 +291,10 @@ export function PlayPageClient() {
           setError(message);
           setActionBusy(false);
         },
+        onHandshakeFailed: () => {
+          handshakeFailed.current = true;
+          setServiceDown(true);
+        },
         onClose: () => {
           socketRef.current = null;
           setActionBusy(false);
@@ -284,7 +310,7 @@ export function PlayPageClient() {
     if (token) {
       fetchDecks(token)
         .then((res) => setDecks(res.decks || []))
-        .catch((e) => setError(e instanceof Error ? e.message : String(e)));
+        .catch((e) => failBattle(e));
     } else {
       setDecks([]);
     }
@@ -305,8 +331,9 @@ export function PlayPageClient() {
   }, [roomCode, battleToken, state, connect]);
 
   useEffect(() => {
-    if (!roomCode) return;
+    if (!roomCode || serviceDown) return;
     const timer = window.setInterval(() => {
+      if (handshakeFailed.current) return;
       fetchBattleRoom(roomCode)
         .then((info) => {
           setRoomMeta({
@@ -317,9 +344,17 @@ export function PlayPageClient() {
           });
           if (info.status === "playing") {
             setWaiting(null);
-            if (battleToken) {
-              if (!socketRef.current) connect(roomCode);
-              else socketRef.current.sendSync?.();
+            if (
+              battleToken &&
+              shouldReconnectBattleSocket({
+                handshakeFailed: handshakeFailed.current,
+                serviceDown: false,
+                hasSocket: Boolean(socketRef.current),
+              })
+            ) {
+              connect(roomCode);
+            } else if (socketRef.current) {
+              socketRef.current.sendSync?.();
             }
             return;
           }
@@ -335,6 +370,12 @@ export function PlayPageClient() {
           }
         })
         .catch((e) => {
+          if (isBattleDisabledError(e)) {
+            handshakeFailed.current = true;
+            setServiceDown(true);
+            disconnect();
+            return;
+          }
           if (e instanceof ApiError && e.status === 404) {
             disconnect();
             sessionStorage.removeItem(ROOM_KEY);
@@ -347,7 +388,7 @@ export function PlayPageClient() {
         });
     }, 2000);
     return () => window.clearInterval(timer);
-  }, [roomCode, state, battleToken, connect, disconnect, t]);
+  }, [roomCode, state, battleToken, connect, disconnect, serviceDown, t]);
 
   useEffect(() => {
     if (!state) return;
@@ -399,7 +440,7 @@ export function PlayPageClient() {
   }, [token, state]);
 
   useEffect(() => {
-    if (!rankedMatching || !token) return;
+    if (!rankedMatching || !token || serviceDown) return;
     let cancelled = false;
     const tick = async () => {
       try {
@@ -415,7 +456,7 @@ export function PlayPageClient() {
           setMatchWindow(typeof result.match_window === "number" ? result.match_window : null);
         }
       } catch (e) {
-        if (!cancelled) setError(e instanceof Error ? e.message : String(e));
+        if (!cancelled) failBattle(e);
       }
     };
     void tick();
@@ -424,10 +465,11 @@ export function PlayPageClient() {
       cancelled = true;
       window.clearInterval(timer);
     };
-  }, [rankedMatching, token, t]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rankedMatching, token, serviceDown, t]);
 
   useEffect(() => {
-    if (!matching || !battleToken) return;
+    if (!matching || !battleToken || serviceDown) return;
     let cancelled = false;
     const tick = async () => {
       try {
@@ -443,7 +485,7 @@ export function PlayPageClient() {
           setMatchWaitSec(Number(result.waited_sec || 0));
         }
       } catch (e) {
-        if (!cancelled) setError(e instanceof Error ? e.message : String(e));
+        if (!cancelled) failBattle(e);
       }
     };
     void tick();
@@ -453,7 +495,7 @@ export function PlayPageClient() {
       window.clearInterval(timer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [matching, battleToken, t]);
+  }, [matching, battleToken, serviceDown, t]);
 
   function acknowledgeBeta() {
     sessionStorage.setItem(BETA_NOTICE_KEY, "1");
@@ -473,7 +515,7 @@ export function PlayPageClient() {
       rememberGuestToken(room);
       connect(room.room_code, room.guest_token || battleToken);
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      failBattle(e);
     } finally {
       setBusy(false);
     }
@@ -487,7 +529,7 @@ export function PlayPageClient() {
       rememberGuestToken(room);
       connect(room.room_code, room.guest_token || battleToken);
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      failBattle(e);
     } finally {
       setBusy(false);
     }
@@ -496,6 +538,11 @@ export function PlayPageClient() {
   async function handleFindRankedMatch(pick: PlayDeckPick) {
     if (!token) {
       setError(t("play.rank_need_login"));
+      return;
+    }
+    const blocked = dateBlockMessage(pick, "ranked");
+    if (blocked) {
+      setError(blocked);
       return;
     }
     setBusy(true);
@@ -525,13 +572,18 @@ export function PlayPageClient() {
       }
     } catch (e) {
       setRankedMatching(false);
-      setError(e instanceof Error ? e.message : String(e));
+      failBattle(e);
     } finally {
       setBusy(false);
     }
   }
 
   async function handleFindMatch(pick: PlayDeckPick) {
+    const blocked = dateBlockMessage(pick, "casual");
+    if (blocked) {
+      setError(blocked);
+      return;
+    }
     setBusy(true);
     setError(null);
     lastMatchRef.current = { pick, ranked: false };
@@ -558,13 +610,18 @@ export function PlayPageClient() {
       }
     } catch (e) {
       setMatching(false);
-      setError(e instanceof Error ? e.message : String(e));
+      failBattle(e);
     } finally {
       setBusy(false);
     }
   }
 
   async function handleStartAi(pick: PlayDeckPick, aiDeckId: string) {
+    const blocked = dateBlockMessage(pick, "casual");
+    if (blocked) {
+      setError(blocked);
+      return;
+    }
     setBusy(true);
     setError(null);
     try {
@@ -584,13 +641,18 @@ export function PlayPageClient() {
       if (room.status === "playing") setWaiting(null);
       connect(room.room_code, room.guest_token || battleToken);
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      failBattle(e);
     } finally {
       setBusy(false);
     }
   }
 
   async function handleStartSelf(pick: PlayDeckPick, opp: PlayDeckPick) {
+    const blocked = dateBlockMessage(pick, "casual") || dateBlockMessage(opp, "casual");
+    if (blocked) {
+      setError(blocked);
+      return;
+    }
     setBusy(true);
     setError(null);
     try {
@@ -610,7 +672,7 @@ export function PlayPageClient() {
       if (room.status === "playing") setWaiting(null);
       connect(room.room_code, room.guest_token || battleToken);
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      failBattle(e);
     } finally {
       setBusy(false);
     }
@@ -633,7 +695,7 @@ export function PlayPageClient() {
         players: info.players || [null, null],
       });
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      failBattle(e);
     } finally {
       setBusy(false);
     }
@@ -661,7 +723,7 @@ export function PlayPageClient() {
         players: info.players || [null, null],
       });
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      failBattle(e);
     } finally {
       setLobbyImporting(false);
     }
@@ -693,7 +755,7 @@ export function PlayPageClient() {
         });
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      failBattle(e);
     } finally {
       setBusy(false);
     }
@@ -815,7 +877,7 @@ export function PlayPageClient() {
       sock.sendAction(action);
     } catch (e) {
       setActionBusy(false);
-      setError(e instanceof Error ? e.message : String(e));
+      failBattle(e);
     }
   }
 
@@ -833,6 +895,18 @@ export function PlayPageClient() {
     }
     return waiting.players.find((p) => p && !p.is_ai) || null;
   }, [waiting, displayName, username, guestUserId, guestUsername]);
+
+  if (serviceDown) {
+    return (
+      <BattleUnavailableNotice
+        onRetry={() => {
+          handshakeFailed.current = false;
+          setServiceDown(false);
+          setError(null);
+        }}
+      />
+    );
+  }
 
   if (!ready) {
     return (
@@ -1070,5 +1144,13 @@ export function PlayPageClient() {
         onStartSelf={handleStartSelf}
       />
     </>
+  );
+}
+
+export function PlayPageClient() {
+  return (
+    <BattleAvailabilityGate>
+      <PlayPageLive />
+    </BattleAvailabilityGate>
   );
 }
