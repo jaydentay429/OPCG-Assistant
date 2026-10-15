@@ -6,6 +6,7 @@ import { fetchDeckStatsBatch, type AiBattleDeck, type BattleInlineDeck } from "@
 import { useAuth } from "@/lib/auth";
 import { isLeaderType } from "@/lib/deck";
 import { displayCardId } from "@/lib/cardId";
+import { importedDeckName, importedDeckOptionLabel } from "@/lib/importedDeckLabel";
 import { parseDeckListText } from "@/lib/deckShare";
 import { useI18n } from "@/lib/i18n";
 import type { Deck } from "@/lib/types";
@@ -156,7 +157,7 @@ export function PlayLobby({
         setImportError(t("play.import_invalid"));
         return;
       }
-      const label = `${deck.name || t("play.imported_deck")} · ${displayCardId(deck.leader_card_id)} · 50/50`;
+      const label = importedDeckOptionLabel(deck.name, deck.leader_card_id, t);
       if (which === "p1") {
         setImported(deck);
         setDeckId(IMPORT_ID);
@@ -310,14 +311,14 @@ export function PlayLobby({
                         ))}
                         {imported ? (
                           <option value={IMPORT_ID}>
-                            {imported.name || t("play.imported_deck")} · {displayCardId(imported.leader_card_id)} · 50/50
+                            {importedDeckOptionLabel(imported.name, imported.leader_card_id, t)}
                           </option>
                         ) : null}
                       </select>
                     </label>
                   ) : imported ? (
                     <p className="muted">
-                      {t("play.imported_deck")}: {imported.name || displayCardId(imported.leader_card_id)} · 50/50
+                      {t("play.imported_deck")}: {importedDeckName(imported.name, t)} · {displayCardId(imported.leader_card_id)} · 50/50
                     </p>
                   ) : null}
                   <DeckImportBlock
@@ -376,14 +377,14 @@ export function PlayLobby({
                       ))}
                       {imported ? (
                         <option value={IMPORT_ID}>
-                          {imported.name || t("play.imported_deck")} · {displayCardId(imported.leader_card_id)} · 50/50
+                          {importedDeckOptionLabel(imported.name, imported.leader_card_id, t)}
                         </option>
                       ) : null}
                     </select>
                   </label>
                 ) : imported ? (
                   <p className="muted">
-                    {t("play.imported_deck")}: {imported.name || displayCardId(imported.leader_card_id)} · 50/50
+                    {t("play.imported_deck")}: {importedDeckName(imported.name, t)} · {displayCardId(imported.leader_card_id)} · 50/50
                   </p>
                 ) : null}
                 <DeckImportBlock
@@ -509,7 +510,7 @@ export function PlayLobby({
                       ))}
                       {imported ? (
                         <option value={IMPORT_ID}>
-                          {imported.name || t("play.imported_deck")} · {displayCardId(imported.leader_card_id)} · 50/50
+                          {importedDeckOptionLabel(imported.name, imported.leader_card_id, t)}
                         </option>
                       ) : null}
                     </select>
@@ -590,14 +591,14 @@ export function PlayLobby({
                       ))}
                       {imported ? (
                         <option value={IMPORT_ID}>
-                          {imported.name || t("play.imported_deck")} · {displayCardId(imported.leader_card_id)} · 50/50
+                          {importedDeckOptionLabel(imported.name, imported.leader_card_id, t)}
                         </option>
                       ) : null}
                     </select>
                   </label>
                 ) : imported ? (
                   <p className="muted">
-                    {t("play.choose_deck_p1")}: {imported.name || displayCardId(imported.leader_card_id)} · 50/50
+                    {t("play.choose_deck_p1")}: {importedDeckName(imported.name, t)} · {displayCardId(imported.leader_card_id)} · 50/50
                   </p>
                 ) : null}
                 <DeckImportBlock
@@ -624,14 +625,14 @@ export function PlayLobby({
                       ))}
                       {importedOpp ? (
                         <option value={IMPORT_OPP_ID}>
-                          {importedOpp.name || t("play.imported_deck")} · {displayCardId(importedOpp.leader_card_id)} · 50/50
+                          {importedDeckOptionLabel(importedOpp.name, importedOpp.leader_card_id, t)}
                         </option>
                       ) : null}
                     </select>
                   </label>
                 ) : importedOpp ? (
                   <p className="muted">
-                    {t("play.choose_deck_p2")}: {importedOpp.name || displayCardId(importedOpp.leader_card_id)} · 50/50
+                    {t("play.choose_deck_p2")}: {importedDeckName(importedOpp.name, t)} · {displayCardId(importedOpp.leader_card_id)} · 50/50
                   </p>
                 ) : null}
                 <DeckImportBlock

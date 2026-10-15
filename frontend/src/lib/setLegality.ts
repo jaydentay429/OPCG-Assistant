@@ -26,6 +26,25 @@ export function setCodeOf(cardId: string): string | null {
   return match ? match[1].toUpperCase() : null;
 }
 
+const ISO_DAY = /^(\d{4})-(\d{2})-(\d{2})$/;
+
+/** Server battle day from `/battle/ai-decks`. Empty or invalid means the API decides. */
+export function battleDateFromServer(value: string | null | undefined): string | null {
+  const day = String(value || "").trim();
+  if (!ISO_DAY.test(day)) return null;
+  const parsed = new Date(`${day}T00:00:00Z`);
+  if (Number.isNaN(parsed.getTime())) return null;
+  const [year, month, date] = day.split("-").map((part) => Number(part));
+  if (
+    parsed.getUTCFullYear() !== year ||
+    parsed.getUTCMonth() + 1 !== month ||
+    parsed.getUTCDate() !== date
+  ) {
+    return null;
+  }
+  return day;
+}
+
 /** Calendar day in the schedule timezone. `en-CA` formats as YYYY-MM-DD. */
 export function battleToday(now = new Date(), timeZone = documentData.timezone): string {
   const parts = new Intl.DateTimeFormat("en-CA", {

@@ -431,3 +431,16 @@ def test_legacy_room_tab_would_keep_polling_on_410() -> None:
     assert tab.room_code == "OLDROOM"
     assert tab.session_room == "OLDROOM"
     client.close()
+
+
+def test_ai_decks_response_includes_server_battle_date(monkeypatch) -> None:
+    monkeypatch.setenv("OPCG_BATTLE_TODAY", "2026-11-27")
+    client, manager = _client(monkeypatch, enabled=True)
+    assert manager is not None
+    response = client.get("/battle/ai-decks")
+    assert response.status_code == 200
+    body = response.json()
+    assert body["battle_date"] == "2026-11-27"
+    leaders = {deck["name"]: deck["leader_card_id"] for deck in body["decks"]}
+    assert leaders["绿鹰眼"] == "OP12-020"
+    client.close()

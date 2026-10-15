@@ -837,6 +837,7 @@ const dict: Record<string, string> = {
   "play.leave_confirm_title": "離開對戰",
   "play.leave_confirm": "確定要離開這場對戰嗎？離開後將無法回到這間房間。",
   "play.deck_no_leaders_in_main": "主牌組不能放入領袖卡。",
+  "play.banned_card": "禁用卡 {ids} 不能放入卡組（{date} 起禁用）。",
   "play.beta_ack": "知道了，繼續",
   "play.bug_report": "回報問題",
   "play.bug_title": "回報對戰問題",

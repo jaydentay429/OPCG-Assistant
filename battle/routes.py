@@ -14,7 +14,7 @@ from pydantic import BaseModel, Field
 from battle.ai_decks import get_ai_deck, load_ai_decks
 from battle.effect_library import ensure_loaded, library_stats
 from battle.engine import public_view, ranked_deck_ban_error, validate_battle_deck
-from battle.set_legality import casual_deck_legality_error
+from battle.set_legality import battle_today, casual_deck_legality_error
 from official_restriction import official_restriction_error
 from battle.replay import list_replays_for_user, load_replay
 from battle.matchmaking import Matchmaker, RankedMatchmaker
@@ -488,6 +488,7 @@ def mount_battle(
     def list_ai_decks() -> dict[str, Any]:
         decks = load_ai_decks()
         return {
+            "battle_date": battle_today().isoformat(),
             "decks": [
                 {
                     "id": d["id"],

@@ -3,6 +3,7 @@
 from datetime import date
 
 from battle.set_legality import (
+    battle_today,
     card_has_battle_effect_data,
     card_legality_block,
     casual_deck_legality_error,
@@ -81,3 +82,23 @@ def test_parallel_art_uses_base_effect_data_and_old_sets_stay_open():
     assert card_legality_block("OP01-001", mode="ranked", on_date=BEFORE) is None
     assert ranked_deck_ban_error("OP17-001", {"OP01-016": 4}, on_date=BEFORE) is None
     assert casual_deck_legality_error("ST01-001", {"OP01-016": 4}, on_date=BEFORE) is None
+
+
+def test_opcg_battle_today_overrides_malaysia_when_the_value_is_a_real_day(monkeypatch):
+    monkeypatch.delenv("OPCG_BATTLE_TODAY", raising=False)
+    real = battle_today()
+    monkeypatch.setenv("OPCG_BATTLE_TODAY", "2026-11-27")
+    assert battle_today() == OP18_LEGAL
+    assert battle_today(BEFORE) == BEFORE
+    assert card_legality_block("EB05-001", mode="casual") is None
+    assert card_legality_block("OP18-001", mode="ranked") is None
+    monkeypatch.setenv("OPCG_BATTLE_TODAY", "2026-10-13")
+    assert battle_today() == BEFORE
+    assert card_legality_block("EB05-001", mode="casual") == "unreleased"
+    assert card_legality_block("OP18-001", mode="casual") == "unreleased"
+    for raw in ("", "2026-02-31", "11/27/2026", "2026-11-27T00:00:00"):
+        monkeypatch.setenv("OPCG_BATTLE_TODAY", raw)
+        assert battle_today() == real
+        assert battle_today(OP18_LEGAL) == OP18_LEGAL
+    monkeypatch.delenv("OPCG_BATTLE_TODAY", raising=False)
+    assert battle_today() == real
