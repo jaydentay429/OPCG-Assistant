@@ -125271,6 +125271,452 @@
         }
       ],
       "status": "verified"
-    }
+    },
+      "EB05-018": {
+        "card_id": "EB05-018",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "on_play",
+            "summary": "[On Play] Up to 1 rested opponent Character with cost 6 or less will not become active next Refresh / 【登場時】最多1張對手休息狀態費用6以下的角色卡，在下一個重整階段無法為活動狀態。",
+            "ops": [
+              {
+                "op": "skip_untap",
+                "target_kind": "opponent_character_rested",
+                "cost_lte": 6,
+                "optional": true,
+                "count": 1,
+                "summary": "Up to 1 rested opponent Character cost ≤6 will not become active / 最多1張對手休息狀態費用6以下的角色卡無法活動"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "EB05-043": {
+        "card_id": "EB05-043",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "on_ko",
+            "summary": "[On K.O.] K.O. or rest up to 1 opponent Character with cost 6 or less / 【KO時】將最多1張對手費用6以下的角色卡KO、或置為休息狀態。",
+            "ops": [
+              {
+                "op": "choose_one",
+                "optional": true,
+                "summary": "K.O. or rest up to 1 opponent Character cost ≤6 / 將最多1張對手費用6以下的角色卡KO或休息",
+                "options": [
+                  {
+                    "id": "ko",
+                    "label": "K.O. / 擊破",
+                    "ops": [
+                      {
+                        "op": "ko",
+                        "count": 1,
+                        "optional": true,
+                        "target_kind": "opponent_character",
+                        "cost_lte": 6,
+                        "summary": "K.O. up to 1 opponent Character cost ≤6 / 擊破最多1張費用6以下的對手角色"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "rest",
+                    "label": "Rest / 休息",
+                    "ops": [
+                      {
+                        "op": "rest_character",
+                        "count": 1,
+                        "optional": true,
+                        "target_kind": "opponent_character",
+                        "cost_lte": 6,
+                        "summary": "Rest up to 1 opponent Character cost ≤6 / 休息最多1張費用6以下的對手角色"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "OP18-010": {
+        "card_id": "OP18-010",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "on_ko",
+            "summary": "[On K.O.] Add up to 1 Character with 4000 power or less from your trash to your hand / 【KO時】將最多1張自己廢棄區中力量值4000以下的角色卡加入手牌。",
+            "ops": [
+              {
+                "op": "add_from_trash",
+                "card_type": "character",
+                "power_lte": 4000,
+                "count": 1,
+                "optional": true,
+                "destination": "hand",
+                "summary": "Add up to 1 Character with 4000 power or less from trash / 從廢棄區加入最多1張力量4000以下的角色卡"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "OP18-016": {
+        "card_id": "OP18-016",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "on_ko",
+            "summary": "[On K.O.] Play up to 1 {Alabasta} Character with 6000 power or less from your hand / 【KO時】使最多1張自己手牌中力量值6000以下、擁有《阿拉巴斯坦王國》特徵的角色卡登場。",
+            "ops": [
+              {
+                "op": "play_from_hand",
+                "card_type": "character",
+                "trait_contains": "阿拉巴斯坦王國|Alabasta",
+                "power_lte": 6000,
+                "count": 1,
+                "optional": true,
+                "summary": "Play up to 1 Alabasta Character with 6000 power or less / 使最多1張阿拉巴斯坦王國力量6000以下的角色卡登場"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "OP18-024": {
+        "card_id": "OP18-024",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "end_of_your_turn",
+            "summary": "[End of Your Turn] You may trash this Character: Set your Leader as active / 【我方回合結束時】可以將這張角色卡放置到廢棄區：將自己的領航卡置為活動狀態。",
+            "ops": [
+              {
+                "op": "trash",
+                "target_kind": "self",
+                "as_cost": true,
+                "optional": true,
+                "summary": "You may trash this Character / 可以將這張角色卡放置到廢棄區"
+              },
+              {
+                "op": "set_character_active",
+                "target_kind": "leader",
+                "optional": false,
+                "summary": "Set your Leader as active / 將自己的領航卡置為活動狀態"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "OP18-025": {
+        "card_id": "OP18-025",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "end_of_your_turn",
+            "summary": "[End of Your Turn] If this Character is rested, set your Leader as active / 【我方回合結束時】若這張角色卡在休息狀態時，將自己的領航卡置為活動狀態。",
+            "ops": [
+              {
+                "op": "set_character_active",
+                "target_kind": "leader",
+                "optional": false,
+                "summary": "Set your Leader as active / 將自己的領航卡置為活動狀態"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95,
+            "while_rested": true
+          }
+        ]
+      },
+      "OP18-032": {
+        "card_id": "OP18-032",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "on_play",
+            "summary": "[On Play]/[On K.O.] Up to 1 rested opponent Character with 8000 power or less will not become active next Refresh / 【登場時】/【KO時】最多1張對手休息狀態、力量值8000以下的角色卡，在下一個重整階段無法為活動狀態。",
+            "ops": [
+              {
+                "op": "skip_untap",
+                "target_kind": "opponent_character_rested",
+                "power_lte": 8000,
+                "optional": true,
+                "count": 1,
+                "summary": "Up to 1 rested opponent Character with 8000 power or less will not become active / 最多1張休息狀態力量8000以下的對手角色無法活動"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          },
+          {
+            "timing": "on_ko",
+            "summary": "[On Play]/[On K.O.] Up to 1 rested opponent Character with 8000 power or less will not become active next Refresh / 【登場時】/【KO時】最多1張對手休息狀態、力量值8000以下的角色卡，在下一個重整階段無法為活動狀態。",
+            "ops": [
+              {
+                "op": "skip_untap",
+                "target_kind": "opponent_character_rested",
+                "power_lte": 8000,
+                "optional": true,
+                "count": 1,
+                "summary": "Up to 1 rested opponent Character with 8000 power or less will not become active / 最多1張休息狀態力量8000以下的對手角色無法活動"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "OP18-044": {
+        "card_id": "OP18-044",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "your_turn",
+            "summary": "[DON!! x1] This Character gains +1000 power / 【咚‼×1】這張角色卡力量值+1000。",
+            "ops": [
+              {
+                "op": "buff_self",
+                "amount": 1000
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95,
+            "require_don_attached_gte": 1
+          },
+          {
+            "timing": "opponent_turn",
+            "summary": "[DON!! x1] This Character gains +1000 power / 【咚‼×1】這張角色卡力量值+1000。",
+            "ops": [
+              {
+                "op": "buff_self",
+                "amount": 1000
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95,
+            "require_don_attached_gte": 1
+          },
+          {
+            "timing": "on_play",
+            "summary": "[On Play] Draw 1 card and trash 1 card from your hand / 【登場時】抽1張卡片，並廢棄1張自己的手牌。",
+            "ops": [
+              {
+                "op": "draw",
+                "count": 1,
+                "optional": false,
+                "summary": "Draw 1 / 抽1張"
+              },
+              {
+                "op": "trash_hand",
+                "count": 1,
+                "optional": false,
+                "owner": "self",
+                "summary": "Trash 1 card from your hand / 廢棄1張自己的手牌"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "OP18-048": {
+        "card_id": "OP18-048",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "on_play",
+            "summary": "[On Play] Play up to 1 Character with cost 5 or less and a type including Baroque Works / 【登場時】使最多1張自己手牌中費用5以下、擁有包含『B・W』特徵的角色卡登場。",
+            "ops": [
+              {
+                "op": "play_from_hand",
+                "card_type": "character",
+                "cost_lte": 5,
+                "trait_contains": "B・W|Baroque Works",
+                "count": 1,
+                "optional": true,
+                "summary": "Play up to 1 Baroque Works Character with cost 5 or less / 使最多1張費用5以下的B・W角色卡登場"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "OP18-052": {
+        "card_id": "OP18-052",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "your_turn",
+            "summary": "[DON!! x1] This Character gains +1000 power / 【咚‼×1】這張角色卡力量值+1000。",
+            "ops": [
+              {
+                "op": "buff_self",
+                "amount": 1000
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95,
+            "require_don_attached_gte": 1
+          },
+          {
+            "timing": "opponent_turn",
+            "summary": "[DON!! x1] This Character gains +1000 power / 【咚‼×1】這張角色卡力量值+1000。",
+            "ops": [
+              {
+                "op": "buff_self",
+                "amount": 1000
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95,
+            "require_don_attached_gte": 1
+          },
+          {
+            "timing": "on_play",
+            "summary": "[On Play] Play up to 1 Character with cost 3 or less and a type including Baroque Works / 【登場時】使最多1張自己手牌中費用3以下、擁有包含『B・W』特徵的角色卡登場。",
+            "ops": [
+              {
+                "op": "play_from_hand",
+                "card_type": "character",
+                "cost_lte": 3,
+                "trait_contains": "B・W|Baroque Works",
+                "count": 1,
+                "optional": true,
+                "summary": "Play up to 1 Baroque Works Character with cost 3 or less / 使最多1張費用3以下的B・W角色卡登場"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "OP18-055": {
+        "card_id": "OP18-055",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "your_turn",
+            "summary": "[DON!! x1] This Character gains +1000 power / 【咚‼×1】這張角色卡力量值+1000。",
+            "ops": [
+              {
+                "op": "buff_self",
+                "amount": 1000
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95,
+            "require_don_attached_gte": 1
+          },
+          {
+            "timing": "opponent_turn",
+            "summary": "[DON!! x1] This Character gains +1000 power / 【咚‼×1】這張角色卡力量值+1000。",
+            "ops": [
+              {
+                "op": "buff_self",
+                "amount": 1000
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95,
+            "require_don_attached_gte": 1
+          },
+          {
+            "timing": "on_play",
+            "summary": "[On Play] Return up to 1 opponent Character with cost 2 or less to the owner's hand / 【登場時】將最多1張對手費用2以下的角色卡放回持有者的手牌。",
+            "ops": [
+              {
+                "op": "return_to_hand",
+                "target_kind": "opponent_character",
+                "cost_lte": 2,
+                "count": 1,
+                "optional": true,
+                "summary": "Return up to 1 opponent Character with cost 2 or less / 將最多1張對手費用2以下的角色卡放回手牌"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "OP18-089": {
+        "card_id": "OP18-089",
+        "version": 1,
+        "status": "verified",
+        "abilities": [
+          {
+            "timing": "your_turn",
+            "summary": "This Character gains +12 cost / 這張角色卡的費用+12。",
+            "ops": [
+              {
+                "op": "grant_cost",
+                "amount": 12,
+                "target_kind": "self",
+                "duration": "permanent"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          },
+          {
+            "timing": "opponent_turn",
+            "summary": "This Character gains +12 cost / 這張角色卡的費用+12。",
+            "ops": [
+              {
+                "op": "grant_cost",
+                "amount": 12,
+                "target_kind": "self",
+                "duration": "permanent"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          },
+          {
+            "timing": "on_play",
+            "summary": "[On Play] Trash 1 card from your hand: your opponent trashes 1 / 【登場時】可以廢棄1張自己的手牌：對手廢棄1張自身的手牌。",
+            "ops": [
+              {
+                "op": "trash_hand",
+                "count": 1,
+                "optional": true,
+                "as_cost": true,
+                "owner": "self",
+                "summary": "You may trash 1 card from your hand / 可以廢棄1張自己的手牌"
+              },
+              {
+                "op": "trash_hand",
+                "count": 1,
+                "optional": false,
+                "owner": "opponent",
+                "chooser": "opponent",
+                "summary": "Your opponent trashes 1 card from their hand / 對手廢棄1張自身的手牌"
+              }
+            ],
+            "status": "verified",
+            "confidence": 0.95
+          }
+        ]
+      }
   }
 }

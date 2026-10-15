@@ -2664,6 +2664,11 @@ def sanitize_op(raw: Any) -> dict[str, Any] | None:
                 op["cost_gte"] = max(0, min(10, int(raw.get("cost_gte"))))
             except (TypeError, ValueError):
                 pass
+        if raw.get("power_lte") is not None:
+            try:
+                op["power_lte"] = max(0, min(20000, int(raw.get("power_lte"))))
+            except (TypeError, ValueError):
+                pass
         if raw.get("require_life_lte") is not None:
             try:
                 op["require_life_lte"] = max(0, min(10, int(raw.get("require_life_lte") or 0)))

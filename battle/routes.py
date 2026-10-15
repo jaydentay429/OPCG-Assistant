@@ -848,6 +848,18 @@ def mount_battle(
         await manager.broadcast(room)
         return _room_info(room, guest_token=guest_token, user=user)
 
+    @router.post("/battle/rooms/{code}/leave")
+    async def leave_room(code: str, request: Request) -> dict[str, Any]:
+        user, _guest_token = _require_user(request, allow_guest=True)
+        room = manager.get(code)
+        if not room:
+            return {"ok": True, "status": "absent"}
+        status = manager.depart_user(room, str(user["user_id"]))
+        still = manager.get(code)
+        if still:
+            await manager.broadcast(still)
+        return {"ok": True, "status": status}
+
     @router.post("/battle/rooms/{code}/ready")
     async def set_ready(code: str, request: Request, payload: SetReadyRequest) -> dict[str, Any]:
         user, guest_token = _require_user(request, allow_guest=True)
@@ -953,6 +965,10 @@ def mount_battle(
             await ws.close()
             return
         slot = room_obj.seats[seat]
+        if slot and slot.departed:
+            await ws.send_json({"type": "error", "error": "You left this match."})
+            await ws.close()
+            return
         if slot:
             old_ws = slot.ws
             slot.ws = ws
@@ -1037,6 +1053,18 @@ def mount_battle(
                     await manager.broadcast(room_obj)
                     await manager.broadcast_chat(room_obj)
                     _spawn_ai(room_obj, push_here)
+                elif data.get("type") == "leave":
+                    manager.depart_user(room_obj, str(user["user_id"]))
+                    if slot and slot.ws is ws:
+                        slot.ws = None
+                    still = manager.get(room)
+                    if still:
+                        await manager.broadcast(still)
+                    try:
+                        await ws.close()
+                    except Exception:
+                        pass
+                    return
                 elif data.get("type") == "chat":
                     try:
                         payload = manager.add_chat(

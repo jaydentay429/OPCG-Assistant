@@ -1519,6 +1519,20 @@ def inst_effects_negated(player, source_iid: str) -> bool:
     return bool(getattr(inst, "effects_negated_until_end", None))
 
 
+def _log_unit_ref(state: MatchState, seat: int, iid: str) -> str:
+    """Card id or a stable role token for battle logs. Never an instance id."""
+    token = str(iid or "")
+    if token in {"", "leader"} or token.startswith("leader"):
+        return "leader"
+    owner = state.player(seat)
+    inst = next((c for c in owner.characters if c.iid == token), None)
+    if inst is None:
+        inst = next((s for s in owner.stages if s.iid == token), None)
+    if inst is not None and inst.card_id:
+        return str(inst.card_id)
+    return "character"
+
+
 def inst_power(state: MatchState, seat: int, iid: str, catalog: CatalogFn) -> int:
     player = state.player(seat)
     # 6-5-5-2: attached DON!! only raise power during that player's turn
@@ -4754,20 +4768,23 @@ def _try_enter_combat_steps(state: MatchState, catalog: CatalogFn) -> None:
     state.phase = phase
     attack.combat_entered = True
     atk = state.player(attack.attacker_seat)
+    def_seat = state.other(attack.attacker_seat)
+    attacker_ref = _log_unit_ref(state, attack.attacker_seat, str(attack.attacker_iid or ""))
+    target_ref = _log_unit_ref(state, def_seat, str(attack.target_iid or ""))
     if phase == "counter":
         state.add_log(
             "play.log.attack_blockerless",
             name=atk.username,
-            attacker=attack.attacker_iid,
-            target=attack.target_iid,
+            attacker=attacker_ref,
+            target=target_ref,
             power=attack.declared_power,
         )
     else:
         state.add_log(
             "play.log.attack",
             name=atk.username,
-            attacker=attack.attacker_iid,
-            target=attack.target_iid,
+            attacker=attacker_ref,
+            target=target_ref,
             power=attack.declared_power,
         )
     rule_process(state)
