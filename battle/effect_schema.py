@@ -1272,6 +1272,13 @@ def sanitize_op(raw: Any) -> dict[str, Any] | None:
                 op["include_don"] = True
             if kind == "rest_character" and raw.get("include_stage"):
                 op["include_stage"] = True
+            if kind == "rest_character" and raw.get("require_own_stage_cost_gte") is not None:
+                try:
+                    op["require_own_stage_cost_gte"] = max(
+                        0, min(10, int(raw.get("require_own_stage_cost_gte") or 0))
+                    )
+                except (TypeError, ValueError):
+                    pass
             if kind == "rest_character" and raw.get("also_skip_untap"):
                 op["also_skip_untap"] = True
             if kind == "rest_character" and raw.get("all"):
@@ -1449,6 +1456,8 @@ def sanitize_op(raw: Any) -> dict[str, Any] | None:
                 op["card_type"] = ctype
         if raw.get("or_event"):
             op["or_event"] = True
+        if raw.get("type_or_trait"):
+            op["type_or_trait"] = True
         if raw.get("name_or_trait"):
             op["name_or_trait"] = True
         if raw.get("as_rested"):

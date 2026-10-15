@@ -28,11 +28,14 @@ def test_schedule_blocks_unreleased_sets_in_casual_and_ranked():
 
 def test_casual_opens_on_release_only_with_effect_data():
     assert card_has_battle_effect_data("EB05-001")
-    assert not card_has_battle_effect_data("EB05-004")
+    assert card_has_battle_effect_data("EB05-004")
+    assert not card_has_battle_effect_data("EB05-008")
     assert card_legality_block("EB05-001", mode="casual", on_date=EB05_RELEASE) is None
-    assert card_legality_block("EB05-004", mode="casual", on_date=EB05_RELEASE) == "no_effect"
-    missing = casual_deck_legality_error("OP17-001", {"EB05-004": 4}, on_date=AFTER)
-    assert missing and "EB05-004" in missing and "battle effect data is missing" in missing
+    assert card_legality_block("EB05-004", mode="casual", on_date=EB05_RELEASE) is None
+    assert card_legality_block("EB05-008", mode="casual", on_date=EB05_RELEASE) == "no_effect"
+    missing = casual_deck_legality_error("OP17-001", {"EB05-008": 4}, on_date=AFTER)
+    assert missing and "EB05-008" in missing and "battle effect data is missing" in missing
+    assert casual_deck_legality_error("OP17-001", {"EB05-004": 4}, on_date=AFTER) is None
     assert casual_deck_legality_error("EB05-001", {"OP01-016": 4}, on_date=EB05_RELEASE) is None
 
 
@@ -47,12 +50,15 @@ def test_ranked_waits_for_tournament_legal_date():
 def test_op18_ranked_date_is_marked_assumed():
     assert card_legality_block("OP18-001", mode="casual", on_date=OP18_RELEASE) is None
     assert card_legality_block("OP18-001", mode="ranked", on_date=OP18_RELEASE) == "not_ranked_legal"
-    assert card_legality_block("OP18-011", mode="casual", on_date=OP18_LEGAL) == "no_effect"
+    assert card_has_battle_effect_data("OP18-011")
+    assert card_legality_block("OP18-011", mode="casual", on_date=OP18_LEGAL) is None
+    assert not card_has_battle_effect_data("OP18-017")
+    assert card_legality_block("OP18-017", mode="casual", on_date=OP18_LEGAL) == "no_effect"
     assumed = ranked_set_legality_error("OP18-060", {"OP18-119": 4}, on_date=OP18_RELEASE)
     assert assumed and "2026-11-27" in assumed and "7-day rule" in assumed
     assert ranked_set_legality_error("OP18-001", {"OP01-016": 4}, on_date=OP18_LEGAL) is None
-    missing = ranked_deck_ban_error("OP18-011", {"OP01-016": 4}, on_date=AFTER)
-    assert missing and "OP18-011" in missing and "battle effect data is missing" in missing
+    missing = ranked_deck_ban_error("OP18-017", {"OP01-016": 4}, on_date=AFTER)
+    assert missing and "OP18-017" in missing and "battle effect data is missing" in missing
 
 
 def test_op18_085_uses_op18_release_and_tournament_dates():
