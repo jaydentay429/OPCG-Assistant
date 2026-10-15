@@ -1751,12 +1751,20 @@ def sanitize_op(raw: Any) -> dict[str, Any] | None:
             op["exclude_name"] = str(raw.get("exclude_name"))[:60]
         if raw.get("attribute"):
             op["attribute"] = str(raw.get("attribute"))[:40]
-        for key, lo, hi in (("cost_lte", 0, 10), ("cost_gte", 0, 10), ("cost_eq", 0, 10)):
+        for key, lo, hi in (
+            ("cost_lte", 0, 10),
+            ("cost_gte", 0, 10),
+            ("cost_eq", 0, 10),
+            ("base_power_eq", 0, 20000),
+            ("base_power_lte", 0, 20000),
+        ):
             if raw.get(key) is not None:
                 try:
                     op[key] = max(lo, min(hi, int(raw.get(key) or 0)))
                 except (TypeError, ValueError):
                     pass
+        if raw.get("battle_only"):
+            op["battle_only"] = True
         if raw.get("opp_effect_base_power_lte") is not None:
             try:
                 op["opp_effect_base_power_lte"] = max(0, min(20000, int(raw.get("opp_effect_base_power_lte") or 0)))
@@ -2076,7 +2084,7 @@ def sanitize_op(raw: Any) -> dict[str, Any] | None:
         if trigger in {"any_leave", "leave", "any"}:
             op["any_leave"] = True
             op["trigger"] = trigger
-        elif trigger not in {"ko", "opp_remove"}:
+        elif trigger not in {"ko", "opp_remove", "opp_effect"}:
             op["trigger"] = "ko"
         else:
             op["trigger"] = trigger
@@ -2111,6 +2119,8 @@ def sanitize_op(raw: Any) -> dict[str, Any] | None:
                 op["don_count"] = max(1, min(5, int(raw.get("don_count") or raw.get("count") or 1)))
             except (TypeError, ValueError):
                 op["don_count"] = 1
+            if raw.get("also_rest_self"):
+                op["also_rest_self"] = True
         if cost == "trash_hand":
             try:
                 op["count"] = max(1, min(10, int(raw.get("count") or raw.get("trash_count") or 1)))
@@ -2783,6 +2793,8 @@ def sanitize_op(raw: Any) -> dict[str, Any] | None:
                     pass
         if raw.get("require_trigger"):
             op["require_trigger"] = True
+        if raw.get("color"):
+            op["color"] = str(raw.get("color")).strip().lower()[:20]
         if raw.get("then_to_deck_top"):
             op["then_to_deck_top"] = True
         if raw.get("summary"):
@@ -3196,6 +3208,23 @@ def sanitize_op(raw: Any) -> dict[str, Any] | None:
     if raw.get("require_own_char_cost_gte") is not None and "require_own_char_cost_gte" not in op:
         try:
             op["require_own_char_cost_gte"] = max(0, min(12, int(raw.get("require_own_char_cost_gte") or 0)))
+        except (TypeError, ValueError):
+            pass
+    if raw.get("require_no_own_char_cost_gte") is not None and "require_no_own_char_cost_gte" not in op:
+        try:
+            op["require_no_own_char_cost_gte"] = max(
+                0, min(12, int(raw.get("require_no_own_char_cost_gte") or 0))
+            )
+        except (TypeError, ValueError):
+            pass
+    if (
+        raw.get("require_opp_field_char_base_power_gte") is not None
+        and "require_opp_field_char_base_power_gte" not in op
+    ):
+        try:
+            op["require_opp_field_char_base_power_gte"] = max(
+                0, min(20000, int(raw.get("require_opp_field_char_base_power_gte") or 0))
+            )
         except (TypeError, ValueError):
             pass
     if raw.get("require_chars_trait") and "require_chars_trait" not in op:

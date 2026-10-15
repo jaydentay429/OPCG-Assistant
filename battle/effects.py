@@ -5526,6 +5526,10 @@ def _hand_card_matches_play_op(info: dict[str, Any], op: dict[str, Any]) -> bool
     if op.get("power_lte") is not None:
         if _printed_power(info) > int(op.get("power_lte") or 0):
             return False
+    if op.get("power_eq") is not None and _printed_power(info) != int(op.get("power_eq") or 0):
+        return False
+    if op.get("power_gte") is not None and _printed_power(info) < int(op.get("power_gte") or 0):
+        return False
     needle_name = str(op.get("name_contains") or "").strip()
     needle_attr = str(op.get("attribute") or op.get("attr_contains") or "").strip().lower()
     name_hit = bool(needle_name) and _card_matches_name_contains(info, needle_name)
@@ -6445,6 +6449,14 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
         if op.get("if_played") and int(getattr(player, "_last_play_from_hand_count", 0) or 0) <= 0:
             continue
         if op.get("require_own_name_all") or op.get("require_chars_base_power_eq") is not None:
+            from battle.engine import _ability_board_conditions_ok
+
+            if not _ability_board_conditions_ok(state, seat, op, catalog):
+                continue
+        if (
+            op.get("require_no_own_char_cost_gte") is not None
+            or op.get("require_opp_field_char_base_power_gte") is not None
+        ):
             from battle.engine import _ability_board_conditions_ok
 
             if not _ability_board_conditions_ok(state, seat, op, catalog):
@@ -7621,7 +7633,7 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                     from battle.leave_replace import try_replace_leave
 
                     if try_replace_leave(
-                        state, owner_seat, hit, by_opponent=by_opp, catalog=catalog
+                        state, owner_seat, hit, by_opponent=by_opp, catalog=catalog, by_effect=True
                     ):
                         extra = [
                             {"op": "ko", "target_iid": rest.iid, "optional": False}
@@ -7808,7 +7820,7 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                 from battle.leave_replace import try_replace_leave
 
                 if try_replace_leave(
-                    state, owner_seat, hit, by_opponent=by_opp, catalog=catalog
+                    state, owner_seat, hit, by_opponent=by_opp, catalog=catalog, by_effect=True
                 ):
                     extra = []
                     rem_count = max(0, int(op.get("count") or 1) - 1)
@@ -8668,7 +8680,13 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                     from battle.leave_replace import try_replace_leave
 
                     if try_replace_leave(
-                        state, owner_seat, hit, by_opponent=owner_seat != seat, catalog=catalog, by_ko=False
+                        state,
+                        owner_seat,
+                        hit,
+                        by_opponent=owner_seat != seat,
+                        catalog=catalog,
+                        by_ko=False,
+                        by_effect=True,
                     ):
                         if _halt_for_replace("return_hand"):
                             return logs
@@ -10021,6 +10039,11 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                         return False
                 if op.get("require_trigger") and not card_has_trigger(info):
                     return False
+                color = str(op.get("color") or "").strip().lower()
+                if color:
+                    blob = _card_color_blob(info or {})
+                    if not any(a.lower() in blob for a in _color_aliases(color)):
+                        return False
                 return True
 
             if not str(op.get("target_iid") or "").startswith("hand:"):
@@ -10387,8 +10410,39 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                 op = dict(op)
                 op["target_iid"] = eligible[0]
             token = str(op.get("target_iid") or "")
+            pos = str(op.get("position") or "top").strip().lower()
+            if (
+                pos == "top_or_bottom"
+                and op.get("hand_index") is None
+                and token.startswith("hand:")
+                and not state.pending_choice
+            ):
+                cont = dict(op)
+                try:
+                    cont["hand_index"] = int(token.split(":")[1])
+                except (IndexError, ValueError):
+                    cont["hand_index"] = 0
+                cont.pop("target_iid", None)
+                state.pending_choice = PendingChoice(
+                    seat=seat,
+                    card_id=str(op.get("card_id") or ""),
+                    source_iid=str(op.get("source_iid") or ""),
+                    target_kind="life_position",
+                    options=["life:top", "life:bottom"],
+                    remaining_ops=[cont, *queue],
+                    optional=False,
+                    summary=str(op.get("summary") or "Add the card to the top or bottom of Life"),
+                    purpose=purpose_from_op(op),
+                )
+                logs.append({"key": "play.log.choice_offer", "name": player.username})
+                return logs
             idx = 0
-            if token.startswith("hand:"):
+            if op.get("hand_index") is not None:
+                try:
+                    idx = int(op.get("hand_index"))
+                except (TypeError, ValueError):
+                    idx = 0
+            elif token.startswith("hand:"):
                 try:
                     idx = int(token.split(":")[1])
                 except (IndexError, ValueError):
@@ -10398,13 +10452,20 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
             if not player.hand:
                 continue
             card = player.hand.pop(idx)
-            player.life.insert(0, card)
             face = str(op.get("face") or "").strip().lower()
             face_up = face != "down"
+            top = pos != "bottom"
+            if top:
+                player.life.insert(0, card)
+            else:
+                player.life.append(card)
             if player.life_face or face in {"up", "down"}:
                 if not player.life_face:
-                    player.life_face = [True] * (len(player.life) - 1)
-                player.life_face.insert(0, face_up)
+                    player.life_face = [False] * (len(player.life) - 1)
+                if top:
+                    player.life_face.insert(0, face_up)
+                else:
+                    player.life_face.append(face_up)
             logs.append({"key": "play.log.add_life", "name": player.username, "n": 1})
         elif kind == "place_on_life":
             # Place Character onto Life (usually opponent's Character → opponent's Life).
@@ -10883,40 +10944,45 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                 "all_own",
                 "own_character",
             }:
+                try:
+                    per_target = max(1, min(5, int(op.get("max_per_target") or 1)))
+                except (TypeError, ValueError):
+                    per_target = 1
                 for tid in _attach_eligible():
-                    if take_from_rested_pool:
-                        if int(don_src.don_rested or 0) <= 0:
-                            break
-                        don_src.don_rested -= 1
-                    elif take_from_active:
-                        if int(don_src.don_active or 0) <= 0:
-                            break
-                        don_src.don_active -= 1
-                    elif take_from_cost_area:
-                        if int(don_src.don_active or 0) + int(don_src.don_rested or 0) <= 0:
-                            break
-                        if int(don_src.don_active or 0) > 0:
-                            don_src.don_active -= 1
-                        else:
+                    for _ in range(per_target):
+                        if take_from_rested_pool:
+                            if int(don_src.don_rested or 0) <= 0:
+                                break
                             don_src.don_rested -= 1
-                    else:
-                        if _don_room(don_src) <= 0:
-                            break
-                        don_src.don_given += 1
-                    if tid == "leader":
-                        board.leader_don += 1
-                    else:
-                        inst = next((c for c in board.characters if c.iid == tid), None)
-                        if inst:
-                            inst.don_attached += 1
-                        else:
-                            if take_from_rested_pool:
-                                don_src.don_rested += 1
+                        elif take_from_active:
+                            if int(don_src.don_active or 0) <= 0:
+                                break
+                            don_src.don_active -= 1
+                        elif take_from_cost_area:
+                            if int(don_src.don_active or 0) + int(don_src.don_rested or 0) <= 0:
+                                break
+                            if int(don_src.don_active or 0) > 0:
+                                don_src.don_active -= 1
                             else:
-                                don_src.don_given = max(0, int(don_src.don_given or 0) - 1)
-                                don_src.don_rested += 1
-                            continue
-                    logs.append({"key": "play.log.attach_don", "name": player.username})
+                                don_src.don_rested -= 1
+                        else:
+                            if _don_room(don_src) <= 0:
+                                break
+                            don_src.don_given += 1
+                        if tid == "leader":
+                            board.leader_don += 1
+                        else:
+                            inst = next((c for c in board.characters if c.iid == tid), None)
+                            if inst:
+                                inst.don_attached += 1
+                            else:
+                                if take_from_rested_pool:
+                                    don_src.don_rested += 1
+                                else:
+                                    don_src.don_given = max(0, int(don_src.don_given or 0) - 1)
+                                    don_src.don_rested += 1
+                                continue
+                        logs.append({"key": "play.log.attach_don", "name": player.username})
                 continue
 
             if not target:
@@ -11457,6 +11523,23 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                     return
                 if op.get("cost_eq") is not None and _printed_cost(info) != int(op["cost_eq"]):
                     return
+                if op.get("base_power_eq") is not None and _printed_power(info) != int(op["base_power_eq"]):
+                    return
+                if op.get("base_power_lte") is not None and _printed_power(info) > int(op["base_power_lte"]):
+                    return
+                if op.get("battle_only"):
+                    shields = list(getattr(inst, "battle_ko_shields", None) or [])
+                    expire = _opp_end_expire_seat(seat) if _duration_is_until_opp_end(str(op.get("duration") or "")) else seat
+                    shields.append({"expire_seat": expire})
+                    inst.battle_ko_shields = shields
+                    logs.append(
+                        {
+                            "key": "play.log.effect_applied",
+                            "id": inst.card_id,
+                            "summary": "cannot_battle_ko",
+                        }
+                    )
+                    return
                 if kind == "cannot_be_rested":
                     inst.cannot_be_rested = True
                     logs.append({"key": "play.log.effect_applied", "id": inst.card_id, "summary": "cannot_be_rested"})
@@ -11657,6 +11740,7 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                             by_opponent=owner.seat != seat,
                             catalog=catalog,
                             by_ko=False,
+                            by_effect=True,
                         ):
                             if _halt_for_replace("bottom"):
                                 return logs
@@ -11783,6 +11867,7 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                             by_opponent=owner.seat != seat,
                             catalog=catalog,
                             by_ko=False,
+                            by_effect=True,
                         ):
                             if _halt_for_replace("bottom"):
                                 return logs

@@ -126235,6 +126235,544 @@
             "confidence": 0.95
           }
         ]
-      }
+      },
+    "EB05-008": {
+      "card_id": "EB05-008",
+      "version": 1,
+      "status": "verified",
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "[Main] You may give 1 active DON!! to your Leader and reveal 2 red Events: up to 1 rested opponent Character gets −7000 this turn / 【主要】可附加1張活動咚在領航卡並公開2張紅色事件：對手休息角色這個回合-7000。",
+          "ops": [
+            {
+              "op": "attach_don",
+              "count": 1,
+              "from_active": true,
+              "target_kind": "leader",
+              "as_cost": true,
+              "optional": true,
+              "summary": "Give 1 active DON!! to your Leader / 附加1張活動咚在領航卡"
+            },
+            {
+              "op": "reveal_hand",
+              "count": 2,
+              "card_type": "event",
+              "color": "red",
+              "as_cost": true,
+              "optional": true,
+              "summary": "Reveal 2 red Event cards from your hand / 公開2張紅色事件卡"
+            },
+            {
+              "op": "buff",
+              "amount": -7000,
+              "target_kind": "opponent_character_rested",
+              "duration": "turn",
+              "optional": true,
+              "count": 1
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        },
+        {
+          "timing": "counter_event",
+          "summary": "[Counter] If you have no Character with cost 5 or more, up to 1 of your Leader or Characters gains +4000 during this battle / 【反擊】若沒有費用5以上角色，自己的領航卡或角色這場對戰+4000。",
+          "ops": [
+            {
+              "op": "buff",
+              "amount": 4000,
+              "target_kind": "own_leader_or_character",
+              "duration": "battle",
+              "optional": true,
+              "require_no_own_char_cost_gte": 5
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95,
+          "require_no_own_char_cost_gte": 5
+        }
+      ]
+    },
+    "EB05-031": {
+      "card_id": "EB05-031",
+      "version": 1,
+      "status": "verified",
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "[On Play] DON!! −1: If your Leader has {The Vinsmoke Family}, trash 10 cards from the top of your deck / 【登場時】咚−1：領航卡有賓什莫克家時，卡組上10張放廢棄區。",
+          "ops": [
+            {
+              "op": "return_don",
+              "count": 1,
+              "as_cost": true,
+              "optional": true,
+              "summary": "DON!! −1 / 咚‼−1"
+            },
+            {
+              "op": "trash_deck_top",
+              "count": 10,
+              "require_leader_trait": "賓什莫克家|The Vinsmoke Family"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        },
+        {
+          "timing": "activate_main",
+          "summary": "[Activate: Main] You may trash this Character: If your opponent has a Character with 8000 base power or more, add up to 4 active DON!! / 【啟動主要】可將這張角色放廢棄區：對手有原本8000以上角色時，追加最多4張活動咚。",
+          "ops": [
+            {
+              "op": "trash",
+              "target_kind": "self",
+              "as_cost": true,
+              "optional": true,
+              "summary": "Trash this Character / 將這張角色卡放置到廢棄區"
+            },
+            {
+              "op": "gain_don",
+              "count": 4,
+              "as_rested": false,
+              "require_opp_field_char_base_power_gte": 8000
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "EB05-046": {
+      "card_id": "EB05-046",
+      "version": 1,
+      "status": "verified",
+      "abilities": [
+        {
+          "timing": "your_turn",
+          "summary": "If your opponent has a Character with 8000 base power or more, this Character gains [Blocker] and +3000 / 對手有原本8000以上角色時，這張角色獲得防禦與+3000。",
+          "ops": [
+            {
+              "op": "grant_keyword",
+              "keyword": "blocker",
+              "target_kind": "self",
+              "duration": "turn",
+              "optional": false
+            },
+            {
+              "op": "buff_self",
+              "amount": 3000
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95,
+          "require_opp_field_char_base_power_gte": 8000
+        },
+        {
+          "timing": "opponent_turn",
+          "summary": "If your opponent has a Character with 8000 base power or more, this Character gains [Blocker] and +3000 / 對手有原本8000以上角色時，這張角色獲得防禦與+3000。",
+          "ops": [
+            {
+              "op": "grant_keyword",
+              "keyword": "blocker",
+              "target_kind": "self",
+              "duration": "turn",
+              "optional": false
+            },
+            {
+              "op": "buff_self",
+              "amount": 3000
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95,
+          "require_opp_field_char_base_power_gte": 8000
+        },
+        {
+          "timing": "on_opponent_attack",
+          "summary": "[On Your Opponent's Attack] You may trash 1 card from your hand: If you have 10 or more cards in your trash, your Leader's base power becomes 7000 this turn / 【對方攻擊時】可廢棄1張手牌：廢棄區10張以上時，領航卡原本力量這個回合變成7000。",
+          "ops": [
+            {
+              "op": "trash_hand",
+              "count": 1,
+              "as_cost": true,
+              "optional": true,
+              "summary": "Trash 1 card from your hand / 廢棄1張自己的手牌"
+            },
+            {
+              "op": "set_base_power",
+              "target_kind": "leader",
+              "amount": 7000,
+              "duration": "turn",
+              "require_trash_gte": 10
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "EB05-059": {
+      "card_id": "EB05-059",
+      "version": 1,
+      "status": "verified",
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "[Main] Draw 1, and all your 4000 base power {Big Mom Pirates} Characters cannot be K.O.'d in battle until the end of your opponent's next End Phase / 【主要】抽1張，自己原本4000的BIG MOM海賊團角色在下一個對手回合結束前不會在對戰中被KO。",
+          "ops": [
+            {
+              "op": "draw",
+              "count": 1
+            },
+            {
+              "op": "cannot_be_ko",
+              "all": true,
+              "target_kind": "own_character",
+              "trait_contains": "BIG MOM海賊團|Big Mom Pirates",
+              "base_power_eq": 4000,
+              "battle_only": true,
+              "duration": "until_opp_turn_end",
+              "optional": false
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        },
+        {
+          "timing": "trigger",
+          "summary": "[Trigger] Draw 1 and play up to 1 Character with 4000 power and a [Trigger] from your hand / 【觸發器】抽1張，並使最多1張力量4000且持有觸發器的角色登場。",
+          "ops": [
+            {
+              "op": "draw",
+              "count": 1
+            },
+            {
+              "op": "play_from_hand",
+              "card_type": "character",
+              "power_eq": 4000,
+              "require_trigger": true,
+              "count": 1,
+              "optional": true
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "EB05-061": {
+      "card_id": "EB05-061",
+      "version": 1,
+      "status": "verified",
+      "abilities": [
+        {
+          "timing": "your_turn",
+          "summary": "[Once Per Turn] If your Character with 6000 base power or less would be removed by your opponent, you may add the top Life card to your hand instead / 【每回合1次】原本6000以下的角色因對手離場時，可改為將生命值上面1張加入手牌。",
+          "ops": [
+            {
+              "op": "replace_leave",
+              "trigger": "opp_remove",
+              "target": "own_filtered",
+              "base_power_lte": 6000,
+              "cost": "life_to_hand",
+              "once": true,
+              "optional": true,
+              "summary": "Add the top Life card to your hand instead / 將生命值上面1張加入手牌"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        },
+        {
+          "timing": "on_play",
+          "summary": "[On Play] Play up to 1 red Character with a cost of 2 or less from your hand / 【登場時】使最多1張費用2以下的紅色角色登場。",
+          "ops": [
+            {
+              "op": "play_from_hand",
+              "card_type": "character",
+              "color": "red",
+              "cost_lte": 2,
+              "count": 1,
+              "optional": true
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "OP18-017": {
+      "card_id": "OP18-017",
+      "version": 1,
+      "status": "verified",
+      "abilities": [
+        {
+          "timing": "your_turn",
+          "summary": "[Once Per Turn] If your {Alabasta} Character would be removed by your opponent's effect, you may give your Leader −2000 power this turn instead / 【每回合1次】阿拉巴斯坦角色因對手效果離場時，可改為領航卡這個回合-2000。",
+          "ops": [
+            {
+              "op": "replace_leave",
+              "trigger": "opp_effect",
+              "target": "own_filtered",
+              "trait_contains": "阿拉巴斯坦王國|Alabasta",
+              "cost": "self_power_minus",
+              "amount": -2000,
+              "apply_to": "leader",
+              "once": true,
+              "optional": true,
+              "summary": "Give your Leader −2000 power this turn instead / 領航卡這個回合力量-2000"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        },
+        {
+          "timing": "when_attacking",
+          "summary": "[When Attacking] Up to 1 of your {Alabasta} Characters gains [Rush] this turn / 【攻擊時】最多1張自己的阿拉巴斯坦角色這個回合獲得速攻。",
+          "ops": [
+            {
+              "op": "grant_keyword",
+              "keyword": "rush",
+              "target_kind": "own_character",
+              "trait_contains": "阿拉巴斯坦王國|Alabasta",
+              "duration": "turn",
+              "optional": true,
+              "count": 1
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "OP18-046": {
+      "card_id": "OP18-046",
+      "version": 1,
+      "status": "verified",
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "[On Play] Draw 2 and give your Leader and all of your Characters up to 2 rested DON!! cards each / 【登場時】抽2張，並附加最多各2張休息咚在領航卡和全部角色。",
+          "ops": [
+            {
+              "op": "draw",
+              "count": 2
+            },
+            {
+              "op": "attach_don",
+              "all": true,
+              "from_rested": true,
+              "count": 2,
+              "max_per_target": 2,
+              "target_kind": "own_leader_or_character",
+              "optional": false
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        },
+        {
+          "timing": "on_opponent_attack",
+          "summary": "[On Your Opponent's Attack] You may trash 1 card from your hand: Your Leader with a type including Baroque Works has its base power become 7000 this turn / 【對方攻擊時】可廢棄1張手牌：含B・W的領航卡原本力量這個回合變成7000。",
+          "ops": [
+            {
+              "op": "trash_hand",
+              "count": 1,
+              "as_cost": true,
+              "optional": true,
+              "summary": "Trash 1 card from your hand / 廢棄1張自己的手牌"
+            },
+            {
+              "op": "set_base_power",
+              "target_kind": "leader",
+              "amount": 7000,
+              "duration": "turn",
+              "require_leader_trait": "B・W|Baroque Works"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "OP18-069": {
+      "card_id": "OP18-069",
+      "version": 1,
+      "status": "verified",
+      "abilities": [
+        {
+          "timing": "your_turn",
+          "summary": "If your {Franky Family} Character would be K.O.'d, you may DON!! −1 and rest this Character instead / 佛朗基一家角色即將被KO時，可咚−1並將這張角色休息。",
+          "ops": [
+            {
+              "op": "replace_leave",
+              "trigger": "ko",
+              "target": "own_filtered",
+              "trait_contains": "佛朗基一家|Franky Family",
+              "cost": "return_don",
+              "don_count": 1,
+              "also_rest_self": true,
+              "optional": true,
+              "summary": "DON!! −1 and rest this Character instead / 咚−1並將這張角色置為休息"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "OP18-100": {
+      "card_id": "OP18-100",
+      "version": 1,
+      "status": "verified",
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "[On Play] Draw 1 and add up to 1 card with a type including CP from your hand to the top or bottom of your Life face-up / 【登場時】抽1張，並將最多1張含CP的手牌以正面加入生命值上面或下面。",
+          "ops": [
+            {
+              "op": "draw",
+              "count": 1
+            },
+            {
+              "op": "hand_to_life",
+              "trait_contains": "CP",
+              "face": "up",
+              "position": "top_or_bottom",
+              "count": 1,
+              "optional": true
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        },
+        {
+          "timing": "trigger",
+          "summary": "[Trigger] If your Leader has a type including CP, draw 1 and rest up to 1 of your opponent's Leader or Characters / 【觸發器】領航卡含CP時，抽1張並休息最多1張對手領航卡或角色。",
+          "ops": [
+            {
+              "op": "draw",
+              "count": 1,
+              "require_leader_trait": "CP"
+            },
+            {
+              "op": "rest_character",
+              "target_kind": "opponent_leader_or_character",
+              "optional": true,
+              "count": 1,
+              "require_leader_trait": "CP"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95,
+          "require_leader_trait": "CP"
+        }
+      ]
+    },
+    "OP18-113": {
+      "card_id": "OP18-113",
+      "version": 1,
+      "status": "verified",
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "[On Play] Trash up to 1 card from the top of your opponent's Life / 【登場時】將最多1張對手生命值上面的卡片放廢棄區。",
+          "ops": [
+            {
+              "op": "trash_life",
+              "owner": "opponent",
+              "position": "top",
+              "count": 1,
+              "optional": true
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        },
+        {
+          "timing": "on_ko",
+          "summary": "[On K.O.] Trash up to 1 card from the top of your opponent's Life / 【KO時】將最多1張對手生命值上面的卡片放廢棄區。",
+          "ops": [
+            {
+              "op": "trash_life",
+              "owner": "opponent",
+              "position": "top",
+              "count": 1,
+              "optional": true
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        },
+        {
+          "timing": "trigger",
+          "summary": "[Trigger] If your Leader has a type including CP, draw 1 and place up to 1 Character with a cost of 8 or less at the bottom of its owner's deck / 【觸發器】領航卡含CP時，抽1張並將費用8以下角色放到持有者卡組下。",
+          "ops": [
+            {
+              "op": "draw",
+              "count": 1,
+              "require_leader_trait": "CP"
+            },
+            {
+              "op": "return_to_bottom",
+              "target_kind": "any_character",
+              "cost_lte": 8,
+              "count": 1,
+              "optional": true,
+              "require_leader_trait": "CP"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95,
+          "require_leader_trait": "CP"
+        }
+      ]
+    },
+    "P-160": {
+      "card_id": "P-160",
+      "version": 1,
+      "status": "verified",
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "[On Play] Look at 5 cards from the top of your deck; reveal up to 1 {Wisdom} card and add it to your hand. Place the rest on the bottom in any order and trash 1 card from your hand / 【登場時】查看卡組上5張，公開最多1張屬性知加入手牌，其餘放卡組下，並廢棄1張手牌。",
+          "ops": [
+            {
+              "op": "search_deck",
+              "top_n": 5,
+              "max_add": 1,
+              "attr_contains": "知|Wisdom",
+              "order_bottom": true,
+              "destination": "hand",
+              "reveal_adds": true
+            },
+            {
+              "op": "trash_hand",
+              "count": 1,
+              "optional": false
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95
+        },
+        {
+          "timing": "trigger",
+          "summary": "[Trigger] If you have 2 or less Life cards, play this card / 【觸發器】生命值2張以下時，使這張卡片登場。",
+          "ops": [
+            {
+              "op": "play_from_hand",
+              "self_card": true,
+              "card_type": "character",
+              "card_id": "P-160",
+              "optional": false,
+              "require_life_lte": 2
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.95,
+          "require_life_lte": 2
+        }
+      ]
+    }
   }
 }

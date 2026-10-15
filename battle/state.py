@@ -35,6 +35,9 @@ class CardInst:
     power_override: int | None = None
     # This-turn protection from K.O. by effects / battle (grant via cannot_be_ko op).
     cannot_be_ko: bool = False
+    # Battle-only K.O. shields that last until expire_seat's End Phase.
+    # Entries: {expire_seat: int}
+    battle_ko_shields: list[dict[str, Any]] = field(default_factory=list)
     # Continuous / this-turn: cannot be rested by opponent effects.
     cannot_be_rested: bool = False
     # Broader: cannot leave field by opponent effects (bounce/bottom/trash/KO).
