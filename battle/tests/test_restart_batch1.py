@@ -15,6 +15,7 @@ if "battle" not in sys.modules:
     pkg.__path__ = [str(ROOT / "battle")]
     sys.modules["battle"] = pkg
 
+import battle.effect_library as effect_lib  # noqa: E402
 from battle.effect_library import (  # noqa: E402
     ability_is_runnable,
     card_has_timing_gaps,
@@ -426,3 +427,63 @@ def test_op18_089_plus_12_cost_and_optional_hand_trash():
         assert opp.seat == 1
         assert apply_action(st2, 1, {"type": "select_choice", "target_iid": opp.options[0]}, catalog)["ok"]
     assert "OH" in st2.players[1].trash
+
+
+def test_op18_don_x1_replaces_compiled_aura(monkeypatch, tmp_path):
+    """A compiled don_attached buff must not stack on the verified [DON!! x1] aura."""
+    saved = (
+        effect_lib._library,
+        effect_lib._overrides,
+        effect_lib._loaded,
+        effect_lib._library_mtime,
+        effect_lib._overrides_mtime,
+    )
+    lib = tmp_path / "card_effects.json"
+    compiled = {
+        "timing": "don_attached",
+        "summary": "[DON!! x1] This Character gains +1000 power.",
+        "ops": [{"op": "buff_self", "amount": 1000}],
+        "status": "compiled",
+        "confidence": 0.8,
+        "require_don_attached_gte": 1,
+    }
+    lib.write_text(
+        json.dumps(
+            {
+                "cards": {
+                    cid: {"version": 1, "abilities": [compiled]}
+                    for cid in ("OP18-044", "OP18-052", "OP18-055")
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("OPCG_CARD_EFFECTS", str(lib))
+    try:
+        reload_effect_library(force=True)
+        for cid in ("OP18-044", "OP18-052", "OP18-055"):
+            buffs = [
+                a
+                for a in get_abilities(cid)
+                if any(o.get("op") == "buff_self" for o in (a.get("ops") or []))
+            ]
+            assert len(buffs) == 1, cid
+            assert buffs[0]["timing"] == "don_attached"
+            assert buffs[0]["status"] == "verified"
+            inst = CardInst(iid="c", card_id=cid, rested=False, summoning_sick=False)
+            st = _players(chars=[inst], leader="OP01-060")
+            assert inst_power(st, 0, "c", catalog) == 4000
+            assert apply_action(st, 0, {"type": "attach_don", "target_iid": "c"}, catalog)["ok"]
+            # 4000 printed + 1000 attached DON!! + 1000 [DON!! x1], once.
+            assert inst_power(st, 0, "c", catalog) == 6000
+            st.turn_seat = 1
+            # Attached DON!! adds power only on your turn. The aura still applies.
+            assert inst_power(st, 0, "c", catalog) == 5000
+    finally:
+        (
+            effect_lib._library,
+            effect_lib._overrides,
+            effect_lib._loaded,
+            effect_lib._library_mtime,
+            effect_lib._overrides_mtime,
+        ) = saved

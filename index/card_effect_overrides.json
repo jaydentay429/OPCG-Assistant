@@ -125488,20 +125488,7 @@
         "status": "verified",
         "abilities": [
           {
-            "timing": "your_turn",
-            "summary": "[DON!! x1] This Character gains +1000 power / 【咚‼×1】這張角色卡力量值+1000。",
-            "ops": [
-              {
-                "op": "buff_self",
-                "amount": 1000
-              }
-            ],
-            "status": "verified",
-            "confidence": 0.95,
-            "require_don_attached_gte": 1
-          },
-          {
-            "timing": "opponent_turn",
+            "timing": "don_attached",
             "summary": "[DON!! x1] This Character gains +1000 power / 【咚‼×1】這張角色卡力量值+1000。",
             "ops": [
               {
@@ -125566,20 +125553,7 @@
         "status": "verified",
         "abilities": [
           {
-            "timing": "your_turn",
-            "summary": "[DON!! x1] This Character gains +1000 power / 【咚‼×1】這張角色卡力量值+1000。",
-            "ops": [
-              {
-                "op": "buff_self",
-                "amount": 1000
-              }
-            ],
-            "status": "verified",
-            "confidence": 0.95,
-            "require_don_attached_gte": 1
-          },
-          {
-            "timing": "opponent_turn",
+            "timing": "don_attached",
             "summary": "[DON!! x1] This Character gains +1000 power / 【咚‼×1】這張角色卡力量值+1000。",
             "ops": [
               {
@@ -125616,20 +125590,7 @@
         "status": "verified",
         "abilities": [
           {
-            "timing": "your_turn",
-            "summary": "[DON!! x1] This Character gains +1000 power / 【咚‼×1】這張角色卡力量值+1000。",
-            "ops": [
-              {
-                "op": "buff_self",
-                "amount": 1000
-              }
-            ],
-            "status": "verified",
-            "confidence": 0.95,
-            "require_don_attached_gte": 1
-          },
-          {
-            "timing": "opponent_turn",
+            "timing": "don_attached",
             "summary": "[DON!! x1] This Character gains +1000 power / 【咚‼×1】這張角色卡力量值+1000。",
             "ops": [
               {

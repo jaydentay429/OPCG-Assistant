@@ -223,7 +223,10 @@ def library_stats() -> dict[str, Any]:
         runnable = 0
         unsupported = 0
         empty_entries = 0
-        for entry in {**_library, **_overrides}.values():
+        # Same per-timing merge as get_card_entry. Replacing the whole library
+        # entry hid compiled abilities on timings the override does not cover.
+        for cid in set(_library) | set(_overrides):
+            entry = _get_card_entry_exact(cid)
             abs_ = entry.get("abilities") or []
             if not abs_:
                 empty_entries += 1

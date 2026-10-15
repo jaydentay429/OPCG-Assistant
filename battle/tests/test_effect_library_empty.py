@@ -89,3 +89,84 @@ def test_loader_tolerates_missing_empty_and_whitespace(tmp_path, monkeypatch):
         assert ability["ops"][0]["op"] == "draw"
     finally:
         _restore(saved)
+
+
+def test_library_stats_keeps_uncovered_compiled_timings(tmp_path, monkeypatch):
+    saved = _snapshot()
+    lib = tmp_path / "card_effects.json"
+    ovr = tmp_path / "overrides.json"
+    lib.write_text(
+        json.dumps(
+            {
+                "cards": {
+                    "CARD-A": {
+                        "abilities": [
+                            {
+                                "timing": "on_play",
+                                "ops": [{"op": "draw", "count": 1}],
+                                "status": "compiled",
+                            },
+                            {
+                                "timing": "don_attached",
+                                "ops": [{"op": "buff_self", "amount": 1000}],
+                                "status": "compiled",
+                                "require_don_attached_gte": 1,
+                            },
+                        ]
+                    },
+                    "CARD-B": {
+                        "abilities": [
+                            {
+                                "timing": "on_ko",
+                                "ops": [{"op": "unsupported", "reason": "complex_on_ko"}],
+                                "status": "unsupported",
+                            }
+                        ]
+                    },
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+    ovr.write_text(
+        json.dumps(
+            {
+                "cards": {
+                    "CARD-A": {
+                        "abilities": [
+                            {
+                                "timing": "on_play",
+                                "ops": [{"op": "draw", "count": 1}],
+                                "status": "verified",
+                            }
+                        ]
+                    },
+                    "CARD-B": {
+                        "abilities": [
+                            {
+                                "timing": "on_ko",
+                                "ops": [{"op": "ko", "count": 1}],
+                                "status": "verified",
+                            }
+                        ]
+                    },
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("OPCG_CARD_EFFECTS", str(lib))
+    monkeypatch.setenv("OPCG_CARD_EFFECT_OVERRIDES", str(ovr))
+    try:
+        el.reload_effect_library(force=True)
+        stats = el.library_stats()
+        assert stats["library_cards"] == 2
+        assert stats["override_cards"] == 2
+        # on_play and on_ko are replaced; don_attached stays compiled and runnable.
+        assert stats["abilities_by_status"]["verified"] == 2
+        assert stats["abilities_by_status"]["compiled"] == 1
+        assert stats["abilities_by_status"]["unsupported"] == 0
+        assert stats["runnable_abilities"] == 3
+        assert stats["unsupported_abilities"] == 0
+    finally:
+        _restore(saved)
