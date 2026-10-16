@@ -39,7 +39,7 @@ import { parseDeckListText } from "@/lib/deckShare";
 import { isBattleDisabledError, shouldReconnectBattleSocket } from "@/lib/battleAvailability";
 import { localizeBattleApiError } from "@/lib/battleErrors";
 import { connectBattleWs, type BattleAction, type BattleChatMessage, type BattleState, type WaitingRoom } from "@/lib/battleWs";
-import { battleDateBlocks, formatBattleDateBlocks } from "@/lib/setLegality";
+import { battleDateBlocks, battleDateFromServer, formatBattleDateBlocks } from "@/lib/setLegality";
 import { useI18n } from "@/lib/i18n";
 import type { Deck } from "@/lib/types";
 import { BattleAvailabilityGate, BattleUnavailableNotice } from "./BattleAvailability";
@@ -122,6 +122,7 @@ function PlayPageLive() {
   });
   const [decks, setDecks] = useState<Deck[]>([]);
   const [aiDecks, setAiDecks] = useState<AiBattleDeck[]>([]);
+  const [serverBattleDate, setServerBattleDate] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [actionBusy, setActionBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -237,8 +238,11 @@ function PlayPageLive() {
 
   function dateBlockMessage(pick: PlayDeckPick, mode: "casual" | "ranked"): string | null {
     if (pick.kind !== "inline") return null;
-    return formatBattleDateBlocks(battleDateBlocks(pick.deck.leader_card_id, pick.deck.cards, mode), (key, vars) =>
-      t(key, vars),
+    const onDate = battleDateFromServer(serverBattleDate);
+    if (!onDate) return null;
+    return formatBattleDateBlocks(
+      battleDateBlocks(pick.deck.leader_card_id, pick.deck.cards, mode, onDate),
+      (key, vars) => t(key, vars),
     );
   }
 
@@ -321,8 +325,14 @@ function PlayPageLive() {
       setDecks([]);
     }
     fetchAiBattleDecks()
-      .then((list) => setAiDecks(list))
-      .catch(() => setAiDecks([]));
+      .then((payload) => {
+        setAiDecks(payload.decks || []);
+        setServerBattleDate(battleDateFromServer(payload.battle_date));
+      })
+      .catch(() => {
+        setAiDecks([]);
+        setServerBattleDate(null);
+      });
     const saved = sessionStorage.getItem(ROOM_KEY);
     const tok = token || guestToken || sessionStorage.getItem(GUEST_TOKEN_KEY);
     if (saved && tok) connect(saved, tok);

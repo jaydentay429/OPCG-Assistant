@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { battleDateBlocks, battleToday, formatBattleDateBlocks, setCodeOf } from "./setLegality.ts";
+import { battleDateBlocks, battleDateFromServer, battleToday, formatBattleDateBlocks, setCodeOf } from "./setLegality.ts";
 
 const phrase = (key: string, vars?: Record<string, string | number>) => {
   const template =
@@ -46,5 +46,15 @@ describe("set legality dates", () => {
     assert.equal(battleDateBlocks("OP18-060", {}, "casual", "2026-11-20").length, 0);
     assert.equal(battleDateBlocks("OP18-060", {}, "ranked", "2026-11-27").length, 0);
     assert.equal(battleDateBlocks("ST01-001", { "OP01-016": 4 }, "ranked", "2026-10-13").length, 0);
+  });
+
+  it("accepts a server YYYY-MM-DD and rejects anything else", () => {
+    assert.equal(battleDateFromServer("2026-11-27"), "2026-11-27");
+    assert.equal(battleDateFromServer(" 2026-11-27 "), "2026-11-27");
+    assert.equal(battleDateFromServer(""), null);
+    assert.equal(battleDateFromServer(null), null);
+    assert.equal(battleDateFromServer("2026-02-31"), null);
+    assert.equal(battleDateFromServer("11/27/2026"), null);
+    assert.equal(battleDateBlocks("OP18-001", {}, "casual", "2026-11-27").length, 0);
   });
 });

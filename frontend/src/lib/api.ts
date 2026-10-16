@@ -692,9 +692,17 @@ export async function fetchBattleGuestToken(): Promise<{
   return apiSend("/battle/guest-token", "POST", {});
 }
 
-export async function fetchAiBattleDecks(): Promise<AiBattleDeck[]> {
-  const { data } = await apiGet<{ decks: AiBattleDeck[] }>("/battle/ai-decks");
-  return data.decks || [];
+export type AiBattleDeckList = {
+  battle_date: string;
+  decks: AiBattleDeck[];
+};
+
+export async function fetchAiBattleDecks(): Promise<AiBattleDeckList> {
+  const { data } = await apiGet<{ battle_date?: string; decks?: AiBattleDeck[] }>("/battle/ai-decks");
+  return {
+    battle_date: typeof data.battle_date === "string" ? data.battle_date : "",
+    decks: data.decks || [],
+  };
 }
 
 export async function createBattleRoom(

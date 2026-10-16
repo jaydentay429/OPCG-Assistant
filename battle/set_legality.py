@@ -10,6 +10,7 @@ stay in ``official_restriction`` and are not decided here.
 from __future__ import annotations
 
 import json
+import os
 import re
 from datetime import date, datetime
 from functools import lru_cache
@@ -20,6 +21,8 @@ from zoneinfo import ZoneInfo
 _ROOT = Path(__file__).resolve().parent.parent
 _PATH = _ROOT / "index" / "set_legality.json"
 _SET_CODE = re.compile(r"^([A-Z]+\d+)-", re.IGNORECASE)
+_ISO_DAY = re.compile(r"^(\d{4})-(\d{2})-(\d{2})$")
+_BATTLE_TODAY_ENV = "OPCG_BATTLE_TODAY"
 
 BattleMode = Literal["casual", "ranked"]
 BlockReason = Literal["unreleased", "no_effect", "not_ranked_legal"]
@@ -45,9 +48,23 @@ def load_set_legality() -> dict[str, Any]:
     }
 
 
+def _env_battle_today() -> date | None:
+    raw = os.getenv(_BATTLE_TODAY_ENV, "").strip()
+    match = _ISO_DAY.fullmatch(raw)
+    if not match:
+        return None
+    try:
+        return date(int(match.group(1)), int(match.group(2)), int(match.group(3)))
+    except ValueError:
+        return None
+
+
 def battle_today(on_date: date | None = None) -> date:
     if on_date is not None:
         return on_date
+    override = _env_battle_today()
+    if override is not None:
+        return override
     tz = ZoneInfo(load_set_legality()["timezone"])
     return datetime.now(tz).date()
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Syne } from "next/font/google";
+import localFont from "next/font/local";
 import { ChunkLoadRecovery } from "@/components/ChunkLoadRecovery";
 import { Providers } from "@/components/Providers";
 import { TopBar } from "@/components/TopBar";
@@ -10,9 +10,11 @@ import { SITE_NAME, SITE_URL, defaultOgImage, rootJsonLd } from "@/lib/seo";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 
-const syne = Syne({
-  subsets: ["latin"],
-  weight: ["700", "800"],
+const syne = localFont({
+  src: [
+    { path: "./fonts/Syne-700.woff2", weight: "700", style: "normal" },
+    { path: "./fonts/Syne-800.woff2", weight: "800", style: "normal" },
+  ],
   variable: "--font-cover",
   display: "swap",
 });
