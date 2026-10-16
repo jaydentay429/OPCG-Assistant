@@ -71,8 +71,9 @@ export function battleDateBlocks(
   _leaderId: string,
   _cards: Record<string, number> | null | undefined,
   _mode: BattleLegalityMode,
-  _onDate = battleToday(),
+  _onDate?: string,
 ): BattleDateBlock[] {
+  void _onDate;
   return [];
 }
 
