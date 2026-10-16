@@ -34,7 +34,7 @@ OPTCG 工具站：Python API 加 Next.js 前端，界面为繁中、简中、英
 
 - `app.py`：HTTP API
 - `index/official_restriction_list.json`：官方禁用、限制与禁用组合（`official_restriction.py`）
-- `index/set_legality.json`：系列发售日与比赛合法日（`battle/set_legality.py` 与前端共用，马来西亚时间）
+- `index/set_legality.json`：仍列出系列发售日。对战不按这些日期挡卡；列在表里的系列要有可执行效果数据（`battle/set_legality.py` 与前端）
 - `sync_daily_pipeline.py`：每日同步入口
 - `battle/ai.py`：对战 AI 选着
 - `frontend/src/lib/i18n.tsx`：界面语言
