@@ -1,4 +1,4 @@
-"""Release and tournament-legal dates for sets that need effect data."""
+"""Scheduled sets still need effect data. Release dates do not block battle."""
 
 from datetime import date
 
@@ -18,87 +18,60 @@ OP18_LEGAL = date(2026, 11, 27)
 AFTER = date(2026, 12, 1)
 
 
-def test_schedule_blocks_unreleased_sets_in_casual_and_ranked():
-    assert card_legality_block("EB05-001", mode="casual", on_date=BEFORE) == "unreleased"
-    assert card_legality_block("OP18-001", mode="ranked", on_date=BEFORE) == "unreleased"
-    casual = casual_deck_legality_error("OP17-001", {"EB05-001": 4}, on_date=BEFORE)
-    ranked = ranked_set_legality_error("OP18-001", {"OP01-016": 4}, on_date=BEFORE)
-    assert casual and "EB05-001" in casual and "2026-10-30" in casual
-    assert ranked and "OP18-001" in ranked and "2026-11-20" in ranked
+def test_release_dates_do_not_block_casual_ai_or_ranked():
+    assert card_legality_block("EB05-001", mode="casual", on_date=BEFORE) is None
+    assert card_legality_block("OP18-001", mode="ranked", on_date=BEFORE) is None
+    assert card_legality_block("EB05-001", mode="ranked", on_date=EB05_RELEASE) is None
+    assert card_legality_block("OP18-001", mode="casual", on_date=OP18_RELEASE) is None
+    assert card_legality_block("OP18-001", mode="ranked", on_date=OP18_RELEASE) is None
+    assert card_legality_block("OP18-085", mode="casual", on_date=BEFORE) is None
+    assert card_legality_block("OP18-085", mode="ranked", on_date=OP18_RELEASE) is None
+    assert card_legality_block("OP18-085", mode="ranked", on_date=OP18_LEGAL) is None
+    assert casual_deck_legality_error("OP17-001", {"EB05-001": 4}, on_date=BEFORE) is None
+    assert ranked_set_legality_error("OP18-001", {"OP01-016": 4}, on_date=BEFORE) is None
+    assert ranked_set_legality_error("EB05-016", {"OP01-016": 4}, on_date=EB05_RELEASE) is None
+    assert ranked_set_legality_error("OP18-060", {"OP18-119": 4}, on_date=OP18_RELEASE) is None
+    assert ranked_deck_ban_error("OP18-060", {"OP18-119": 4}, on_date=BEFORE) is None
 
 
-def test_casual_opens_on_release_only_with_effect_data():
+def test_missing_effect_data_still_blocks_before_and_after_release():
     assert card_has_battle_effect_data("EB05-001")
     assert card_has_battle_effect_data("EB05-004")
     assert card_has_battle_effect_data("EB05-008")
-    assert not card_has_battle_effect_data("OP18-003")
-    assert card_legality_block("EB05-001", mode="casual", on_date=EB05_RELEASE) is None
-    assert card_legality_block("EB05-004", mode="casual", on_date=EB05_RELEASE) is None
-    assert card_legality_block("EB05-008", mode="casual", on_date=EB05_RELEASE) is None
-    assert card_legality_block("OP18-003", mode="casual", on_date=AFTER) == "no_effect"
-    missing = casual_deck_legality_error("OP17-001", {"OP18-003": 4}, on_date=AFTER)
-    assert missing and "OP18-003" in missing and "battle effect data is missing" in missing
-    assert casual_deck_legality_error("OP17-001", {"EB05-004": 4}, on_date=AFTER) is None
-    assert casual_deck_legality_error("EB05-001", {"OP01-016": 4}, on_date=EB05_RELEASE) is None
-
-
-def test_ranked_waits_for_tournament_legal_date():
-    assert card_legality_block("EB05-001", mode="ranked", on_date=EB05_RELEASE) == "not_ranked_legal"
-    assert card_legality_block("EB05-001", mode="ranked", on_date=date(2026, 11, 6)) is None
-    early = ranked_set_legality_error("EB05-016", {"OP01-016": 4}, on_date=EB05_RELEASE)
-    assert early and "tournament-legal date" in early and "2026-11-06" in early
-    assert ranked_set_legality_error("EB05-016", {"OP01-016": 4}, on_date=date(2026, 11, 6)) is None
-
-
-def test_op18_ranked_date_is_marked_assumed():
-    assert card_legality_block("OP18-001", mode="casual", on_date=OP18_RELEASE) is None
-    assert card_legality_block("OP18-001", mode="ranked", on_date=OP18_RELEASE) == "not_ranked_legal"
     assert card_has_battle_effect_data("OP18-011")
-    assert card_legality_block("OP18-011", mode="casual", on_date=OP18_LEGAL) is None
     assert card_has_battle_effect_data("OP18-017")
-    assert card_legality_block("OP18-017", mode="casual", on_date=OP18_LEGAL) is None
-    assert not card_has_battle_effect_data("OP18-106")
-    assert card_legality_block("OP18-106", mode="casual", on_date=OP18_LEGAL) == "no_effect"
-    assumed = ranked_set_legality_error("OP18-060", {"OP18-119": 4}, on_date=OP18_RELEASE)
-    assert assumed and "2026-11-27" in assumed and "7-day rule" in assumed
-    assert ranked_set_legality_error("OP18-001", {"OP01-016": 4}, on_date=OP18_LEGAL) is None
-    missing = ranked_deck_ban_error("OP18-106", {"OP01-016": 4}, on_date=AFTER)
-    assert missing and "OP18-106" in missing and "battle effect data is missing" in missing
-
-
-def test_op18_085_uses_op18_release_and_tournament_dates():
-    assert card_legality_block("OP18-085", mode="casual", on_date=BEFORE) == "unreleased"
-    assert card_legality_block("OP18-085", mode="ranked", on_date=BEFORE) == "unreleased"
     assert card_has_battle_effect_data("OP18-085")
-    assert card_legality_block("OP18-085", mode="casual", on_date=OP18_RELEASE) is None
-    assert card_legality_block("OP18-085", mode="ranked", on_date=OP18_RELEASE) == "not_ranked_legal"
-    assert card_legality_block("OP18-085", mode="casual", on_date=OP18_LEGAL) is None
-    assert card_legality_block("OP18-085", mode="ranked", on_date=OP18_LEGAL) is None
+    assert not card_has_battle_effect_data("OP18-003")
+    assert not card_has_battle_effect_data("OP18-106")
+    assert card_legality_block("EB05-001", mode="casual", on_date=BEFORE) is None
+    assert card_legality_block("EB05-004", mode="ranked", on_date=BEFORE) is None
+    assert card_legality_block("OP18-003", mode="casual", on_date=BEFORE) == "no_effect"
+    assert card_legality_block("OP18-003", mode="ranked", on_date=AFTER) == "no_effect"
+    assert card_legality_block("OP18-106", mode="casual", on_date=OP18_LEGAL) == "no_effect"
+    missing = casual_deck_legality_error("OP17-001", {"OP18-003": 4}, on_date=BEFORE)
+    assert missing and "OP18-003" in missing and "battle effect data is missing" in missing
+    assert "release date" not in missing
+    assert casual_deck_legality_error("OP17-001", {"EB05-004": 4}, on_date=BEFORE) is None
+    assert casual_deck_legality_error("EB05-001", {"OP01-016": 4}, on_date=BEFORE) is None
+    ranked_missing = ranked_deck_ban_error("OP18-106", {"OP01-016": 4}, on_date=BEFORE)
+    assert ranked_missing and "OP18-106" in ranked_missing and "battle effect data is missing" in ranked_missing
 
 
 def test_parallel_art_uses_base_effect_data_and_old_sets_stay_open():
     assert card_has_battle_effect_data("OP18-001-P1")
-    assert card_legality_block("OP18-001-P1", mode="casual", on_date=OP18_RELEASE) is None
+    assert card_legality_block("OP18-001-P1", mode="casual", on_date=BEFORE) is None
     assert card_legality_block("OP01-001", mode="ranked", on_date=BEFORE) is None
     assert ranked_deck_ban_error("OP17-001", {"OP01-016": 4}, on_date=BEFORE) is None
     assert casual_deck_legality_error("ST01-001", {"OP01-016": 4}, on_date=BEFORE) is None
 
 
-def test_opcg_battle_today_overrides_malaysia_when_the_value_is_a_real_day(monkeypatch):
+def test_opcg_battle_today_is_ignored(monkeypatch):
     monkeypatch.delenv("OPCG_BATTLE_TODAY", raising=False)
     real = battle_today()
-    monkeypatch.setenv("OPCG_BATTLE_TODAY", "2026-11-27")
-    assert battle_today() == OP18_LEGAL
+    monkeypatch.setenv("OPCG_BATTLE_TODAY", "1999-01-01")
+    assert battle_today() == real
     assert battle_today(BEFORE) == BEFORE
     assert card_legality_block("EB05-001", mode="casual") is None
     assert card_legality_block("OP18-001", mode="ranked") is None
-    monkeypatch.setenv("OPCG_BATTLE_TODAY", "2026-10-13")
-    assert battle_today() == BEFORE
-    assert card_legality_block("EB05-001", mode="casual") == "unreleased"
-    assert card_legality_block("OP18-001", mode="casual") == "unreleased"
-    for raw in ("", "2026-02-31", "11/27/2026", "2026-11-27T00:00:00"):
-        monkeypatch.setenv("OPCG_BATTLE_TODAY", raw)
-        assert battle_today() == real
-        assert battle_today(OP18_LEGAL) == OP18_LEGAL
     monkeypatch.delenv("OPCG_BATTLE_TODAY", raising=False)
     assert battle_today() == real

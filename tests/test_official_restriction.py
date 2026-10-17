@@ -114,8 +114,7 @@ def test_ranked_and_deck_save_reject_banned_decks():
     appmod.load_cards_index()
     err = ranked_deck_ban_error("OP14-020", {"OP01-016": 4})
     assert err and "Banned card OP14-020" in err and "2026-10-12" in err
-    still_unreleased = ranked_deck_ban_error("OP18-060", {"OP18-119": 4}, on_date=date(2026, 10, 13))
-    assert still_unreleased and "OP18" in still_unreleased
+    assert ranked_deck_ban_error("OP18-060", {"OP18-119": 4}, on_date=date(2026, 10, 13)) is None
     assert ranked_deck_ban_error("OP17-001", {"OP01-016": 4}) is None
 
     with pytest.raises(HTTPException) as banned_leader:

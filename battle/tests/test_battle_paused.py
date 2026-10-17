@@ -433,14 +433,15 @@ def test_legacy_room_tab_would_keep_polling_on_410() -> None:
     client.close()
 
 
-def test_ai_decks_response_includes_server_battle_date(monkeypatch) -> None:
-    monkeypatch.setenv("OPCG_BATTLE_TODAY", "2026-11-27")
+def test_ai_decks_battle_date_ignores_env_override(monkeypatch) -> None:
+    monkeypatch.setenv("OPCG_BATTLE_TODAY", "1999-01-01")
     client, manager = _client(monkeypatch, enabled=True)
     assert manager is not None
     response = client.get("/battle/ai-decks")
     assert response.status_code == 200
     body = response.json()
-    assert body["battle_date"] == "2026-11-27"
+    assert body["battle_date"] != "1999-01-01"
+    assert len(body["battle_date"]) == 10 and body["battle_date"][4] == "-"
     leaders = {deck["name"]: deck["leader_card_id"] for deck in body["decks"]}
     assert leaders["绿鹰眼"] == "OP12-020"
     client.close()

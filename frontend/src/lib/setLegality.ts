@@ -17,8 +17,6 @@ type SetLegalityDocument = {
 
 const documentData = setLegalityDocument as SetLegalityDocument;
 
-const SETS = new Map(documentData.sets.map((row) => [row.code.toUpperCase(), row]));
-
 const SET_CODE = /^([A-Z]+\d+)-/i;
 
 export function setCodeOf(cardId: string): string | null {
@@ -68,48 +66,15 @@ export type BattleDateBlock = {
   tournamentLegalAssumed: boolean;
 };
 
-function deckIds(leaderId: string, cards: Record<string, number> | null | undefined): string[] {
-  const ids: string[] = [];
-  const leader = String(leaderId || "").trim();
-  if (leader) ids.push(leader);
-  for (const [cardId, qty] of Object.entries(cards || {})) {
-    if (Number(qty || 0) <= 0) continue;
-    const text = String(cardId || "").trim();
-    if (text) ids.push(text);
-  }
-  return ids;
-}
-
-/** Date gate only. Missing effect data is enforced by the API, which has the effect library. */
+/** Release and tournament dates do not block import. Effect data is enforced by the API. */
 export function battleDateBlocks(
-  leaderId: string,
-  cards: Record<string, number> | null | undefined,
-  mode: BattleLegalityMode,
-  onDate = battleToday(),
+  _leaderId: string,
+  _cards: Record<string, number> | null | undefined,
+  _mode: BattleLegalityMode,
+  _onDate?: string,
 ): BattleDateBlock[] {
-  const seen = new Set<string>();
-  const blocks: BattleDateBlock[] = [];
-  for (const cardId of deckIds(leaderId, cards)) {
-    const key = cardId.toUpperCase();
-    if (seen.has(key)) continue;
-    seen.add(key);
-    const setCode = setCodeOf(cardId);
-    const spec = setCode ? SETS.get(setCode) : undefined;
-    if (!spec) continue;
-    let reason: BattleDateReason | null = null;
-    if (onDate < spec.release_date) reason = "unreleased";
-    else if (mode === "ranked" && onDate < spec.tournament_legal_date) reason = "not_ranked_legal";
-    if (!reason) continue;
-    blocks.push({
-      cardId,
-      setCode: spec.code,
-      reason,
-      releaseDate: spec.release_date,
-      tournamentLegalDate: spec.tournament_legal_date,
-      tournamentLegalAssumed: Boolean(spec.tournament_legal_assumed),
-    });
-  }
-  return blocks;
+  void _onDate;
+  return [];
 }
 
 type Phrase = (key: string, vars?: Record<string, string | number>) => string;

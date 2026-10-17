@@ -5,7 +5,7 @@
 ## 分层
 
 - 对局：`engine.py` 处理动作与合法性，`state.py` 保存局面。`rooms.py`、`routes.py`、`matchmaking.py` 管房间和接口。另有 `replay.py`、`spectator.py`、`rank.py`。
-- 卡组合法：`official_restriction.py` 读取 `index/official_restriction_list.json`。玩家提交的卡组若含已生效的官方禁用卡、超过张数的限制卡或禁用组合，房间、匹配、排位和卡组写入都会拒绝。系列开放日在 `index/set_legality.json`（前后端共用，按马来西亚日期）：休闲、房间和 AI 从发售日起，且该卡要有可执行的对战效果数据；排位从比赛合法日起，同样要有效果数据。没有效果数据的卡继续挡下。OP18 的比赛合法日按发售后 7 日暂定。指定的 AI 卡组在开房时走同一条休闲检查。环境变量 `OPCG_BATTLE_TODAY=YYYY-MM-DD` 在值合法时当作当天，未设置或格式不对则仍用马来西亚当天；`GET /battle/ai-decks` 的 `battle_date` 给对战页做导入检查，不看浏览器时钟。
+- 卡组合法：`official_restriction.py` 读取 `index/official_restriction_list.json`。玩家提交的卡组若含已生效的官方禁用卡、超过张数的限制卡或禁用组合，房间、匹配、排位和卡组写入都会拒绝。`index/set_legality.json` 里的发售日和比赛合法日不再挡休闲、房间、AI 或排位；卡库里的卡任意一天都能打。列在该表里的系列仍然要有可执行的对战效果数据，没有效果数据的卡继续挡下。指定的 AI 卡组在开房时走同一条效果检查。`OPCG_BATTLE_TODAY` 不再改变日期，设了也无效。
 - 效果：`effects.py`、`effect_library.py`、`effect_schema.py`、`effect_fidelity.py`、`effect_audit.py`。
 - AI：`ai.py`、`ai_decks.py`。
 - 规则：`rules/catalog.py` 记录规则条目和实现状态，`rules/checkpoints.py` 是规则处理点，`rules/timings.py` 把关键词时机映射到引擎 timing。

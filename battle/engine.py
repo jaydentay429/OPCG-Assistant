@@ -209,7 +209,7 @@ def deck_has_ranked_banned_cards(
     *,
     on_date: date | None = None,
 ) -> list[str]:
-    """Sorted card ids blocked in ranked play on ``on_date`` (Malaysia time)."""
+    """Sorted card ids blocked in ranked play because effect data is missing."""
     from battle.set_legality import ranked_blocked_card_ids
 
     return ranked_blocked_card_ids(leader_id, cards, on_date=on_date)
@@ -223,7 +223,7 @@ def ranked_deck_ban_error(
 ) -> str | None:
     """Human-readable ranked ban error, or None if the deck is ranked-legal.
 
-    Set release and tournament-legal dates come from ``index/set_legality.json``.
+    Scheduled sets still need runnable effect data. Release dates do not block.
     Official banned cards and banned pairs from ``official_restriction`` are
     rejected here as well.
     """
