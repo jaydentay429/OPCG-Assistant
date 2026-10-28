@@ -477,7 +477,7 @@ def detect_keywords(info: dict[str, Any]) -> list[str]:
         r"(?:up to\s+\d+\s+of\s+)?your\s+\[[^\]]+\][^\.\n]{0,60}gains?\s+\["
         r"(?:Blocker|Rush|Double Attack|Banish|Blockerless|Unblockable)\]"
         r"(?:\s*(?:，|,)\s*(?:or\s+)?\[(?:Blocker|Rush|Double Attack|Banish|Blockerless|Unblockable)\])*|"
-        r"(?:獲得|获得)\s*【(?:防禦不可|防御不可|防禦|防御|速攻|雙重攻擊|双重攻击|不可阻擋|不可阻挡)】|"
+        r"(?:獲得|获得)\s*【(?:防禦不可|防御不可|防禦|防御|速攻|雙重攻擊|双重攻击|不可阻擋|不可阻挡|流放|消滅|消灭|消失)】|"
         r"gains?\s+\[(?:Blocker|Rush|Double Attack|Banish|Blockerless|Unblockable)\]|"
         # Keyword reminder text attached to grants (OP16-095 etc.)
         r"[（(]\s*(?:這張卡片不會遭到防禦|这张卡片不会遭到防御|This card cannot be blocked\.?)\s*[）)]",
@@ -1543,7 +1543,7 @@ def _merge_continuous_self_keyword_grants(
     try:
         from battle.effect_library import ability_is_runnable, get_abilities
 
-        want = {"blocker", "rush", "rush_character", "double_attack", "banish"}
+        want = {"blocker", "rush", "rush_character", "double_attack", "banish", "blockerless"}
         missing = [k for k in want if k not in out]
         if not missing:
             return out

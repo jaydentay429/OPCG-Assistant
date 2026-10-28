@@ -2042,7 +2042,14 @@ def _ability_board_conditions_ok(
         need = int(ability["require_source_power_gte"])
         if not source_iid or source_iid == "leader":
             return False
-        if inst_power(state, seat, source_iid, catalog) < need:
+        # Do not call inst_power here: that re-enters board auras and this gate.
+        src = next((c for c in player.characters if c.iid == source_iid), None)
+        if src is None:
+            return False
+        don = src.don_attached * 1000 if my_turn else 0
+        until = sum(int(e.get("amount") or 0) for e in (src.power_until_end or []))
+        current = printed_power(catalog(src.card_id)) + int(src.power_mod or 0) + don + until
+        if current < need:
             return False
     if ability.get("require_source_cost_gte") is not None:
         need = int(ability["require_source_cost_gte"])

@@ -126773,6 +126773,613 @@
           "require_life_lte": 2
         }
       ]
+    },
+    "OP18-004": {
+      "card_id": "OP18-004",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "your_turn",
+          "summary": "Power 5000+ grants Rush",
+          "ops": [
+            {
+              "op": "grant_keyword",
+              "keyword": "rush",
+              "target_kind": "self",
+              "duration": "permanent",
+              "optional": false
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9,
+          "require_source_power_gte": 5000
+        },
+        {
+          "timing": "your_turn",
+          "summary": "Power 6000+ grants Banish",
+          "ops": [
+            {
+              "op": "grant_keyword",
+              "keyword": "banish",
+              "target_kind": "self",
+              "duration": "permanent",
+              "optional": false
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9,
+          "require_source_power_gte": 6000
+        },
+        {
+          "timing": "your_turn",
+          "summary": "Power 7000+ grants Unblockable",
+          "ops": [
+            {
+              "op": "grant_keyword",
+              "keyword": "blockerless",
+              "target_kind": "self",
+              "duration": "permanent",
+              "optional": false
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9,
+          "require_source_power_gte": 7000
+        }
+      ]
+    },
+    "OP18-103": {
+      "card_id": "OP18-103",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_ko",
+          "summary": "Add up to 1 deck-top card to Life, then trash up to 1 opponent Life",
+          "ops": [
+            {
+              "op": "add_life",
+              "count": 1,
+              "position": "top",
+              "optional": true
+            },
+            {
+              "op": "trash_life",
+              "count": 1,
+              "position": "top",
+              "owner": "opponent",
+              "optional": true
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9
+        },
+        {
+          "timing": "trigger",
+          "summary": "If Leader type includes CP, draw 1 and bottom a cost≤8 Character",
+          "ops": [
+            {
+              "op": "draw",
+              "count": 1
+            },
+            {
+              "op": "return_to_bottom",
+              "count": 1,
+              "optional": true,
+              "target_kind": "any_character",
+              "cost_lte": 8
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9,
+          "require_leader_trait": "CP9|CP"
+        }
+      ]
+    },
+    "OP18-088": {
+      "card_id": "OP18-088",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "If 6+ DON!! on field, K.O. up to 1 opponent Character with base cost ≤4",
+          "ops": [
+            {
+              "op": "ko",
+              "count": 1,
+              "optional": true,
+              "target_kind": "opponent_character",
+              "base_cost_lte": 4
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9,
+          "require_your_turn": true,
+          "require_don_field_gte": 6
+        },
+        {
+          "timing": "on_ko",
+          "summary": "You may trash 2 hand cards: play this card from trash",
+          "ops": [
+            {
+              "op": "trash_hand",
+              "count": 2,
+              "as_cost": true,
+              "optional": true
+            },
+            {
+              "op": "play_from_hand",
+              "count": 1,
+              "self_card": true,
+              "from_zone": "trash",
+              "optional": false
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9
+        }
+      ]
+    },
+    "OP18-064": {
+      "card_id": "OP18-064",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "DON!! −1: up to 1 base power ≤7000 and ≤5000 cannot attack until opponent end",
+          "ops": [
+            {
+              "op": "return_don",
+              "count": 1,
+              "as_cost": true,
+              "owner": "self"
+            },
+            {
+              "op": "deny_attack",
+              "count": 1,
+              "optional": true,
+              "target_kind": "opponent_character",
+              "base_power_lte": 7000,
+              "duration": "until_opp_turn_end"
+            },
+            {
+              "op": "deny_attack",
+              "count": 1,
+              "optional": true,
+              "target_kind": "opponent_character",
+              "base_power_lte": 5000,
+              "duration": "until_opp_turn_end"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9,
+          "require_your_turn": true
+        },
+        {
+          "timing": "on_ko",
+          "summary": "DON!! −1: play this card from trash",
+          "ops": [
+            {
+              "op": "return_don",
+              "count": 1,
+              "as_cost": true,
+              "owner": "self"
+            },
+            {
+              "op": "play_from_hand",
+              "count": 1,
+              "self_card": true,
+              "from_zone": "trash",
+              "optional": false
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9
+        }
+      ]
+    },
+    "OP18-051": {
+      "card_id": "OP18-051",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "don_attached",
+          "summary": "[DON!! x1] +1000 power",
+          "ops": [
+            {
+              "op": "buff_self",
+              "amount": 1000
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9,
+          "require_don_attached_gte": 1
+        },
+        {
+          "timing": "on_play",
+          "summary": "You may rest 5 DON!!: bottom a cost≤6 and a cost≤5 Character",
+          "ops": [
+            {
+              "op": "rest_don",
+              "count": 5,
+              "as_cost": true,
+              "optional": true,
+              "owner": "self"
+            },
+            {
+              "op": "return_to_bottom",
+              "count": 1,
+              "optional": true,
+              "target_kind": "any_character",
+              "cost_lte": 6
+            },
+            {
+              "op": "return_to_bottom",
+              "count": 1,
+              "optional": true,
+              "target_kind": "any_character",
+              "cost_lte": 5
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9
+        }
+      ]
+    },
+    "OP18-029": {
+      "card_id": "OP18-029",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "when_attacking",
+          "summary": "Once per turn: attach up to 3 rested DON!! to Leader, restand, skip next refresh",
+          "ops": [
+            {
+              "op": "attach_don",
+              "count": 3,
+              "from_rested": true,
+              "optional": true,
+              "target_kind": "leader"
+            },
+            {
+              "op": "set_character_active",
+              "count": 1,
+              "target_kind": "self",
+              "optional": false
+            },
+            {
+              "op": "skip_untap",
+              "count": 1,
+              "target_kind": "self",
+              "optional": false
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9,
+          "once": true
+        }
+      ]
+    },
+    "OP18-013": {
+      "card_id": "OP18-013",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "your_turn",
+          "summary": "Rush while Leader has {Alabasta}",
+          "ops": [
+            {
+              "op": "grant_keyword",
+              "keyword": "rush",
+              "target_kind": "self",
+              "duration": "permanent",
+              "optional": false
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9,
+          "require_leader_trait": "阿拉巴斯坦王國|Alabasta"
+        },
+        {
+          "timing": "on_play",
+          "summary": "You may trash a power≤5000 Character from hand: draw 2 and trash a base power≤3000 opponent Character",
+          "ops": [
+            {
+              "op": "trash_hand",
+              "count": 1,
+              "as_cost": true,
+              "optional": true,
+              "card_type": "character",
+              "power_lte": 5000
+            },
+            {
+              "op": "draw",
+              "count": 2
+            },
+            {
+              "op": "trash",
+              "count": 1,
+              "optional": true,
+              "target_kind": "opponent_character",
+              "base_power_lte": 3000
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9
+        }
+      ]
+    },
+    "OP18-108": {
+      "card_id": "OP18-108",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "You may trash 1 hand card with a type including CP: draw 2",
+          "ops": [
+            {
+              "op": "trash_hand",
+              "count": 1,
+              "as_cost": true,
+              "optional": true,
+              "trait_contains": "CP9|CP"
+            },
+            {
+              "op": "draw",
+              "count": 2
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9
+        },
+        {
+          "timing": "activate_main",
+          "summary": "Rest this Character: up to 1 [Spandam] gets +1000 this turn",
+          "ops": [
+            {
+              "op": "buff",
+              "amount": 1000,
+              "optional": true,
+              "count": 1,
+              "target_kind": "own_character",
+              "name_contains": "斯帕達姆|Spandam",
+              "duration": "turn"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9,
+          "rest_self": true,
+          "cost_don": 0,
+          "once": false
+        }
+      ]
+    },
+    "OP18-092": {
+      "card_id": "OP18-092",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "your_turn",
+          "summary": "+3000 power while a cost≥12 Character is on the field",
+          "ops": [
+            {
+              "op": "buff_self",
+              "amount": 3000
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9,
+          "require_field_char_cost_gte": 12
+        },
+        {
+          "timing": "your_turn",
+          "summary": "Rush while your trash has 10 or more cards",
+          "ops": [
+            {
+              "op": "grant_keyword",
+              "keyword": "rush",
+              "target_kind": "self",
+              "duration": "permanent",
+              "optional": false
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9,
+          "require_trash_gte": 10
+        }
+      ]
+    },
+    "OP18-077": {
+      "card_id": "OP18-077",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "Draw 1 and add up to 1 DON!! from the DON!! deck rested",
+          "ops": [
+            {
+              "op": "draw",
+              "count": 1
+            },
+            {
+              "op": "gain_don",
+              "count": 1,
+              "as_rested": true,
+              "optional": true
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9
+        },
+        {
+          "timing": "activate_main",
+          "summary": "Rest this Stage: up to 1 {Straw Hat Crew} Character gains [Rush: Character] this turn",
+          "ops": [
+            {
+              "op": "grant_keyword",
+              "keyword": "rush_character",
+              "target_kind": "own_character",
+              "trait_contains": "草帽一行人|Straw Hat Crew",
+              "duration": "turn",
+              "optional": true,
+              "count": 1
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9,
+          "rest_self": true,
+          "cost_don": 0,
+          "once": false
+        }
+      ]
+    },
+    "OP18-047": {
+      "card_id": "OP18-047",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_play",
+          "summary": "Leader with {Cross Guild} or a type including B・W gains [Unblockable] this turn",
+          "ops": [
+            {
+              "op": "grant_keyword",
+              "keyword": "blockerless",
+              "target_kind": "leader",
+              "duration": "turn",
+              "optional": false
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9,
+          "require_leader_trait": "十字公會|Cross Guild|B・W|Baroque Works|前B・W|Former Baroque Works"
+        }
+      ]
+    },
+    "OP18-036": {
+      "card_id": "OP18-036",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "end_of_your_turn",
+          "summary": "You may trash this Character: draw 1 and set your Leader active",
+          "ops": [
+            {
+              "op": "trash",
+              "count": 1,
+              "target_kind": "self",
+              "as_cost": true,
+              "optional": true
+            },
+            {
+              "op": "draw",
+              "count": 1
+            },
+            {
+              "op": "set_character_active",
+              "count": 1,
+              "target_kind": "leader",
+              "optional": false
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9,
+          "optional": true
+        }
+      ]
+    },
+    "OP18-015": {
+      "card_id": "OP18-015",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_opponent_attack",
+          "summary": "You may trash this Character: −3000 to up to 1 opponent Leader or Character if Leader is {Alabasta}",
+          "ops": [
+            {
+              "op": "trash",
+              "count": 1,
+              "target_kind": "self",
+              "as_cost": true,
+              "optional": true
+            },
+            {
+              "op": "buff",
+              "amount": -3000,
+              "optional": true,
+              "count": 1,
+              "target_kind": "opponent_leader_or_character",
+              "duration": "turn"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9,
+          "optional": true,
+          "require_leader_trait": "阿拉巴斯坦王國|Alabasta"
+        }
+      ]
+    },
+    "OP18-101": {
+      "card_id": "OP18-101",
+      "version": 1,
+      "abilities": [
+        {
+          "timing": "on_ko",
+          "summary": "Add up to 1 hand card with a type including CP face-up to the top or bottom of Life",
+          "ops": [
+            {
+              "op": "hand_to_life",
+              "count": 1,
+              "optional": true,
+              "face": "up",
+              "position": "top_or_bottom",
+              "trait_contains": "CP"
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9
+        },
+        {
+          "timing": "trigger",
+          "summary": "If Leader type includes CP, K.O. or rest up to 1 opponent Character cost≤6",
+          "ops": [
+            {
+              "op": "choose_one",
+              "chooser": "self",
+              "optional": true,
+              "options": [
+                {
+                  "id": "ko",
+                  "label": "K.O. up to 1 cost≤6",
+                  "ops": [
+                    {
+                      "op": "ko",
+                      "count": 1,
+                      "optional": true,
+                      "target_kind": "opponent_character",
+                      "cost_lte": 6
+                    }
+                  ]
+                },
+                {
+                  "id": "rest",
+                  "label": "Rest up to 1 cost≤6",
+                  "ops": [
+                    {
+                      "op": "rest_character",
+                      "count": 1,
+                      "optional": true,
+                      "target_kind": "opponent_character",
+                      "cost_lte": 6
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "status": "verified",
+          "confidence": 0.9,
+          "require_leader_trait": "CP9|CP"
+        }
+      ]
     }
   }
 }
