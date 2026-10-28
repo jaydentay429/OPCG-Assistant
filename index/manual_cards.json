@@ -2939,6 +2939,754 @@
       "card_sets": [
         "補充包 OP-18【OP-18】"
       ]
+    },
+    "OP18-004": {
+      "preview": true,
+      "manual_source": "screenshot",
+      "text_origin": "self_translated_temporary",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "life": null,
+      "trigger": "",
+      "trigger_en": "",
+      "trigger_ja": "",
+      "trigger_hans": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ],
+      "card_id": "OP18-004",
+      "name": "飛毛腿",
+      "name_hans": "飞毛腿",
+      "name_en": "Karoo",
+      "name_ja": "カルー",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "紅"
+      ],
+      "colors_en": [
+        "Red"
+      ],
+      "cost": 3,
+      "power": 4000,
+      "counter": 1000,
+      "rarity": "R",
+      "attributes": [
+        "打"
+      ],
+      "attributes_en": [
+        "Strike"
+      ],
+      "traits": [
+        "動物",
+        "阿拉巴斯坦王國"
+      ],
+      "traits_en": [
+        "Animal",
+        "Alabasta"
+      ],
+      "effect": "依這張角色卡的力量分別適用以下效果。・力量5000以上時，這張角色卡獲得【速攻】。・力量6000以上時，這張角色卡獲得【消失】。・力量7000以上時，這張角色卡獲得【防禦不可】。",
+      "effect_hans": "依这张角色卡的力量分别适用以下效果。・力量5000以上时，这张角色卡获得【速攻】。・力量6000以上时，这张角色卡获得【消失】。・力量7000以上时，这张角色卡获得【防御不可】。",
+      "effect_en": "Apply each of the following effects according to this Character's power. • If it is 5000 or more, this Character gains [Rush]. • If it is 6000 or more, this Character gains [Banish]. • If it is 7000 or more, this Character gains [Unblockable].",
+      "effect_ja": "このキャラのパワーによって以下の効果をそれぞれ適用する。・5000以上の場合、このキャラは【速攻】を得る。・6000以上の場合、このキャラは【バニッシュ】を得る。・7000以上の場合、このキャラは【ブロック不可】を得る。"
+    },
+    "OP18-103": {
+      "preview": true,
+      "manual_source": "screenshot",
+      "text_origin": "self_translated_temporary",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "life": null,
+      "trigger": "",
+      "trigger_en": "",
+      "trigger_ja": "",
+      "trigger_hans": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ],
+      "card_id": "OP18-103",
+      "name": "賈布拉",
+      "name_hans": "贾布拉",
+      "name_en": "Jabra",
+      "name_ja": "ジャブラ",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "黃"
+      ],
+      "colors_en": [
+        "Yellow"
+      ],
+      "cost": 6,
+      "power": 8000,
+      "counter": null,
+      "rarity": "R",
+      "attributes": [
+        "打"
+      ],
+      "attributes_en": [
+        "Strike"
+      ],
+      "traits": [
+        "CP9"
+      ],
+      "traits_en": [
+        "CP9"
+      ],
+      "effect": "【KO時】將自己卡組上面最多1張卡牌加入生命牌上方。之後，將對手生命牌上方最多1張卡牌放置到廢棄區。\n【觸發器】若自己的領袖擁有包含「CP」的特徵，抽1張卡，並將最多1張費用8以下的角色卡放到持有者的卡組下方。",
+      "effect_hans": "【KO时】将自己卡组上面最多1张卡牌加入生命牌上方。之后，将对手生命牌上方最多1张卡牌放置到废弃区。\n【触发器】若自己的领袖拥有包含「CP」的特征，抽1张卡，并将最多1张费用8以下的角色卡放到持有者的卡组下方。",
+      "effect_en": "[On K.O.] Add up to 1 card from the top of your deck to the top of your Life. Then, place up to 1 card from the top of your opponent's Life into the trash.\n[Trigger] If your Leader has a type including \"CP\", draw 1 card and place up to 1 Character with a cost of 8 or less at the bottom of the owner's deck.",
+      "effect_ja": "【KO時】自分のデッキの上から1枚までを、ライフの上に加える。その後、相手のライフの上から1枚までを、トラッシュに置く。\n【トリガー】自分のリーダーが『CP』を含む特徴を持つ場合、カード1枚を引き、コスト8以下のキャラ1枚までを、持ち主のデッキの下に置く。"
+    },
+    "OP18-088": {
+      "preview": true,
+      "manual_source": "screenshot",
+      "text_origin": "self_translated_temporary",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "life": null,
+      "trigger": "",
+      "trigger_en": "",
+      "trigger_ja": "",
+      "trigger_hans": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ],
+      "card_id": "OP18-088",
+      "name": "索瑪茲聖",
+      "name_hans": "索玛兹圣",
+      "name_en": "Saint Sommers",
+      "name_ja": "ソマーズ聖",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "黑"
+      ],
+      "colors_en": [
+        "Black"
+      ],
+      "cost": 6,
+      "power": 6000,
+      "counter": 2000,
+      "rarity": "R",
+      "attributes": [
+        "特"
+      ],
+      "attributes_en": [
+        "Special"
+      ],
+      "traits": [
+        "天龍人",
+        "神之騎士團"
+      ],
+      "traits_en": [
+        "Celestial Dragons",
+        "Holy Knights"
+      ],
+      "effect": "【我方回合中】【登場時】若自己場上的咚!!有6張以上，將最多1張對手原本費用4以下的角色卡KO。\n【KO時】可以將自己的2張手牌棄置：使這張角色卡從廢棄區登場。",
+      "effect_hans": "【我方回合中】【登场时】若自己场上的咚!!有6张以上，将最多1张对手原本费用4以下的角色卡KO。\n【KO时】可以将自己的2张手牌弃置：使这张角色卡从废弃区登场。",
+      "effect_en": "[During Your Turn] [On Play] If you have 6 or more DON!! cards on your field, K.O. up to 1 of your opponent's Characters with a base cost of 4 or less.\n[On K.O.] You may trash 2 cards from your hand: Play this Character card from your trash.",
+      "effect_ja": "【自分のターン中】【登場時】自分の場のドン!!が6枚以上ある場合、相手の元々のコスト4以下のキャラ1枚までを、KOする。\n【KO時】自分の手札2枚を捨てることができる：このキャラカードをトラッシュから登場させる。"
+    },
+    "OP18-064": {
+      "preview": true,
+      "manual_source": "screenshot",
+      "text_origin": "self_translated_temporary",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "life": null,
+      "trigger": "",
+      "trigger_en": "",
+      "trigger_ja": "",
+      "trigger_hans": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ],
+      "card_id": "OP18-064",
+      "name": "基林甘聖",
+      "name_hans": "基林甘圣",
+      "name_en": "Saint Killingham",
+      "name_ja": "キリンガム聖",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "紫"
+      ],
+      "colors_en": [
+        "Purple"
+      ],
+      "cost": 5,
+      "power": 6000,
+      "counter": 1000,
+      "rarity": "UC",
+      "attributes": [
+        "特"
+      ],
+      "attributes_en": [
+        "Special"
+      ],
+      "traits": [
+        "天龍人",
+        "神之騎士團"
+      ],
+      "traits_en": [
+        "Celestial Dragons",
+        "Holy Knights"
+      ],
+      "effect": "【我方回合中】【登場時】咚!!−1：對手原本力量7000以下與原本力量5000以下的角色卡各最多1張，直到下一個對手的結束階段結束前，不能攻擊。\n【KO時】咚!!−1：使這張角色卡從廢棄區登場。",
+      "effect_hans": "【我方回合中】【登场时】咚!!−1：对手原本力量7000以下与原本力量5000以下的角色卡各最多1张，直到下一个对手的结束阶段结束前，不能攻击。\n【KO时】咚!!−1：使这张角色卡从废弃区登场。",
+      "effect_en": "[During Your Turn] [On Play] DON!! −1: Up to 1 of your opponent's Characters with a base power of 7000 or less and up to 1 with a base power of 5000 or less cannot attack until the end of your opponent's next End Phase.\n[On K.O.] DON!! −1: Play this Character card from your trash.",
+      "effect_ja": "【自分のターン中】【登場時】ドン!!−1：相手の元々のパワー7000以下と5000以下のキャラ1枚ずつまでは、次の相手のエンドフェイズ終了時まで、アタックできない。\n【KO時】ドン!!−1：このキャラカードをトラッシュから登場させる。"
+    },
+    "OP18-051": {
+      "preview": true,
+      "manual_source": "screenshot",
+      "text_origin": "self_translated_temporary",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "life": null,
+      "trigger": "",
+      "trigger_en": "",
+      "trigger_ja": "",
+      "trigger_hans": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ],
+      "card_id": "OP18-051",
+      "name": "Mr.4&Miss聖誕節",
+      "name_hans": "Mr.4&Miss圣诞节",
+      "name_en": "Mr.4 & Miss Merry Christmas",
+      "name_ja": "Mr.4&ミス・メリークリスマス",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "藍"
+      ],
+      "colors_en": [
+        "Blue"
+      ],
+      "cost": 2,
+      "power": 3000,
+      "counter": 1000,
+      "rarity": "R",
+      "attributes": [
+        "斬",
+        "打"
+      ],
+      "attributes_en": [
+        "Slash",
+        "Strike"
+      ],
+      "traits": [
+        "B・W"
+      ],
+      "traits_en": [
+        "Baroque Works"
+      ],
+      "effect": "【咚!!×1】這張角色卡的力量+1000。\n【登場時】可以將自己的5張咚!!置為休息：將費用6以下與費用5以下的角色卡各最多1張，依持有者喜歡的順序放到卡組下方。",
+      "effect_hans": "【咚!!×1】这张角色卡的力量+1000。\n【登场时】可以将自己的5张咚!!置为休息：将费用6以下与费用5以下的角色卡各最多1张，依持有者喜欢的顺序放到卡组下方。",
+      "effect_en": "[DON!! x1] This Character gains +1000 power.\n[On Play] You may rest 5 of your DON!! cards: Place up to 1 Character with a cost of 6 or less and up to 1 Character with a cost of 5 or less at the bottom of the owner's deck in the order the owner chooses.",
+      "effect_ja": "【ドン!!×1】このキャラのパワー+1000。\n【登場時】自分のドン!!5枚をレストにできる：コスト6以下と5以下のキャラ1枚ずつまでを、持ち主が好きな順番でデッキの下に置く。"
+    },
+    "OP18-029": {
+      "preview": true,
+      "manual_source": "screenshot",
+      "text_origin": "self_translated_temporary",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "life": null,
+      "trigger": "",
+      "trigger_en": "",
+      "trigger_ja": "",
+      "trigger_hans": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ],
+      "card_id": "OP18-029",
+      "name": "多尼多尼・喬巴",
+      "name_hans": "多尼多尼・乔巴",
+      "name_en": "Tony Tony.Chopper",
+      "name_ja": "トニートニー・チョッパー",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "綠"
+      ],
+      "colors_en": [
+        "Green"
+      ],
+      "cost": 9,
+      "power": 6000,
+      "counter": 1000,
+      "rarity": "R",
+      "attributes": [
+        "打"
+      ],
+      "attributes_en": [
+        "Strike"
+      ],
+      "traits": [
+        "動物",
+        "W7",
+        "草帽一行人"
+      ],
+      "traits_en": [
+        "Animal",
+        "Water Seven",
+        "Straw Hat Crew"
+      ],
+      "effect": "【速攻】\n【攻擊時】【每回合1次】將最多3張休息狀態的咚!!加到自己的領袖上，並將這張角色卡轉為活動。之後，這張角色卡在下一次自己的重整階段不會轉為活動。",
+      "effect_hans": "【速攻】\n【攻击时】【每回合1次】将最多3张休息状态的咚!!加到自己的领袖上，并将这张角色卡转为活动。之后，这张角色卡在下一次自己的重整阶段不会转为活动。",
+      "effect_en": "[Rush]\n[When Attacking] [Once Per Turn] Attach up to 3 of your rested DON!! cards to your Leader and set this Character as active. Then, this Character does not become active during your next Refresh Phase.",
+      "effect_ja": "【速攻】\n【アタック時】【ターン1回】自分のリーダーにレストのドン!!3枚までを、付与し、このキャラをアクティブにする。その後、このキャラは、次の自分のリフレッシュフェイズでアクティブにならない。"
+    },
+    "OP18-013": {
+      "preview": true,
+      "manual_source": "screenshot",
+      "text_origin": "self_translated_temporary",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "life": null,
+      "trigger": "",
+      "trigger_en": "",
+      "trigger_ja": "",
+      "trigger_hans": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ],
+      "card_id": "OP18-013",
+      "name": "貝爾",
+      "name_hans": "贝尔",
+      "name_en": "Pell",
+      "name_ja": "ペル",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "紅"
+      ],
+      "colors_en": [
+        "Red"
+      ],
+      "cost": 5,
+      "power": 6000,
+      "counter": 1000,
+      "rarity": "R",
+      "attributes": [
+        "斬"
+      ],
+      "attributes_en": [
+        "Slash"
+      ],
+      "traits": [
+        "阿拉巴斯坦王國"
+      ],
+      "traits_en": [
+        "Alabasta"
+      ],
+      "effect": "若自己的領袖擁有特徵《阿拉巴斯坦王國》，這張角色卡獲得【速攻】。\n【登場時】可以從自己的手牌棄置1張力量5000以下的角色卡：抽2張卡，並將最多1張對手原本力量3000以下的角色卡放置到廢棄區。",
+      "effect_hans": "若自己的领袖拥有特征《阿拉巴斯坦王国》，这张角色卡获得【速攻】。\n【登场时】可以从自己的手牌弃置1张力量5000以下的角色卡：抽2张卡，并将最多1张对手原本力量3000以下的角色卡放置到废弃区。",
+      "effect_en": "If your Leader has the {Alabasta} type, this Character gains [Rush].\n[On Play] You may trash 1 Character card with 5000 power or less from your hand: Draw 2 cards, and trash up to 1 of your opponent's Characters with a base power of 3000 or less.",
+      "effect_ja": "自分のリーダーが特徴《アラバスタ王国》を持つ場合、このキャラは【速攻】を得る。\n【登場時】自分の手札からパワー5000以下のキャラカード1枚を捨てることができる：カード2枚を引き、相手の元々のパワー3000以下のキャラ1枚までを、トラッシュに置く。"
+    },
+    "OP18-108": {
+      "preview": true,
+      "manual_source": "screenshot",
+      "text_origin": "self_translated_temporary",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "life": null,
+      "trigger": "",
+      "trigger_en": "",
+      "trigger_ja": "",
+      "trigger_hans": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ],
+      "card_id": "OP18-108",
+      "name": "法古佛立德",
+      "name_hans": "法古佛立德",
+      "name_en": "Funkfreed",
+      "name_ja": "ファンクフリード",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "黃"
+      ],
+      "colors_en": [
+        "Yellow"
+      ],
+      "cost": 1,
+      "power": 0,
+      "counter": 1000,
+      "rarity": "UC",
+      "attributes": [
+        "斬"
+      ],
+      "attributes_en": [
+        "Slash"
+      ],
+      "traits": [
+        "CP9"
+      ],
+      "traits_en": [
+        "CP9"
+      ],
+      "effect": "【登場時】可以從自己的手牌棄置1張擁有包含「CP」特徵的卡牌：抽2張卡。\n【啟動主要】可以將這張角色卡置為休息：自己的「斯帕達姆」最多1張，在這個回合中，力量+1000。",
+      "effect_hans": "【登场时】可以从自己的手牌弃置1张拥有包含「CP」特征的卡牌：抽2张卡。\n【启动主要】可以将这张角色卡置为休息：自己的「斯帕达姆」最多1张，在这个回合中，力量+1000。",
+      "effect_en": "[On Play] You may trash 1 card with a type including \"CP\" from your hand: Draw 2 cards.\n[Activate: Main] You may rest this Character: Up to 1 of your [Spandam] gains +1000 power during this turn.",
+      "effect_ja": "【登場時】自分の手札から『CP』を含む特徴を持つカード1枚を捨てることができる：カード2枚を引く。\n【起動メイン】このキャラをレストにできる：自分の「スパンダム」1枚までを、このターン中、パワー+1000。"
+    },
+    "OP18-092": {
+      "preview": true,
+      "manual_source": "screenshot",
+      "text_origin": "self_translated_temporary",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "life": null,
+      "trigger": "",
+      "trigger_en": "",
+      "trigger_ja": "",
+      "trigger_hans": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ],
+      "card_id": "OP18-092",
+      "name": "羅羅亞・索隆",
+      "name_hans": "罗罗亚・索隆",
+      "name_en": "Roronoa Zoro",
+      "name_ja": "ロロノア・ゾロ",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "黑"
+      ],
+      "colors_en": [
+        "Black"
+      ],
+      "cost": 2,
+      "power": 2000,
+      "counter": 1000,
+      "rarity": "UC",
+      "attributes": [
+        "斬"
+      ],
+      "attributes_en": [
+        "Slash"
+      ],
+      "traits": [
+        "艾爾帕布",
+        "草帽一行人"
+      ],
+      "traits_en": [
+        "Elbaph",
+        "Straw Hat Crew"
+      ],
+      "effect": "若場上有費用12以上的角色卡，這張角色卡的力量+3000。\n若自己的廢棄區有10張以上的卡牌，這張角色卡獲得【速攻】。",
+      "effect_hans": "若场上有费用12以上的角色卡，这张角色卡的力量+3000。\n若自己的废弃区有10张以上的卡牌，这张角色卡获得【速攻】。",
+      "effect_en": "If there is a Character with a cost of 12 or more, this Character gains +3000 power.\nIf you have 10 or more cards in your trash, this Character gains [Rush].",
+      "effect_ja": "コスト12以上のキャラがいる場合、このキャラのパワー+3000。\n自分のトラッシュが10枚以上ある場合、このキャラは【速攻】を得る。"
+    },
+    "OP18-077": {
+      "preview": true,
+      "manual_source": "screenshot",
+      "text_origin": "self_translated_temporary",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "life": null,
+      "trigger": "",
+      "trigger_en": "",
+      "trigger_ja": "",
+      "trigger_hans": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ],
+      "card_id": "OP18-077",
+      "name": "白木馬1號",
+      "name_hans": "白木马1号",
+      "name_en": "Shiromokuba No.1",
+      "name_ja": "シロモクバ1号",
+      "card_type": "Stage",
+      "category": "Stage",
+      "card_type_en": "Stage",
+      "category_en": "Stage",
+      "colors": [
+        "紫"
+      ],
+      "colors_en": [
+        "Purple"
+      ],
+      "cost": 5,
+      "power": null,
+      "counter": null,
+      "rarity": "UC",
+      "attributes": [
+        "-"
+      ],
+      "attributes_en": [
+        "-"
+      ],
+      "traits": [
+        "草帽一行人"
+      ],
+      "traits_en": [
+        "Straw Hat Crew"
+      ],
+      "effect": "【登場時】抽1張卡，並從咚!!卡組將最多1張咚!!以休息狀態加入。\n【啟動主要】可以將這個場地置為休息：自己擁有特徵《草帽一行人》的角色卡最多1張，在這個回合中，獲得【速攻：角色】。",
+      "effect_hans": "【登场时】抽1张卡，并从咚!!卡组将最多1张咚!!以休息状态加入。\n【启动主要】可以将这个场地置为休息：自己拥有特征《草帽一行人》的角色卡最多1张，在这个回合中，获得【速攻：角色】。",
+      "effect_en": "[On Play] Draw 1 card, and add up to 1 DON!! card from your DON!! deck rested.\n[Activate: Main] You may rest this Stage: Up to 1 of your Characters with the {Straw Hat Crew} type gains [Rush: Character] during this turn.",
+      "effect_ja": "【登場時】カード1枚を引き、ドン!!デッキからドン!!1枚までを、レストで追加する。\n【起動メイン】このステージをレストにできる：自分の特徴《麦わらの一味》を持つキャラ1枚までは、このターン中、【速攻：キャラ】を得る。"
+    },
+    "OP18-047": {
+      "preview": true,
+      "manual_source": "screenshot",
+      "text_origin": "self_translated_temporary",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "life": null,
+      "trigger": "",
+      "trigger_en": "",
+      "trigger_ja": "",
+      "trigger_hans": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ],
+      "card_id": "OP18-047",
+      "name": "Mr.1（達茲・波涅士）",
+      "name_hans": "Mr.1（达兹・波涅士）",
+      "name_en": "Mr.1 (Daz.Bonez)",
+      "name_ja": "Mr.1(ダズ・ボーネス)",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "藍"
+      ],
+      "colors_en": [
+        "Blue"
+      ],
+      "cost": 2,
+      "power": 3000,
+      "counter": 2000,
+      "rarity": "UC",
+      "attributes": [
+        "斬"
+      ],
+      "attributes_en": [
+        "Slash"
+      ],
+      "traits": [
+        "十字公會",
+        "前B・W"
+      ],
+      "traits_en": [
+        "Cross Guild",
+        "Former Baroque Works"
+      ],
+      "effect": "【登場時】自己擁有特徵《十字公會》或包含「B・W」特徵的領袖，在這個回合中，獲得【防禦不可】。",
+      "effect_hans": "【登场时】自己拥有特征《十字公会》或包含「B・W」特征的领袖，在这个回合中，获得【防御不可】。",
+      "effect_en": "[On Play] Your Leader with the {Cross Guild} type or a type including \"B・W\" gains [Unblockable] during this turn.",
+      "effect_ja": "【登場時】自分の特徴《クロスギルド》か『B・W』を含む特徴を持つリーダーは、このターン中、【ブロック不可】を得る。"
+    },
+    "OP18-036": {
+      "preview": true,
+      "manual_source": "screenshot",
+      "text_origin": "self_translated_temporary",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "life": null,
+      "trigger": "",
+      "trigger_en": "",
+      "trigger_ja": "",
+      "trigger_hans": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ],
+      "card_id": "OP18-036",
+      "name": "蒙其・D・魯夫",
+      "name_hans": "蒙其・D・鲁夫",
+      "name_en": "Monkey.D.Luffy",
+      "name_ja": "モンキー・D・ルフィ",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "綠"
+      ],
+      "colors_en": [
+        "Green"
+      ],
+      "cost": 2,
+      "power": 0,
+      "counter": 2000,
+      "rarity": "UC",
+      "attributes": [
+        "打"
+      ],
+      "attributes_en": [
+        "Strike"
+      ],
+      "traits": [
+        "W7",
+        "草帽一行人"
+      ],
+      "traits_en": [
+        "Water Seven",
+        "Straw Hat Crew"
+      ],
+      "effect": "【我方回合結束時】可以將這張角色卡放置到廢棄區：抽1張卡，並將自己的領袖轉為活動。",
+      "effect_hans": "【我方回合结束时】可以将这张角色卡放置到废弃区：抽1张卡，并将自己的领袖转为活动。",
+      "effect_en": "[End of Your Turn] You may trash this Character: Draw 1 card and set your Leader as active.",
+      "effect_ja": "【自分のターン終了時】このキャラをトラッシュに置くことができる：カード1枚を引き、自分のリーダーを、アクティブにする。"
+    },
+    "OP18-015": {
+      "preview": true,
+      "manual_source": "screenshot",
+      "text_origin": "self_translated_temporary",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "life": null,
+      "trigger": "",
+      "trigger_en": "",
+      "trigger_ja": "",
+      "trigger_hans": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ],
+      "card_id": "OP18-015",
+      "name": "馬茨格",
+      "name_hans": "马茨格",
+      "name_en": "Matsuge",
+      "name_ja": "マツゲ",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "紅"
+      ],
+      "colors_en": [
+        "Red"
+      ],
+      "cost": 1,
+      "power": 0,
+      "counter": 2000,
+      "rarity": "UC",
+      "attributes": [
+        "打"
+      ],
+      "attributes_en": [
+        "Strike"
+      ],
+      "traits": [
+        "動物",
+        "阿拉巴斯坦王國"
+      ],
+      "traits_en": [
+        "Animal",
+        "Alabasta"
+      ],
+      "effect": "【對手攻擊時】可以將這張角色卡放置到廢棄區：若自己的領袖擁有特徵《阿拉巴斯坦王國》，對手的領袖或角色卡最多1張，在這個回合中，力量−3000。",
+      "effect_hans": "【对手攻击时】可以将这张角色卡放置到废弃区：若自己的领袖拥有特征《阿拉巴斯坦王国》，对手的领袖或角色卡最多1张，在这个回合中，力量−3000。",
+      "effect_en": "[When Opponent Attacks] You may trash this Character: If your Leader has the {Alabasta} type, up to 1 of your opponent's Leader or Characters gets −3000 power during this turn.",
+      "effect_ja": "【相手のアタック時】このキャラをトラッシュに置くことができる：自分のリーダーが特徴《アラバスタ王国》を持つ場合、相手のリーダーかキャラ1枚までを、このターン中、パワー-3000。"
+    },
+    "OP18-101": {
+      "preview": true,
+      "manual_source": "screenshot",
+      "text_origin": "self_translated_temporary",
+      "img_url": "",
+      "img_full_url": "",
+      "block_number": 5,
+      "pack_id": "OP-18",
+      "life": null,
+      "trigger": "",
+      "trigger_en": "",
+      "trigger_ja": "",
+      "trigger_hans": "",
+      "card_sets": [
+        "補充包 OP-18【OP-18】"
+      ],
+      "card_id": "OP18-101",
+      "name": "隈取",
+      "name_hans": "隈取",
+      "name_en": "Kumadori",
+      "name_ja": "クマドリ",
+      "card_type": "Character",
+      "category": "Character",
+      "card_type_en": "Character",
+      "category_en": "Character",
+      "colors": [
+        "黃"
+      ],
+      "colors_en": [
+        "Yellow"
+      ],
+      "cost": 4,
+      "power": 6000,
+      "counter": null,
+      "rarity": "UC",
+      "attributes": [
+        "打"
+      ],
+      "attributes_en": [
+        "Strike"
+      ],
+      "traits": [
+        "CP9"
+      ],
+      "traits_en": [
+        "CP9"
+      ],
+      "effect": "【KO時】從自己的手牌將最多1張擁有包含「CP」特徵的卡牌，正面朝上加入自己的生命牌上方或下方。\n【觸發器】若自己的領袖擁有包含「CP」的特徵，將最多1張對手費用6以下的角色卡KO，或置為休息。",
+      "effect_hans": "【KO时】从自己的手牌将最多1张拥有包含「CP」特征的卡牌，正面朝上加入自己的生命牌上方或下方。\n【触发器】若自己的领袖拥有包含「CP」的特征，将最多1张对手费用6以下的角色卡KO，或置为休息。",
+      "effect_en": "[On K.O.] Add up to 1 card with a type including \"CP\" from your hand face-up to the top or bottom of your Life.\n[Trigger] If your Leader has a type including \"CP\", K.O. or rest up to 1 of your opponent's Characters with a cost of 6 or less.",
+      "effect_ja": "【KO時】自分の手札から『CP』を含む特徴を持つカード1枚までを、自分のライフの上か下に表向きで加える。\n【トリガー】自分のリーダーが『CP』を含む特徴を持つ場合、相手のコスト6以下のキャラ1枚までを、KOするか、レストにする。"
     }
   }
 }

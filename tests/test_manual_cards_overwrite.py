@@ -82,6 +82,20 @@ def test_seed_matches_index_and_ids_are_unique():
         "ST17-004-P3",
         "OP17-081-P1",
         "OP17-109-P1",
+        "OP18-004",
+        "OP18-013",
+        "OP18-015",
+        "OP18-029",
+        "OP18-036",
+        "OP18-047",
+        "OP18-051",
+        "OP18-064",
+        "OP18-077",
+        "OP18-088",
+        "OP18-092",
+        "OP18-101",
+        "OP18-103",
+        "OP18-108",
     }
     assert cards["EB05-046"]["name"] == "大和"
     assert cards["EB05-046"]["name_en"] == "Yamato"
@@ -700,3 +714,45 @@ def test_apply_does_not_replace_an_existing_official_card():
     assert apply_manual_cards(index, {"OP18-112": {"name": "火燒山", "manual_source": "screenshot"}}) == 0
     assert index["OP18-112"]["name"] == "官方火燒山"
     assert "manual_source" not in index["OP18-112"]
+
+
+def test_official_sync_replaces_self_translated_preview_text():
+    index = {
+        "OP18-004": {
+            "card_id": "OP18-004",
+            "name": "飛毛腿",
+            "name_en": "Karoo",
+            "name_ja": "カルー",
+            "name_hans": "飞毛腿",
+            "effect": "自譯效果",
+            "effect_en": "self-translated",
+            "effect_ja": "日本語",
+            "effect_hans": "简体",
+            "text_origin": "self_translated_temporary",
+            "preview": True,
+            "manual_source": "screenshot",
+        }
+    }
+    official = ParsedCard(
+        card_id="OP18-004",
+        name="官方飛毛腿",
+        card_type="Character",
+        fields={"effect": "官方效果", "color": "紅", "type": "動物"},
+    )
+    merged = merge_index(index, {"OP18-004": official}, "https://example.invalid/cardlist/")
+    row = merged["OP18-004"]
+    assert row["name"] == "官方飛毛腿"
+    assert row["effect"] == "官方效果"
+    assert "preview" not in row
+    assert "manual_source" not in row
+    for key in ("text_origin", "name_ja", "name_hans", "effect_ja", "effect_hans"):
+        assert key not in row
+    assert (
+        apply_manual_cards(
+            merged,
+            {"OP18-004": {"name": "飛毛腿", "effect": "自譯效果", "manual_source": "screenshot"}},
+        )
+        == 0
+    )
+    assert merged["OP18-004"]["name"] == "官方飛毛腿"
+    assert "manual_source" not in merged["OP18-004"]

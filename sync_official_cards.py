@@ -740,6 +740,16 @@ def merge_index(existing: dict[str, Any], parsed_cards: dict[str, ParsedCard], b
             # suppress_pack_image until an official image download replaces
             # a known-bad packs file (see sync_card_images.py).
             current.pop("manual_source", None)
+            for provisional in (
+                "text_origin",
+                "name_ja",
+                "effect_ja",
+                "trigger_ja",
+                "name_hans",
+                "effect_hans",
+                "trigger_hans",
+            ):
+                current.pop(provisional, None)
 
         merged[card_id] = current
     return merged
