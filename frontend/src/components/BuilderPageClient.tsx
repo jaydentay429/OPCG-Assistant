@@ -21,6 +21,7 @@ import { buildDeckShareUrl, buildDeckShareUrlCompact, parseDeckListText, parseDe
 import { summarizeDeckStructure } from "@/lib/deckStructure";
 import { localizeFilterToken } from "@/lib/filterLabels";
 import { useI18n } from "@/lib/i18n";
+import { localizeBattleApiError } from "@/lib/battleErrors";
 import { deckRestrictionWarnings } from "@/lib/restriction";
 import { formatYen, loadUnitPrices, sumPricedCopies, unitPriceOf } from "@/lib/priceCalc";
 import { consumeSkipScrollRestore, flushCurrentScroll, readPathScrollTarget, requestScrollRestore, scrollYForPersist } from "@/lib/scrollRestore";
@@ -301,7 +302,7 @@ export function BuilderPageClient() {
       setSaveOverwritePick(false);
       await reload();
     } catch (e) {
-      setMsg(e instanceof Error ? e.message : String(e));
+      setMsg(localizeBattleApiError(e instanceof Error ? e.message : String(e), t));
     }
   }
 

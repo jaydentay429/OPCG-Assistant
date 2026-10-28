@@ -4156,6 +4156,11 @@ a.detail-thumb {
   margin-top: 0.15rem;
 }
 
+/* Page swaps must not keep the clicked pager glued to the viewport. */
+.search-results {
+  overflow-anchor: none;
+}
+
 body.play-active .bottom-nav,
 body.play-active .footer-note,
 body.play-active .site-footer {

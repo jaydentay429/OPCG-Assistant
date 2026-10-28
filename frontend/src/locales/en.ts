@@ -838,6 +838,7 @@ const dict: Record<string, string> = {
   "play.leave_confirm": "Leave this match? You will not be able to rejoin this room.",
   "play.deck_no_leaders_in_main": "Main deck cannot include Leaders.",
   "play.banned_card": "Banned card {ids} cannot be included in a deck (banned from {date}).",
+  "play.banned_pair": "Banned pair {a} and {b} cannot be in the same deck (from {date}).",
   "play.beta_ack": "Got it",
   "play.bug_report": "Report bug",
   "play.bug_title": "Report a battle bug",

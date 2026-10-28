@@ -29,4 +29,43 @@ describe("battle API errors", () => {
       "禁用卡 OP14-020, OP14-020-P1 不能放入卡組（2026-10-12 起禁用）。 禁用卡 OP01-001 不能放入卡組（2026-01-01 起禁用）。",
     );
   });
+
+  it("localizes banned-pair errors from battle (English) and deck save (simplified)", () => {
+    const copy: Record<string, string> = {
+      "zh-Hant": "禁用組合 {a} 與 {b} 不能放在同一套卡組（{date} 起）。",
+      "zh-Hans": "禁用组合 {a} 与 {b} 不能放在同一套卡组（{date} 起）。",
+      en: "Banned pair {a} and {b} cannot be in the same deck (from {date}).",
+    };
+    const tFor = (lang: keyof typeof copy) => (key: string, vars?: Record<string, string | number>) => {
+      if (key !== "play.banned_pair") return key;
+      return copy[lang].replaceAll("{a}", String(vars?.a)).replaceAll("{b}", String(vars?.b)).replaceAll("{date}", String(vars?.date));
+    };
+    const english = "Banned pair OP11-040-P1 and OP11-067-P1 cannot be in the same deck (from 2026-04-10).";
+    const hans = "禁用组合 OP11-040 与 OP08-069 不能放在同一套卡组（2026-04-10 起）。";
+    assert.equal(
+      localizeBattleApiError(english, tFor("zh-Hant")),
+      "禁用組合 OP11-040-P1 與 OP11-067-P1 不能放在同一套卡組（2026-04-10 起）。",
+    );
+    assert.equal(
+      localizeBattleApiError(english, tFor("zh-Hans")),
+      "禁用组合 OP11-040-P1 与 OP11-067-P1 不能放在同一套卡组（2026-04-10 起）。",
+    );
+    assert.equal(localizeBattleApiError(english, tFor("en")), english);
+    assert.equal(
+      localizeBattleApiError(hans, tFor("zh-Hant")),
+      "禁用組合 OP11-040 與 OP08-069 不能放在同一套卡組（2026-04-10 起）。",
+    );
+    assert.equal(
+      localizeBattleApiError(hans, tFor("en")),
+      "Banned pair OP11-040 and OP08-069 cannot be in the same deck (from 2026-04-10).",
+    );
+    assert.equal(
+      localizeBattleApiError(
+        "Banned pair OP11-040, OP11-040-P1 and OP11-067, OP11-067-P1 cannot be in the same deck (from 2026-04-10). Banned pair OP07-115 and EB04-058 cannot be in the same deck (from 2026-05-01).",
+        tFor("zh-Hant"),
+      ),
+      "禁用組合 OP11-040, OP11-040-P1 與 OP11-067, OP11-067-P1 不能放在同一套卡組（2026-04-10 起）。 禁用組合 OP07-115 與 EB04-058 不能放在同一套卡組（2026-05-01 起）。",
+    );
+    assert.equal(localizeBattleApiError("Room not found.", tFor("zh-Hant")), "Room not found.");
+  });
 });
