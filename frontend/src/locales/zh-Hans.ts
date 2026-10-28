@@ -838,6 +838,7 @@ const dict: Record<string, string> = {
   "play.leave_confirm": "确定要离开这场对战吗？离开后将无法回到这间房间。",
   "play.deck_no_leaders_in_main": "主牌组不能放入领袖卡。",
   "play.banned_card": "禁用卡 {ids} 不能放入卡组（{date} 起禁用）。",
+  "play.banned_pair": "禁用组合 {a} 与 {b} 不能放在同一套卡组（{date} 起）。",
   "play.beta_ack": "知道了，继续",
   "play.bug_report": "回报问题",
   "play.bug_title": "回报对战问题",

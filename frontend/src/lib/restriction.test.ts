@@ -81,6 +81,7 @@ describe("banned card badge", () => {
       "deck.warn_banned",
       "deck.warn_restricted",
       "deck.warn_pair",
+      "play.banned_pair",
     ]) {
       assert.equal(zhHans[key], convert(zhHant[key]), key);
       assert.ok(en[key], key);

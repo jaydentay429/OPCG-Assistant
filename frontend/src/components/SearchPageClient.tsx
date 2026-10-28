@@ -4,11 +4,13 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode }
 import { fetchFilterCards, fetchFilterOptions } from "@/lib/api";
 import { useI18n } from "@/lib/i18n";
 import {
+  cancelScrollRestore,
   consumeSkipScrollRestore,
   readPathScrollTarget,
   requestScrollRestore,
   scrollYForPersist,
 } from "@/lib/scrollRestore";
+import { searchResultsScrollBehavior, searchResultsScrollTop } from "@/lib/searchScroll";
 import {
   recallSearchResults,
   rememberSearchResults,
@@ -96,6 +98,9 @@ export function SearchPageClient({
   const pendingRestoreYRef = useRef(0);
   const pendingAnchorRef = useRef("");
   const restoreOnceRef = useRef(false);
+  const resultsRef = useRef<HTMLDivElement>(null);
+  const pendingResultsScroll = useRef(false);
+  const cardsAtPageClick = useRef<FilterCard[] | null>(null);
 
   useLayoutEffect(() => {
     const saved = loadSavedSearch(storageKey);
@@ -165,6 +170,8 @@ export function SearchPageClient({
       skipPageResetRef.current = false;
       return;
     }
+    pendingResultsScroll.current = false;
+    cardsAtPageClick.current = null;
     setPage(1);
   }, [debouncedQ, filters, restored]);
 
@@ -244,6 +251,49 @@ export function SearchPageClient({
     };
   }, [filters, debouncedQ, page, restored, searchTick, storageKey]);
 
+  function scrollResultsToTop() {
+    if (hideHeader || typeof window === "undefined") return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const behavior = searchResultsScrollBehavior(reduced);
+    const el = resultsRef.current;
+    if (!el) {
+      window.scrollTo({ top: 0, behavior });
+      return;
+    }
+    const bar = document.querySelector(".top-bar");
+    const sticky =
+      bar instanceof HTMLElement && getComputedStyle(bar).position === "sticky"
+        ? bar.getBoundingClientRect().height
+        : 0;
+    const top = searchResultsScrollTop(el.getBoundingClientRect().top, window.scrollY || 0, sticky);
+    window.scrollTo({ top, behavior });
+  }
+
+  function changePage(next: number) {
+    if (!Number.isFinite(next) || next < 1 || next === page) return;
+    pendingRestoreYRef.current = 0;
+    pendingAnchorRef.current = "";
+    restoreOnceRef.current = true;
+    cancelScrollRestore();
+    if (!hideHeader) {
+      pendingResultsScroll.current = true;
+      cardsAtPageClick.current = cards;
+      scrollResultsToTop();
+    }
+    setPage(next);
+  }
+
+  // Pager clicks scroll once the new page of cards is committed. Filter changes do not.
+  useLayoutEffect(() => {
+    if (!pendingResultsScroll.current || hideHeader || loading) return;
+    if (cards === cardsAtPageClick.current) return;
+    pendingResultsScroll.current = false;
+    cardsAtPageClick.current = null;
+    scrollResultsToTop();
+    // scrollResultsToTop reads the latest DOM; hideHeader/loading/cards gate it.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- DOM scroll after the new page commits
+  }, [cards, loading, hideHeader, page]);
+
   // Restore once after the wall has data — prefer the clicked card anchor.
   useLayoutEffect(() => {
     if (hideHeader || !restored || loading) return;
@@ -287,54 +337,56 @@ export function SearchPageClient({
 
       <FilterBar options={options} value={filters} onChange={setFilters} />
 
-      <p className="muted search-result-hint">
-        {!fetchedOnce
-          ? t("filter.loading")
-          : t("filter.filter_result", { total, size: PAGE_SIZE })}
-        {fetchedOnce && loading ? " …" : ""}
-      </p>
-
-      {error ? (
-        <p className="error" style={{ color: "#fca5a5" }}>
-          {error}
+      <div className="search-results" ref={resultsRef}>
+        <p className="muted search-result-hint">
+          {!fetchedOnce
+            ? t("filter.loading")
+            : t("filter.filter_result", { total, size: PAGE_SIZE })}
+          {fetchedOnce && loading ? " …" : ""}
         </p>
-      ) : null}
 
-      {fetchedOnce && totalPages > 1 ? (
-        <div className="pager">
-          <button type="button" className="secondary" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
-            {t("filter.prev")}
-          </button>
-          <div className="center">{t("filter.page", { page, total: totalPages })}</div>
-          <button
-            type="button"
-            className="secondary"
-            disabled={page >= totalPages}
-            onClick={() => setPage((p) => p + 1)}
-          >
-            {t("filter.next")}
-          </button>
-        </div>
-      ) : null}
+        {error ? (
+          <p className="error" style={{ color: "#fca5a5" }}>
+            {error}
+          </p>
+        ) : null}
 
-      {loading && !cards.length ? <CardWallSkeleton /> : <CardWall cards={cards} />}
+        {fetchedOnce && totalPages > 1 ? (
+          <div className="pager">
+            <button type="button" className="secondary" disabled={page <= 1} onClick={() => changePage(page - 1)}>
+              {t("filter.prev")}
+            </button>
+            <div className="center">{t("filter.page", { page, total: totalPages })}</div>
+            <button
+              type="button"
+              className="secondary"
+              disabled={page >= totalPages}
+              onClick={() => changePage(page + 1)}
+            >
+              {t("filter.next")}
+            </button>
+          </div>
+        ) : null}
 
-      {fetchedOnce && totalPages > 1 ? (
-        <div className="pager">
-          <button type="button" className="secondary" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
-            {t("filter.prev")}
-          </button>
-          <div className="center">{t("filter.page", { page, total: totalPages })}</div>
-          <button
-            type="button"
-            className="secondary"
-            disabled={page >= totalPages}
-            onClick={() => setPage((p) => p + 1)}
-          >
-            {t("filter.next")}
-          </button>
-        </div>
-      ) : null}
+        {loading && !cards.length ? <CardWallSkeleton /> : <CardWall cards={cards} />}
+
+        {fetchedOnce && totalPages > 1 ? (
+          <div className="pager">
+            <button type="button" className="secondary" disabled={page <= 1} onClick={() => changePage(page - 1)}>
+              {t("filter.prev")}
+            </button>
+            <div className="center">{t("filter.page", { page, total: totalPages })}</div>
+            <button
+              type="button"
+              className="secondary"
+              disabled={page >= totalPages}
+              onClick={() => changePage(page + 1)}
+            >
+              {t("filter.next")}
+            </button>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }
