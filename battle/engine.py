@@ -4685,7 +4685,7 @@ def _attach_don(state: MatchState, seat: int, target_iid: str, catalog: CatalogF
         inst.don_attached += 1
         src_cid = inst.card_id
         src_iid = inst.iid
-    state.add_log("play.log.attach_don", name=player.username)
+    state.add_log("play.log.attach_don", name=player.username, n=1)
     info = catalog(src_cid)
     pending = resolve_ability(
         state, seat, src_cid, src_iid, "on_don_attached", info, None, allow_llm=False, catalog=catalog

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   collectionAdd,
@@ -13,7 +14,7 @@ import {
 import { useAuth } from "@/lib/auth";
 import { useDeck } from "@/lib/deck";
 import { useI18n } from "@/lib/i18n";
-import { displayCardId, isDonCardId, normalizeCardId, toBaseCardId } from "@/lib/cardId";
+import { displayCardId, isDonCardId, normalizeCardId, setCodeFromCardId, toBaseCardId } from "@/lib/cardId";
 import { isParallelArtId } from "@/lib/parallelArts";
 import {
   cardDocumentTitle,
@@ -51,6 +52,24 @@ type VariantMeta = {
   /** sort: base=0, then letter rank, then number */
   sortKey: string;
 };
+
+function CardCrumb({ cardId }: { cardId: string }) {
+  const { t } = useI18n();
+  const setCode = setCodeFromCardId(displayCardId(cardId));
+  return (
+    <nav className="set-page-nav muted">
+      <Link href="/">{t("detail.crumb_home")}</Link>
+      {" / "}
+      <Link href="/search">{t("detail.crumb_search")}</Link>
+      {setCode ? (
+        <>
+          {" / "}
+          <Link href={`/sets/${encodeURIComponent(setCode)}`}>{setCode}</Link>
+        </>
+      ) : null}
+    </nav>
+  );
+}
 
 function formatYen(value: number): string {
   const rounded = Math.round(value);
@@ -209,7 +228,6 @@ export function CardDetailClient({
   cardId,
   picked,
   pickedVariant,
-  cardTitle,
   afterDetails,
   initialCard = null,
   initialMarketPrice = null,
@@ -219,8 +237,6 @@ export function CardDetailClient({
   cardId: string;
   picked?: string;
   pickedVariant?: string;
-  /** Server-rendered H1 (card name and number), placed above the card image. */
-  cardTitle?: ReactNode;
   /** Summary, attributes, and collapsed FAQ. Rendered after the detail panel. */
   afterDetails?: ReactNode;
   /** Base-card payload so the first HTML already contains art, text, and thumbnails. */
@@ -478,7 +494,7 @@ export function CardDetailClient({
           {t("detail.back")}
         </button>
         <p style={{ color: "#fca5a5" }}>{error}</p>
-        {cardTitle}
+        <CardCrumb cardId={cardId} />
         {afterDetails}
       </div>
     );
@@ -486,7 +502,7 @@ export function CardDetailClient({
   if (!card) {
     return (
       <div className="stack">
-        {cardTitle}
+        <CardCrumb cardId={cardId} />
         {afterDetails}
       </div>
     );
@@ -569,7 +585,7 @@ export function CardDetailClient({
         <div className="detail-lead">
           <div>
             <div className="card-page-heading">
-              {cardTitle}
+              <CardCrumb cardId={cardId} />
               <h1>{heading}</h1>
               {banLabel ? (
                 <p className="detail-ban-badge" role="status">

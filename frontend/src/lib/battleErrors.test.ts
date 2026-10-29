@@ -68,4 +68,30 @@ describe("battle API errors", () => {
     );
     assert.equal(localizeBattleApiError("Room not found.", tFor("zh-Hant")), "Room not found.");
   });
+
+  it("localizes a missing battle-effect error on Chinese pages", () => {
+    const copy: Record<string, string> = {
+      "zh-Hant": "{ids} 還沒有對戰效果數據，暫時不能用於對戰。",
+      "zh-Hans": "{ids} 还没有对战效果数据，暂时不能用于对战。",
+      en: "{ids} cannot be used in battle because battle effect data is missing.",
+    };
+    const tFor = (lang: keyof typeof copy) => (key: string, vars?: Record<string, string | number>) => {
+      if (key === "play.banned_pair") {
+        return `禁用組合 ${vars?.a} 與 ${vars?.b} 不能放在同一套卡組（${vars?.date} 起）。`;
+      }
+      if (key !== "play.illegal_no_effect") return key;
+      return copy[lang].replaceAll("{ids}", String(vars?.ids));
+    };
+    const english = "OP18-003 cannot be used in battle because battle effect data is missing.";
+    assert.equal(localizeBattleApiError(english, tFor("zh-Hant")), "OP18-003 還沒有對戰效果數據，暫時不能用於對戰。");
+    assert.equal(localizeBattleApiError(english, tFor("zh-Hans")), "OP18-003 还没有对战效果数据，暂时不能用于对战。");
+    assert.equal(localizeBattleApiError(english, tFor("en")), english);
+    assert.equal(
+      localizeBattleApiError(
+        "Banned pair OP11-040 and OP11-067 cannot be in the same deck (from 2025-08-30). OP18-003 cannot be used in battle because battle effect data is missing.",
+        tFor("zh-Hant"),
+      ),
+      "禁用組合 OP11-040 與 OP11-067 不能放在同一套卡組（2025-08-30 起）。 OP18-003 還沒有對戰效果數據，暫時不能用於對戰。",
+    );
+  });
 });

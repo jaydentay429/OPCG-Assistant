@@ -10982,7 +10982,7 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                                     don_src.don_given = max(0, int(don_src.don_given or 0) - 1)
                                     don_src.don_rested += 1
                                 continue
-                        logs.append({"key": "play.log.attach_don", "name": player.username})
+                        logs.append({"key": "play.log.attach_don", "name": player.username, "n": 1})
                 continue
 
             if not target:
@@ -11061,7 +11061,7 @@ def apply_ops(state: MatchState, seat: int, ops: list[dict[str, Any]], catalog: 
                     inst.don_attached += n
                 else:
                     don_src.don_rested += n
-            logs.append({"key": "play.log.attach_don", "name": player.username})
+            logs.append({"key": "play.log.attach_don", "name": player.username, "n": n})
             # 「最多各2張…在最多2張」— re-queue remaining targets after one attach.
             try:
                 targets_left = max(1, int(op.get("target_count") or 1))

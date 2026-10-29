@@ -277,22 +277,6 @@ export default async function CardPage({
         .join(" ")
     : "";
 
-  const cardTitle = seo ? (
-    <nav className="set-page-nav muted">
-      <Link href="/">首頁</Link>
-      {" / "}
-      <Link href="/search">卡牌搜索</Link>
-      {setCodeFromCardId(seo.id) ? (
-        <>
-          {" / "}
-          <Link href={`/sets/${encodeURIComponent(setCodeFromCardId(seo.id) || "")}`}>
-            {setCodeFromCardId(seo.id)}
-          </Link>
-        </>
-      ) : null}
-    </nav>
-  ) : null;
-
   const cardSupplement = seo ? (
     <section className="card-seo-more">
       <p className="card-seo-summary">{summary}</p>
@@ -366,7 +350,6 @@ export default async function CardPage({
         cardId={cardId}
         picked={picked || undefined}
         pickedVariant={pickedVariant || undefined}
-        cardTitle={cardTitle}
         afterDetails={cardSupplement}
         initialCard={stripAbsentCardImageUrls(detailCard)}
         initialMarketPrice={card.market_price ?? null}
