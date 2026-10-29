@@ -66,15 +66,15 @@ describe("alternate-art labels", () => {
     );
     assert.equal(
       cardDocumentTitle("骗人布", "ST01-002-P2", "zh-Hans"),
-      "骗人布(异图卡)（ST01-002）| OPCG 卡牌資料",
+      "骗人布(异图卡)（ST01-002）| OPCG 卡牌资料",
     );
     assert.equal(
       cardDocumentTitle("Usopp", "ST01-002-P2", "en"),
-      "Usopp (Parallel)（ST01-002）| OPCG 卡牌資料",
+      "Usopp (Parallel)（ST01-002）| OPCG Card Database",
     );
     assert.equal(
       cardDocumentTitle("Rob Lucci (Parallel)", "OP05-093-P1", "en"),
-      "Rob Lucci (Parallel)（OP05-093）| OPCG 卡牌資料",
+      "Rob Lucci (Parallel)（OP05-093）| OPCG Card Database",
     );
     assert.equal(
       cardDocumentTitle("羅布・路基", "OP05-093"),

@@ -9,9 +9,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from battle.effect_library import get_abilities, reload_effect_library  # noqa: E402
+from battle.effect_library import get_abilities, reload_effect_library, resolve_ability  # noqa: E402
 from battle.effects import apply_ops, has_rush, live_keywords  # noqa: E402
-from battle.engine import _character_denied_attack, inst_power  # noqa: E402
+from battle.engine import _character_denied_attack, apply_action, inst_power  # noqa: E402
 from battle.state import CardInst, MatchState, PlayerState  # noqa: E402
 
 _CARDS = json.loads((ROOT / "index" / "cards_by_id.json").read_text(encoding="utf-8"))
@@ -89,6 +89,21 @@ def _ops(card_id: str, timing: str) -> list[dict]:
     return rows
 
 
+def _finish_choices(st: MatchState, choose) -> None:
+    """Resolve every pending choice. A test still waiting on a prompt fails."""
+    guard = 0
+    while st.pending_choice is not None:
+        assert guard < 8, (st.pending_choice.purpose, st.pending_choice.options)
+        pending = st.pending_choice
+        assert pending.options, pending.purpose
+        tid = choose(pending)
+        assert tid in pending.options, (tid, list(pending.options), pending.purpose)
+        result = apply_action(st, pending.seat, {"type": "select_choice", "target_iid": tid}, catalog)
+        assert result.get("ok"), result
+        guard += 1
+    assert st.pending_choice is None
+
+
 def test_op18_004_power_thresholds_grant_keywords():
     reload_effect_library(force=True)
     st = _state()
@@ -131,13 +146,26 @@ def test_op18_088_ko_uses_base_cost_and_can_replay_from_trash():
     assert on_play.get("require_don_field_gte") == 6
     assert on_play["ops"][0]["base_cost_lte"] == 4
     on_ko = _ops("OP18-088", "on_ko")[0]
+    assert on_ko["ops"][1].get("self_card") is True
+    assert on_ko["ops"][1].get("from_zone") == "trash"
     st = _state()
     st.players[0].hand = ["A", "B", "C"]
     st.players[0].trash = ["OP18-088"]
-    apply_ops(st, 0, on_ko["ops"], catalog)
-    assert "OP18-088" not in st.players[0].trash or st.pending_choice is not None or any(
-        c.card_id == "OP18-088" for c in st.players[0].characters
+    pending = resolve_ability(
+        st, 0, "OP18-088", "gone", "on_ko", catalog("OP18-088"), None, allow_llm=False, catalog=catalog
     )
+    assert pending is not None and pending.ops
+    apply_ops(st, 0, pending.ops, catalog)
+
+    def choose(pending):
+        if pending.target_kind == "hand_card":
+            return pending.options[0]
+        return next(opt for opt in pending.options if "OP18-088" in opt)
+
+    _finish_choices(st, choose)
+    assert "OP18-088" not in st.players[0].trash
+    assert any(c.card_id == "OP18-088" for c in st.players[0].characters)
+    assert len(st.players[0].hand) == 1
 
 
 def test_op18_064_don_cost_denies_attack_until_opponent_end():
@@ -203,9 +231,12 @@ def test_op18_029_rush_and_attack_attaches_rested_don_then_skips_refresh():
     st.players[0].don_active = 2
     st.players[0].don_rested = 3
     ops = [dict(op, source_iid="chop") if op.get("op") == "skip_untap" else op for op in rows[0]["ops"]]
-    apply_ops(st, 0, ops, catalog)
+    logs = apply_ops(st, 0, ops, catalog)
     assert st.pending_choice is None
     assert st.players[0].leader_don == 3
+    # Paper is up to 3 rested DON!!. The board attaches 3; the log must say 3, not 1.
+    attached = [log for log in logs if log.get("key") == "play.log.attach_don"]
+    assert attached and sum(int(log.get("n") or 0) for log in attached) == 3
     assert ch.rested is False
     assert "chop" in st.players[0].skip_untap_iids
 
@@ -221,25 +252,52 @@ def test_op18_013_leader_trait_rush_and_discard_draws():
     on_play = _ops("OP18-013", "on_play")[0]
     st.players[0].hand = ["HAND5"]
     st.players[1].characters = [CardInst(iid="tiny", card_id="C3", summoning_sick=False)]
+    deck_before = len(st.players[0].deck)
     apply_ops(st, 0, on_play["ops"], catalog)
-    assert "HAND5" not in st.players[0].hand or st.pending_choice is not None
+
+    def choose(pending):
+        if pending.target_kind == "hand_card":
+            return next(opt for opt in pending.options if opt.endswith(":HAND5"))
+        return "tiny"
+
+    _finish_choices(st, choose)
+    assert "HAND5" not in st.players[0].hand
+    assert "HAND5" in st.players[0].trash
+    assert len(st.players[0].deck) == deck_before - 2
+    assert all(c.iid != "tiny" for c in st.players[1].characters)
+    assert "C3" in st.players[1].trash
 
 
 def test_op18_108_discard_cp_draws_and_buffs_spandam():
     on_play = _ops("OP18-108", "on_play")[0]
-    st = _state("LEAD_CP")
-    st.players[0].hand = ["CPCARD"]
+    st = _state("OP18-079")
+    st.players[0].hand = ["CPCARD", "HAND5"]
     deck_before = len(st.players[0].deck)
     apply_ops(st, 0, on_play["ops"], catalog)
-    if st.pending_choice is None:
-        assert "CPCARD" not in st.players[0].hand
-        assert len(st.players[0].deck) == deck_before - 2
+    _finish_choices(st, lambda pending: next(opt for opt in pending.options if opt.endswith(":CPCARD")))
+    assert "CPCARD" not in st.players[0].hand
+    assert "CPCARD" in st.players[0].trash
+    assert "HAND5" in st.players[0].hand
+    assert len(st.players[0].deck) == deck_before - 2
+
     act = _ops("OP18-108", "activate_main")[0]
     assert act.get("rest_self") is True
-    span = CardInst(iid="sp", card_id="SPAN", summoning_sick=False)
-    st.players[0].characters = [span]
-    apply_ops(st, 0, [{"op": "buff", "amount": 1000, "target_iid": "sp", "duration": "turn"}], catalog)
-    assert inst_power(st, 0, "sp", catalog) == 2000
+    assert act["ops"][0].get("include_leader_if_name")
+    funk = CardInst(iid="funk", card_id="OP18-108", summoning_sick=False, rested=False)
+    st.players[0].characters = [funk]
+    before = inst_power(st, 0, "leader", catalog)
+    result = apply_action(st, 0, {"type": "activate_main", "source_iid": "funk"}, catalog)
+    assert result.get("ok"), result
+    assert funk.rested is True
+    _finish_choices(st, lambda pending: "leader")
+    assert inst_power(st, 0, "leader", catalog) == before + 1000
+
+    plain = _state("LEAD_PLAIN")
+    plain.players[0].characters = [CardInst(iid="funk2", card_id="OP18-108", summoning_sick=False)]
+    plain_before = inst_power(plain, 0, "leader", catalog)
+    apply_ops(plain, 0, act["ops"], catalog)
+    assert plain.pending_choice is None
+    assert inst_power(plain, 0, "leader", catalog) == plain_before
 
 
 def test_op18_092_cost_12_buff_and_trash_rush():

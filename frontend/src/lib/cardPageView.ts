@@ -86,7 +86,9 @@ export function cardDocumentTitle(
 ): string {
   const id = displayCardId(cardId);
   const label = withParallelArtSuffix(name, cardId, lang) || id;
-  return `${label}（${id}）| OPCG 卡牌資料`;
+  const suffix =
+    lang === "en" ? "OPCG Card Database" : lang === "zh-Hans" ? "OPCG 卡牌资料" : "OPCG 卡牌資料";
+  return `${label}（${id}）| ${suffix}`;
 }
 
 /** Visible H1. Chinese and English each get their own suffix; `-R` ids do not. */

@@ -540,6 +540,14 @@ function renderBattleLog(
     if (!summaryText) delete stringVars.summary;
     if (!idRaw && String(logKey).endsWith("_bare")) stringVars.id = t("play.log.card_unnamed");
   }
+  if (logKey === "play.log.attach_don" && stringVars.n == null) stringVars.n = 1;
+  if (logKey === "play.log.sets_active" && stringVars.id == null) {
+    const don = /^don:(\d+)$/.exec(String(rest.summary || ""));
+    if (don) {
+      const count = Number(don[1]);
+      stringVars.id = count > 1 ? `DON!! ×${count}` : "DON!!";
+    }
+  }
   const MARK_ID = "⟦CARD_ID⟧";
   const MARK_IDS = "⟦CARD_IDS⟧";
   const renderVars = { ...stringVars };
@@ -662,8 +670,8 @@ function localizeLegacyLog(
   if ((m = s.match(/^(.+?) sets stage ([A-Z0-9-]+)\.?$/))) {
     return t("play.log.sets_stage", { name: m[1], id: localizeLogCardId(m[2], names, lang) });
   }
-  if ((m = s.match(/^(.+?) attaches 1 DON!!\.?$/))) {
-    return t("play.log.attach_don", { name: m[1] });
+  if ((m = s.match(/^(.+?) attaches (\d+) DON!!\.?$/))) {
+    return t("play.log.attach_don", { name: m[1], n: m[2] });
   }
   if ((m = s.match(/^(.+?) attacks with (.+?) → (.+?) \((\d+) power\) \[Blockerless\]\.?$/))) {
     return t("play.log.attack_blockerless", {

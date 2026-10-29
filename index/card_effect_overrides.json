@@ -127142,6 +127142,7 @@
               "count": 1,
               "target_kind": "own_character",
               "name_contains": "斯帕達姆|Spandam",
+              "include_leader_if_name": "斯帕達姆|Spandam",
               "duration": "turn"
             }
           ],

@@ -13,6 +13,9 @@ const BANNED_PAIR_HANS =
 const BANNED_PAIR_HANT =
   /^禁用組合 (.+?) 與 (.+?) 不能放在同一套卡組（(\d{4}-\d{2}-\d{2}) 起）。$/;
 
+const NO_EFFECT =
+  /^(.+) cannot be used in battle because battle effect data is missing\.$/;
+
 const SENTENCE_SPLIT = ["Banned card ", "Banned pair ", "禁用组合 ", "禁用組合 "];
 
 function localizePair(
@@ -38,8 +41,11 @@ function localizeOne(
     return localized === "play.banned_card" ? raw : localized;
   }
   const pair = BANNED_PAIR_EN.exec(raw) || BANNED_PAIR_HANS.exec(raw) || BANNED_PAIR_HANT.exec(raw);
-  if (!pair) return raw;
-  return localizePair(pair, t);
+  if (pair) return localizePair(pair, t);
+  const missing = NO_EFFECT.exec(raw);
+  if (!missing) return raw;
+  const localized = t("play.illegal_no_effect", { ids: missing[1] });
+  return localized === "play.illegal_no_effect" ? raw : localized;
 }
 
 export function localizeBattleApiError(
