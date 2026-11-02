@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import io
 import json
 import sys
 from pathlib import Path
@@ -9,6 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+import scripts.build_card_image_manifest as manifest_mod  # noqa: E402
 from scripts.build_card_image_manifest import (  # noqa: E402
     ManifestRejected,
     apply_missing_entries,
@@ -19,6 +21,7 @@ from scripts.build_card_image_manifest import (  # noqa: E402
     load_manifest,
     main,
     manifest_from_etag_listing,
+    manifest_from_rclone,
     merge_missing_entries,
     parse_rclone_hashsum,
     write_manifest,
@@ -225,6 +228,139 @@ def test_apply_missing_entries_writes_only_when_a_key_is_new(tmp_path: Path, cap
     fresh = tmp_path / "missing.json"
     assert main(["--merge-missing-from", str(repo), "--output", str(fresh)]) == 1
     assert main(["--merge-missing-from", str(repo), "--output", str(server), "--from-cdn"]) == 2
+
+
+class _HashProc:
+    def __init__(self, stdout: str, stderr: str = "", code: int = 0) -> None:
+        self.stdout = io.StringIO(stdout)
+        self.stderr = io.StringIO(stderr)
+        self.returncode = None
+        self._code = code
+
+    def poll(self):
+        return self.returncode
+
+    def wait(self, timeout=None):
+        self.returncode = self._code
+        return self._code
+
+
+def test_write_replace_failure_keeps_the_previous_file(tmp_path: Path, monkeypatch):
+    path = tmp_path / "card-image-manifest.json"
+    write_manifest(path, {"OP13-001": "870e05eb"})
+    original = path.read_bytes()
+
+    def boom(_src, _dst):
+        raise OSError("replace failed")
+
+    monkeypatch.setattr(manifest_mod.os, "replace", boom)
+    try:
+        write_manifest(path, {"OP13-001": "870e05eb", "OP13-002": "aaaaaaaa"})
+    except OSError as exc:
+        assert "replace failed" in str(exc)
+    else:
+        raise AssertionError("expected OSError")
+    assert path.read_bytes() == original
+    assert list(tmp_path.iterdir()) == [path]
+
+
+def test_successful_write_leaves_no_temp_file(tmp_path: Path):
+    path = tmp_path / "card-image-manifest.json"
+    write_manifest(path, {"OP13-001": "870e05eb"})
+    write_manifest(path, {"OP13-001": "870e05eb", "OP13-002": "aaaaaaaa"})
+    assert load_manifest(path)["OP13-002"] == "aaaaaaaa"
+    assert list(tmp_path.iterdir()) == [path]
+
+
+def test_rclone_progress_counts_objects_and_hides_names():
+    lines = "".join(f"{i:032x} OP{i:04d}.png\n" for i in range(500))
+    lines += "deadbeefdeadbeefdeadbeefdeadbeef SECRETVALUE.png\n"
+    seen: dict = {}
+
+    def popen(cmd, **kwargs):
+        seen["cmd"] = cmd
+        assert kwargs.get("text") is True
+        assert "shell" not in kwargs
+        return _HashProc(lines)
+
+    logs: list[str] = []
+
+    class Clock:
+        def __init__(self) -> None:
+            self.n = 0
+
+        def __call__(self) -> int:
+            self.n += 1
+            return 0 if self.n <= 2 else 40
+
+    parsed = manifest_from_rclone(
+        "opcg-r2:opcg-packs",
+        popen=popen,
+        log=logs.append,
+        every=500,
+        interval_s=30,
+        clock=Clock(),
+    )
+    assert seen["cmd"] == ["rclone", "hashsum", "MD5", "--download", "opcg-r2:opcg-packs"]
+    assert not any(part == "sync" or str(part).startswith("--delete") for part in seen["cmd"])
+    assert parsed["OP0000"] == f"{0:032x}"[:8]
+    assert parsed["SECRETVALUE"] == "deadbeef"
+    assert "hashsum start" in logs
+    assert any("objects=500" in line for line in logs)
+    assert any("objects=2" in line or "objects=501" in line for line in logs)
+    blob = "\n".join(logs)
+    assert "SECRETVALUE" not in blob
+    assert "opcg-r2" not in blob
+    assert "OP0000" not in blob
+
+
+def test_rclone_heartbeat_when_stdout_is_idle(monkeypatch):
+    chunks = iter(["870e05eb5391791e66ce8fb538a17b27 OP13-001.png\n", ""])
+
+    class Stream:
+        def fileno(self) -> int:
+            return 7
+
+        def readline(self) -> str:
+            return next(chunks)
+
+        def read(self) -> str:
+            return ""
+
+    class Proc:
+        def __init__(self) -> None:
+            self.stdout = Stream()
+            self.stderr = io.StringIO("")
+            self.returncode = None
+
+        def poll(self):
+            return None
+
+        def wait(self, timeout=None):
+            self.returncode = 0
+            return 0
+
+    calls = {"n": 0}
+
+    def fake_select(fds, _write, _exc, _timeout):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return [], [], []
+        return [fds[0]], [], []
+
+    monkeypatch.setattr(manifest_mod.select, "select", fake_select)
+    logs: list[str] = []
+    parsed = manifest_from_rclone(
+        "opcg-r2:opcg-packs",
+        popen=lambda cmd, **kwargs: Proc(),
+        log=logs.append,
+        every=500,
+        interval_s=30,
+        clock=lambda: 5,
+    )
+    assert parsed["OP13-001"] == "870e05eb"
+    assert "hashsum running objects=0 elapsed_s=0" in logs
+    assert all("OP13-001" not in line and "opcg-r2" not in line for line in logs)
 
 
 def test_deploy_workflow_merges_repo_only_manifest_entries():

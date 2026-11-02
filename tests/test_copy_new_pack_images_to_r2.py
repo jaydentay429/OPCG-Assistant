@@ -466,7 +466,14 @@ def test_upload_workflow_filters_eb05_and_never_deletes():
     assert "set -x" not in text
     assert "source " not in text
     assert "set -a" not in text
+    assert "manifest_only:" in text
+    assert "ServerAliveInterval=30" in text
+    assert "ServerAliveCountMax=10" in text
+    assert "scripts/build_card_image_manifest.py" in text
+    assert "inputs.manifest_only != true" in text
     remote = text.split("<< 'REMOTE'", 1)[1]
+    assert 'MANIFEST_ONLY' in remote
+    assert '[ "$MANIFEST_ONLY" != "true" ]' in remote
     assert remote.index("generate_card_webp.py") < remote.index("build_card_image_manifest.py")
     assert remote.index("webp_rc=0") < remote.index("build_card_image_manifest.py")
     assert remote.index("build_card_image_manifest.py") < remote.index('exit "$webp_rc"')
