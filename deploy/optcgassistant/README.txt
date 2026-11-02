@@ -142,9 +142,10 @@ HTTPS 与反代
      *-HEROINES-*、日期后缀备份，以及 generate_card_webp.py 的衍生图
      （<ID>.w320.<hash>.webp、<ID>.<hash>.webp）。本地已有文件保持不动，
      包括和 R2 内容不同的异画。
-  3. scripts/generate_card_webp.py --packs 为还没有的 WebP 补 w200、w320 和
-     全尺寸。凭据是 R2_ACCESS_KEY_ID / R2_SECRET_ACCESS_KEY 和端点或账号
-     （见 env.production.example）。不删除、不覆盖 PNG。失败只记日志。
+  3. scripts/generate_card_webp.py --packs --rclone-remote 为还没有的 WebP
+     补 w200、w320 和全尺寸。R2_* 齐全时优先；没有时从该 rclone remote 的配置
+     读取 access_key_id、secret_access_key、endpoint（见 env.production.example）。
+     不删除、不覆盖 PNG。失败只记日志。
   manifest 哈希的是 R2 上的 PNG 对象体，解析时会跳过上面的衍生图文件名，
   所以清单仍然只记 PNG 的 ?h=。第 2 步不改变清单内容。
   这三步都放在 manifest 之前：今天的新图先进入 R2，WebP 用同一份字节的哈希，

@@ -72,7 +72,8 @@ read_env_value() {
     echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] generate card webp variants"
     webp_rc=0
     "$PY" -u scripts/generate_card_webp.py \
-      --packs "$APP_ROOT/packs" || webp_rc=$?
+      --packs "$APP_ROOT/packs" \
+      --rclone-remote "$remote" || webp_rc=$?
     if [[ "$webp_rc" -ne 0 ]]; then
       echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] generate card webp FAILED rc=$webp_rc; continuing to card image manifest"
     fi

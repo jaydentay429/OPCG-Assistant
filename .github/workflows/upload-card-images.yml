@@ -134,12 +134,20 @@ jobs:
             exit 1
           fi
           copy_args=(scripts/copy_new_pack_images_to_r2.py --packs packs --rclone-remote "$remote" --set-prefix "$SET_PREFIX" --ids "$ids")
-          webp_args=(scripts/generate_card_webp.py --packs packs --set-prefix "$SET_PREFIX" --ids "$ids")
+          # R2_* may be unset. WebP then reads this remote's rclone config.
+          webp_args=(scripts/generate_card_webp.py --packs packs --rclone-remote "$remote" --set-prefix "$SET_PREFIX" --ids "$ids")
           if [ "$OVERWRITE" = "true" ]; then
             copy_args+=(--overwrite)
             webp_args+=(--force)
           fi
           .venv/bin/python -u "${copy_args[@]}"
-          .venv/bin/python -u "${webp_args[@]}"
+          webp_rc=0
+          .venv/bin/python -u "${webp_args[@]}" || webp_rc=$?
+          if [ "$webp_rc" -ne 0 ]; then
+            echo "generate card webp FAILED rc=$webp_rc; continuing to card image manifest"
+          fi
           .venv/bin/python -u scripts/build_card_image_manifest.py --rclone-remote "$remote"
+          if [ "$webp_rc" -ne 0 ]; then
+            exit "$webp_rc"
+          fi
           REMOTE

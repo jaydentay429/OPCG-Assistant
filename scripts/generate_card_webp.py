@@ -15,14 +15,21 @@ Old WebP objects are left in place. This script has no delete call. ``put``
 refuses any key that is not one of those derivatives, so a PNG cannot be
 replaced. Existing derivative keys are skipped unless ``--force``.
 
-Credentials come from the environment only (or the untracked ``.env`` that
-``load_dotenv`` already uses for other scripts). Nothing is written back.
+Credentials come from the environment, or from the untracked ``.env`` that
+``load_dotenv`` reads (variables already exported win). The shell must not
+source that file. Nothing is written back.
 
     R2_ACCESS_KEY_ID
     R2_SECRET_ACCESS_KEY
     R2_ENDPOINT                 or OPCG_R2_ENDPOINT
     R2_ACCOUNT_ID               or OPCG_R2_ACCOUNT_ID or CLOUDFLARE_ACCOUNT_ID
     R2_BUCKET                   or OPCG_R2_BUCKET (default opcg-packs)
+
+When those are missing, ``--rclone-remote`` or ``OPCG_R2_RCLONE_REMOTE``
+(``name:bucket``, for example ``opcg-r2:opcg-packs``) supplies them. The
+script runs ``rclone config dump`` and, if that output is not JSON,
+``rclone config show``. Only ``access_key_id``, ``secret_access_key``, and
+``endpoint`` are kept. Config text is never printed.
 
 From the repo root, against the bucket (read every PNG, upload only missing
 WebP). ``--dry-run`` lists keys and does not encode or upload:
@@ -42,7 +49,10 @@ import argparse
 import hashlib
 import hmac
 import io
+import json
 import os
+import re
+import subprocess
 import sys
 import threading
 import time
@@ -97,6 +107,10 @@ class R2Config:
     endpoint: str
     bucket: str
     region: str = R2_REGION
+
+    def __repr__(self) -> str:
+        # Never include the keys or the endpoint (the host embeds the account id).
+        return f"R2Config(bucket={self.bucket!r}, region={self.region!r})"
 
 
 @dataclass
@@ -199,6 +213,238 @@ def load_r2_config(env: dict[str, str] | None = None) -> R2Config:
     if "/" in bucket or not bucket:
         raise R2ConfigError("R2_BUCKET must be a single path segment")
     return R2Config(access_key=access, secret_key=secret, endpoint=endpoint, bucket=bucket)
+
+
+# rclone remote section names and bucket labels. Reject anything that could be
+# read as a flag or a second path segment before it is placed on an argv list.
+_SAFE_REMOTE_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,62}$")
+_SAFE_BUCKET = re.compile(r"^[A-Za-z0-9][A-Za-z0-9.-]{0,62}$")
+_RCLONE_CREDENTIAL_FIELDS = ("access_key_id", "secret_access_key", "endpoint")
+_DUMP_NOT_JSON = "rclone config dump was not JSON"
+
+
+def split_rclone_remote(remote: str) -> tuple[str, str]:
+    """Split ``name:bucket`` into the config section and the bucket.
+
+    ``opcg-r2:opcg-packs`` → (``opcg-r2``, ``opcg-packs``). A trailing slash is
+    ignored. A path prefix (``name:bucket/prefix``) is rejected so objects are
+    not written to the bucket root by mistake. The bucket may be empty when
+    the remote is only a section name.
+    """
+    text = str(remote or "").strip()
+    if not text or any(ch in text for ch in "\r\n\x00"):
+        raise R2ConfigError("rclone remote is empty or invalid")
+    name, sep, path = text.partition(":")
+    name = name.strip()
+    if not _SAFE_REMOTE_NAME.fullmatch(name):
+        raise R2ConfigError("rclone remote name is invalid")
+    if not sep:
+        return name, ""
+    path = path.strip().strip("/")
+    if not path:
+        return name, ""
+    if "/" in path or not _SAFE_BUCKET.fullmatch(path):
+        raise R2ConfigError("rclone remote path must be a bucket name")
+    return name, path
+
+
+def _pick_rclone_credential_fields(section: dict) -> dict[str, str]:
+    """Copy only the three credential fields. Other keys are dropped."""
+    if not isinstance(section, dict):
+        raise R2ConfigError("rclone remote config is not an object")
+    picked: dict[str, str] = {}
+    for name in _RCLONE_CREDENTIAL_FIELDS:
+        raw = section.get(name)
+        if not isinstance(raw, str):
+            continue
+        text = raw.strip()
+        if not text:
+            continue
+        if any(ch in text for ch in "\r\n\x00"):
+            raise R2ConfigError(f"rclone remote field {name} is invalid")
+        picked[name] = text
+    missing = [name for name in _RCLONE_CREDENTIAL_FIELDS if name not in picked]
+    if missing:
+        raise R2ConfigError("rclone remote is missing " + ", ".join(missing))
+    return picked
+
+
+def parse_rclone_config_dump(text: str, remote_name: str) -> dict[str, str]:
+    """Parse ``rclone config dump`` JSON for one remote.
+
+    The return value has only ``access_key_id``, ``secret_access_key``, and
+    ``endpoint``. Errors name fields, never values, and never include the dump.
+    """
+    if not _SAFE_REMOTE_NAME.fullmatch(str(remote_name or "")):
+        raise R2ConfigError("rclone remote name is invalid")
+    raw = str(text or "").lstrip("\ufeff").strip()
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError:
+        raise R2ConfigError(_DUMP_NOT_JSON) from None
+    if not isinstance(data, dict):
+        raise R2ConfigError("rclone config dump was not a remote map")
+    section = data.get(remote_name)
+    if not isinstance(section, dict):
+        raise R2ConfigError("rclone remote is not in the config")
+    return _pick_rclone_credential_fields(section)
+
+
+def parse_rclone_config_show(text: str, remote_name: str) -> dict[str, str]:
+    """Parse ``rclone config show`` INI text for one remote.
+
+    Same three fields as :func:`parse_rclone_config_dump`. A file with no
+    section headers is treated as that one remote (``rclone config show name``).
+    """
+    if not _SAFE_REMOTE_NAME.fullmatch(str(remote_name or "")):
+        raise R2ConfigError("rclone remote name is invalid")
+    sections: dict[str, dict[str, str]] = {}
+    current: str | None = None
+    saw_header = False
+    for line in str(text or "").splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith(("#", ";")):
+            continue
+        if stripped.startswith("[") and stripped.endswith("]") and len(stripped) > 2:
+            current = stripped[1:-1].strip()
+            saw_header = True
+            sections.setdefault(current, {})
+            continue
+        if "=" not in stripped:
+            continue
+        if current is None:
+            if saw_header:
+                continue
+            current = remote_name
+            sections.setdefault(current, {})
+        key, value = stripped.split("=", 1)
+        key = key.strip().lower()
+        value = value.strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in {'"', "'"}:
+            value = value[1:-1]
+        if key in _RCLONE_CREDENTIAL_FIELDS and value and current in sections:
+            sections[current][key] = value
+    section = sections.get(remote_name)
+    if section is None:
+        raise R2ConfigError("rclone remote is not in the config")
+    return _pick_rclone_credential_fields(section)
+
+
+def _rclone_stdout(args: list[str], runner=None) -> str:
+    """Run rclone and return stdout. Stdout and stderr are never put in errors."""
+    run = runner or subprocess.run
+    try:
+        proc = run(args, capture_output=True, text=True, timeout=30, check=False)
+    except FileNotFoundError:
+        raise R2ConfigError("rclone is not installed") from None
+    except subprocess.TimeoutExpired:
+        raise R2ConfigError("rclone config read timed out") from None
+    except OSError:
+        raise R2ConfigError("rclone config read failed") from None
+    code = getattr(proc, "returncode", 1)
+    if code != 0:
+        raise R2ConfigError(f"rclone config read failed ({code})")
+    stdout = getattr(proc, "stdout", "") or ""
+    return stdout if isinstance(stdout, str) else ""
+
+
+def _read_rclone_config_dump() -> str:
+    return _rclone_stdout(["rclone", "config", "dump"])
+
+
+def load_rclone_credential_fields(
+    remote_name: str,
+    *,
+    dump_text: str | None = None,
+    show_text: str | None = None,
+    dump_reader=None,
+    show_reader=None,
+) -> dict[str, str]:
+    """Load the three credential fields for one rclone remote.
+
+    ``rclone config dump`` is preferred. ``rclone config show`` is used when
+    the dump command fails or its stdout is not JSON. A JSON dump that simply
+    lacks the remote is not papered over with ``show``.
+    """
+    if not _SAFE_REMOTE_NAME.fullmatch(str(remote_name or "")):
+        raise R2ConfigError("rclone remote name is invalid")
+    dump_failure: R2ConfigError | None = None
+    if dump_text is None:
+        reader = dump_reader
+        if reader is None and show_text is None:
+            reader = _read_rclone_config_dump
+        if reader is not None:
+            try:
+                dump_text = reader()
+            except R2ConfigError as exc:
+                dump_failure = exc
+                dump_text = None
+    if dump_text is not None:
+        try:
+            return parse_rclone_config_dump(dump_text, remote_name)
+        except R2ConfigError as exc:
+            if str(exc) != _DUMP_NOT_JSON:
+                raise
+            dump_failure = exc
+    try:
+        if show_text is None:
+            if show_reader is not None:
+                show_text = show_reader()
+            else:
+                show_text = _rclone_stdout(["rclone", "config", "show", remote_name])
+        return parse_rclone_config_show(show_text, remote_name)
+    except R2ConfigError as exc:
+        if dump_failure is not None:
+            raise R2ConfigError(f"{dump_failure}; {exc}") from None
+        raise
+
+
+def resolve_r2_config(
+    env: dict[str, str] | None = None,
+    rclone_remote: str = "",
+    *,
+    dump_text: str | None = None,
+    show_text: str | None = None,
+    dump_reader=None,
+    show_reader=None,
+) -> R2Config:
+    """Use R2_* env vars, or the named rclone remote when those vars are missing.
+
+    Env credentials win when they are complete, so an exported key is not
+    replaced. The rclone path does not copy the dump into the environment.
+    """
+    source = os.environ if env is None else env
+    remote = str(rclone_remote or "").strip() or _first_env(source, "OPCG_R2_RCLONE_REMOTE")
+    env_error_message = ""
+    try:
+        return load_r2_config(source)
+    except R2ConfigError as exc:
+        if not remote:
+            raise
+        env_error_message = str(exc)
+    try:
+        name, bucket = split_rclone_remote(remote)
+        fields = load_rclone_credential_fields(
+            name,
+            dump_text=dump_text,
+            show_text=show_text,
+            dump_reader=dump_reader,
+            show_reader=show_reader,
+        )
+        if not bucket:
+            bucket = _first_env(source, "R2_BUCKET", "OPCG_R2_BUCKET") or "opcg-packs"
+        config = load_r2_config(
+            {
+                "R2_ACCESS_KEY_ID": fields["access_key_id"],
+                "R2_SECRET_ACCESS_KEY": fields["secret_access_key"],
+                "R2_ENDPOINT": fields["endpoint"],
+                "R2_BUCKET": bucket,
+            }
+        )
+        _log("R2 credentials from rclone config")
+        return config
+    except R2ConfigError as exc:
+        raise R2ConfigError(f"{env_error_message}; {exc}") from None
 
 
 def _sha256_hex(data: bytes) -> str:
@@ -560,6 +806,14 @@ def main(argv: list[str] | None = None) -> int:
         default="",
         help="Comma-separated card ids. Combined with --set-prefix when both are set",
     )
+    parser.add_argument(
+        "--rclone-remote",
+        default="",
+        help=(
+            "rclone name:bucket, used when R2_* credentials are missing. "
+            "Reads access_key_id, secret_access_key, and endpoint from rclone config."
+        ),
+    )
     args = parser.parse_args(argv)
 
     if bool(args.packs) == bool(args.from_r2):
@@ -577,7 +831,7 @@ def main(argv: list[str] | None = None) -> int:
 
     _load_dotenv()
     try:
-        config = load_r2_config()
+        config = resolve_r2_config(rclone_remote=args.rclone_remote)
     except R2ConfigError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2

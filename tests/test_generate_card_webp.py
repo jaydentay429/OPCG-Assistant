@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import io
+import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -25,12 +27,17 @@ from scripts.generate_card_webp import (  # noqa: E402
     KIND_WIDTH,
     R2ConfigError,
     UnsafeUpload,
+    _rclone_stdout,
     assert_upload_allowed,
     authorization_header,
     encode_variant,
     iter_pack_pngs,
     load_r2_config,
+    parse_rclone_config_dump,
+    parse_rclone_config_show,
+    resolve_r2_config,
     run_generation,
+    split_rclone_remote,
     webp_object_key,
 )
 
@@ -257,3 +264,226 @@ def test_sigv4_matches_the_aws_s3_header_example():
 def test_cache_control_constant_is_immutable_for_a_year():
     assert CACHE_CONTROL == "public, max-age=31536000, immutable"
     assert CONTENT_TYPE == "image/webp"
+
+
+_RCLONE_DUMP = json.dumps(
+    {
+        "opcg-r2": {
+            "type": "s3",
+            "provider": "Cloudflare",
+            "access_key_id": "r2-access",
+            "secret_access_key": "r2-secret-value",
+            "endpoint": "https://abc123.r2.cloudflarestorage.com/",
+            "acl": "private",
+            "password": "unused-dump-password",
+        },
+        "other": {
+            "access_key_id": "nope",
+            "secret_access_key": "other-secret",
+            "endpoint": "https://other.example",
+        },
+    }
+)
+
+_RCLONE_SHOW = """
+[other]
+access_key_id = other-access
+secret_access_key = other-show-secret
+endpoint = https://zzz.r2.cloudflarestorage.com
+
+[opcg-r2]
+type = s3
+provider = Cloudflare
+access_key_id = "show-access"
+secret_access_key = 'show-secret-value'
+endpoint = https://abc123.r2.cloudflarestorage.com/
+acl = private
+password = ignored-password-value
+"""
+
+
+def test_split_rclone_remote_keeps_bucket_and_rejects_prefixes():
+    assert split_rclone_remote("opcg-r2:opcg-packs") == ("opcg-r2", "opcg-packs")
+    assert split_rclone_remote("opcg-r2:opcg-packs/") == ("opcg-r2", "opcg-packs")
+    assert split_rclone_remote("opcg-r2") == ("opcg-r2", "")
+    with pytest.raises(R2ConfigError):
+        split_rclone_remote("opcg-r2:opcg-packs/prefix")
+    with pytest.raises(R2ConfigError):
+        split_rclone_remote("opcg-r2:opcg-packs\nexport")
+    with pytest.raises(R2ConfigError):
+        split_rclone_remote("")
+    with pytest.raises(R2ConfigError):
+        split_rclone_remote("-opcg-r2:opcg-packs")
+
+
+def test_rclone_dump_keeps_only_credential_fields_and_hides_values():
+    fields = parse_rclone_config_dump(_RCLONE_DUMP, "opcg-r2")
+    assert set(fields) == {"access_key_id", "secret_access_key", "endpoint"}
+    assert fields["secret_access_key"] == "r2-secret-value"
+    assert "unused-dump-password" not in fields.values()
+    with pytest.raises(R2ConfigError) as missing_remote:
+        parse_rclone_config_dump(_RCLONE_DUMP, "missing")
+    assert "not in the config" in str(missing_remote.value)
+    assert "r2-secret-value" not in str(missing_remote.value)
+    assert "other-secret" not in str(missing_remote.value)
+    incomplete = json.dumps(
+        {"opcg-r2": {"access_key_id": "a", "secret_access_key": "SUPERSECRET", "type": "s3"}}
+    )
+    with pytest.raises(R2ConfigError) as missing_endpoint:
+        parse_rclone_config_dump(incomplete, "opcg-r2")
+    assert "endpoint" in str(missing_endpoint.value)
+    assert "SUPERSECRET" not in str(missing_endpoint.value)
+    with pytest.raises(R2ConfigError) as not_json:
+        parse_rclone_config_dump("not-json SUPERSECRET", "opcg-r2")
+    assert str(not_json.value) == "rclone config dump was not JSON"
+    assert "SUPERSECRET" not in str(not_json.value)
+
+
+def test_rclone_show_parses_one_remote_and_quoted_values():
+    fields = parse_rclone_config_show(_RCLONE_SHOW, "opcg-r2")
+    assert fields == {
+        "access_key_id": "show-access",
+        "secret_access_key": "show-secret-value",
+        "endpoint": "https://abc123.r2.cloudflarestorage.com/",
+    }
+    headerless = (
+        "access_key_id = bare-access\n"
+        "secret_access_key = bare-secret\n"
+        "endpoint = https://abc123.r2.cloudflarestorage.com\n"
+    )
+    bare = parse_rclone_config_show(headerless, "opcg-r2")
+    assert bare["access_key_id"] == "bare-access"
+    assert bare["secret_access_key"] == "bare-secret"
+    with pytest.raises(R2ConfigError) as missing:
+        parse_rclone_config_show(_RCLONE_SHOW, "absent")
+    assert "other-show-secret" not in str(missing.value)
+    assert "show-secret-value" not in str(missing.value)
+
+
+def test_missing_env_uses_rclone_dump_without_calling_show(capsys):
+    def boom():
+        raise AssertionError("show should not run")
+
+    cfg = resolve_r2_config(
+        {},
+        "opcg-r2:opcg-packs",
+        dump_text=_RCLONE_DUMP,
+        show_reader=boom,
+    )
+    assert cfg.access_key == "r2-access"
+    assert cfg.secret_key == "r2-secret-value"
+    assert cfg.endpoint == "https://abc123.r2.cloudflarestorage.com"
+    assert cfg.bucket == "opcg-packs"
+    assert "r2-secret-value" not in repr(cfg)
+    assert "r2-access" not in repr(cfg)
+    assert "abc123" not in repr(cfg)
+    logged = capsys.readouterr().out
+    assert "R2 credentials from rclone config" in logged
+    assert "r2-secret-value" not in logged
+    assert "r2-access" not in logged
+    assert "unused-dump-password" not in logged
+    assert "abc123" not in logged
+
+    from_env_name = resolve_r2_config(
+        {"OPCG_R2_RCLONE_REMOTE": "opcg-r2:opcg-packs"},
+        dump_text=_RCLONE_DUMP,
+        show_reader=boom,
+    )
+    assert from_env_name.secret_key == "r2-secret-value"
+    assert from_env_name.bucket == "opcg-packs"
+
+
+def test_complete_env_wins_and_does_not_read_rclone():
+    def boom():
+        raise AssertionError("rclone should not be read")
+
+    cfg = resolve_r2_config(
+        {
+            "R2_ACCESS_KEY_ID": "env-access",
+            "R2_SECRET_ACCESS_KEY": "env-secret",
+            "R2_ACCOUNT_ID": "abc123",
+        },
+        "opcg-r2:other-bucket",
+        dump_reader=boom,
+        show_reader=boom,
+    )
+    assert cfg.access_key == "env-access"
+    assert cfg.secret_key == "env-secret"
+    assert cfg.bucket == "opcg-packs"
+    assert "env-secret" not in repr(cfg)
+
+
+def test_show_fallback_and_errors_do_not_echo_secrets():
+    cfg = resolve_r2_config(
+        {},
+        "opcg-r2:opcg-packs",
+        dump_text="not-json DUMPSECRET",
+        show_text=_RCLONE_SHOW,
+    )
+    assert cfg.access_key == "show-access"
+    assert cfg.secret_key == "show-secret-value"
+    assert cfg.endpoint == "https://abc123.r2.cloudflarestorage.com"
+
+    with pytest.raises(R2ConfigError) as exc:
+        resolve_r2_config(
+            {"R2_ACCESS_KEY_ID": "AKIAsecretvalue"},
+            "opcg-r2:opcg-packs",
+            dump_text="DUMPSECRET not json",
+            show_text="[other]\naccess_key_id = x\nsecret_access_key = SHOWSECRET\nendpoint = https://abc.example\n",
+        )
+    text = str(exc.value)
+    assert "DUMPSECRET" not in text
+    assert "SHOWSECRET" not in text
+    assert "AKIAsecretvalue" not in text
+    assert "missing " in text
+
+    def show_should_not_run():
+        raise AssertionError("show should not run")
+
+    with pytest.raises(R2ConfigError) as missing_remote:
+        resolve_r2_config(
+            {},
+            "missing:opcg-packs",
+            dump_text=_RCLONE_DUMP,
+            show_reader=show_should_not_run,
+        )
+    assert "not in the config" in str(missing_remote.value)
+    assert "r2-secret-value" not in str(missing_remote.value)
+    assert "other-secret" not in str(missing_remote.value)
+
+
+class _RcloneProc:
+    def __init__(self, code: int, stdout: str, stderr: str) -> None:
+        self.returncode = code
+        self.stdout = stdout
+        self.stderr = stderr
+
+
+def test_rclone_stdout_errors_omit_captured_secrets():
+    def runner(args, **kwargs):
+        assert args == ["rclone", "config", "dump"]
+        assert kwargs.get("check") is False
+        assert "shell" not in kwargs
+        return _RcloneProc(1, "STDOUT-SECRET", "STDERR-SECRET")
+
+    with pytest.raises(R2ConfigError) as failed:
+        _rclone_stdout(["rclone", "config", "dump"], runner=runner)
+    assert "STDOUT-SECRET" not in str(failed.value)
+    assert "STDERR-SECRET" not in str(failed.value)
+    assert "failed (1)" in str(failed.value)
+    assert failed.value.__cause__ is None
+
+    def timed_out(args, **kwargs):
+        raise subprocess.TimeoutExpired(args, 30, output=b"TIMEOUT-SECRET")
+
+    with pytest.raises(R2ConfigError) as timeout:
+        _rclone_stdout(["rclone", "config", "dump"], runner=timed_out)
+    assert "TIMEOUT-SECRET" not in str(timeout.value)
+    assert timeout.value.__cause__ is None
+
+    def missing(args, **kwargs):
+        raise FileNotFoundError(2, "No such file", "rclone")
+
+    with pytest.raises(R2ConfigError) as not_found:
+        _rclone_stdout(["rclone", "config", "dump"], runner=missing)
+    assert "not installed" in str(not_found.value)
