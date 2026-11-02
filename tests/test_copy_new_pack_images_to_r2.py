@@ -242,7 +242,8 @@ def test_daily_sync_source_copies_before_manifest_and_does_not_sync():
     assert "--ignore-existing" in text
     assert between.count("--packs") == 3
     assert between.count('"$APP_ROOT/packs"') == 3
-    assert between.count('"$remote"') == 2
+    assert between.count('"$remote"') == 3
+    assert "--rclone-remote" in text[webp_at:manifest_at]
     assert "opcg-r2:" not in text
     assert "/opt/opcg/app/packs" not in text
 
@@ -388,6 +389,7 @@ def test_daily_sync_continues_to_manifest_when_webp_fails(tmp_path: Path):
     manifest_at = next(i for i, line in enumerate(calls) if "build_card_image_manifest.py" in line)
     assert webp_at < manifest_at
     assert f"--packs {app / 'packs'}" in calls[webp_at]
+    assert "--rclone-remote opcg-r2:opcg-packs" in calls[webp_at]
     log = (logs / "daily_official_latest.log").read_text(encoding="utf-8")
     assert "generate card webp FAILED rc=4; continuing to card image manifest" in log
     assert log.index("generate card webp FAILED rc=4") < log.index(
@@ -461,6 +463,17 @@ def test_upload_workflow_filters_eb05_and_never_deletes():
     assert "--force" in text
     assert "rclone sync" not in text
     assert "--delete" not in text
+    assert "set -x" not in text
+    assert "source " not in text
+    assert "set -a" not in text
+    remote = text.split("<< 'REMOTE'", 1)[1]
+    assert remote.index("generate_card_webp.py") < remote.index("build_card_image_manifest.py")
+    assert remote.index("webp_rc=0") < remote.index("build_card_image_manifest.py")
+    assert remote.index("build_card_image_manifest.py") < remote.index('exit "$webp_rc"')
+    assert '--rclone-remote "$remote"' in remote
+    assert "generate card webp FAILED rc=$webp_rc; continuing to card image manifest" in remote
+    assert "R2_SECRET" not in text
+    assert "R2_ACCESS_KEY" not in text
     lowered = text.lower()
     assert "next.config" not in lowered
     assert "middleware" not in lowered

@@ -27,7 +27,7 @@
 
 `generate_card_webp.py` 读取 R2 桶 `opcg-packs` 或本地 `packs/` 里的 `<ID>.png`，上传三份 WebP：宽 200、宽 320，以及与原图同像素的全尺寸。对象名带 PNG 内容哈希前 8 位，和 manifest 的 `?h=` 是同一个值；原图一变，键就变，旧对象留着。默认跳过已存在的 WebP，`--force` 才覆盖这些 WebP。脚本没有删除，也不会上传或覆盖 `.png`。每个新对象的 Cache-Control 是 `public, max-age=31536000, immutable`。
 
-凭据只来自环境变量（仓库里不写值）：`R2_ACCESS_KEY_ID`、`R2_SECRET_ACCESS_KEY`，以及 `R2_ENDPOINT` 或 `R2_ACCOUNT_ID`（也认 `OPCG_R2_ENDPOINT`、`OPCG_R2_ACCOUNT_ID`、`CLOUDFLARE_ACCOUNT_ID`）。桶名默认 `opcg-packs`，可用 `R2_BUCKET` 或 `OPCG_R2_BUCKET`。进程会读仓库根的 `.env`，但已经导出的环境变量优先。
+凭据优先用环境变量（仓库里不写值）：`R2_ACCESS_KEY_ID`、`R2_SECRET_ACCESS_KEY`，以及 `R2_ENDPOINT` 或 `R2_ACCOUNT_ID`（也认 `OPCG_R2_ENDPOINT`、`OPCG_R2_ACCOUNT_ID`、`CLOUDFLARE_ACCOUNT_ID`）。桶名默认 `opcg-packs`，可用 `R2_BUCKET` 或 `OPCG_R2_BUCKET`。进程会读仓库根的 `.env`，但已经导出的环境变量优先。这些变量缺失时，用 `--rclone-remote` 或 `OPCG_R2_RCLONE_REMOTE`（`name:bucket`）：脚本跑 `rclone config dump`（输出不是 JSON 时再跑 `rclone config show`），只取 `access_key_id`、`secret_access_key`、`endpoint`。配置原文不打印。不要在 shell 里 `source` 整个 `.env`。
 
 在仓库根目录，先看 20 张会新增哪些键，再正式跑（中断后重跑会跳过已有 WebP）：
 
