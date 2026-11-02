@@ -15,6 +15,16 @@ exist on R2 but not in packs/ (same flag; differing local alt arts stay), then r
 
 That runs ``rclone hashsum MD5 --download`` so rclone reads the object body.
 ``--download`` is required: without it, S3/R2 can report the multipart etag.
+While that runs, the script logs a count every 500 objects or 30 seconds.
+It does not print object names or the remote string.
+
+The manifest is a local JSON file, ``frontend/src/generated/card-image-manifest.json``
+(on the VPS, ``/opt/opcg/app/`` plus that path). It is not an R2 object and it
+has no public URL. Card art is ``https://img.optcgassistant.com/<ID>.png?h=<8 hex>``;
+the ``h`` value is this file, baked into the frontend at deploy. The write
+goes to a unique temp file in the same directory, fsyncs it, then
+``os.replace`` onto the destination. A killed process leaves the previous
+file in place. A partial temp file is not the manifest.
 
 This VM cannot see the bucket. ``--from-cdn`` GETs
 ``https://img.optcgassistant.com/<id>.png`` and hashes the response. That is
@@ -41,7 +51,10 @@ import hashlib
 import json
 import os
 import re
+import select
 import sys
+import threading
+import time
 import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -55,6 +68,10 @@ IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp"}
 # A new manifest may replace the previous one only when it keeps at least 95%.
 MIN_KEEP_NUMERATOR = 95
 MIN_KEEP_DENOMINATOR = 100
+# rclone hashsum prints nothing until it exits when stdout is captured.
+# Log a count on this cadence so a long rebuild is not a silent SSH session.
+HASH_PROGRESS_EVERY = 500
+HASH_PROGRESS_INTERVAL_S = 30.0
 
 
 class ManifestRejected(Exception):
@@ -144,11 +161,39 @@ def write_manifest(path: Path, new: dict[str, str]) -> None:
         except (OSError, json.JSONDecodeError, ValueError) as exc:
             raise ManifestRejected(f"refusing to overwrite unreadable manifest: {exc}") from exc
     validate_replacement(new, previous)
-    path.parent.mkdir(parents=True, exist_ok=True)
     payload = json.dumps(dict(sorted(new.items())), ensure_ascii=False, indent=2) + "\n"
-    tmp = path.with_suffix(path.suffix + ".tmp")
-    tmp.write_text(payload, encoding="utf-8")
-    tmp.replace(path)
+    _atomic_write_text(path, payload)
+
+
+def _atomic_write_text(path: Path, payload: str) -> None:
+    """Write ``payload`` and replace ``path`` in one rename.
+
+    The temp file is in the same directory and has a unique name, so a second
+    writer cannot rename this writer's half-finished bytes. ``os.replace`` is
+    atomic on one filesystem. The destination is not opened until the temp
+    file has been fsynced. On failure the temp file is removed and ``path``
+    is left as it was.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name(f".{path.name}.{os.getpid()}.{os.urandom(4).hex()}.tmp")
+    try:
+        with tmp.open("w", encoding="utf-8", newline="\n") as fh:
+            fh.write(payload)
+            fh.flush()
+            os.fsync(fh.fileno())
+        os.replace(tmp, path)
+    except Exception:
+        tmp.unlink(missing_ok=True)
+        raise
+    dir_fd = None
+    try:
+        dir_fd = os.open(path.parent, os.O_RDONLY)
+        os.fsync(dir_fd)
+    except OSError:
+        return
+    finally:
+        if dir_fd is not None:
+            os.close(dir_fd)
 
 
 def parse_rclone_hashsum(text: str) -> dict[str, str]:
@@ -177,19 +222,140 @@ def parse_rclone_hashsum(text: str) -> dict[str, str]:
     return out
 
 
-def manifest_from_rclone(remote: str) -> dict[str, str]:
-    """Hash object bodies on an rclone remote. Never trust the R2 etag."""
+def _log_manifest(message: str) -> None:
+    """Progress line. Callers must not pass secrets, remotes, or object names."""
+    print(f"[manifest] {message}", file=sys.stderr, flush=True)
+
+
+def _clip(text: str, limit: int = 300) -> str:
+    flat = " ".join(str(text or "").split())
+    if len(flat) > limit:
+        return flat[:limit] + "..."
+    return flat
+
+
+def _iter_proc_lines(proc, interval_s: float, on_timeout):
+    """Yield stdout chunks. Call ``on_timeout`` when ``interval_s`` passes with no data."""
+    stream = proc.stdout
+    if stream is None:
+        return
+    try:
+        fd = stream.fileno()
+    except (AttributeError, OSError, ValueError):
+        yield from stream
+        return
+    while True:
+        ready, _, _ = select.select([fd], [], [], interval_s)
+        if not ready:
+            if proc.poll() is not None:
+                leftover = stream.read()
+                if leftover:
+                    yield leftover
+                return
+            on_timeout()
+            continue
+        line = stream.readline()
+        if line == "":
+            return
+        yield line
+
+
+def _consume_hashsum_stdout(
+    proc,
+    *,
+    every: int,
+    interval_s: float,
+    clock,
+    log,
+) -> str:
+    """Read rclone stdout and log a count every ``every`` lines or ``interval_s``."""
+    parts: list[str] = []
+    seen = 0
+    start = clock()
+    last = start
+    log("hashsum start")
+
+    def emit(now: float | None = None) -> None:
+        nonlocal last
+        current = clock() if now is None else now
+        elapsed = max(0.0, current - start)
+        log(f"hashsum running objects={seen} elapsed_s={elapsed:.0f}")
+        last = current
+
+    for chunk in _iter_proc_lines(proc, interval_s, emit):
+        parts.append(chunk)
+        added = chunk.count("\n")
+        previous = seen
+        seen += added
+        now = clock()
+        crossed = every > 0 and added > 0 and seen // every > previous // every
+        if crossed or now - last >= interval_s:
+            emit(now)
+    elapsed = max(0.0, clock() - start)
+    log(f"hashsum done objects={seen} elapsed_s={elapsed:.0f}")
+    return "".join(parts)
+
+
+def manifest_from_rclone(
+    remote: str,
+    *,
+    popen=None,
+    clock=None,
+    log=None,
+    every: int = HASH_PROGRESS_EVERY,
+    interval_s: float = HASH_PROGRESS_INTERVAL_S,
+) -> dict[str, str]:
+    """Hash object bodies on an rclone remote. Never trust the R2 etag.
+
+    Stdout is the hash listing and is not logged. Progress lines are a count
+    and an elapsed time only.
+    """
     import subprocess
 
     remote = remote.strip().rstrip("/")
     if not remote:
         raise ManifestRejected("rclone remote is empty")
-    cmd = ["rclone", "hashsum", "MD5", "--download", f"{remote}"]
-    proc = subprocess.run(cmd, capture_output=True, text=True)
-    if proc.returncode != 0:
-        detail = (proc.stderr or proc.stdout or "").strip()
-        raise ManifestRejected(f"rclone hashsum failed ({proc.returncode}): {detail}")
-    parsed = parse_rclone_hashsum(proc.stdout)
+    cmd = ["rclone", "hashsum", "MD5", "--download", remote]
+    if any(part == "sync" or part.startswith("--delete") for part in cmd):
+        raise ManifestRejected("rclone hashsum must not sync or delete")
+    opener = popen or subprocess.Popen
+    proc = opener(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    stderr_parts: list[str] = []
+
+    def _drain_stderr() -> None:
+        pipe = getattr(proc, "stderr", None)
+        if pipe is None:
+            return
+        try:
+            stderr_parts.append(pipe.read() or "")
+        except Exception:
+            return
+
+    drainer = threading.Thread(target=_drain_stderr, daemon=True)
+    drainer.start()
+    code = None
+    try:
+        stdout_text = _consume_hashsum_stdout(
+            proc,
+            every=every,
+            interval_s=interval_s,
+            clock=clock or time.monotonic,
+            log=log or _log_manifest,
+        )
+    finally:
+        wait = getattr(proc, "wait", None)
+        if callable(wait):
+            try:
+                code = wait()
+            except Exception:
+                code = getattr(proc, "returncode", 1)
+        drainer.join(timeout=5)
+    if code is None:
+        code = getattr(proc, "returncode", None)
+    if code not in (0, None):
+        detail = _clip("".join(stderr_parts))
+        raise ManifestRejected(f"rclone hashsum failed ({code}): {detail}")
+    parsed = parse_rclone_hashsum(stdout_text)
     if not parsed:
         raise ManifestRejected("rclone hashsum returned no card images")
     return parsed

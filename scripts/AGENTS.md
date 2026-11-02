@@ -25,6 +25,8 @@
 
 卡图相关还有 `build_card_image_manifest.py`（按 R2 对象体重建清单；`--merge-missing-from` 只补仓库里多出来的卡号，不改、不删已有条目）、`copy_new_pack_images_to_r2.py`（packs→R2 只补缺）、`fill_missing_pack_images_from_r2.py`（R2→packs 只补缺）和 `generate_card_webp.py`（由 PNG 另存 WebP，不覆盖原图）。它们不负责界面文案。
 
+清单文件是 `frontend/src/generated/card-image-manifest.json`（VPS 上为 `/opt/opcg/app/` 加这段路径）。它不是 R2 对象，也没有单独的公网地址；卡图公网地址是 `https://img.optcgassistant.com/<ID>.png?h=` 加上清单里的 8 位哈希，这个 `h` 要等 Deploy 把清单打进前端才生效。写入是同目录临时文件 fsync 后再 `os.replace`，中断不会改掉已有清单。`rclone hashsum` 期间每 500 个对象或每 30 秒打一行计数，不打印对象名和 remote。
+
 `generate_card_webp.py` 读取 R2 桶 `opcg-packs` 或本地 `packs/` 里的 `<ID>.png`，上传三份 WebP：宽 200、宽 320，以及与原图同像素的全尺寸。对象名带 PNG 内容哈希前 8 位，和 manifest 的 `?h=` 是同一个值；原图一变，键就变，旧对象留着。默认跳过已存在的 WebP，`--force` 才覆盖这些 WebP。脚本没有删除，也不会上传或覆盖 `.png`。每个新对象的 Cache-Control 是 `public, max-age=31536000, immutable`。
 
 凭据优先用环境变量（仓库里不写值）：`R2_ACCESS_KEY_ID`、`R2_SECRET_ACCESS_KEY`，以及 `R2_ENDPOINT` 或 `R2_ACCOUNT_ID`（也认 `OPCG_R2_ENDPOINT`、`OPCG_R2_ACCOUNT_ID`、`CLOUDFLARE_ACCOUNT_ID`）。桶名默认 `opcg-packs`，可用 `R2_BUCKET` 或 `OPCG_R2_BUCKET`。进程会读仓库根的 `.env`，但已经导出的环境变量优先。这些变量缺失时，用 `--rclone-remote` 或 `OPCG_R2_RCLONE_REMOTE`（`name:bucket`）：脚本跑 `rclone config dump`（输出不是 JSON 时再跑 `rclone config show`），只取 `access_key_id`、`secret_access_key`、`endpoint`。配置原文不打印。不要在 shell 里 `source` 整个 `.env`。
