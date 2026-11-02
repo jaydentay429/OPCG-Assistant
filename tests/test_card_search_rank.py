@@ -83,7 +83,7 @@ def test_normal_name_search_ranks_exact_name_before_a_substring():
 
     luffy = _search("魯夫")
     assert luffy[0] == "ST01-001"
-    assert len(luffy) == 245
+    assert len(luffy) == 246
     assert "OP18-076" not in luffy
     assert "P-160" not in luffy
     assert "OP02-107" not in luffy
@@ -94,17 +94,17 @@ def test_set_prefixes_and_fullwidth_card_numbers():
     expected = {
         "P-": (259, "P-001"),
         "P": (259, "P-001"),
-        "OP": (3585, "OP01-001"),
-        "Op": (3585, "OP01-001"),
-        "OP1": (1425, "OP10-001"),
-        "OP18": (45, "OP18-001"),
-        "OP18-0": (37, "OP18-001"),
+        "OP": (3599, "OP01-001"),
+        "Op": (3599, "OP01-001"),
+        "OP1": (1439, "OP10-001"),
+        "OP18": (59, "OP18-001"),
+        "OP18-0": (48, "OP18-001"),
         "PRB": (41, "PRB01-001"),
         "PRB0": (41, "PRB01-001"),
         "ST": (783, "ST01-001"),
         "ST1": (221, "ST10-001"),
-        "EB": (468, "EB01-001"),
-        "EB0": (468, "EB01-001"),
+        "EB": (481, "EB01-001"),
+        "EB0": (481, "EB01-001"),
         "ＯＰ１８－０７６": (1, "OP18-076"),
     }
     for query, (count, first) in expected.items():
@@ -123,13 +123,13 @@ def test_set_prefixes_and_fullwidth_card_numbers():
 def test_letter_digit_names_search_names_and_traits():
     """CP9 / Mr.1 / GERMA 66 are not card numbers. Counts are the live catalog."""
     expected = {
-        "CP9": (46, "OP03-076"),
+        "CP9": (49, "OP03-076"),
         "CP0": (35, "ST29-003"),
-        "Mr.1": (14, "OP01-083"),
+        "Mr.1": (15, "OP01-083"),
         "Mr.2": (14, "ST08-013"),
         "Mr.3": (16, "ST30-014"),
-        "GERMA 66": (60, "OP06-078"),
-        "Germa66": (60, "OP06-078"),
+        "GERMA 66": (61, "OP06-078"),
+        "Germa66": (61, "OP06-078"),
         "Don": (448, "ST03-009"),
         "don": (448, "ST03-009"),
         "DON": (448, "ST03-009"),
@@ -142,9 +142,9 @@ def test_letter_digit_names_search_names_and_traits():
         "ST01-001": (4, "ST01-001"),
         "鯊魚潛水3號": (1, "OP18-076"),
         "迷你梅利2號": (2, "OP18-078"),
-        "OP18": (45, "OP18-001"),
-        "EB05": (72, "EB05-001"),
-        "魯夫": (245, "ST01-001"),
+        "OP18": (59, "OP18-001"),
+        "EB05": (85, "EB05-001"),
+        "魯夫": (246, "ST01-001"),
     }
     for query, (count, first) in expected.items():
         ids = _search(query)
@@ -181,7 +181,7 @@ def test_search_reuses_precomputed_name_norms_and_cache_header():
     finally:
         app._opencc_convert = original
     assert ids[0] == "ST01-001"
-    assert len(ids) == 245
+    assert len(ids) == 246
     # Query-side conversion only. The old per-card loop was ~150k calls.
     assert calls["n"] < 100
 

@@ -16,6 +16,7 @@ sys.path.insert(0, str(ROOT))
 from scripts.copy_new_pack_images_to_r2 import (  # noqa: E402
     CopyResult,
     build_rclone_copy_command,
+    card_id_selected,
     copy_new_pack_images,
     is_card_png_filename,
     list_card_pngs,
@@ -89,6 +90,17 @@ def test_copy_command_ignores_existing_and_is_not_sync(tmp_path: Path):
     assert "--ignore-existing" in dry
     assert "sync" not in dry
     assert dry[-1] == "--dry-run"
+
+    replaced = build_rclone_copy_command(
+        tmp_path / "packs",
+        "opcg-r2:opcg-packs",
+        tmp_path / "files.txt",
+        overwrite=True,
+    )
+    assert replaced[1] == "copy"
+    assert "--ignore-existing" not in replaced
+    assert "sync" not in replaced
+    assert not any(arg == "sync" or arg.startswith("--delete") for arg in replaced)
 
 
 def test_parse_copied_count_uses_file_summary_not_bytes():
@@ -401,3 +413,54 @@ def test_real_rclone_does_not_overwrite_existing_objects(tmp_path: Path):
     assert not (dst / "OP18-003.png").exists()
     assert not (dst / "EB01-001-P2 2.png").exists()
     assert result.copied == 2
+
+
+def test_set_prefix_and_ids_limit_the_file_list(tmp_path: Path):
+    packs = tmp_path / "packs"
+    _write_pack_tree(packs)
+    assert list_card_pngs(packs, set_prefix="EB05") == ["EB05-016.png"]
+    assert list_card_pngs(packs, ids={"OP13-001"}) == ["OP13-001.png"]
+    assert list_card_pngs(packs, set_prefix="EB05", ids={"OP13-001"}) == []
+    assert card_id_selected("EB05-055-P2", "EB05")
+    assert card_id_selected("EB05-050-P1", "EB05", {"EB05-050"}) is False
+    assert card_id_selected("OP18-001", "EB05") is False
+
+    seen: dict = {}
+
+    def runner(cmd, **kwargs):
+        files_from = Path(cmd[cmd.index("--files-from") + 1])
+        seen["names"] = files_from.read_text(encoding="utf-8").splitlines()
+        seen["cmd"] = cmd
+        return _Proc(0, stderr="Transferred:            1 / 1, 100%\n")
+
+    result = copy_new_pack_images(
+        packs,
+        "opcg-r2:opcg-packs",
+        set_prefix="EB05",
+        ids={"EB05-016"},
+        overwrite=True,
+        runner=runner,
+    )
+    assert result.exit_code == 0
+    assert seen["names"] == ["EB05-016.png"]
+    assert "--ignore-existing" not in seen["cmd"]
+    assert not any(arg.startswith("--delete") for arg in seen["cmd"])
+
+
+def test_upload_workflow_filters_eb05_and_never_deletes():
+    text = (ROOT / ".github" / "workflows" / "upload-card-images.yml").read_text(encoding="utf-8")
+    assert "workflow_dispatch:" in text
+    assert "set_prefix:" in text
+    assert "card_ids:" in text
+    assert "overwrite:" in text
+    assert "scripts/copy_new_pack_images_to_r2.py" in text
+    assert "scripts/generate_card_webp.py" in text
+    assert "--set-prefix" in text
+    assert "--ids" in text
+    assert "--overwrite" in text
+    assert "--force" in text
+    assert "rclone sync" not in text
+    assert "--delete" not in text
+    lowered = text.lower()
+    assert "next.config" not in lowered
+    assert "middleware" not in lowered

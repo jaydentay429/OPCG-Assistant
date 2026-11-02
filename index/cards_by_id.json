@@ -194087,9 +194087,8 @@
   },
   "EB05-010": {
     "card_id": "EB05-010",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/EB05-010.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/EB05-010.png",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-010.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-010.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "妮可・羅賓",
@@ -194120,15 +194119,19 @@
     "traits_en": [
       "Straw Hat Crew"
     ],
-    "effect": "【每回合1次】自己持有屬性（知）、且未持有【防禦】的角色卡遭到KO時，將最多1張自己卡組上面的卡片加入生命值區上面。【啟動主要】【每回合1次】將最多1張自己力量值6000以下、持有屬性（知）的角色卡置為活動狀態。",
-    "effect_en": "[Once Per Turn] When one of your Characters with the {Wisdom} attribute and without [Blocker] is K.O.'d, add up to 1 card from the top of your deck to the top of your Life cards. [Activate: Main] [Once Per Turn] Set up to 1 of your Characters with the {Wisdom} attribute and a power of 6000 or less as active."
+    "effect": "【每回合1次】自己擁有(知)屬性、未持有【防禦】的角色卡遭到KO時，將最多1張自己卡組上面的卡片加入生命值區上面。 【啟動主要】【每回合1次】將最多1張自己力量值6000以下擁有(知)屬性的角色卡置為活動狀態。",
+    "effect_en": "[Once Per Turn] When one of your Characters with the <Wisdom> attribute and without [Blocker] is K.O.'d, add up to 1 card from the top of your deck to the top of your Life cards. [Activate: Main] [Once Per Turn] Set up to 1 of your Characters with the <Wisdom> attribute and 6000 power or less as active.",
+    "card_sets": [
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
+    ],
+    "attributes": [
+      "知"
+    ]
   },
   "EB05-016": {
     "card_id": "EB05-016",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-016.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-016.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "妮可・羅賓",
@@ -194160,20 +194163,18 @@
     "traits_en": [
       "Straw Hat Crew"
     ],
-    "effect": "【我方回合中】【登場時】使最多1張自己手牌中費用5以下、持有屬性（知）的角色卡登場。【觸發】將最多1張對手費用6以下的角色卡置為休息狀態。",
-    "effect_en": "[Your Turn] [On Play] Play up to 1 Character card with a cost of 5 or less and the {Wisdom} attribute from your hand. [Trigger] Rest up to 1 of your opponent's Characters with a cost of 6 or less.",
-    "trigger": "",
-    "trigger_en": "",
+    "effect": "【我方回合中】【登場時】使最多1張自己手牌中費用5以下擁有(知)屬性的角色卡登場。\n【觸發器】將最多1張對手費用6以下的角色卡置為休息狀態。",
+    "effect_en": "[Your Turn] [On Play] Play up to 1 Character card with a cost of 5 or less and the <Wisdom> attribute from your hand.\n[Trigger] Rest up to 1 of your opponent's Characters with a cost of 6 or less.",
+    "trigger": "【觸發器】將最多1張對手費用6以下的角色卡置為休息狀態。",
+    "trigger_en": "[Trigger] Rest up to 1 of your opponent's Characters with a cost of 6 or less.",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "EB05-016-P1": {
     "card_id": "EB05-016-P1",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-016_p1.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-016_p1.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "妮可・羅賓",
@@ -194192,7 +194193,7 @@
     "power": 6000,
     "life": null,
     "counter": 1000,
-    "rarity": "SP",
+    "rarity": "SR",
     "attributes": [
       "知"
     ],
@@ -194205,12 +194206,12 @@
     "traits_en": [
       "Straw Hat Crew"
     ],
-    "effect": "【我方回合中】【登場時】使最多1張自己手牌中費用5以下、持有屬性（知）的角色卡登場。【觸發】將最多1張對手費用6以下的角色卡置為休息狀態。",
-    "effect_en": "[Your Turn] [On Play] Play up to 1 Character card with a cost of 5 or less and the {Wisdom} attribute from your hand. [Trigger] Rest up to 1 of your opponent's Characters with a cost of 6 or less.",
-    "trigger": "",
-    "trigger_en": "",
+    "effect": "【我方回合中】【登場時】使最多1張自己手牌中費用5以下擁有(知)屬性的角色卡登場。\n【觸發器】將最多1張對手費用6以下的角色卡置為休息狀態。",
+    "effect_en": "[Your Turn] [On Play] Play up to 1 Character card with a cost of 5 or less and the <Wisdom> attribute from your hand.\n[Trigger] Rest up to 1 of your opponent's Characters with a cost of 6 or less.",
+    "trigger": "【觸發器】將最多1張對手費用6以下的角色卡置為休息狀態。",
+    "trigger_en": "[Trigger] Rest up to 1 of your opponent's Characters with a cost of 6 or less.",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "OP18-021-P1": {
@@ -194343,9 +194344,8 @@
   },
   "EB05-010-P1": {
     "card_id": "EB05-010-P1",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/EB05-010-P1.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/EB05-010-P1.png",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-010_p1.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-010_p1.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "妮可・羅賓",
@@ -194376,8 +194376,14 @@
     "traits_en": [
       "Straw Hat Crew"
     ],
-    "effect": "【每回合1次】自己持有屬性（知）、且未持有【防禦】的角色卡遭到KO時，將最多1張自己卡組上面的卡片加入生命值區上面。【啟動主要】【每回合1次】將最多1張自己力量值6000以下、持有屬性（知）的角色卡置為活動狀態。",
-    "effect_en": "[Once Per Turn] When one of your Characters with the {Wisdom} attribute and without [Blocker] is K.O.'d, add up to 1 card from the top of your deck to the top of your Life cards. [Activate: Main] [Once Per Turn] Set up to 1 of your Characters with the {Wisdom} attribute and a power of 6000 or less as active."
+    "effect": "【每回合1次】自己擁有(知)屬性、未持有【防禦】的角色卡遭到KO時，將最多1張自己卡組上面的卡片加入生命值區上面。 【啟動主要】【每回合1次】將最多1張自己力量值6000以下擁有(知)屬性的角色卡置為活動狀態。",
+    "effect_en": "[Once Per Turn] When one of your Characters with the <Wisdom> attribute and without [Blocker] is K.O.'d, add up to 1 card from the top of your deck to the top of your Life cards. [Activate: Main] [Once Per Turn] Set up to 1 of your Characters with the <Wisdom> attribute and 6000 power or less as active.",
+    "card_sets": [
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
+    ],
+    "attributes": [
+      "知"
+    ]
   },
   "OP01-016-P9": {
     "name": "娜美",
@@ -203113,9 +203119,8 @@
   },
   "EB05-056": {
     "card_id": "EB05-056",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/EB05-056.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/EB05-056.png",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-056.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-056.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "妮可・歐爾比雅",
@@ -203135,7 +203140,9 @@
     "life": null,
     "counter": 2000,
     "rarity": "C",
-    "attributes": null,
+    "attributes": [
+      "知"
+    ],
     "attributes_en": [
       "Wisdom"
     ],
@@ -203145,19 +203152,18 @@
     "traits_en": [
       "Ohara"
     ],
-    "effect": "【登場時】可以廢棄1張自己手牌中持有【觸發】的卡片：若自己的領航卡是「妮可・羅賓」時，抽2張卡。",
-    "effect_en": "[On Play] You may trash 1 card with a Trigger from your hand: If your Leader is [Nico Robin], draw 2 cards.",
-    "trigger": "使這張卡登場。",
-    "trigger_en": "Play this card.",
+    "effect": "【登場時】可以廢棄1張自己手牌中持有【觸發器】的卡片：若自己的領航卡是「妮可・羅賓」時，抽2張卡片。\n【觸發器】使這張卡片登場。",
+    "effect_en": "[On Play] You may trash 1 card with a [Trigger] from your hand: If your Leader is [Nico Robin], draw 2 cards.\n[Trigger] Play this card.",
+    "trigger": "【觸發器】使這張卡片登場。",
+    "trigger_en": "[Trigger] Play this card.",
     "card_sets": [
-      "EXTRA BOOSTER EB-05【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "EB05-042": {
     "card_id": "EB05-042",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/EB05-042.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/EB05-042.png",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-042.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-042.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "忍",
@@ -203177,7 +203183,9 @@
     "life": null,
     "counter": 2000,
     "rarity": "C",
-    "attributes": null,
+    "attributes": [
+      "特"
+    ],
     "attributes_en": [
       "Special"
     ],
@@ -203187,12 +203195,12 @@
     "traits_en": [
       "Land of Wano"
     ],
-    "effect": "【登場時】抽2張卡，廢棄2張自己的手牌。",
+    "effect": "【登場時】抽2張卡片，並廢棄2張自己的手牌。",
     "effect_en": "[On Play] Draw 2 cards and trash 2 cards from your hand.",
     "trigger": null,
     "trigger_en": null,
     "card_sets": [
-      "EXTRA BOOSTER EB-05【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "OP17-119-P2": {
@@ -203329,9 +203337,8 @@
   },
   "EB05-036": {
     "card_id": "EB05-036",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/EB05-036.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/EB05-036.png",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-036.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-036.png?261016",
     "img_local_url": "/packs/EB05-036.png",
     "pack_id": "EB-05",
     "name": "阿鶴",
@@ -203360,26 +203367,26 @@
     "traits_en": [
       "Navy"
     ],
-    "effect": "【登場時】若自己的領航卡擁有《海軍》特徵，抽1張卡片，並以休息狀態從咚‼卡組加入最多1張咚‼卡。",
+    "effect": "【登場時】若自己的領航卡擁有《海軍》特徵時，抽1張卡片，從咚‼卡組追加最多1張休息狀態的咚‼卡。",
     "effect_en": "[On Play] If your Leader has the {Navy} type, draw 1 card, and add up to 1 DON!! card as rested from your DON!! deck.",
     "trigger": null,
     "trigger_en": null,
     "card_sets": [
-      "EXTRA BOOSTER EB-05【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "block_number": 5,
     "artist": "kudo sakiko",
     "category": "Character",
-    "category_en": "Character"
+    "category_en": "Character",
+    "life": null
   },
   "EB05-023": {
     "card_id": "EB05-023",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/EB05-023.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/EB05-023.png",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-023.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-023.png?261016",
     "img_local_url": "/packs/EB05-023.png",
     "pack_id": "EB-05",
-    "name": "阿繡",
+    "name": "阿染",
     "name_en": "Osome",
     "card_type": "Character",
     "card_type_en": "Character",
@@ -203406,12 +203413,12 @@
     "traits_en": [
       "Land of Wano"
     ],
-    "effect": "【登場時】可將2張自己手牌中的事件卡廢棄：抽3張卡片。",
+    "effect": "【登場時】可以廢棄2張自己手牌中的事件卡：抽3張卡片。",
     "effect_en": "[On Play] You may trash 2 Events from your hand: Draw 3 cards.",
     "trigger": null,
     "trigger_en": null,
     "card_sets": [
-      "EXTRA BOOSTER EB-05【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "block_number": 5,
     "category": "Character",
@@ -203428,8 +203435,8 @@
     "category": "Character",
     "power": 4000,
     "counter": 1000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-013.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-013.png?261016",
     "rarity": "C",
     "card_type": "Character",
     "traits": [
@@ -203439,11 +203446,11 @@
     "attributes": [
       "知"
     ],
-    "effect": "【對手攻擊時】【每回合1次】可將1張自己的咚‼卡置為休息狀態：自己擁有《魚人族》或《人魚族》特徵的領航卡，在這場對戰中，力量值+2000。",
+    "effect": "【對方攻擊時】【每回合1次】可將1張自己的咚‼卡置為休息狀態：自己擁有《魚人族》或《人魚族》特徵的領航卡，在這場對戰中，力量值+2000。",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Shirley",
     "effect_en": "[On Your Opponent's Attack] [Once Per Turn] You may rest 1 of your DON!! cards: Your {Fish-Man} or {Merfolk} type Leader gains +2000 power during this battle.",
@@ -203458,8 +203465,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Green"
-    ],
-    "preview": true
+    ]
   },
   "EB05-054": {
     "name": "夏洛特・布璃叡",
@@ -203472,8 +203478,8 @@
     "category": "Character",
     "power": 4000,
     "counter": 1000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-054.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-054.png?261016",
     "rarity": "C",
     "card_type": "Character",
     "traits": [
@@ -203482,15 +203488,15 @@
     "attributes": [
       "特"
     ],
-    "effect": "-",
-    "trigger": "【觸發器】使最多2張自己手牌中力量值為4000擁有《BIG MOM海賊團》特徵的角色卡登場。",
+    "effect": "-\n【觸發器】使最多2張自己手牌中力量值4000擁有《BIG MOM海賊團》特徵的角色卡登場。",
+    "trigger": "【觸發器】使最多2張自己手牌中力量值4000擁有《BIG MOM海賊團》特徵的角色卡登場。",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Charlotte Brulee",
-    "effect_en": "-",
+    "effect_en": "-\n[Trigger] Play up to 2 {Big Mom Pirates} type Character cards with 4000 power from your hand.",
     "trigger_en": "[Trigger] Play up to 2 {Big Mom Pirates} type Character cards with 4000 power from your hand.",
     "traits_en": [
       "Big Mom Pirates"
@@ -203502,8 +203508,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Yellow"
-    ],
-    "preview": true
+    ]
   },
   "EB05-045": {
     "name": "Miss星期一",
@@ -203516,8 +203521,8 @@
     "category": "Character",
     "power": 3000,
     "counter": 1000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-045.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-045.png?261016",
     "rarity": "C",
     "card_type": "Character",
     "traits": [
@@ -203526,14 +203531,14 @@
     "attributes": [
       "打"
     ],
-    "effect": "【登場時】KO最多1張自己擁有包含『B・W』特徵的角色卡。\n【KO時】從自己的卡組上面查看3張卡片，公開最多1張擁有包含『B・W』特徵的卡片，並加入手牌。之後，將其餘卡片放到廢棄區。",
+    "effect": "【登場時】KO最多1張自己擁有包含『B・W』特徵的角色卡。 【KO時】從自己的卡組上面查看3張卡片，公開最多1張擁有包含『B・W』特徵的卡片，並加入手牌。之後，將其餘卡片放到廢棄區。",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Ms. Monday",
-    "effect_en": "[On Play] K.O. up to 1 of your Characters with a type including \"Baroque Works\".\n[On K.O.] Look at 3 cards from the top of your deck; reveal up to 1 card with a type including \"Baroque Works\" and add it to your hand. Then, trash the rest.",
+    "effect_en": "[On Play] K.O. up to 1 of your Characters with a type including \"Baroque Works\". [On K.O.] Look at 3 cards from the top of your deck; reveal up to 1 card with a type including \"Baroque Works\" and add it to your hand. Then, trash the rest.",
     "traits_en": [
       "Baroque Works"
     ],
@@ -203544,8 +203549,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Black"
-    ],
-    "preview": true
+    ]
   },
   "EB05-035": {
     "name": "史比托",
@@ -203558,8 +203562,8 @@
     "category": "Character",
     "power": 6000,
     "counter": 1000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-035.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-035.png?261016",
     "rarity": "C",
     "card_type": "Character",
     "traits": [
@@ -203569,11 +203573,11 @@
     "attributes": [
       "打"
     ],
-    "effect": "【登場時】咚‼-1(可將自己場上的咚‼卡依指定的數量放回咚‼卡組)：從自己的卡組上面查看5張卡片，公開最多2張擁有《SMILE》特徵的卡片，並加入手牌。之後，將其餘卡片依任意順序放到卡組下面。然後，使最多2張自己手牌中力量值5000以下擁有《SMILE》特徵的角色卡登場。",
+    "effect": "【登場時】咚‼-1：從自己的卡組上面查看5張卡片，公開最多2張擁有《SMILE》特徵的卡片，並加入手牌，將其餘卡片依任意順序放到卡組下面。之後，使最多2張自己手牌中力量值5000以下擁有《SMILE》徵的角色卡登場。",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Speed",
     "effect_en": "[On Play] DON!! −1: Look at 5 cards from the top of your deck; reveal up to 2 {SMILE} type cards and add them to your hand, then place the rest at the bottom of your deck in any order. Then, play up to 2 {SMILE} type Character cards with 5000 power or less from your hand.",
@@ -203588,8 +203592,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Purple"
-    ],
-    "preview": true
+    ]
   },
   "EB05-025": {
     "name": "托米諾",
@@ -203602,8 +203605,8 @@
     "category": "Character",
     "power": 3000,
     "counter": 1000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-025.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-025.png?261016",
     "rarity": "C",
     "card_type": "Character",
     "traits": [
@@ -203612,12 +203615,12 @@
     "attributes": [
       "知"
     ],
-    "effect": "【登場時】從自己的卡組上面查看3張卡片，公開最多1張擁有《推進城》特徵的卡片，並加入手牌。之後，將其餘卡片依任意順序放到卡組下面。\n【觸發器】啟動這張卡片的【登場時】效果。",
-    "trigger": "【觸發器】啟動這張卡片的【登場時】效果。",
+    "effect": "【登場時】從自己的卡組上面查看3張卡片，公開最多1張擁有《推進城》特徵的卡片，並加入手牌。之後，將其餘卡片依任意順序放到卡組下面。\n【觸發器】發動這張卡片的【登場時】效果。",
+    "trigger": "【觸發器】發動這張卡片的【登場時】效果。",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Domino",
     "effect_en": "[On Play] Look at 3 cards from the top of your deck; reveal up to 1 {Impel Down} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order.\n[Trigger] Activate this card's [On Play] effect.",
@@ -203632,11 +203635,10 @@
     "card_type_en": "Character",
     "colors_en": [
       "Blue"
-    ],
-    "preview": true
+    ]
   },
   "EB05-051": {
-    "name": "阿希爾",
+    "name": "阿比留",
     "card_id": "EB05-051",
     "pack_id": "EB-05",
     "colors": [
@@ -203646,8 +203648,8 @@
     "category": "Character",
     "power": 4000,
     "counter": 1000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-051.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-051.png?261016",
     "rarity": "C",
     "card_type": "Character",
     "traits": [
@@ -203661,7 +203663,7 @@
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Ahiru",
     "effect_en": "[On Play] Rest up to 1 of your opponent's Characters with a cost equal to or less than the total of your and your opponent's Life cards.\n[Trigger] Play this card.",
@@ -203676,8 +203678,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Yellow"
-    ],
-    "preview": true
+    ]
   },
   "EB05-005": {
     "name": "貝洛・蓓媞",
@@ -203690,8 +203691,8 @@
     "category": "Character",
     "power": 3000,
     "counter": 1000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-005.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-005.png?261016",
     "rarity": "C",
     "card_type": "Character",
     "traits": [
@@ -203700,15 +203701,15 @@
     "attributes": [
       "特"
     ],
-    "effect": "【登場時】最多3張自己同時擁有《革命軍》特徵且持有【觸發器】的角色卡，在這個回合，力量值+2000。\n【啟動主要】可將這張角色卡放置在廢棄區：最多1張對手的角色卡，在這個回合，力量值-2000。",
+    "effect": "【登場時】最多3張自己擁有《革命軍》特徵也持有【觸發器】的角色卡，在這個回合，力量值+2000。 【啟動主要】可將這張角色卡放置在廢棄區：最多1張對手的角色卡，在這個回合，力量值-2000。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Belo Betty",
-    "effect_en": "[On Play] Up to 3 of your Characters with both the {Revolutionary Army} type and a [Trigger] gain +2000 power during this turn.\n[Activate: Main] You may trash this Character: Give up to 1 of your opponent's Characters −2000 power during this turn.",
+    "effect_en": "[On Play] Up to 3 of your Characters with both the {Revolutionary Army} type and a [Trigger] gain +2000 power during this turn. [Activate: Main] You may trash this Character: Give up to 1 of your opponent's Characters −2000 power during this turn.",
     "trigger_en": "",
     "traits_en": [
       "Revolutionary Army"
@@ -203720,8 +203721,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Red"
-    ],
-    "preview": true
+    ]
   },
   "EB05-011": {
     "name": "乙姬",
@@ -203734,8 +203734,8 @@
     "category": "Character",
     "power": 0,
     "counter": 2000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-011.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-011.png?261016",
     "rarity": "C",
     "card_type": "Character",
     "traits": [
@@ -203745,12 +203745,12 @@
     "attributes": [
       "知"
     ],
-    "effect": "【登場時】若自己的領航卡是「白星」時，可將1張自己生命值區上面的卡片翻成背面朝上：將最多1張對手費用5以下的角色卡置為休息狀態。",
+    "effect": "【登場時】若自己的領航卡是「白星公主」時，可將1張自己生命值區上面的卡片翻成背面朝上：將最多1張對手費用5以下的角色卡置為休息狀態。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Otohime",
     "effect_en": "[On Play] If your Leader is [Shirahoshi], you may turn 1 card from the top of your Life cards face-down: Rest up to 1 of your opponent's Characters with a cost of 5 or less.",
@@ -203766,8 +203766,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Green"
-    ],
-    "preview": true
+    ]
   },
   "EB05-038": {
     "name": "露西安",
@@ -203780,12 +203779,12 @@
     "category": "Character",
     "power": 0,
     "counter": 2000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-038.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-038.png?261016",
     "rarity": "C",
     "card_type": "Character",
     "traits": [
-      "粉紅先生的妻子"
+      "粉紅先生之妻"
     ],
     "attributes": [
       "知"
@@ -203795,7 +203794,7 @@
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Russian",
     "effect_en": "[On Play] Up to 1 of your [Senor Pink] cards gains +3000 power during this turn.",
@@ -203810,8 +203809,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Purple"
-    ],
-    "preview": true
+    ]
   },
   "EB05-022": {
     "name": "八爪子",
@@ -203824,8 +203822,8 @@
     "category": "Character",
     "power": 2000,
     "counter": 1000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-022.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-022.png?261016",
     "rarity": "C",
     "card_type": "Character",
     "traits": [
@@ -203840,7 +203838,7 @@
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Octopako",
     "effect_en": "[On K.O.] Draw 2 cards.",
@@ -203856,11 +203854,10 @@
     "card_type_en": "Character",
     "colors_en": [
       "Blue"
-    ],
-    "preview": true
+    ]
   },
   "EB05-017": {
-    "name": "人魚咖啡廳舞者",
+    "name": "魚咖啡廳舞者們",
     "card_id": "EB05-017",
     "pack_id": "EB-05",
     "colors": [
@@ -203870,8 +203867,8 @@
     "category": "Character",
     "power": 0,
     "counter": 2000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-017.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-017.png?261016",
     "rarity": "C",
     "card_type": "Character",
     "traits": [
@@ -203881,12 +203878,12 @@
     "attributes": [
       "知"
     ],
-    "effect": "【對手攻擊時】可將1張自己的咚‼卡置為休息狀態並將此角色卡放置在廢棄區：自己擁有《魚人族》或《人魚族》特徵的領航卡，在這場對戰中，力量值+4000。",
+    "effect": "【對方攻擊時】可將1張自己的咚‼卡置為休息狀態、並將這張角色卡放置在廢棄區：自己擁有《魚人族》或《人魚族》特徵的領航卡，在這場對戰中，力量值+4000。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Mermaid Cafe Dancers",
     "effect_en": "[On Your Opponent's Attack] You may rest 1 of your DON!! cards and trash this Character: Your {Fish-Man} or {Merfolk} type Leader gains +4000 power during this battle.",
@@ -203902,8 +203899,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Green"
-    ],
-    "preview": true
+    ]
   },
   "EB05-002": {
     "name": "朵爾",
@@ -203916,8 +203912,8 @@
     "category": "Character",
     "power": 2000,
     "counter": 1000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-002.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-002.png?261016",
     "rarity": "R",
     "card_type": "Character",
     "traits": [
@@ -203926,15 +203922,15 @@
     "attributes": [
       "打"
     ],
-    "effect": "【登場時】查看自己的牌組上方5張卡牌，公開最多2張費用2以上、擁有包含『海軍』特徵的卡牌並加入手牌，其餘的卡牌依喜好順序置於牌組下方。之後，廢棄1張自己的手牌。",
+    "effect": "【登場時】從自己的卡組上面查看5張卡片，公開最多2張費用2以上擁有《海軍》特徵的卡片，並加入手牌，將其餘卡片依任意順序放到卡組下面。之後，廢棄1張自己的手牌。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Doll",
-    "effect_en": "[On Play] Look at 5 cards from the top of your deck; reveal up to 2 {Navy} type cards with a cost of 2 or more and add them to your hand. Then place the remaining cards at the bottom of your deck in any order. Then, trash 1 card from your hand.",
+    "effect_en": "[On Play] Look at 5 cards from the top of your deck; reveal up to 2 {Navy} type cards with a cost of 2 or more and add them to your hand, then place the rest at the bottom of your deck in any order. Then, trash 1 card from your hand.",
     "trigger_en": "",
     "traits_en": [
       "Navy"
@@ -203946,11 +203942,10 @@
     "card_type_en": "Character",
     "colors_en": [
       "Red"
-    ],
-    "preview": true
+    ]
   },
   "EB05-047": {
-    "name": "莉普莉",
+    "name": "雷普莉",
     "card_id": "EB05-047",
     "pack_id": "EB-05",
     "colors": [
@@ -203960,8 +203955,8 @@
     "category": "Character",
     "power": 4000,
     "counter": 2000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-047.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-047.png?261016",
     "rarity": "R",
     "card_type": "Character",
     "traits": [
@@ -203976,7 +203971,7 @@
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Ripley",
     "effect_en": "This Character gains +12 cost. [On Play] You may trash 1 card from your hand: Play up to 1 Character card with a cost of 2 or less from your trash.",
@@ -203992,8 +203987,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Black"
-    ],
-    "preview": true
+    ]
   },
   "EB05-057": {
     "name": "虹子",
@@ -204006,8 +204000,8 @@
     "category": "Character",
     "power": 0,
     "counter": 2000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-057.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-057.png?261016",
     "rarity": "R",
     "card_type": "Character",
     "traits": [
@@ -204016,15 +204010,15 @@
     "attributes": [
       "知"
     ],
-    "effect": "【啟動主要】【每回合1次】將最多1張休息狀態的咚‼給予1張自己擁有屬性《特》或《知》的領航卡或角色卡。",
-    "trigger": "【觸發器】若自己的生命值在2張以下時，使最多1張自己手牌中力量值6000以下、擁有【觸發器】的角色卡登場。",
+    "effect": "【啟動主要】【每回合1次】附加最多1張休息狀態的咚‼卡在1張自己擁有(特)或(知)屬性的領航卡或角色卡。\n【觸發器】若自己的生命值卡在2張以下時，使最多1張自己手牌中力量值6000以下持有【觸發器】的角色卡登場。",
+    "trigger": "【觸發器】若自己的生命值卡在2張以下時，使最多1張自己手牌中力量值6000以下持有【觸發器】的角色卡登場。",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Nojiko",
-    "effect_en": "[Activate: Main] [Once Per Turn] Give up to 1 rested DON!! card to 1 of your Leader or Character cards with the {Special} or {Wisdom} attribute.",
+    "effect_en": "[Activate: Main] [Once Per Turn] Give up to 1 rested DON!! card to 1 of your Leader or Character cards with the <Special> or <Wisdom> attribute.\n[Trigger] If you have 2 or less Life cards, play up to 1 Character card with 6000 power or less and a [Trigger] from your hand.",
     "trigger_en": "[Trigger] If you have 2 or less Life cards, play up to 1 Character card with 6000 power or less and a [Trigger] from your hand.",
     "traits_en": [
       "East Blue"
@@ -204036,8 +204030,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Yellow"
-    ],
-    "preview": true
+    ]
   },
   "EB05-027": {
     "name": "雲雀",
@@ -204050,8 +204043,8 @@
     "category": "Character",
     "power": 6000,
     "counter": 1000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-027.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-027.png?261016",
     "rarity": "R",
     "card_type": "Character",
     "traits": [
@@ -204061,12 +204054,12 @@
     "attributes": [
       "射"
     ],
-    "effect": "【登場時】抽3張卡片，廢棄2張自己的手牌。之後，將最多1張費用2以下的角色卡放置在持有者的卡組下面。",
+    "effect": "【登場時】抽3張卡片，並廢棄2張自己的手牌。之後，將最多1張費用2以下的角色卡放置在持有者的卡組下面。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Hibari",
     "effect_en": "[On Play] Draw 3 cards and trash 2 cards from your hand. Then, place up to 1 Character with a cost of 2 or less at the bottom of the owner's deck.",
@@ -204082,8 +204075,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Blue"
-    ],
-    "preview": true
+    ]
   },
   "EB05-012": {
     "name": "海咪",
@@ -204096,8 +204088,8 @@
     "category": "Character",
     "power": 0,
     "counter": 2000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-012.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-012.png?261016",
     "rarity": "R",
     "card_type": "Character",
     "traits": [
@@ -204112,7 +204104,7 @@
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Camie",
     "effect_en": "[On Play] Rest up to 1 of your opponent's Characters with a cost of 6 or less.",
@@ -204128,8 +204120,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Green"
-    ],
-    "preview": true
+    ]
   },
   "EB05-044": {
     "name": "Miss父親節",
@@ -204142,8 +204133,8 @@
     "category": "Character",
     "power": 2000,
     "counter": 2000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-044.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-044.png?261016",
     "rarity": "R",
     "card_type": "Character",
     "traits": [
@@ -204152,12 +204143,12 @@
     "attributes": [
       "射"
     ],
-    "effect": "【登場時】若自己的領航卡擁有包含『B・W』特徵，且對手場上有費用0的角色卡時，對手的領航卡在這個回合，力量值-1000。",
+    "effect": "【登場時】若自己的領航卡擁有包含『B・W』特徵、場上有對手費用0的角色卡時，對手的領航卡，在這個回合，力量值-1000。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Ms. Father's Day",
     "effect_en": "[On Play] If your Leader's type includes \"Baroque Works\" and your opponent has a Character with a cost of 0, give your opponent's Leader −1000 power during this turn.",
@@ -204172,8 +204163,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Black"
-    ],
-    "preview": true
+    ]
   },
   "EB05-028": {
     "name": "波雅・漢考克",
@@ -204186,8 +204176,8 @@
     "category": "Character",
     "power": 5000,
     "counter": 1000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-028.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-028.png?261016",
     "rarity": "R",
     "card_type": "Character",
     "traits": [
@@ -204203,7 +204193,7 @@
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Boa Hancock",
     "effect_en": "[On Play] If your opponent has 9 or more cards in their hand, they trash 4 cards from their hand.",
@@ -204220,8 +204210,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Blue"
-    ],
-    "preview": true
+    ]
   },
   "EB05-037": {
     "name": "黑瑪麗亞",
@@ -204234,8 +204223,8 @@
     "category": "Character",
     "power": 2000,
     "counter": 2000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-037.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-037.png?261016",
     "rarity": "R",
     "card_type": "Character",
     "traits": [
@@ -204249,10 +204238,10 @@
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Black Maria",
-    "effect_en": "[On Play] Look at 3 cards from the top of your deck; reveal up to 1 {Animal Kingdom Pirates} type card and add it to your hand. Then, place the rest at the bottom of the deck in any order.",
+    "effect_en": "[On Play] Look at 3 cards from the top of your deck; reveal up to 1 {Animal Kingdom Pirates} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
     "trigger_en": "",
     "traits_en": [
       "Animal Kingdom Pirates"
@@ -204264,11 +204253,10 @@
     "card_type_en": "Character",
     "colors_en": [
       "Purple"
-    ],
-    "preview": true
+    ]
   },
   "EB05-020": {
-    "name": "我叫白星！！",
+    "name": "我叫做白星!!",
     "card_id": "EB05-020",
     "pack_id": "EB-05",
     "colors": [
@@ -204278,8 +204266,8 @@
     "category": "Event",
     "power": null,
     "counter": null,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-020.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-020.png?261016",
     "rarity": "R",
     "card_type": "Event",
     "traits": [
@@ -204289,14 +204277,14 @@
     "attributes": [
       "-"
     ],
-    "effect": "【主要】可將自己的領航卡「白星」置為休息狀態：抽2張卡片。",
+    "effect": "【主要】可將自己的領航卡「白星公主」置為休息狀態：抽2張卡片。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
-    "name_en": "I Am Shirahoshi!!",
+    "name_en": "My name is Shirahoshi!!",
     "effect_en": "[Main] You may rest your Leader [Shirahoshi]: Draw 2 cards.",
     "trigger_en": "",
     "traits_en": [
@@ -204310,11 +204298,10 @@
     "card_type_en": "Event",
     "colors_en": [
       "Green"
-    ],
-    "preview": true
+    ]
   },
   "EB05-029": {
-    "name": "袴羽檻",
+    "name": "袷羽檻",
     "card_id": "EB05-029",
     "pack_id": "EB-05",
     "colors": [
@@ -204324,8 +204311,8 @@
     "category": "Event",
     "power": null,
     "counter": null,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-029.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-029.png?261016",
     "rarity": "C",
     "card_type": "Event",
     "traits": [
@@ -204334,16 +204321,16 @@
     "attributes": [
       "-"
     ],
-    "effect": "【主要】可廢棄1張自己的手牌：使最多1張對手費用6以下的角色卡，在這個回合中效果無效，並放回持有者的手牌。",
-    "trigger": "抽2張卡片，廢棄1張自己的手牌。",
+    "effect": "【主要】可以廢棄1張自己的手牌：最多1張對手費用6以下的角色卡，在這個回合，效果無效、放回持有者的手牌。\n【觸發器】抽2張卡片，並廢棄1張自己的手牌。",
+    "trigger": "【觸發器】抽2張卡片，並廢棄1張自己的手牌。",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
-    "name_en": "Haori Ori",
-    "effect_en": "[Main] You may trash 1 card from your hand: Up to 1 of your opponent's Characters with a cost of 6 or less has its effects negated during this turn, and return it to the owner's hand.",
-    "trigger_en": "Draw 2 cards and trash 1 card from your hand.",
+    "name_en": "Kimono Sleeve Cage",
+    "effect_en": "[Main] You may trash 1 card from your hand: Negate the effect of up to 1 of your opponent's Characters with a cost of 6 or less during this turn, and return it to the owner's hand.\n[Trigger] Draw 2 cards and trash 1 card from your hand.",
+    "trigger_en": "[Trigger] Draw 2 cards and trash 1 card from your hand.",
     "traits_en": [
       "Navy"
     ],
@@ -204354,11 +204341,10 @@
     "card_type_en": "Event",
     "colors_en": [
       "Blue"
-    ],
-    "preview": true
+    ]
   },
   "EB05-007": {
-    "name": "莫奈",
+    "name": "莫內",
     "card_id": "EB05-007",
     "pack_id": "EB-05",
     "colors": [
@@ -204368,8 +204354,8 @@
     "category": "Character",
     "power": 1000,
     "counter": 2000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-007.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-007.png?261016",
     "rarity": "C",
     "card_type": "Character",
     "traits": [
@@ -204379,15 +204365,15 @@
     "attributes": [
       "特"
     ],
-    "effect": "【登場時】可以從自己的手牌中公開合計3張事件卡或特徵《龐克哈薩特》的卡牌：抽1張卡。【自己的回合結束時】此角色卡在下一個對手的結束階段結束時前，力量值+5000。",
+    "effect": "【登場時】可以公開合計3張自己手牌中的事件卡或擁有《龐克哈薩特》特徵的卡片：抽1張卡片。 【我方回合結束時】這張角色卡，在下一個對手結束階段結束前，力量值+5000。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Monet",
-    "effect_en": "[On Play] You may reveal a total of 3 Event or {Punk Hazard} cards from your hand: Draw 1 card.\n[End of Your Turn] This Character gains +5000 power until the end of your opponent's next End Phase.",
+    "effect_en": "[On Play] You may reveal a total of 3 Event or {Punk Hazard} type cards from your hand: Draw 1 card. [End of Your Turn] This Character gains +5000 power until the end of your opponent's next End Phase.",
     "trigger_en": "",
     "traits_en": [
       "Punk Hazard",
@@ -204400,8 +204386,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Red"
-    ],
-    "preview": true
+    ]
   },
   "EB05-001": {
     "name": "珠寶・波妮",
@@ -204414,8 +204399,8 @@
     "category": "Character",
     "power": 7000,
     "counter": null,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-001.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-001.png?261016",
     "rarity": "SR",
     "card_type": "Character",
     "traits": [
@@ -204425,15 +204410,15 @@
     "attributes": [
       "特"
     ],
-    "effect": "【登場時】若自己的領航卡擁有《超新星》特徵時，抽2張卡，並使最多2張自己手牌中力量值2000以下的角色卡登場。【啟動主要】【每回合1次】使最多1張對手力量值6000以上的領航卡或角色卡，在下一個對手的結束階段結束時前，力量值-1000。",
+    "effect": "【登場時】若自己的領航卡擁有《超新星》特徵時，抽2張卡片，使最多2張自己手牌中力量值2000以下的角色卡登場。 【啟動主要】【每回合1次】最多1張對手力量值6000以上的領航卡或角色卡，在下一個對手結束階段結束前，力量值-1000。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Jewelry Bonney",
-    "effect_en": "[On Play] If your Leader has the {Supernovas} type, draw 2 cards and play up to 2 Character cards with 2000 power or less from your hand.\n[Activate: Main] [Once Per Turn] Give up to 1 of your opponent's Leader or Characters with 6000 power or more −1000 power until the end of your opponent's next End Phase.",
+    "effect_en": "[On Play] If your Leader has the {Supernovas} type, draw 2 cards and play up to 2 Character cards with 2000 power or less from your hand. [Activate: Main] [Once Per Turn] Give up to 1 of your opponent's Leader or Characters with 6000 power or more −1000 power until the end of your opponent's next End Phase.",
     "trigger_en": "",
     "traits_en": [
       "Supernovas",
@@ -204446,11 +204431,10 @@
     "card_type_en": "Character",
     "colors_en": [
       "Red"
-    ],
-    "preview": true
+    ]
   },
   "EB05-006": {
-    "name": "巴基漢・絲媞希小姐",
+    "name": "白金漢絲媞希女士",
     "card_id": "EB05-006",
     "pack_id": "EB-05",
     "colors": [
@@ -204460,8 +204444,8 @@
     "category": "Character",
     "power": 2000,
     "counter": 2000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-006.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-006.png?261016",
     "rarity": "SR",
     "card_type": "Character",
     "traits": [
@@ -204470,15 +204454,15 @@
     "attributes": [
       "知"
     ],
-    "effect": "【啟動主要】【每回合1次】可將1張自己生命值區上面的卡片加入手牌：選擇1項。・使最多1張角色卡在這個回合中力量值+3000。・使最多1張角色卡在這個回合中力量值-4000。",
+    "effect": "【啟動主要】【每回合1次】可將1張自己生命值區上面的卡片加入手牌：選擇下列其中一項。 ・最多1張角色卡，在這個回合，力量值+3000。 ・最多1張角色卡，在這個回合，力量值-4000。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Miss Buckingham Stussy",
-    "effect_en": "[Activate: Main] [Once Per Turn] You may add 1 card from the top of your Life cards to your hand: Choose one:\n• Give up to 1 Character +3000 power during this turn.\n• Give up to 1 Character −4000 power during this turn.",
+    "effect_en": "[Activate: Main] [Once Per Turn] You may add 1 card from the top of your Life cards to your hand: Choose one: • Give up to 1 Character +3000 power during this turn. • Give up to 1 Character −4000 power during this turn.",
     "trigger_en": "",
     "traits_en": [
       "Rocks Pirates"
@@ -204490,11 +204474,10 @@
     "card_type_en": "Character",
     "colors_en": [
       "Red"
-    ],
-    "preview": true
+    ]
   },
   "EB05-014": {
-    "name": "白星",
+    "name": "白星公主",
     "card_id": "EB05-014",
     "pack_id": "EB-05",
     "colors": [
@@ -204504,8 +204487,8 @@
     "category": "Character",
     "power": 0,
     "counter": null,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-014.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-014.png?261016",
     "rarity": "SR",
     "card_type": "Character",
     "traits": [
@@ -204515,15 +204498,15 @@
     "attributes": [
       "知"
     ],
-    "effect": "【登場時】從自己的卡組上面查看5張卡片，公開合計最多2張「梅加羅」或擁有《海王類》特徵的卡牌加入手牌。之後，將其餘卡片放到廢棄區。【啟動主要】可將這張角色卡置為休息狀態：使最多1張自己力量值6000以下擁有《海王類》特徵的角色卡，在這個回合中獲得【速攻】。",
+    "effect": "【登場時】從自己的卡組上面查看5張卡片，公開合計最多2張「梅卡洛」或擁有《海王類》特徵的卡片，並加入手牌。之後，將其餘卡片放到廢棄區。 【啟動主要】可將這張角色卡置為休息狀態：最多1張自己力量值6000以下、擁有《海王類》特徵的角色卡，在這個回合，獲得【速攻】。",
     "trigger": "",
     "block_number": "X",
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Shirahoshi",
-    "effect_en": "[On Play] Look at 5 cards from the top of your deck; reveal up to a total of 2 [Megalo] or {Neptunian} type cards and add them to your hand. Then, trash the rest.\n[Activate: Main] You may rest this Character: Up to 1 of your {Neptunian} type Characters with 6000 power or less gains Rush during this turn.",
+    "effect_en": "[On Play] Look at 5 cards from the top of your deck; reveal up to a total of 2 [Megalo] or {Neptunian} type cards and add them to your hand. Then, trash the rest. [Activate: Main] You may rest this Character: Up to 1 of your {Neptunian} type Characters with 6000 power or less gains [Rush] during this turn.",
     "trigger_en": "",
     "traits_en": [
       "Merfolk",
@@ -204536,8 +204519,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Green"
-    ],
-    "preview": true
+    ]
   },
   "EB05-021": {
     "name": "亞爾麗塔",
@@ -204550,8 +204532,8 @@
     "category": "Character",
     "power": 7000,
     "counter": 1000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-021.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-021.png?261016",
     "rarity": "SR",
     "card_type": "Character",
     "traits": [
@@ -204560,15 +204542,15 @@
     "attributes": [
       "打"
     ],
-    "effect": "【登場時】抽2張卡，並使最多1張自己手牌中費用8以下擁有《十字公會》特徵的角色卡登場。之後，這個回合中自己無法使角色卡登場。【攻擊時】使最多1張對手的角色卡，在這個回合中效果無效。",
+    "effect": "【登場時】抽2張卡片，使最多1張自己手牌中費用8以下擁有《十字公會》特徵的角色卡登場。之後，在這個回合，自己無法使角色卡登場。 【攻擊時】最多1張對手的角色卡，在這個回合，效果無效。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Alvida",
-    "effect_en": "[On Play] Draw 2 cards and play up to 1 {Cross Guild} type Character card with a cost of 8 or less from your hand. Then, you cannot play Character cards during this turn.\n[When Attacking] Negate the effect of up to 1 of your opponent's Characters during this turn.",
+    "effect_en": "[On Play] Draw 2 cards and play up to 1 {Cross Guild} type Character card with a cost of 8 or less from your hand. Then, you cannot play Character cards during this turn. [When Attacking] Negate the effect of up to 1 of your opponent's Characters during this turn.",
     "trigger_en": "",
     "traits_en": [
       "Cross Guild"
@@ -204580,8 +204562,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Blue"
-    ],
-    "preview": true
+    ]
   },
   "EB05-034": {
     "name": "砂糖",
@@ -204594,8 +204575,8 @@
     "category": "Character",
     "power": 0,
     "counter": 2000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-034.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-034.png?261016",
     "rarity": "SR",
     "card_type": "Character",
     "traits": [
@@ -204604,12 +204585,12 @@
     "attributes": [
       "特"
     ],
-    "effect": "【登場時】【咚‼-2】若自己場上有7張以上的咚‼卡時，使最多1張對手的角色卡在這個回合中力量值-4000。",
+    "effect": "【登場時】咚‼-2：若自己的場上有7張以上咚‼卡時，最多1張對手的角色卡，在這個回合，力量值-4000。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Sugar",
     "effect_en": "[On Play] DON!! −2: If you have 7 or more DON!! cards on your field, give up to 1 of your opponent's Characters −4000 power during this turn.",
@@ -204624,11 +204605,10 @@
     "card_type_en": "Character",
     "colors_en": [
       "Purple"
-    ],
-    "preview": true
+    ]
   },
   "EB05-048": {
-    "name": "刺針刺蝟",
+    "name": "刺蝟炸彈",
     "card_id": "EB05-048",
     "pack_id": "EB-05",
     "colors": [
@@ -204638,8 +204618,8 @@
     "category": "Event",
     "power": null,
     "counter": null,
-    "img_full_url": "https://api.optcgassistant.com/packs/EB05-048.png",
-    "img_url": "https://api.optcgassistant.com/packs/EB05-048.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-048.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-048.png?261016",
     "rarity": "R",
     "card_type": "Event",
     "traits": [
@@ -204648,15 +204628,15 @@
     "attributes": [
       "-"
     ],
-    "effect": "【主要】可將1張自己的咚‼置為休息狀態，並將1張自己擁有包含「B・W」特徵的角色卡KO：對手費用0的角色卡全部，於此回合中，無法發動【防禦】。【反擊】將自己的領航卡，於此戰鬥中，力量值+3000。",
+    "effect": "【主要】可將1張自己的咚‼卡置為休息狀態、KO1張自己擁有包含『B・W』特徵的角色卡：對手費用0的角色卡全數，在這個回合，無法發動【防禦】。 【反擊】自己的領航卡，在這場對戰中，力量值+3000。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
-    "name_en": "Stinger Hedgehog",
-    "effect_en": "[Main] You may rest 1 of your DON!! cards and K.O. 1 of your Characters with a type including \"Baroque Works\": All of your opponent's Characters with a cost of 0 cannot activate [Blocker] during this turn.\n[Counter] Your Leader gains +3000 power during this battle.",
+    "name_en": "Hedgehog Stinger",
+    "effect_en": "[Main] You may rest 1 of your DON!! cards and K.O. 1 of your Characters with a type including \"Baroque Works\": All of your opponent's Characters with a cost of 0 cannot activate [Blocker] during this turn. [Counter] Your Leader gains +3000 power during this battle.",
     "trigger_en": "",
     "traits_en": [
       "Baroque Works"
@@ -204668,8 +204648,7 @@
     "card_type_en": "Event",
     "colors_en": [
       "Black"
-    ],
-    "preview": true
+    ]
   },
   "EB05-052": {
     "name": "嘉蘭",
@@ -204682,8 +204661,8 @@
     "category": "Character",
     "power": 6000,
     "counter": null,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-052.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-052.png?261016",
     "rarity": "SR",
     "card_type": "Character",
     "traits": [
@@ -204693,15 +204672,15 @@
     "attributes": [
       "知"
     ],
-    "effect": "若自己即將受到傷害時，可替換成將這張角色卡放置在廢棄區。",
-    "trigger": "【觸發器】抽2張卡，廢棄1張自己的手牌。",
+    "effect": "若自己受到傷害時，可以替換成將這張角色卡放置在廢棄區。\n【觸發器】抽2張卡片，並廢棄1張自己的手牌。",
+    "trigger": "【觸發器】抽2張卡片，並廢棄1張自己的手牌。",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Gloriosa",
-    "effect_en": "If you would take damage, you may trash this Character instead.",
+    "effect_en": "If you would take damage, you may trash this Character instead.\n[Trigger] Draw 2 cards and trash 1 card from your hand.",
     "trigger_en": "[Trigger] Draw 2 cards and trash 1 card from your hand.",
     "traits_en": [
       "Amazon Lily",
@@ -204714,8 +204693,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Yellow"
-    ],
-    "preview": true
+    ]
   },
   "EB05-055": {
     "name": "娜美",
@@ -204728,26 +204706,26 @@
     "category": "Character",
     "power": 6000,
     "counter": null,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-055.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-055.png?261016",
     "rarity": "SR",
     "card_type": "Character",
     "traits": [
-      "東海",
+      "東方藍",
       "草帽一行人"
     ],
     "attributes": [
       "知"
     ],
-    "effect": "【自己的回合中】【登場時】若自己的領航卡擁有〈知〉屬性時，將最多1張自己卡組上面的卡片加入生命值區上面。",
-    "trigger": "【觸發器】可廢棄1張自己的手牌：若自己的生命值為2張以下時，使這張卡片登場。",
+    "effect": "【我方回合中】【登場時】若自己的領航卡擁有(知)屬性時，將最多1張自己卡組上面的卡片加入生命值區上面。\n【觸發器】可以廢棄1張自己的手牌：若自己的生命值卡在2張以下時，使這張卡片登場。",
+    "trigger": "【觸發器】可以廢棄1張自己的手牌：若自己的生命值卡在2張以下時，使這張卡片登場。",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Nami",
-    "effect_en": "[Your Turn] [On Play] If your Leader has the <Wisdom> attribute, add up to 1 card from the top of your deck to the top of your Life cards.",
+    "effect_en": "[Your Turn] [On Play] If your Leader has the <Wisdom> attribute, add up to 1 card from the top of your deck to the top of your Life cards.\n[Trigger] You may trash 1 card from your hand: If you have 2 or less Life cards, play this card.",
     "trigger_en": "[Trigger] You may trash 1 card from your hand: If you have 2 or less Life cards, play this card.",
     "traits_en": [
       "East Blue",
@@ -204760,11 +204738,10 @@
     "card_type_en": "Character",
     "colors_en": [
       "Yellow"
-    ],
-    "preview": true
+    ]
   },
   "EB05-014-P1": {
-    "name": "白星",
+    "name": "白星公主",
     "card_id": "EB05-014-P1",
     "pack_id": "EB-05",
     "colors": [
@@ -204774,9 +204751,9 @@
     "category": "Character",
     "power": 0,
     "counter": null,
-    "img_full_url": "",
-    "img_url": "",
-    "rarity": "SP",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-014_p1.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-014_p1.png?261016",
+    "rarity": "SR",
     "card_type": "Character",
     "traits": [
       "人魚族",
@@ -204785,15 +204762,15 @@
     "attributes": [
       "知"
     ],
-    "effect": "【登場時】從自己的卡組上面查看5張卡片，公開合計最多2張「梅加羅」或擁有《海王類》特徵的卡牌加入手牌。之後，將其餘卡片放到廢棄區。【啟動主要】可將這張角色卡置為休息狀態：使最多1張自己力量值6000以下擁有《海王類》特徵的角色卡，在這個回合中獲得【速攻】。",
+    "effect": "【登場時】從自己的卡組上面查看5張卡片，公開合計最多2張「梅卡洛」或擁有《海王類》特徵的卡片，並加入手牌。之後，將其餘卡片放到廢棄區。 【啟動主要】可將這張角色卡置為休息狀態：最多1張自己力量值6000以下、擁有《海王類》特徵的角色卡，在這個回合，獲得【速攻】。",
     "trigger": "",
     "block_number": "X",
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Shirahoshi",
-    "effect_en": "[On Play] Look at 5 cards from the top of your deck; reveal up to a total of 2 [Megalo] or {Neptunian} type cards and add them to your hand. Then, trash the rest.\n[Activate: Main] You may rest this Character: Up to 1 of your {Neptunian} type Characters with 6000 power or less gains Rush during this turn.",
+    "effect_en": "[On Play] Look at 5 cards from the top of your deck; reveal up to a total of 2 [Megalo] or {Neptunian} type cards and add them to your hand. Then, trash the rest. [Activate: Main] You may rest this Character: Up to 1 of your {Neptunian} type Characters with 6000 power or less gains [Rush] during this turn.",
     "trigger_en": "",
     "traits_en": [
       "Merfolk",
@@ -204806,8 +204783,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Green"
-    ],
-    "preview": true
+    ]
   },
   "OP18-001": {
     "card_id": "OP18-001",
@@ -205010,7 +204986,7 @@
     "card_id": "P-082"
   },
   "EB05-009": {
-    "name": "與我一起死吧!!!",
+    "name": "陪我一起死吧!!!",
     "card_id": "EB05-009",
     "pack_id": "EB-05",
     "colors": [
@@ -205020,26 +204996,26 @@
     "category": "Event",
     "power": null,
     "counter": null,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-009.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-009.png?261016",
     "rarity": "R",
     "card_type": "Event",
     "traits": [
-      "東海",
+      "東方藍",
       "草帽一行人"
     ],
     "attributes": [
       "-"
     ],
-    "effect": "【主要】將自己原本力量值4000以下的角色卡全部，直到下一個對手的結束階段結束時，力量值+1000。【反擊】將自己的領航卡，於此戰鬥中，力量值+3000。",
+    "effect": "【主要】自己原本力量值4000以下的角色卡全數，在下一個對手結束階段結束前，力量值+1000。 【反擊】自己的領航卡，在這場對戰中，力量值+3000。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
-    "name_en": "Let's Die Together!!!",
-    "effect_en": "[Main] All of your Characters with a base power of 4000 or less gain +1000 power until the end of your opponent's next End Phase.\n[Counter] Your Leader gains +3000 power during this battle.",
+    "name_en": "Fight and Die with Me!!!",
+    "effect_en": "[Main] All of your Characters with 4000 base power or less gain +1000 power until the end of your opponent's next End Phase. [Counter] Your Leader gains +3000 power during this battle.",
     "trigger_en": "",
     "traits_en": [
       "East Blue",
@@ -205052,11 +205028,10 @@
     "card_type_en": "Event",
     "colors_en": [
       "Red"
-    ],
-    "preview": true
+    ]
   },
   "EB05-060": {
-    "name": "「莉莉絲」拜託了!!!",
+    "name": "「莉莉絲」就拜託你們了!!!",
     "card_id": "EB05-060",
     "pack_id": "EB-05",
     "colors": [
@@ -205066,8 +205041,8 @@
     "category": "Event",
     "power": null,
     "counter": null,
-    "img_full_url": "https://api.optcgassistant.com/packs/EB05-060.png",
-    "img_url": "https://api.optcgassistant.com/packs/EB05-060.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-060.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-060.png?261016",
     "rarity": "C",
     "card_type": "Event",
     "traits": [
@@ -205077,15 +205052,15 @@
     "attributes": [
       "-"
     ],
-    "effect": "【主要】可將1張費用5以上、擁有特徵《蛋頭》的自己的角色卡置入廢棄區：最多將自己的卡組上方1張加入生命值的上方。【反擊】可將自己的生命值上方1張翻至正面：最多1張自己的領航卡或角色卡，於此戰鬥中，力量值+4000。",
+    "effect": "【主要】可將1張自己費用5以上擁有《蛋頭》特徵的角色卡放置在廢棄區：將最多1張自己卡組上面的卡片加入生命值區上面。 【反擊】可將1張自己生命值區上面的卡片翻成正面朝上：最多1張自己的領航卡或角色卡，在這場對戰中，力量值+4000。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
-    "name_en": "I'm Counting on Lilith!!!",
-    "effect_en": "[Main] You may trash 1 of your {Egghead} type Characters with a cost of 5 or more: Add up to 1 card from the top of your deck to the top of your Life cards.\n[Counter] You may turn the top card of your Life cards face-up: Up to 1 of your Leader or Character cards gains +4000 power during this battle.",
+    "name_en": "Take Care of Lilith!!!",
+    "effect_en": "[Main] You may trash 1 of your {Egghead} type Characters with a cost of 5 or more: Add up to 1 card from the top of your deck to the top of your Life cards. [Counter] You may turn 1 card from the top of your Life cards face-up: Up to 1 of your Leader or Characters gains +4000 power during this battle.",
     "trigger_en": "",
     "traits_en": [
       "Egghead",
@@ -205098,8 +205073,7 @@
     "card_type_en": "Event",
     "colors_en": [
       "Yellow"
-    ],
-    "preview": true
+    ]
   },
   "OP18-003": {
     "card_id": "OP18-003",
@@ -205318,10 +205292,8 @@
   },
   "EB05-046": {
     "card_id": "EB05-046",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-046.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-046.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "大和",
@@ -205353,12 +205325,12 @@
     "traits_en": [
       "Land of Wano"
     ],
-    "effect": "若對手有原本力量值8000以上的角色卡時，這張角色卡獲得【防禦】，力量值+3000。\n【對方攻擊時】可以廢棄1張自己的手牌：若自己廢棄區有10張以上卡片時，自己的領航卡原本的力量值，在這個回合變更成7000。",
-    "effect_en": "If your opponent has a Character with a base power of 8000 or more, this Character gains [Blocker] and +3000 power.\n[On Your Opponent's Attack] You may trash 1 card from your hand: If you have 10 or more cards in your trash, your Leader's base power becomes 7000 during this turn.",
+    "effect": "若場上有對手原本力量值8000以上的角色卡時，這張角色卡獲得【防禦】、力量值+3000。 【對方攻擊時】可以廢棄1張自己的手牌：若自己廢棄區有10張以上卡片時，自己的領航卡，在這個回合，原本的力量值變更成7000。",
+    "effect_en": "If your opponent has a Character with 8000 base power or more, this Character gains [Blocker] and +3000 power. [On Your Opponent's Attack]  You may trash 1 card from your hand: If you have 10 or more cards in your trash, your Leader's base power becomes 7000 during this turn.",
     "trigger": "",
     "trigger_en": "",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "OP18-112": {
@@ -205694,13 +205666,11 @@
   },
   "EB05-059": {
     "card_id": "EB05-059",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-059.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-059.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
-    "name": "夏洛特・普琳!!",
+    "name": "夏洛特・普琳大人!!",
     "name_en": "Charlotte Pudding!!",
     "card_type": "Event",
     "category": "Event",
@@ -205729,23 +205699,21 @@
     "traits_en": [
       "Big Mom Pirates"
     ],
-    "effect": "【主要】抽1張卡片，且自己原本力量值4000、擁有《BIG MOM海賊團》特徵的角色卡全數，在下一個對手回合結束前，在對戰中不會遭到KO。",
-    "effect_en": "[Main] Draw 1 card, and all of your Characters with 4000 base power and the {Big Mom Pirates} type cannot be K.O.'d in battle until the end of your opponent's next End Phase.",
-    "trigger": "【觸發器】抽1張卡片，並使最多1張自己手牌中力量值4000且持有【觸發器】的角色卡登場。",
+    "effect": "【主要】抽1張卡片，自己原本力量值4000且擁有《BIG MOM海賊團》特徵的角色卡全數，在下一個對手結束階段結束前，在對戰中不會遭到KO。\n【觸發器】抽1張卡片，使最多1張自己手牌中力量值4000持有【觸發器】的角色卡登場。",
+    "effect_en": "[Main] Draw 1 card, and all of your Characters with 4000 base power and the {Big Mom Pirates} type cannot be K.O.'d in battle until the end of your opponent's next End Phase.\n[Trigger] Draw 1 card, and play up to 1 Character card with 4000 power and a [Trigger] from your hand.",
+    "trigger": "【觸發器】抽1張卡片，使最多1張自己手牌中力量值4000持有【觸發器】的角色卡登場。",
     "trigger_en": "[Trigger] Draw 1 card, and play up to 1 Character card with 4000 power and a [Trigger] from your hand.",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "EB05-008": {
     "card_id": "EB05-008",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-008.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-008.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
-    "name": "魯夫，就是現在",
+    "name": "魯夫…趁現在吧",
     "name_en": "Luffy, Now's Your Chance",
     "card_type": "Event",
     "category": "Event",
@@ -205776,23 +205744,21 @@
       "The Seven Warlords of the Sea",
       "Kuja Pirates"
     ],
-    "effect": "【主要】可以附加1張活動狀態的咚‼卡在1張自己的領航卡，並公開2張自己手牌中的紅色事件卡：最多1張對手休息狀態的角色卡，在這個回合，力量值-7000。\n【反擊】若自己沒有費用5以上的角色卡時，最多1張自己的領航卡或角色卡，在這場對戰中，力量值+4000。",
-    "effect_en": "[Main] You may give 1 active DON!! card to 1 of your Leader and reveal 2 red Event cards from your hand: Give up to 1 of your opponent's rested Characters −7000 power during this turn.\n[Counter] If you have no Characters with a cost of 5 or more, up to 1 of your Leader or up to 1 of your Characters gains +4000 power during this battle.",
+    "effect": "【主要】可以附加1張活動狀態的咚‼卡在自己的領航卡、公開2張自己手牌中紅色的事件卡：最多1張對手休息狀態的角色卡，在這個回合，力量值-7000。 【反擊】若場上沒有自己費用5以上的角色卡時，最多1張自己的領航卡或角色卡，在這場對戰中，力量值+4000。",
+    "effect_en": "[Main] You may give 1 active DON!! card to 1 of your Leader and reveal 2 red Event cards from your hand: Give up to 1 of your opponent's rested Characters −7000 power during this turn. [Counter] If you have no Characters with a cost of 5 or more, up to 1 of your Leader or up to 1 of your Characters gains +4000 power during this battle.",
     "trigger": "",
     "trigger_en": "",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "EB05-040": {
     "card_id": "EB05-040",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-040.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-040.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
-    "name": "你需要我吧？！！♡",
+    "name": "你需要我對吧!!?♡",
     "name_en": "You Need Me, Don't You?!!♡",
     "card_type": "Event",
     "category": "Event",
@@ -205821,12 +205787,12 @@
     "traits_en": [
       "Donquixote Pirates"
     ],
-    "effect": "【主要】可以將1張自己活動狀態的咚‼卡放回咚‼卡組：若自己的領航卡擁有《唐吉訶德海賊團》特徵時，抽3張卡片，並廢棄1張自己的手牌。\n【反擊】自己的領航卡，在這場對戰中，力量值+2000。",
-    "effect_en": "[Main] You may return 1 of your active DON!! cards to your DON!! deck: If your Leader has the {Donquixote Pirates} type, draw 3 cards and trash 1 card from your hand.\n[Counter] Your Leader gains +2000 power during this battle.",
+    "effect": "【主要】咚‼-1：若自己的領航卡擁有《賓什莫克家》特徵時，最多1張對手的角色卡，在這個回合，力量值-4000。 【反擊】咚‼-1：自己的領航卡，在這場對戰中，力量值+4000。",
+    "effect_en": "[Main] You may return 1 of your active DON!! cards to your DON!! deck: If your Leader has the {Donquixote Pirates} type, draw 3 cards and trash 1 card from your hand. [Counter] Your Leader gains +2000 power during this battle.",
     "trigger": "",
     "trigger_en": "",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "OP18-010": {
@@ -206207,13 +206173,11 @@
   },
   "EB05-049": {
     "card_id": "EB05-049",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-049.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-049.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
-    "name": "特別鬼魂",
+    "name": "特大鬼魂",
     "name_en": "Special Hollow",
     "card_type": "Event",
     "category": "Event",
@@ -206242,12 +206206,12 @@
     "traits_en": [
       "Thriller Bark Pirates"
     ],
-    "effect": "【主要】可以KO1張自己擁有《恐怖三桅帆船海賊團》特徵的角色卡：最多1張對手的角色卡，在這個回合，費用-3。\n【反擊】可以KO1張自己擁有《恐怖三桅帆船海賊團》特徵的角色卡：最多1張自己的領航卡或角色卡，在這場對戰中，力量值+4000。",
-    "effect_en": "[Main] You may K.O. 1 of your {Thriller Bark Pirates} type Characters: Give up to 1 of your opponent's Characters −3 cost during this turn.\n[Counter] You may K.O. 1 of your {Thriller Bark Pirates} type Characters: Up to 1 of your Leader or Characters gains +4000 power during this battle.",
+    "effect": "【主要】可以KO1張自己擁有《恐怖三桅帆船海賊團》特徵的角色卡：最多1張對手的角色卡，在這個回合，費用-3。 【反擊】可以KO1張自己擁有《恐怖三桅帆船海賊團》特徵的角色卡：最多1張自己的領航卡或角色卡，在這場對戰中，力量值+4000。",
+    "effect_en": "[Main] You may K.O. 1 of your {Thriller Bark Pirates} type Characters: Give up to 1 of your opponent's Characters −3 cost during this turn. [Counter] You may K.O. 1 of your {Thriller Bark Pirates} type Characters: Up to 1 of your Leader or Characters gains +4000 power during this battle.",
     "trigger": "",
     "trigger_en": "",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "OP18-017": {
@@ -206765,13 +206729,11 @@
   },
   "EB05-030": {
     "card_id": "EB05-030",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-030.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-030.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
-    "name": "大家保重♡",
+    "name": "大家要保重哦♡",
     "name_en": "Take Care, Everybody. ♡",
     "card_type": "Event",
     "category": "Event",
@@ -206802,23 +206764,21 @@
       "East Blue",
       "Straw Hat Crew"
     ],
-    "effect": "【主要】若自己的領航卡是「娜美」時，將最多1張費用5以下的角色卡放回持有者的手牌。\n【反擊】抽1張卡片，並使最多1張自己的領航卡或角色卡，在這個回合，力量值+1000。",
-    "effect_en": "[Main] If your Leader is [Nami], return up to 1 Character with a cost of 5 or less to the owner's hand.\n[Counter] Draw 1 card, and up to 1 of your Leader or Characters gains +1000 power during this turn.",
+    "effect": "【主要】若自己的領航卡是「娜美」時，將最多1張費用5以下的角色卡放回持有者的手牌。 【反擊】抽1張卡片，最多1張自己的領航卡或角色卡，在這個回合，力量值+1000。",
+    "effect_en": "[Main] If your Leader is [Nami], return up to 1 Character with a cost of 5 or less to the owner's hand. [Counter] Draw 1 card, and up to 1 of your Leader or Characters gains +1000 power during this turn.",
     "trigger": "",
     "trigger_en": "",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "EB05-019": {
     "card_id": "EB05-019",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-019.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-019.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
-    "name": "我選擇向世界開放這個國家!!我想站在你們這邊戰鬥!!!",
+    "name": "我要開國!!我想跟你們一起戰鬥!!!",
     "name_en": "I Choose to Open This Country to the World!! I Want to Fight on Your Side!!!",
     "card_type": "Event",
     "category": "Event",
@@ -206847,20 +206807,18 @@
     "traits_en": [
       "Land of Wano"
     ],
-    "effect": "【反擊】可以將1張自己的卡片置為休息狀態：最多1張自己擁有《和之國》特徵的領航卡或角色卡，在這場對戰中，力量值+4000。\n【觸發器】若對手的生命值卡在3張以下時，使最多1張自己手牌中力量值6000以下、擁有《和之國》特徵的角色卡登場。",
+    "effect": "【反擊】可將1張自己的卡片置為休息狀態：最多1張自己擁有《和之國》特徵的領航卡或角色卡，在這場對戰中，力量值+4000。\n【觸發器】若對手的生命值卡在3張以下時，使最多1張擁自己手牌中力量值6000以下擁有《和之國》特徵的角色卡登場。",
     "effect_en": "[Counter] You may rest 1 of your cards: Up to 1 of your {Land of Wano} type Leader or Characters gains +4000 power during this battle.\n[Trigger] If your opponent has 3 or less Life cards, play up to 1 {Land of Wano} type Character card with 6000 power or less from your hand.",
-    "trigger": "【觸發器】若對手的生命值卡在3張以下時，使最多1張自己手牌中力量值6000以下、擁有《和之國》特徵的角色卡登場。",
+    "trigger": "【觸發器】若對手的生命值卡在3張以下時，使最多1張擁自己手牌中力量值6000以下擁有《和之國》特徵的角色卡登場。",
     "trigger_en": "[Trigger] If your opponent has 3 or less Life cards, play up to 1 {Land of Wano} type Character card with 6000 power or less from your hand.",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "EB05-004": {
     "card_id": "EB05-004",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-004.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-004.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "BABY5",
@@ -206894,20 +206852,18 @@
       "Punk Hazard",
       "Donquixote Pirates"
     ],
-    "effect": "【登場時】可以公開2張自己手牌中的事件卡：抽2張卡片。\n【KO時】使最多1張自己手牌中力量值6000以下的角色卡，以休息狀態登場。",
-    "effect_en": "[On Play] You may reveal 2 Event cards from your hand: Draw 2 cards.\n[On K.O.] Play up to 1 Character card with 6000 power or less from your hand rested.",
+    "effect": "【登場時】可以公開2張自己手牌中的事件卡：抽2張卡片。 【KO時】使最多1張自己手牌中力量值6000以下的角色卡，以休息狀態登場。",
+    "effect_en": "[On Play] You may reveal 2 Event cards from your hand: Draw 2 cards. [On K.O.] Play up to 1 Character card with 6000 power or less from your hand rested.",
     "trigger": "",
     "trigger_en": "",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "EB05-018": {
     "card_id": "EB05-018",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-018.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-018.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "蕾貝卡",
@@ -206944,15 +206900,13 @@
     "trigger": "",
     "trigger_en": "",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "EB05-043": {
     "card_id": "EB05-043",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-043.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-043.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "培羅娜",
@@ -206989,15 +206943,13 @@
     "trigger": "",
     "trigger_en": "",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "EB05-061": {
     "card_id": "EB05-061",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-061.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-061.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "娜美",
@@ -207029,20 +206981,18 @@
     "traits_en": [
       "Straw Hat Crew"
     ],
-    "effect": "【每回合1次】若自己原本力量值6000以下的角色卡即將因對手離開場上時，可以替換成將1張自己生命值區上面的卡片加入手牌。\n【登場時】使最多1張自己手牌中費用2以下的紅色角色卡登場。",
-    "effect_en": "[Once Per Turn] If one of your Characters with 6000 base power or less would be removed from the field by your opponent, you may add 1 card from the top of your Life cards to your hand instead.\n[On Play] Play up to 1 red Character card with a cost of 2 or less from your hand.",
+    "effect": "【每回合1次】若自己原本力量值6000以下的角色卡因為對手而即將離開場上時，可以替換成將1張自己生命值區上面的卡片加入手牌。 【登場時】使最多1張自己手牌中費用2以下紅色的角色卡登場。",
+    "effect_en": "[Once Per Turn] If one of your Characters with 6000 base power or less would be removed from the field by your opponent, you may add 1 card from the top of your Life cards to your hand instead. [On Play] Play up to 1 red Character card with a cost of 2 or less from your hand.",
     "trigger": "",
     "trigger_en": "",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "EB05-031": {
     "card_id": "EB05-031",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-031.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-031.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "賓什莫克・麗珠",
@@ -207076,20 +207026,18 @@
       "The Vinsmoke Family",
       "GERMA 66"
     ],
-    "effect": "【登場時】咚‼−1：若自己的領航卡擁有《賓什莫克家》特徵時，將自己卡組上面的10張卡片放置到廢棄區。\n【啟動主要】可以將這張角色卡放置到廢棄區：若對手有原本力量值8000以上的角色卡時，從咚‼卡組將最多4張咚‼卡以活動狀態追加。",
-    "effect_en": "[On Play] DON!! −1: If your Leader has the {The Vinsmoke Family} type, trash 10 cards from the top of your deck.\n[Activate: Main] You may trash this Character: If your opponent has a Character with 8000 base power or more, add up to 4 DON!! cards as active from your DON!! deck.",
+    "effect": "【登場時】咚‼-1：若自己的領航卡擁有《賓什莫克家》特徵時，將10張自己卡組上面的卡片放置在廢棄區。 【啟動主要】可將這張角色卡放置在廢棄區：若場上有對手原本力量值8000以上的角色卡時，從咚‼卡組追加最多4張活動狀態的咚‼卡。",
+    "effect_en": "[On Play] DON!! −1: If your Leader has the {The Vinsmoke Family} type, trash 10 cards from the top of your deck. [Activate: Main] You may trash this Character: If your opponent has a Character with 8000 base power or more, add up to 4 DON!! cards as active from your DON!! deck.",
     "trigger": "",
     "trigger_en": "",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "EB05-004-P1": {
     "card_id": "EB05-004-P1",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-004_p1.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-004_p1.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "BABY5",
@@ -207123,20 +207071,18 @@
       "Punk Hazard",
       "Donquixote Pirates"
     ],
-    "effect": "【登場時】可以公開2張自己手牌中的事件卡：抽2張卡片。\n【KO時】使最多1張自己手牌中力量值6000以下的角色卡，以休息狀態登場。",
-    "effect_en": "[On Play] You may reveal 2 Event cards from your hand: Draw 2 cards.\n[On K.O.] Play up to 1 Character card with 6000 power or less from your hand rested.",
+    "effect": "【登場時】可以公開2張自己手牌中的事件卡：抽2張卡片。 【KO時】使最多1張自己手牌中力量值6000以下的角色卡，以休息狀態登場。",
+    "effect_en": "[On Play] You may reveal 2 Event cards from your hand: Draw 2 cards. [On K.O.] Play up to 1 Character card with 6000 power or less from your hand rested.",
     "trigger": "",
     "trigger_en": "",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "EB05-018-P1": {
     "card_id": "EB05-018-P1",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-018_p1.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-018_p1.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "蕾貝卡",
@@ -207173,7 +207119,7 @@
     "trigger": "",
     "trigger_en": "",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "EB05-028-P1": {
@@ -207187,8 +207133,8 @@
     "category": "Character",
     "power": 5000,
     "counter": 1000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-028_p1.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-028_p1.png?261016",
     "rarity": "R",
     "card_type": "Character",
     "traits": [
@@ -207204,7 +207150,7 @@
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Boa Hancock",
     "effect_en": "[On Play] If your opponent has 9 or more cards in their hand, they trash 4 cards from their hand.",
@@ -207221,9 +207167,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Blue"
-    ],
-    "preview": true,
-    "manual_source": "screenshot"
+    ]
   },
   "EB05-037-P1": {
     "name": "黑瑪麗亞",
@@ -207236,8 +207180,8 @@
     "category": "Character",
     "power": 2000,
     "counter": 2000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-037_p1.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-037_p1.png?261016",
     "rarity": "R",
     "card_type": "Character",
     "traits": [
@@ -207251,10 +207195,10 @@
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Black Maria",
-    "effect_en": "[On Play] Look at 3 cards from the top of your deck; reveal up to 1 {Animal Kingdom Pirates} type card and add it to your hand. Then, place the rest at the bottom of the deck in any order.",
+    "effect_en": "[On Play] Look at 3 cards from the top of your deck; reveal up to 1 {Animal Kingdom Pirates} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order.",
     "trigger_en": "",
     "traits_en": [
       "Animal Kingdom Pirates"
@@ -207266,16 +207210,12 @@
     "card_type_en": "Character",
     "colors_en": [
       "Purple"
-    ],
-    "preview": true,
-    "manual_source": "screenshot"
+    ]
   },
   "EB05-043-P1": {
     "card_id": "EB05-043-P1",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-043_p1.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-043_p1.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "培羅娜",
@@ -207312,7 +207252,7 @@
     "trigger": "",
     "trigger_en": "",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "EB05-057-P1": {
@@ -207326,8 +207266,8 @@
     "category": "Character",
     "power": 0,
     "counter": 2000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-057_p1.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-057_p1.png?261016",
     "rarity": "R",
     "card_type": "Character",
     "traits": [
@@ -207336,15 +207276,15 @@
     "attributes": [
       "知"
     ],
-    "effect": "【啟動主要】【每回合1次】將最多1張休息狀態的咚‼給予1張自己擁有屬性《特》或《知》的領航卡或角色卡。",
-    "trigger": "【觸發器】若自己的生命值在2張以下時，使最多1張自己手牌中力量值6000以下、擁有【觸發器】的角色卡登場。",
+    "effect": "【啟動主要】【每回合1次】附加最多1張休息狀態的咚‼卡在1張自己擁有(特)或(知)屬性的領航卡或角色卡。\n【觸發器】若自己的生命值卡在2張以下時，使最多1張自己手牌中力量值6000以下持有【觸發器】的角色卡登場。",
+    "trigger": "【觸發器】若自己的生命值卡在2張以下時，使最多1張自己手牌中力量值6000以下持有【觸發器】的角色卡登場。",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Nojiko",
-    "effect_en": "[Activate: Main] [Once Per Turn] Give up to 1 rested DON!! card to 1 of your Leader or Character cards with the {Special} or {Wisdom} attribute.",
+    "effect_en": "[Activate: Main] [Once Per Turn] Give up to 1 rested DON!! card to 1 of your Leader or Character cards with the <Special> or <Wisdom> attribute.\n[Trigger] If you have 2 or less Life cards, play up to 1 Character card with 6000 power or less and a [Trigger] from your hand.",
     "trigger_en": "[Trigger] If you have 2 or less Life cards, play up to 1 Character card with 6000 power or less and a [Trigger] from your hand.",
     "traits_en": [
       "East Blue"
@@ -207356,9 +207296,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Yellow"
-    ],
-    "preview": true,
-    "manual_source": "screenshot"
+    ]
   },
   "EB05-001-P1": {
     "name": "珠寶・波妮",
@@ -207371,8 +207309,8 @@
     "category": "Character",
     "power": 7000,
     "counter": null,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-001_p1.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-001_p1.png?261016",
     "rarity": "SR",
     "card_type": "Character",
     "traits": [
@@ -207382,15 +207320,15 @@
     "attributes": [
       "特"
     ],
-    "effect": "【登場時】若自己的領航卡擁有《超新星》特徵時，抽2張卡，並使最多2張自己手牌中力量值2000以下的角色卡登場。【啟動主要】【每回合1次】使最多1張對手力量值6000以上的領航卡或角色卡，在下一個對手的結束階段結束時前，力量值-1000。",
+    "effect": "【登場時】若自己的領航卡擁有《超新星》特徵時，抽2張卡片，使最多2張自己手牌中力量值2000以下的角色卡登場。 【啟動主要】【每回合1次】最多1張對手力量值6000以上的領航卡或角色卡，在下一個對手結束階段結束前，力量值-1000。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Jewelry Bonney",
-    "effect_en": "[On Play] If your Leader has the {Supernovas} type, draw 2 cards and play up to 2 Character cards with 2000 power or less from your hand.\n[Activate: Main] [Once Per Turn] Give up to 1 of your opponent's Leader or Characters with 6000 power or more −1000 power until the end of your opponent's next End Phase.",
+    "effect_en": "[On Play] If your Leader has the {Supernovas} type, draw 2 cards and play up to 2 Character cards with 2000 power or less from your hand. [Activate: Main] [Once Per Turn] Give up to 1 of your opponent's Leader or Characters with 6000 power or more −1000 power until the end of your opponent's next End Phase.",
     "trigger_en": "",
     "traits_en": [
       "Supernovas",
@@ -207403,12 +207341,10 @@
     "card_type_en": "Character",
     "colors_en": [
       "Red"
-    ],
-    "preview": true,
-    "manual_source": "screenshot"
+    ]
   },
   "EB05-014-P2": {
-    "name": "白星",
+    "name": "白星公主",
     "card_id": "EB05-014-P2",
     "pack_id": "EB-05",
     "colors": [
@@ -207418,8 +207354,8 @@
     "category": "Character",
     "power": 0,
     "counter": null,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-014_p2.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-014_p2.png?261016",
     "rarity": "SR",
     "card_type": "Character",
     "traits": [
@@ -207429,15 +207365,15 @@
     "attributes": [
       "知"
     ],
-    "effect": "【登場時】從自己的卡組上面查看5張卡片，公開合計最多2張「梅加羅」或擁有《海王類》特徵的卡牌加入手牌。之後，將其餘卡片放到廢棄區。【啟動主要】可將這張角色卡置為休息狀態：使最多1張自己力量值6000以下擁有《海王類》特徵的角色卡，在這個回合中獲得【速攻】。",
+    "effect": "【登場時】從自己的卡組上面查看5張卡片，公開合計最多2張「梅卡洛」或擁有《海王類》特徵的卡片，並加入手牌。之後，將其餘卡片放到廢棄區。 【啟動主要】可將這張角色卡置為休息狀態：最多1張自己力量值6000以下、擁有《海王類》特徵的角色卡，在這個回合，獲得【速攻】。",
     "trigger": "",
     "block_number": "X",
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Shirahoshi",
-    "effect_en": "[On Play] Look at 5 cards from the top of your deck; reveal up to a total of 2 [Megalo] or {Neptunian} type cards and add them to your hand. Then, trash the rest.\n[Activate: Main] You may rest this Character: Up to 1 of your {Neptunian} type Characters with 6000 power or less gains Rush during this turn.",
+    "effect_en": "[On Play] Look at 5 cards from the top of your deck; reveal up to a total of 2 [Megalo] or {Neptunian} type cards and add them to your hand. Then, trash the rest. [Activate: Main] You may rest this Character: Up to 1 of your {Neptunian} type Characters with 6000 power or less gains [Rush] during this turn.",
     "trigger_en": "",
     "traits_en": [
       "Merfolk",
@@ -207450,12 +207386,10 @@
     "card_type_en": "Character",
     "colors_en": [
       "Green"
-    ],
-    "preview": true,
-    "manual_source": "screenshot"
+    ]
   },
   "EB05-006-P1": {
-    "name": "巴基漢・絲媞希小姐",
+    "name": "白金漢絲媞希女士",
     "card_id": "EB05-006-P1",
     "pack_id": "EB-05",
     "colors": [
@@ -207465,8 +207399,8 @@
     "category": "Character",
     "power": 2000,
     "counter": 2000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-006_p1.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-006_p1.png?261016",
     "rarity": "SR",
     "card_type": "Character",
     "traits": [
@@ -207475,15 +207409,15 @@
     "attributes": [
       "知"
     ],
-    "effect": "【啟動主要】【每回合1次】可將1張自己生命值區上面的卡片加入手牌：選擇1項。・使最多1張角色卡在這個回合中力量值+3000。・使最多1張角色卡在這個回合中力量值-4000。",
+    "effect": "【啟動主要】【每回合1次】可將1張自己生命值區上面的卡片加入手牌：選擇下列其中一項。 ・最多1張角色卡，在這個回合，力量值+3000。 ・最多1張角色卡，在這個回合，力量值-4000。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Miss Buckingham Stussy",
-    "effect_en": "[Activate: Main] [Once Per Turn] You may add 1 card from the top of your Life cards to your hand: Choose one:\n• Give up to 1 Character +3000 power during this turn.\n• Give up to 1 Character −4000 power during this turn.",
+    "effect_en": "[Activate: Main] [Once Per Turn] You may add 1 card from the top of your Life cards to your hand: Choose one: • Give up to 1 Character +3000 power during this turn. • Give up to 1 Character −4000 power during this turn.",
     "trigger_en": "",
     "traits_en": [
       "Rocks Pirates"
@@ -207495,9 +207429,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Red"
-    ],
-    "preview": true,
-    "manual_source": "screenshot"
+    ]
   },
   "EB05-021-P1": {
     "name": "亞爾麗塔",
@@ -207510,8 +207442,8 @@
     "category": "Character",
     "power": 7000,
     "counter": 1000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-021_p1.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-021_p1.png?261016",
     "rarity": "SR",
     "card_type": "Character",
     "traits": [
@@ -207520,15 +207452,15 @@
     "attributes": [
       "打"
     ],
-    "effect": "【登場時】抽2張卡，並使最多1張自己手牌中費用8以下擁有《十字公會》特徵的角色卡登場。之後，這個回合中自己無法使角色卡登場。【攻擊時】使最多1張對手的角色卡，在這個回合中效果無效。",
+    "effect": "【登場時】抽2張卡片，使最多1張自己手牌中費用8以下擁有《十字公會》特徵的角色卡登場。之後，在這個回合，自己無法使角色卡登場。 【攻擊時】最多1張對手的角色卡，在這個回合，效果無效。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Alvida",
-    "effect_en": "[On Play] Draw 2 cards and play up to 1 {Cross Guild} type Character card with a cost of 8 or less from your hand. Then, you cannot play Character cards during this turn.\n[When Attacking] Negate the effect of up to 1 of your opponent's Characters during this turn.",
+    "effect_en": "[On Play] Draw 2 cards and play up to 1 {Cross Guild} type Character card with a cost of 8 or less from your hand. Then, you cannot play Character cards during this turn. [When Attacking] Negate the effect of up to 1 of your opponent's Characters during this turn.",
     "trigger_en": "",
     "traits_en": [
       "Cross Guild"
@@ -207540,9 +207472,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Blue"
-    ],
-    "preview": true,
-    "manual_source": "screenshot"
+    ]
   },
   "EB05-034-P1": {
     "name": "砂糖",
@@ -207555,8 +207485,8 @@
     "category": "Character",
     "power": 0,
     "counter": 2000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-034_p1.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-034_p1.png?261016",
     "rarity": "SR",
     "card_type": "Character",
     "traits": [
@@ -207565,12 +207495,12 @@
     "attributes": [
       "特"
     ],
-    "effect": "【登場時】【咚‼-2】若自己場上有7張以上的咚‼卡時，使最多1張對手的角色卡在這個回合中力量值-4000。",
+    "effect": "【登場時】咚‼-2：若自己的場上有7張以上咚‼卡時，最多1張對手的角色卡，在這個回合，力量值-4000。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Sugar",
     "effect_en": "[On Play] DON!! −2: If you have 7 or more DON!! cards on your field, give up to 1 of your opponent's Characters −4000 power during this turn.",
@@ -207585,9 +207515,7 @@
     "card_type_en": "Character",
     "colors_en": [
       "Purple"
-    ],
-    "preview": true,
-    "manual_source": "screenshot"
+    ]
   },
   "EB05-052-P1": {
     "name": "嘉蘭",
@@ -207600,8 +207528,8 @@
     "category": "Character",
     "power": 6000,
     "counter": null,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-052_p1.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-052_p1.png?261016",
     "rarity": "SR",
     "card_type": "Character",
     "traits": [
@@ -207611,15 +207539,15 @@
     "attributes": [
       "知"
     ],
-    "effect": "若自己即將受到傷害時，可替換成將這張角色卡放置在廢棄區。",
-    "trigger": "【觸發器】抽2張卡，廢棄1張自己的手牌。",
+    "effect": "若自己受到傷害時，可以替換成將這張角色卡放置在廢棄區。\n【觸發器】抽2張卡片，並廢棄1張自己的手牌。",
+    "trigger": "【觸發器】抽2張卡片，並廢棄1張自己的手牌。",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Gloriosa",
-    "effect_en": "If you would take damage, you may trash this Character instead.",
+    "effect_en": "If you would take damage, you may trash this Character instead.\n[Trigger] Draw 2 cards and trash 1 card from your hand.",
     "trigger_en": "[Trigger] Draw 2 cards and trash 1 card from your hand.",
     "traits_en": [
       "Amazon Lily",
@@ -207632,16 +207560,12 @@
     "card_type_en": "Character",
     "colors_en": [
       "Yellow"
-    ],
-    "preview": true,
-    "manual_source": "screenshot"
+    ]
   },
   "EB05-046-P1": {
     "card_id": "EB05-046-P1",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-046_p1.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-046_p1.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "大和",
@@ -207673,12 +207597,12 @@
     "traits_en": [
       "Land of Wano"
     ],
-    "effect": "若對手有原本力量值8000以上的角色卡時，這張角色卡獲得【防禦】，力量值+3000。\n【對方攻擊時】可以廢棄1張自己的手牌：若自己廢棄區有10張以上卡片時，自己的領航卡原本的力量值，在這個回合變更成7000。",
-    "effect_en": "If your opponent has a Character with a base power of 8000 or more, this Character gains [Blocker] and +3000 power.\n[On Your Opponent's Attack] You may trash 1 card from your hand: If you have 10 or more cards in your trash, your Leader's base power becomes 7000 during this turn.",
+    "effect": "若場上有對手原本力量值8000以上的角色卡時，這張角色卡獲得【防禦】、力量值+3000。 【對方攻擊時】可以廢棄1張自己的手牌：若自己廢棄區有10張以上卡片時，自己的領航卡，在這個回合，原本的力量值變更成7000。",
+    "effect_en": "If your opponent has a Character with 8000 base power or more, this Character gains [Blocker] and +3000 power. [On Your Opponent's Attack]  You may trash 1 card from your hand: If you have 10 or more cards in your trash, your Leader's base power becomes 7000 during this turn.",
     "trigger": "",
     "trigger_en": "",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "EB05-055-P1": {
@@ -207692,26 +207616,26 @@
     "category": "Character",
     "power": 6000,
     "counter": null,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-055_p1.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-055_p1.png?261016",
     "rarity": "SR",
     "card_type": "Character",
     "traits": [
-      "東海",
+      "東方藍",
       "草帽一行人"
     ],
     "attributes": [
       "知"
     ],
-    "effect": "【自己的回合中】【登場時】若自己的領航卡擁有〈知〉屬性時，將最多1張自己卡組上面的卡片加入生命值區上面。",
-    "trigger": "【觸發器】可廢棄1張自己的手牌：若自己的生命值為2張以下時，使這張卡片登場。",
+    "effect": "【我方回合中】【登場時】若自己的領航卡擁有(知)屬性時，將最多1張自己卡組上面的卡片加入生命值區上面。\n【觸發器】可以廢棄1張自己的手牌：若自己的生命值卡在2張以下時，使這張卡片登場。",
+    "trigger": "【觸發器】可以廢棄1張自己的手牌：若自己的生命值卡在2張以下時，使這張卡片登場。",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Nami",
-    "effect_en": "[Your Turn] [On Play] If your Leader has the <Wisdom> attribute, add up to 1 card from the top of your deck to the top of your Life cards.",
+    "effect_en": "[Your Turn] [On Play] If your Leader has the <Wisdom> attribute, add up to 1 card from the top of your deck to the top of your Life cards.\n[Trigger] You may trash 1 card from your hand: If you have 2 or less Life cards, play this card.",
     "trigger_en": "[Trigger] You may trash 1 card from your hand: If you have 2 or less Life cards, play this card.",
     "traits_en": [
       "East Blue",
@@ -207724,16 +207648,12 @@
     "card_type_en": "Character",
     "colors_en": [
       "Yellow"
-    ],
-    "preview": true,
-    "manual_source": "screenshot"
+    ]
   },
   "EB05-016-P2": {
     "card_id": "EB05-016-P2",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-016_p2.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-016_p2.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "妮可・羅賓",
@@ -207752,7 +207672,7 @@
     "power": 6000,
     "life": null,
     "counter": 1000,
-    "rarity": "SR",
+    "rarity": "SP",
     "attributes": [
       "知"
     ],
@@ -207765,20 +207685,18 @@
     "traits_en": [
       "Straw Hat Crew"
     ],
-    "effect": "【我方回合中】【登場時】使最多1張自己手牌中費用5以下、持有屬性（知）的角色卡登場。【觸發】將最多1張對手費用6以下的角色卡置為休息狀態。",
-    "effect_en": "[Your Turn] [On Play] Play up to 1 Character card with a cost of 5 or less and the {Wisdom} attribute from your hand. [Trigger] Rest up to 1 of your opponent's Characters with a cost of 6 or less.",
-    "trigger": "",
-    "trigger_en": "",
+    "effect": "【我方回合中】【登場時】使最多1張自己手牌中費用5以下擁有(知)屬性的角色卡登場。\n【觸發器】將最多1張對手費用6以下的角色卡置為休息狀態。",
+    "effect_en": "[Your Turn] [On Play] Play up to 1 Character card with a cost of 5 or less and the <Wisdom> attribute from your hand.\n[Trigger] Rest up to 1 of your opponent's Characters with a cost of 6 or less.",
+    "trigger": "【觸發器】將最多1張對手費用6以下的角色卡置為休息狀態。",
+    "trigger_en": "[Trigger] Rest up to 1 of your opponent's Characters with a cost of 6 or less.",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "EB05-061-P1": {
     "card_id": "EB05-061-P1",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-061_p1.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-061_p1.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "娜美",
@@ -207810,19 +207728,18 @@
     "traits_en": [
       "Straw Hat Crew"
     ],
-    "effect": "【每回合1次】若自己原本力量值6000以下的角色卡即將因對手離開場上時，可以替換成將1張自己生命值區上面的卡片加入手牌。\n【登場時】使最多1張自己手牌中費用2以下的紅色角色卡登場。",
-    "effect_en": "[Once Per Turn] If one of your Characters with 6000 base power or less would be removed from the field by your opponent, you may add 1 card from the top of your Life cards to your hand instead.\n[On Play] Play up to 1 red Character card with a cost of 2 or less from your hand.",
+    "effect": "【每回合1次】若自己原本力量值6000以下的角色卡因為對手而即將離開場上時，可以替換成將1張自己生命值區上面的卡片加入手牌。 【登場時】使最多1張自己手牌中費用2以下紅色的角色卡登場。",
+    "effect_en": "[Once Per Turn] If one of your Characters with 6000 base power or less would be removed from the field by your opponent, you may add 1 card from the top of your Life cards to your hand instead. [On Play] Play up to 1 red Character card with a cost of 2 or less from your hand.",
     "trigger": "",
     "trigger_en": "",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "EB05-010-P2": {
     "card_id": "EB05-010-P2",
-    "preview": true,
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-010_p2.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-010_p2.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "妮可・羅賓",
@@ -207853,12 +207770,17 @@
     "traits_en": [
       "Straw Hat Crew"
     ],
-    "effect": "【每回合1次】自己持有屬性（知）、且未持有【防禦】的角色卡遭到KO時，將最多1張自己卡組上面的卡片加入生命值區上面。【啟動主要】【每回合1次】將最多1張自己力量值6000以下、持有屬性（知）的角色卡置為活動狀態。",
-    "effect_en": "[Once Per Turn] When one of your Characters with the {Wisdom} attribute and without [Blocker] is K.O.'d, add up to 1 card from the top of your deck to the top of your Life cards. [Activate: Main] [Once Per Turn] Set up to 1 of your Characters with the {Wisdom} attribute and a power of 6000 or less as active.",
-    "manual_source": "screenshot"
+    "effect": "【每回合1次】自己擁有(知)屬性、未持有【防禦】的角色卡遭到KO時，將最多1張自己卡組上面的卡片加入生命值區上面。 【啟動主要】【每回合1次】將最多1張自己力量值6000以下擁有(知)屬性的角色卡置為活動狀態。",
+    "effect_en": "[Once Per Turn] When one of your Characters with the <Wisdom> attribute and without [Blocker] is K.O.'d, add up to 1 card from the top of your deck to the top of your Life cards. [Activate: Main] [Once Per Turn] Set up to 1 of your Characters with the <Wisdom> attribute and 6000 power or less as active.",
+    "card_sets": [
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
+    ],
+    "attributes": [
+      "知"
+    ]
   },
   "EB05-006-P2": {
-    "name": "巴基漢・絲媞希小姐",
+    "name": "白金漢絲媞希女士",
     "card_id": "EB05-006-P2",
     "pack_id": "EB-05",
     "colors": [
@@ -207868,8 +207790,8 @@
     "category": "Character",
     "power": 2000,
     "counter": 2000,
-    "img_full_url": "",
-    "img_url": "",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-006_p2.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-006_p2.png?261016",
     "rarity": "SP",
     "card_type": "Character",
     "traits": [
@@ -207878,15 +207800,15 @@
     "attributes": [
       "知"
     ],
-    "effect": "【啟動主要】【每回合1次】可將1張自己生命值區上面的卡片加入手牌：選擇1項。・使最多1張角色卡在這個回合中力量值+3000。・使最多1張角色卡在這個回合中力量值-4000。",
+    "effect": "【啟動主要】【每回合1次】可將1張自己生命值區上面的卡片加入手牌：選擇下列其中一項。 ・最多1張角色卡，在這個回合，力量值+3000。 ・最多1張角色卡，在這個回合，力量值-4000。",
     "trigger": "",
     "block_number": 5,
     "life": null,
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ],
     "name_en": "Miss Buckingham Stussy",
-    "effect_en": "[Activate: Main] [Once Per Turn] You may add 1 card from the top of your Life cards to your hand: Choose one:\n• Give up to 1 Character +3000 power during this turn.\n• Give up to 1 Character −4000 power during this turn.",
+    "effect_en": "[Activate: Main] [Once Per Turn] You may add 1 card from the top of your Life cards to your hand: Choose one: • Give up to 1 Character +3000 power during this turn. • Give up to 1 Character −4000 power during this turn.",
     "trigger_en": "",
     "traits_en": [
       "Rocks Pirates"
@@ -207898,16 +207820,12 @@
     "card_type_en": "Character",
     "colors_en": [
       "Red"
-    ],
-    "preview": true,
-    "manual_source": "screenshot"
+    ]
   },
   "EB05-031-P1": {
     "card_id": "EB05-031-P1",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-031_p1.png?261016",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-031_p1.png?261016",
     "block_number": 5,
     "pack_id": "EB-05",
     "name": "賓什莫克・麗珠",
@@ -207941,12 +207859,12 @@
       "The Vinsmoke Family",
       "GERMA 66"
     ],
-    "effect": "【登場時】咚‼−1：若自己的領航卡擁有《賓什莫克家》特徵時，將自己卡組上面的10張卡片放置到廢棄區。\n【啟動主要】可以將這張角色卡放置到廢棄區：若對手有原本力量值8000以上的角色卡時，從咚‼卡組將最多4張咚‼卡以活動狀態追加。",
-    "effect_en": "[On Play] DON!! −1: If your Leader has the {The Vinsmoke Family} type, trash 10 cards from the top of your deck.\n[Activate: Main] You may trash this Character: If your opponent has a Character with 8000 base power or more, add up to 4 DON!! cards as active from your DON!! deck.",
+    "effect": "【登場時】咚‼-1：若自己的領航卡擁有《賓什莫克家》特徵時，將10張自己卡組上面的卡片放置在廢棄區。 【啟動主要】可將這張角色卡放置在廢棄區：若場上有對手原本力量值8000以上的角色卡時，從咚‼卡組追加最多4張活動狀態的咚‼卡。",
+    "effect_en": "[On Play] DON!! −1: If your Leader has the {The Vinsmoke Family} type, trash 10 cards from the top of your deck. [Activate: Main] You may trash this Character: If your opponent has a Character with 8000 base power or more, add up to 4 DON!! cards as active from your DON!! deck.",
     "trigger": "",
     "trigger_en": "",
     "card_sets": [
-      "Heroines Edition vol.2【EB-05】"
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
     ]
   },
   "OP14-033-P3": {
@@ -208911,5 +208829,564 @@
     "effect_hans": "【KO时】从自己的手牌将最多1张拥有包含「CP」特征的卡牌，正面朝上加入自己的生命牌上方或下方。\n【触发器】若自己的领袖拥有包含「CP」的特征，将最多1张对手费用6以下的角色卡KO，或置为休息。",
     "effect_en": "[On K.O.] Add up to 1 card with a type including \"CP\" from your hand face-up to the top or bottom of your Life.\n[Trigger] If your Leader has a type including \"CP\", K.O. or rest up to 1 of your opponent's Characters with a cost of 6 or less.",
     "effect_ja": "【KO時】自分の手札から『CP』を含む特徴を持つカード1枚までを、自分のライフの上か下に表向きで加える。\n【トリガー】自分のリーダーが『CP』を含む特徴を持つ場合、相手のコスト6以下のキャラ1枚までを、KOするか、レストにする。"
+  },
+  "EB05-003": {
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-003.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-003.png?261016",
+    "name": "帕西雅",
+    "rarity": "C",
+    "category": "Character",
+    "card_type": "Character",
+    "colors": [
+      "紅"
+    ],
+    "traits": [
+      "夏波帝群島"
+    ],
+    "effect": "-",
+    "power": 3000,
+    "counter": 1000,
+    "block_number": 5,
+    "cost": 1,
+    "life": null,
+    "card_sets": [
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
+    ],
+    "name_en": "Pasia",
+    "effect_en": "-",
+    "traits_en": [
+      "Sabaody Archipelago"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "pack_id": "EB-05",
+    "card_id": "EB05-003",
+    "attributes": [
+      "知"
+    ]
+  },
+  "EB05-015": {
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-015.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-015.png?261016",
+    "name": "達絲琪",
+    "rarity": "C",
+    "category": "Character",
+    "card_type": "Character",
+    "colors": [
+      "綠"
+    ],
+    "traits": [
+      "東方藍",
+      "海軍"
+    ],
+    "effect": "-",
+    "power": 7000,
+    "counter": 1000,
+    "block_number": 5,
+    "cost": 5,
+    "life": null,
+    "card_sets": [
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
+    ],
+    "name_en": "Tashigi",
+    "effect_en": "-",
+    "traits_en": [
+      "East Blue",
+      "Navy"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "pack_id": "EB-05",
+    "card_id": "EB05-015",
+    "attributes": [
+      "斬"
+    ]
+  },
+  "EB05-024": {
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-024.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-024.png?261016",
+    "name": "小莎蒂",
+    "rarity": "R",
+    "category": "Character",
+    "card_type": "Character",
+    "colors": [
+      "藍"
+    ],
+    "traits": [
+      "推進城"
+    ],
+    "effect": "若自己的領航卡擁有《推進城》特徵時，這張角色卡獲得【防禦】、費用+2。 (對手攻擊後，將這張卡片置為休息狀態即可使攻擊的對象換成這張卡片)",
+    "counter": 1000,
+    "block_number": 5,
+    "cost": 1,
+    "life": null,
+    "card_sets": [
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
+    ],
+    "name_en": "Little Sadi",
+    "effect_en": "If your Leader has the {Impel Down} type, this Character gains [Blocker] and +2 cost. (After your opponent declares an attack, you may rest this card to make it the new target of the attack.)",
+    "traits_en": [
+      "Impel Down"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "colors_en": [
+      "Blue"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "pack_id": "EB-05",
+    "card_id": "EB05-024",
+    "power": null,
+    "attributes": [
+      "知"
+    ]
+  },
+  "EB05-026": {
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-026.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-026.png?261016",
+    "name": "希娜",
+    "rarity": "C",
+    "category": "Character",
+    "card_type": "Character",
+    "colors": [
+      "藍"
+    ],
+    "traits": [
+      "海軍"
+    ],
+    "effect": "-",
+    "power": 8000,
+    "counter": 2000,
+    "block_number": 5,
+    "cost": 7,
+    "life": null,
+    "card_sets": [
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
+    ],
+    "name_en": "Hina",
+    "effect_en": "-",
+    "traits_en": [
+      "Navy"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "colors_en": [
+      "Blue"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "pack_id": "EB-05",
+    "card_id": "EB05-026",
+    "attributes": [
+      "特"
+    ]
+  },
+  "EB05-032": {
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-032.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-032.png?261016",
+    "name": "烏爾蒂",
+    "rarity": "C",
+    "category": "Character",
+    "card_type": "Character",
+    "colors": [
+      "紫"
+    ],
+    "traits": [
+      "百獸海賊團"
+    ],
+    "effect": "-",
+    "power": 6000,
+    "counter": 1000,
+    "block_number": 5,
+    "cost": 4,
+    "life": null,
+    "card_sets": [
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
+    ],
+    "name_en": "Ulti",
+    "effect_en": "-",
+    "traits_en": [
+      "Animal Kingdom Pirates"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "colors_en": [
+      "Purple"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "pack_id": "EB-05",
+    "card_id": "EB05-032",
+    "attributes": [
+      "打"
+    ]
+  },
+  "EB05-033": {
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-033.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-033.png?261016",
+    "name": "妮可・羅賓",
+    "rarity": "R",
+    "category": "Character",
+    "card_type": "Character",
+    "colors": [
+      "紫"
+    ],
+    "traits": [
+      "草帽一行人"
+    ],
+    "effect": "【登場時】若自己的領航卡擁有《草帽一行人》特徵、自己場上的咚‼卡比對手場上的咚‼卡少6張以上時，抽3張卡片，並廢棄2張自己的手牌。之後，從咚‼卡組追加最多4張休息狀態的咚‼卡。",
+    "power": 2000,
+    "counter": 2000,
+    "block_number": 5,
+    "cost": 1,
+    "life": null,
+    "card_sets": [
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
+    ],
+    "name_en": "Nico Robin",
+    "effect_en": "[On Play] If your Leader has the {Straw Hat Crew} type and the number of DON!! cards on your field is at least 6 less than the number on your opponent's field, draw 3 cards and trash 2 cards from your hand. Then, add up to 4 DON!! cards as rested from your DON!! deck.",
+    "traits_en": [
+      "Straw Hat Crew"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "colors_en": [
+      "Purple"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "pack_id": "EB-05",
+    "card_id": "EB05-033",
+    "attributes": [
+      "打"
+    ]
+  },
+  "EB05-039": {
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-039.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-039.png?261016",
+    "name": "桃色毒箭",
+    "rarity": "C",
+    "category": "Event",
+    "card_type": "Event",
+    "colors": [
+      "紫"
+    ],
+    "traits": [
+      "賓什莫克家",
+      "杰爾馬66"
+    ],
+    "attributes": [
+      "-"
+    ],
+    "effect": "【主要】咚‼-1：若自己的領航卡擁有《賓什莫克家》特徵時，最多1張對手的角色卡，在這個回合，力量值-4000。 【反擊】咚‼-1：自己的領航卡，在這場對戰中，力量值+4000。",
+    "block_number": 5,
+    "cost": 1,
+    "life": null,
+    "card_sets": [
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
+    ],
+    "name_en": "Pink Hornet",
+    "effect_en": "[Main] DON!! −1: If your Leader has the {The Vinsmoke Family} type, give up to 1 of your opponent's Characters −4000 power during this turn. [Counter] DON!! −1: Your Leader gains +4000 power during this battle.",
+    "traits_en": [
+      "The Vinsmoke Family",
+      "GERMA 66"
+    ],
+    "attributes_en": [
+      "-"
+    ],
+    "colors_en": [
+      "Purple"
+    ],
+    "category_en": "Event",
+    "card_type_en": "Event",
+    "pack_id": "EB-05",
+    "card_id": "EB05-039",
+    "power": null,
+    "counter": null
+  },
+  "EB05-041": {
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-041.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-041.png?261016",
+    "name": "可亞拉",
+    "rarity": "C",
+    "category": "Character",
+    "card_type": "Character",
+    "colors": [
+      "黑"
+    ],
+    "traits": [
+      "多雷斯羅薩",
+      "革命軍"
+    ],
+    "effect": "-",
+    "power": 4000,
+    "counter": 1000,
+    "block_number": 5,
+    "cost": 2,
+    "life": null,
+    "card_sets": [
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
+    ],
+    "name_en": "Koala",
+    "effect_en": "-",
+    "traits_en": [
+      "Dressrosa",
+      "Revolutionary Army"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "colors_en": [
+      "Black"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "pack_id": "EB-05",
+    "card_id": "EB05-041",
+    "attributes": [
+      "打"
+    ]
+  },
+  "EB05-050": {
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-050.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-050.png?261016",
+    "name": "阿特拉斯",
+    "rarity": "R",
+    "category": "Character",
+    "card_type": "Character",
+    "colors": [
+      "黃"
+    ],
+    "traits": [
+      "蛋頭",
+      "科學家"
+    ],
+    "effect": "【登場時】從自己的卡組上面查看4張卡片，公開最多1張擁有(知)屬性的卡片，並加入手牌。之後，將其餘卡片依任意順序放到卡組下面。\n【觸發器】發動這張卡片的【登場時】效果。",
+    "trigger": "【觸發器】發動這張卡片的【登場時】效果。",
+    "power": 2000,
+    "counter": 1000,
+    "block_number": 5,
+    "cost": 1,
+    "life": null,
+    "card_sets": [
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
+    ],
+    "name_en": "Atlas",
+    "effect_en": "[On Play] Look at 4 cards from the top of your deck; reveal up to 1 card with the <Wisdom> attribute and add it to your hand. Then, place the rest at the bottom of your deck in any order.\n[Trigger] Activate this card's [On Play] effect.",
+    "trigger_en": "[Trigger] Activate this card's [On Play] effect.",
+    "traits_en": [
+      "Egghead",
+      "Scientist"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "pack_id": "EB-05",
+    "card_id": "EB05-050",
+    "attributes": [
+      "知"
+    ]
+  },
+  "EB05-053": {
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-053.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-053.png?261016",
+    "name": "夏洛特・普萊麗芮",
+    "rarity": "C",
+    "category": "Character",
+    "card_type": "Character",
+    "colors": [
+      "黃"
+    ],
+    "traits": [
+      "人魚族",
+      "魚人島",
+      "太陽海賊團"
+    ],
+    "effect": "【攻擊時】【每回合1次】若對手的手牌有9張以上時，將最多1張自己的手牌加入生命值區上面。\n【觸發器】可以廢棄1張自己的手牌：若自己的生命值卡在2張以下時，使這張卡片登場。",
+    "trigger": "【觸發器】可以廢棄1張自己的手牌：若自己的生命值卡在2張以下時，使這張卡片登場。",
+    "power": 5000,
+    "counter": 1000,
+    "block_number": 5,
+    "cost": 4,
+    "life": null,
+    "card_sets": [
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
+    ],
+    "name_en": "Charlotte Praline",
+    "effect_en": "[When Attacking] [Once Per Turn] If your opponent has 9 or more cards in their hand, add up to 1 card from your hand to the top of your Life cards.\n[Trigger] You may trash 1 card from your hand: If you have 2 or less Life cards, play this card.",
+    "trigger_en": "[Trigger] You may trash 1 card from your hand: If you have 2 or less Life cards, play this card.",
+    "traits_en": [
+      "Merfolk",
+      "Fish-Man Island",
+      "The Sun Pirates"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "pack_id": "EB-05",
+    "card_id": "EB05-053",
+    "attributes": [
+      "知"
+    ]
+  },
+  "EB05-055-P2": {
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-055_p2.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-055_p2.png?261016",
+    "name": "娜美",
+    "rarity": "SR",
+    "category": "Character",
+    "card_type": "Character",
+    "colors": [
+      "黃"
+    ],
+    "traits": [
+      "東方藍",
+      "草帽一行人"
+    ],
+    "effect": "【我方回合中】【登場時】若自己的領航卡擁有(知)屬性時，將最多1張自己卡組上面的卡片加入生命值區上面。\n【觸發器】可以廢棄1張自己的手牌：若自己的生命值卡在2張以下時，使這張卡片登場。",
+    "trigger": "【觸發器】可以廢棄1張自己的手牌：若自己的生命值卡在2張以下時，使這張卡片登場。",
+    "power": 6000,
+    "block_number": 5,
+    "cost": 5,
+    "life": null,
+    "card_sets": [
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
+    ],
+    "name_en": "Nami",
+    "effect_en": "[Your Turn] [On Play] If your Leader has the <Wisdom> attribute, add up to 1 card from the top of your deck to the top of your Life cards.\n[Trigger] You may trash 1 card from your hand: If you have 2 or less Life cards, play this card.",
+    "trigger_en": "[Trigger] You may trash 1 card from your hand: If you have 2 or less Life cards, play this card.",
+    "traits_en": [
+      "East Blue",
+      "Straw Hat Crew"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "pack_id": "EB-05",
+    "card_id": "EB05-055-P2",
+    "counter": null,
+    "attributes": [
+      "知"
+    ]
+  },
+  "EB05-055-P3": {
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-055_p3.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-055_p3.png?261016",
+    "name": "娜美",
+    "rarity": "SR",
+    "category": "Character",
+    "card_type": "Character",
+    "colors": [
+      "黃"
+    ],
+    "traits": [
+      "東方藍",
+      "草帽一行人"
+    ],
+    "effect": "【我方回合中】【登場時】若自己的領航卡擁有(知)屬性時，將最多1張自己卡組上面的卡片加入生命值區上面。\n【觸發器】可以廢棄1張自己的手牌：若自己的生命值卡在2張以下時，使這張卡片登場。",
+    "trigger": "【觸發器】可以廢棄1張自己的手牌：若自己的生命值卡在2張以下時，使這張卡片登場。",
+    "power": 6000,
+    "block_number": 5,
+    "cost": 5,
+    "life": null,
+    "card_sets": [
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
+    ],
+    "name_en": "Nami",
+    "effect_en": "[Your Turn] [On Play] If your Leader has the <Wisdom> attribute, add up to 1 card from the top of your deck to the top of your Life cards.\n[Trigger] You may trash 1 card from your hand: If you have 2 or less Life cards, play this card.",
+    "trigger_en": "[Trigger] You may trash 1 card from your hand: If you have 2 or less Life cards, play this card.",
+    "traits_en": [
+      "East Blue",
+      "Straw Hat Crew"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "pack_id": "EB-05",
+    "card_id": "EB05-055-P3",
+    "counter": null,
+    "attributes": [
+      "知"
+    ]
+  },
+  "EB05-058": {
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-058.png?261016",
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-058.png?261016",
+    "name": "貝爾梅爾",
+    "rarity": "C",
+    "category": "Character",
+    "card_type": "Character",
+    "colors": [
+      "黃"
+    ],
+    "traits": [
+      "東方藍",
+      "前海軍"
+    ],
+    "effect": "-",
+    "power": 6000,
+    "counter": 1000,
+    "block_number": 5,
+    "cost": 4,
+    "life": null,
+    "card_sets": [
+      "特殊補充包 ONE PIECE Heroines Edition【EB-05】"
+    ],
+    "name_en": "Bell-mère",
+    "effect_en": "-",
+    "traits_en": [
+      "East Blue",
+      "Former Navy"
+    ],
+    "attributes_en": [
+      "Ranged"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "category_en": "Character",
+    "card_type_en": "Character",
+    "pack_id": "EB-05",
+    "card_id": "EB05-058",
+    "attributes": [
+      "射"
+    ]
   }
 }

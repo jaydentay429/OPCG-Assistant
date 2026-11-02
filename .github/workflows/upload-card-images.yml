@@ -1,0 +1,145 @@
+name: Upload card images
+
+on:
+  workflow_dispatch:
+    inputs:
+      set_prefix:
+        description: Card id prefix. EB05 uploads that set only.
+        required: true
+        default: EB05
+        type: string
+      card_ids:
+        description: Comma-separated card ids. Empty uses every index id with the prefix.
+        required: false
+        default: ""
+        type: string
+      overwrite:
+        description: Replace existing PNG objects for the selected ids and regenerate w200, w320, and full WebP. Objects outside the list stay. Nothing is removed.
+        required: true
+        default: true
+        type: boolean
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install download dependencies
+        run: python -m pip install requests beautifulsoup4
+
+      - name: Download official PNGs for the selected ids
+        env:
+          SET_PREFIX: ${{ inputs.set_prefix }}
+          CARD_IDS: ${{ inputs.card_ids }}
+        run: |
+          set -euo pipefail
+          python3 - << 'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          import requests
+
+          from sync_card_images import download_image, normalize_card_id, official_candidates
+
+          prefix = os.environ.get("SET_PREFIX", "").strip().upper()
+          if not prefix:
+              raise SystemExit("set_prefix is required")
+          wanted = {
+              normalize_card_id(part)
+              for part in os.environ.get("CARD_IDS", "").split(",")
+              if part.strip()
+          }
+          wanted.discard("")
+          index = json.loads(Path("index/cards_by_id.json").read_text(encoding="utf-8"))
+          selected = []
+          for raw_id, row in index.items():
+              card_id = normalize_card_id(raw_id)
+              if not card_id.startswith(prefix):
+                  continue
+              if wanted and card_id not in wanted:
+                  continue
+              if not isinstance(row, dict):
+                  continue
+              selected.append(card_id)
+          selected = sorted(set(selected))
+          if not selected:
+              raise SystemExit("no index cards matched set_prefix/card_ids")
+          Path("packs").mkdir(exist_ok=True)
+          session = requests.Session()
+          session.trust_env = False
+          failed = []
+          for card_id in selected:
+              ok, url = download_image(card_id, official_candidates(index[card_id]), session)
+              print(f"{card_id} {'ok' if ok else 'FAIL'} {url}", flush=True)
+              if not ok:
+                  failed.append(card_id)
+          Path("selected-ids.txt").write_text(",".join(selected) + "\n", encoding="utf-8")
+          print(f"selected {len(selected)} failed {len(failed)}", flush=True)
+          if failed:
+              raise SystemExit("download failed: " + ",".join(failed))
+          PY
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Copy selected PNGs and image scripts to the VPS
+        env:
+          SET_PREFIX: ${{ inputs.set_prefix }}
+        run: |
+          set -euo pipefail
+          ssh_base=(ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes -o BatchMode=yes -o ConnectTimeout=20)
+          scp_base=(scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes -o BatchMode=yes -o ConnectTimeout=20)
+          target="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
+          "${ssh_base[@]}" "$target" "mkdir -p /opt/opcg/app/packs /opt/opcg/app/scripts"
+          # Only the downloaded <ID>.png names. Other packs files on the VPS stay.
+          mapfile -t pngs < <(find packs -maxdepth 1 -type f -name '*.png' | sort)
+          if [ "${#pngs[@]}" -eq 0 ]; then
+            echo "no pngs downloaded"
+            exit 1
+          fi
+          "${scp_base[@]}" "${pngs[@]}" "$target:/opt/opcg/app/packs/"
+          "${scp_base[@]}" \
+            scripts/copy_new_pack_images_to_r2.py \
+            scripts/generate_card_webp.py \
+            "$target:/opt/opcg/app/scripts/"
+          "${scp_base[@]}" selected-ids.txt "$target:/tmp/opcg-selected-ids.txt"
+
+      - name: Upload PNG and WebP variants on the VPS
+        env:
+          SET_PREFIX: ${{ inputs.set_prefix }}
+          OVERWRITE: ${{ inputs.overwrite }}
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes -o BatchMode=yes -o ConnectTimeout=20 \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
+            "SET_PREFIX='$SET_PREFIX' OVERWRITE='$OVERWRITE' bash -s" << 'REMOTE'
+          set -euo pipefail
+          cd /opt/opcg/app
+          ids="$(tr -d '\n' < /tmp/opcg-selected-ids.txt)"
+          remote="$(grep -E '^OPCG_R2_RCLONE_REMOTE=' .env | tail -n 1 | cut -d= -f2- | tr -d '"' | tr -d "'")"
+          if [ -z "$remote" ]; then
+            echo "OPCG_R2_RCLONE_REMOTE is empty"
+            exit 1
+          fi
+          copy_args=(scripts/copy_new_pack_images_to_r2.py --packs packs --rclone-remote "$remote" --set-prefix "$SET_PREFIX" --ids "$ids")
+          webp_args=(scripts/generate_card_webp.py --packs packs --set-prefix "$SET_PREFIX" --ids "$ids")
+          if [ "$OVERWRITE" = "true" ]; then
+            copy_args+=(--overwrite)
+            webp_args+=(--force)
+          fi
+          .venv/bin/python -u "${copy_args[@]}"
+          .venv/bin/python -u "${webp_args[@]}"
+          .venv/bin/python -u scripts/build_card_image_manifest.py --rclone-remote "$remote"
+          REMOTE

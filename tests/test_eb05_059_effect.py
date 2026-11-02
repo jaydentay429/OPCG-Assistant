@@ -1,8 +1,8 @@
-"""EB05-059 keeps the trigger on its own fields.
+"""EB05-059 stores the official trigger on its own field and inside effect.
 
-The manual row already stores the main text in effect / effect_en and the
-trigger line in trigger / trigger_en. /cards/EB05-059 must not append that
-line back onto the effect fields.
+The cardlist keeps Trigger in a separate node and the sync folds that line
+onto effect, the same way other released events are stored. /cards/EB05-059
+strips that whole line back off the effect fields.
 """
 
 from __future__ import annotations
@@ -21,6 +21,8 @@ def test_eb05_059_api_effect_omits_trigger_line():
     basic = app.cards_by_id["EB05-059"]
     card = app.build_card_response("EB05-059", basic)
 
+    assert basic["effect"].endswith(basic["trigger"])
+    assert basic["effect_en"].endswith(basic["trigger_en"])
     assert card.trigger.startswith("【觸發器】")
     assert "持有【觸發器】" in card.trigger
     assert card.trigger_en.startswith("[Trigger]")
@@ -28,10 +30,9 @@ def test_eb05_059_api_effect_omits_trigger_line():
 
     effect = card.effect or ""
     effect_en = card.effect_en or ""
-    assert effect == basic["effect"]
-    assert effect_en == basic["effect_en"]
     assert effect.startswith("【主要】抽1張卡片")
     assert "【觸發器】" not in effect
+    assert "持有【觸發器】" not in effect
     assert not effect.endswith(card.trigger)
     assert "{Big Mom Pirates}" in effect_en
     assert "[Trigger]" not in effect_en
