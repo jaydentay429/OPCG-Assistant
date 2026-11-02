@@ -8,6 +8,10 @@ already exists on the remote is left untouched. ``rclone sync`` is not used:
 nothing on R2 is deleted, and hand-replaced art (EB05-016, EB05-048, OP18-112)
 is not replaced by the VPS file.
 
+``--set-prefix`` and ``--ids`` limit the file list. ``--overwrite`` drops
+``--ignore-existing`` for that list only. The subcommand stays ``copy``;
+there is still no delete flag.
+
 Only top-level ``<ID>.png`` names are candidates. Other files in the packs
 directory stay local. A missing rclone binary, a bad remote, a permission
 error, or a timeout is logged (exit code and copied count) and does not raise.
@@ -57,14 +61,42 @@ def is_card_png_filename(name: str) -> bool:
     return bool(card_id) and name == f"{card_id}.png"
 
 
-def list_card_pngs(packs_dir: Path) -> list[str]:
+def card_id_selected(card_id: str, set_prefix: str = "", ids: set[str] | None = None) -> bool:
+    """True when ``card_id`` passes an optional prefix and an optional id set.
+
+    An empty prefix does not filter. ``ids is None`` does not filter. An empty
+    id set matches nothing.
+    """
+    cid = str(card_id or "").strip().upper().replace("_", "-")
+    if not cid:
+        return False
+    prefix = str(set_prefix or "").strip().upper()
+    if prefix and not cid.startswith(prefix):
+        return False
+    if ids is not None:
+        wanted = {str(item).strip().upper().replace("_", "-") for item in ids if str(item).strip()}
+        if cid not in wanted:
+            return False
+    return True
+
+
+def list_card_pngs(
+    packs_dir: Path,
+    *,
+    set_prefix: str = "",
+    ids: set[str] | None = None,
+) -> list[str]:
     """Top-level card png filenames. Does not walk subdirectories."""
     names: list[str] = []
     for entry in packs_dir.iterdir():
         if not entry.is_file():
             continue
-        if is_card_png_filename(entry.name):
-            names.append(entry.name)
+        if not is_card_png_filename(entry.name):
+            continue
+        card_id = filename_card_id(entry.name)
+        if not card_id_selected(card_id, set_prefix, ids):
+            continue
+        names.append(entry.name)
     names.sort()
     return names
 
@@ -75,11 +107,13 @@ def build_rclone_copy_command(
     files_from: Path,
     *,
     dry_run: bool = False,
+    overwrite: bool = False,
 ) -> list[str]:
-    """Build ``rclone copy --ignore-existing`` for missing ``<ID>.png`` keys.
+    """Build ``rclone copy`` for ``<ID>.png`` keys.
 
-    The subcommand is ``copy``. There is no ``sync`` and no delete flag, so
-    existing R2 objects stay as they are.
+    The subcommand is ``copy``. There is no ``sync`` and no delete flag.
+    Existing objects are left alone unless ``overwrite`` is set, and even then
+    only names in ``files_from`` can be replaced.
     """
     # --files-from is the whole filter. rclone 1.60 rejects combining it with
     # --include. The list itself is only canonical <ID>.png names.
@@ -88,19 +122,24 @@ def build_rclone_copy_command(
         "copy",
         str(source),
         remote.strip().rstrip("/"),
-        "--ignore-existing",
-        "--files-from",
-        str(files_from),
-        "-v",
-        "--contimeout",
-        "30s",
-        "--timeout",
-        "2m",
-        "--retries",
-        "2",
-        "--low-level-retries",
-        "5",
     ]
+    if not overwrite:
+        cmd.append("--ignore-existing")
+    cmd.extend(
+        [
+            "--files-from",
+            str(files_from),
+            "-v",
+            "--contimeout",
+            "30s",
+            "--timeout",
+            "2m",
+            "--retries",
+            "2",
+            "--low-level-retries",
+            "5",
+        ]
+    )
     if dry_run:
         cmd.append("--dry-run")
     return cmd
@@ -167,6 +206,9 @@ def _copy_new_pack_images(
     *,
     timeout_seconds: int = DEFAULT_TIMEOUT_SECONDS,
     dry_run: bool = False,
+    overwrite: bool = False,
+    set_prefix: str = "",
+    ids: set[str] | None = None,
     runner=None,
 ) -> CopyResult:
     if runner is None:
@@ -187,7 +229,7 @@ def _copy_new_pack_images(
             "copy new pack images FAILED rc=2 copied=0: "
             f"packs directory does not exist: {packs_dir}",
         )
-    names = list_card_pngs(packs_dir)
+    names = list_card_pngs(packs_dir, set_prefix=set_prefix, ids=ids)
     if not names:
         return _result(
             0,
@@ -200,7 +242,13 @@ def _copy_new_pack_images(
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as handle:
             handle.write("\n".join(names) + "\n")
-        cmd = build_rclone_copy_command(packs_dir, destination, files_from, dry_run=dry_run)
+        cmd = build_rclone_copy_command(
+            packs_dir,
+            destination,
+            files_from,
+            dry_run=dry_run,
+            overwrite=overwrite,
+        )
         try:
             proc = runner(
                 cmd,
@@ -258,15 +306,21 @@ def copy_new_pack_images(
     *,
     timeout_seconds: int = DEFAULT_TIMEOUT_SECONDS,
     dry_run: bool = False,
+    overwrite: bool = False,
+    set_prefix: str = "",
+    ids: set[str] | None = None,
     runner=None,
 ) -> CopyResult:
-    """Copy missing card pngs. Logs and returns on failure; never raises."""
+    """Copy card pngs. Logs and returns on failure; never raises or deletes."""
     try:
         return _copy_new_pack_images(
             packs_dir,
             remote,
             timeout_seconds=timeout_seconds,
             dry_run=dry_run,
+            overwrite=overwrite,
+            set_prefix=set_prefix,
+            ids=ids,
             runner=runner,
         )
     except Exception as exc:
@@ -288,14 +342,35 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--dry-run",
         action="store_true",
-        help="Pass rclone --dry-run. Still uses copy --ignore-existing",
+        help="Pass rclone --dry-run. Still uses copy, never sync or delete",
+    )
+    parser.add_argument(
+        "--set-prefix",
+        default="",
+        help="Only upload card ids that start with this prefix, e.g. EB05",
+    )
+    parser.add_argument(
+        "--ids",
+        default="",
+        help="Comma-separated card ids. Combined with --set-prefix when both are set",
+    )
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Replace existing objects for the selected pngs. Still copy; never deletes",
     )
     args = parser.parse_args(argv)
+    id_set = None
+    if str(args.ids or "").strip():
+        id_set = {part.strip() for part in str(args.ids).split(",") if part.strip()}
     result = copy_new_pack_images(
         args.packs,
         args.rclone_remote,
         timeout_seconds=args.timeout_seconds,
         dry_run=args.dry_run,
+        overwrite=args.overwrite,
+        set_prefix=args.set_prefix,
+        ids=id_set,
     )
     return result.exit_code
 

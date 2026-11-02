@@ -99,19 +99,18 @@ def test_seed_matches_index_and_ids_are_unique():
     }
     assert cards["EB05-046"]["name"] == "大和"
     assert cards["EB05-046"]["name_en"] == "Yamato"
-    assert cards["EB05-046"]["manual_source"] == "screenshot"
+    assert "manual_source" not in cards["EB05-046"]
     assert "suppress_pack_image" not in cards["EB05-046"]
-    assert cards["EB05-046"]["img_url"] == ""
-    assert cards["EB05-046"]["img_full_url"] == ""
-    assert "EB05-046.png" not in json.dumps(cards["EB05-046"])
-    assert cards["EB05-046"]["preview"] is True
-    assert cards["EB05-048"]["name"] == "刺針刺蝟"
-    assert cards["EB05-048"]["name_en"] == "Stinger Hedgehog"
+    assert cards["EB05-046"]["img_url"].endswith("/EB05-046.png?261016")
+    assert cards["EB05-046"]["img_full_url"] == cards["EB05-046"]["img_url"]
+    assert "preview" not in cards["EB05-046"]
+    assert cards["EB05-048"]["name"] == "刺蝟炸彈"
+    assert cards["EB05-048"]["name_en"] == "Hedgehog Stinger"
     assert cards["EB05-048"]["card_id"] == "EB05-048"
     assert cards["EB05-048"]["card_type"] == "Event"
     assert cards["EB05-048"]["rarity"] == "R"
-    assert cards["EB05-048"]["img_url"].endswith("/EB05-048.png")
-    assert cards["EB05-048"]["img_full_url"].endswith("/EB05-048.png")
+    assert cards["EB05-048"]["img_url"].endswith("/EB05-048.png?261016")
+    assert cards["EB05-048"]["img_full_url"].endswith("/EB05-048.png?261016")
     assert "EB05-046" not in cards["EB05-048"]["img_url"]
     assert cards["EB05-007"]["colors"] == ["紅"]
     assert cards["EB05-007"]["colors_en"] == ["Red"]
@@ -233,8 +232,8 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["OP18-111"]["traits"] == ["中將", "海軍"]
     assert cards["OP18-111"]["effect"].startswith("【速攻】")
     assert cards["OP18-111"]["effect_en"].startswith("[Rush]")
-    assert cards["EB05-059"] == seed["EB05-059"]
-    assert cards["EB05-059"]["name"] == "夏洛特・普琳!!"
+    assert cards["EB05-059"] != seed["EB05-059"]
+    assert cards["EB05-059"]["name"] == "夏洛特・普琳大人!!"
     assert cards["EB05-059"]["name_en"] == "Charlotte Pudding!!"
     assert cards["EB05-059"]["card_type"] == "Event"
     assert cards["EB05-059"]["colors"] == ["黃"]
@@ -244,14 +243,16 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["EB05-059"]["rarity"] == "R"
     assert cards["EB05-059"]["traits"] == ["BIG MOM海賊團"]
     assert cards["EB05-059"]["effect"].startswith("【主要】抽1張卡片")
-    assert "【觸發器】" not in cards["EB05-059"]["effect"]
+    assert cards["EB05-059"]["effect"].endswith(cards["EB05-059"]["trigger"])
     assert cards["EB05-059"]["trigger"].startswith("【觸發器】")
     assert "持有【觸發器】" in cards["EB05-059"]["trigger"]
     assert "{Big Mom Pirates}" in cards["EB05-059"]["effect_en"]
-    assert "[Trigger]" not in cards["EB05-059"]["effect_en"]
+    assert cards["EB05-059"]["effect_en"].endswith(cards["EB05-059"]["trigger_en"])
     assert cards["EB05-059"]["trigger_en"].startswith("[Trigger]")
-    assert cards["EB05-008"] == seed["EB05-008"]
-    assert cards["EB05-008"]["name"] == "魯夫，就是現在"
+    assert "preview" not in cards["EB05-059"]
+    assert "manual_source" not in cards["EB05-059"]
+    assert cards["EB05-008"] != seed["EB05-008"]
+    assert cards["EB05-008"]["name"] == "魯夫…趁現在吧"
     assert cards["EB05-008"]["name_en"] == "Luffy, Now's Your Chance"
     assert cards["EB05-008"]["card_type"] == "Event"
     assert cards["EB05-008"]["colors"] == ["紅"]
@@ -260,16 +261,20 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["EB05-008"]["traits"] == ["王下七武海", "九蛇海賊團"]
     assert "力量值-7000" in cards["EB05-008"]["effect"]
     assert "−7000 power" in cards["EB05-008"]["effect_en"]
-    assert cards["EB05-040"] == seed["EB05-040"]
-    assert cards["EB05-040"]["name"] == "你需要我吧？！！♡"
+    assert cards["EB05-040"] != seed["EB05-040"]
+    assert cards["EB05-040"]["name"] == "你需要我對吧!!?♡"
     assert cards["EB05-040"]["name_en"] == "You Need Me, Don't You?!!♡"
     assert cards["EB05-040"]["card_type"] == "Event"
     assert cards["EB05-040"]["colors"] == ["紫"]
     assert cards["EB05-040"]["cost"] == 0
     assert cards["EB05-040"]["rarity"] == "R"
     assert cards["EB05-040"]["traits"] == ["唐吉訶德海賊團"]
-    assert cards["EB05-040"]["effect"].startswith("【主要】可以將1張自己活動狀態的咚‼卡放回咚‼卡組")
+    assert cards["EB05-040"]["effect"].startswith("【主要】咚‼-1")
+    assert "《賓什莫克家》" in cards["EB05-040"]["effect"]
+    # asia-en still publishes the earlier English effect for this id.
     assert "draw 3 cards" in cards["EB05-040"]["effect_en"]
+    assert "preview" not in cards["EB05-040"]
+    assert "manual_source" not in cards["EB05-040"]
     assert cards["OP18-010"] == seed["OP18-010"]
     assert cards["OP18-010"]["name"] == "多尼多尼・喬巴"
     assert cards["OP18-010"]["name_en"] == "Tony Tony.Chopper"
@@ -323,14 +328,18 @@ def test_seed_matches_index_and_ids_are_unique():
         "OP18-063",
         "OP18-091",
         "OP18-111",
-        "EB05-059",
-        "EB05-008",
-        "EB05-040",
     ):
         assert cards[cid]["manual_source"] == "screenshot"
         assert cards[cid]["preview"] is True
         assert cards[cid]["img_url"] == ""
         assert cards[cid]["img_full_url"] == ""
+        assert "suppress_pack_image" not in cards[cid]
+        assert cards[cid]["life"] is None
+    for cid in ("EB05-059", "EB05-008", "EB05-040"):
+        assert "manual_source" not in cards[cid]
+        assert "preview" not in cards[cid]
+        assert cards[cid]["img_url"].startswith("https://www.onepiece-cardgame.com/images/cardlist/card/")
+        assert cards[cid]["img_full_url"] == cards[cid]["img_url"]
         assert "suppress_pack_image" not in cards[cid]
         assert cards[cid]["life"] is None
     assert cards["P-160"]["name"] == "納菲魯塔利・薇薇"
@@ -413,11 +422,11 @@ def test_seed_matches_index_and_ids_are_unique():
     assert "This card deals 2 damage." in cards["OP18-106"]["effect_en"]
     assert cards["OP18-106"]["card_sets"] == ["補充包 OP-18【OP-18】"]
     assert cards["OP18-106"]["pack_id"] == "OP-18"
-    assert cards["EB05-049"]["name"] == "特別鬼魂"
+    assert cards["EB05-049"]["name"] == "特大鬼魂"
     assert cards["EB05-049"]["name_en"] == "Special Hollow"
-    assert cards["EB05-049"]["manual_source"] == "screenshot"
+    assert "manual_source" not in cards["EB05-049"]
     assert "suppress_pack_image" not in cards["EB05-049"]
-    assert cards["EB05-049"]["preview"] is True
+    assert "preview" not in cards["EB05-049"]
     assert cards["EB05-049"]["card_type"] == "Event"
     assert cards["EB05-049"]["colors"] == ["黑"]
     assert cards["EB05-049"]["colors_en"] == ["Black"]
@@ -429,7 +438,7 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["EB05-049"]["traits_en"] == ["Thriller Bark Pirates"]
     assert "費用-3" in cards["EB05-049"]["effect"]
     assert "{Thriller Bark Pirates}" in cards["EB05-049"]["effect_en"]
-    assert cards["EB05-049"]["card_sets"] == ["Heroines Edition vol.2【EB-05】"]
+    assert cards["EB05-049"]["card_sets"] == ["特殊補充包 ONE PIECE Heroines Edition【EB-05】"]
     assert cards["EB05-049"]["pack_id"] == "EB-05"
     assert cards["OP18-046"]["name"] == "Mr.0&Miss All星期天"
     assert cards["OP18-046"]["name_en"] == "Mr.0 & Miss All Sunday"
@@ -439,18 +448,18 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["OP18-046"]["img_url"] == ""
     assert cards["EB05-061"]["name"] == "娜美"
     assert cards["EB05-061"]["rarity"] == "SEC"
-    assert cards["EB05-061"]["img_url"] == ""
+    assert cards["EB05-061"]["img_url"].endswith("/EB05-061.png?261016")
     assert cards["EB05-061"]["life"] is None
     assert cards["EB05-031"]["traits"] == ["賓什莫克家", "杰爾馬66"]
     assert cards["EB05-031"]["traits_en"] == ["The Vinsmoke Family", "GERMA 66"]
-    assert cards["EB05-004"]["img_url"] == ""
+    assert cards["EB05-004"]["img_url"].endswith("/EB05-004.png?261016")
     assert "EB05-004-P1" not in cards["EB05-004"]["img_url"]
     p_nami = cards["EB05-061-P1"]
     assert p_nami["rarity"] == "SEC"
     assert p_nami["name"] == cards["EB05-061"]["name"]
     assert p_nami["effect"] == cards["EB05-061"]["effect"]
     assert p_nami["card_sets"] == cards["EB05-061"]["card_sets"]
-    assert p_nami["img_url"] == ""
+    assert p_nami["img_url"].endswith("/EB05-061_p1.png?261016")
     pudding = cards["OP17-109-P1"]
     assert pudding["name"] == "夏洛特・普琳"
     assert pudding["name_en"] == "Charlotte Pudding"
@@ -460,10 +469,10 @@ def test_seed_matches_index_and_ids_are_unique():
     assert pudding["manual_source"] == "screenshot"
     assert cards["EB05-006-P2"]["rarity"] == "SP"
     assert cards["EB05-006-P2"]["effect"] == cards["EB05-006"]["effect"]
-    assert cards["EB05-016-P2"]["rarity"] == "SR"
+    assert cards["EB05-016-P2"]["rarity"] == "SP"
     assert cards["EB05-016-P2"]["effect"] == cards["EB05-016"]["effect"]
     assert cards["EB05-010-P2"]["rarity"] == "L"
-    assert cards["EB05-014-P1"]["rarity"] == "SP"
+    assert cards["EB05-014-P1"]["rarity"] == "SR"
     assert cards["OP14-033-P1"]["rarity"] == "SR"
     assert cards["OP14-033-P2"]["img_url"] == "images/cardlist/card/OP14-033_p2.png"
     assert "manual_source" not in cards["OP14-033-P1"]
@@ -472,17 +481,17 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["OP18-065"]["attributes_en"] == ["Unknown"]
     assert cards["OP18-065"]["img_url"] == "https://api.optcgassistant.com/packs/OP18-065.png"
     assert cards["OP18-031"]["img_url"] == "https://api.optcgassistant.com/packs/OP18-031.png"
-    # Base id stays EB05-016. The stored SP row was the heroine parallel art;
-    # the normal printing is SR, and EB05-016-P1 keeps the SP mark used by other -P1 rows.
+    # Base id stays EB05-016. Official marks the normal print and -P1 as SR.
+    # The SP parallel is EB05-016-P2.
     assert cards["EB05-016"]["card_id"] == "EB05-016"
     assert cards["EB05-016"]["name"] == "妮可・羅賓"
     assert cards["EB05-016"]["name_en"] == "Nico Robin"
     assert cards["EB05-016"]["rarity"] == "SR"
     assert cards["EB05-016"]["attributes"] == ["知"]
-    assert cards["EB05-016"]["manual_source"] == "screenshot"
+    assert "manual_source" not in cards["EB05-016"]
     assert "suppress_pack_image" not in cards["EB05-016"]
-    assert cards["EB05-016"]["img_url"] == ""
-    assert cards["EB05-016"]["card_sets"] == ["Heroines Edition vol.2【EB-05】"]
+    assert cards["EB05-016"]["img_url"].endswith("/EB05-016.png?261016")
+    assert cards["EB05-016"]["card_sets"] == ["特殊補充包 ONE PIECE Heroines Edition【EB-05】"]
     p1 = cards["EB05-016-P1"]
     assert p1["card_id"] == "EB05-016-P1"
     assert p1["name"] == cards["EB05-016"]["name"]
@@ -490,8 +499,8 @@ def test_seed_matches_index_and_ids_are_unique():
     assert p1["effect"] == cards["EB05-016"]["effect"]
     assert p1["effect_en"] == cards["EB05-016"]["effect_en"]
     assert p1["cost"] == 6 and p1["power"] == 6000 and p1["counter"] == 1000
-    assert p1["rarity"] == "SP"
-    assert p1["manual_source"] == "screenshot"
+    assert p1["rarity"] == "SR"
+    assert "manual_source" not in p1
     assert "suppress_pack_image" not in p1
     assert "(異圖卡)" not in p1["name"]
     assert list(cards).count("EB05-016") == 1
@@ -518,28 +527,32 @@ def test_seed_matches_index_and_ids_are_unique():
     assert list(cards).count("OP18-106") == 1
     assert list(cards).count("EB05-049") == 1
     overrides = json.loads((ROOT / "index" / "card_effect_overrides.json").read_text(encoding="utf-8"))
-    # New cards are catalog-only. Hedgehog keeps the rekeyed encoding, nothing new.
-    assert "EB05-046" not in overrides["cards"]
-    assert "OP18-112" not in overrides["cards"]
-    assert "OP18-016" not in overrides["cards"]
-    assert "OP18-025" not in overrides["cards"]
-    assert "OP18-044" not in overrides["cards"]
-    assert "OP18-069" not in overrides["cards"]
-    assert "OP18-010" not in overrides["cards"]
-    assert "OP18-032" not in overrides["cards"]
-    assert "OP18-052" not in overrides["cards"]
-    assert "OP18-063" not in overrides["cards"]
-    assert "OP18-091" not in overrides["cards"]
-    assert "OP18-111" not in overrides["cards"]
-    assert "EB05-059" not in overrides["cards"]
-    assert "EB05-008" not in overrides["cards"]
-    assert "EB05-040" not in overrides["cards"]
-    assert "P-160" not in overrides["cards"]
-    assert "OP18-089" not in overrides["cards"]
-    assert "OP18-076" not in overrides["cards"]
-    assert "OP18-106" not in overrides["cards"]
-    assert "EB05-049" not in overrides["cards"]
-    assert "EB05-016-P1" not in overrides["cards"]
+    # Screenshot rows that now have a compiled effect keep that card id.
+    # Rows still waiting on an effect stay out of the override file.
+    for cid in (
+        "EB05-046",
+        "OP18-016",
+        "OP18-025",
+        "OP18-044",
+        "OP18-069",
+        "OP18-010",
+        "OP18-032",
+        "OP18-052",
+        "OP18-063",
+        "OP18-091",
+        "EB05-059",
+        "EB05-008",
+        "EB05-040",
+        "P-160",
+        "OP18-089",
+        "OP18-076",
+        "EB05-049",
+        "EB05-016",
+        "EB05-048",
+    ):
+        assert overrides["cards"][cid]["card_id"] == cid
+    for cid in ("OP18-112", "OP18-111", "OP18-106", "EB05-016-P1"):
+        assert cid not in overrides["cards"]
     assert overrides["cards"]["EB05-016"]["card_id"] == "EB05-016"
     assert overrides["cards"]["EB05-048"]["card_id"] == "EB05-048"
     hog_timings = {a["timing"] for a in overrides["cards"]["EB05-048"]["abilities"]}
@@ -570,8 +583,8 @@ def test_seed_matches_index_and_ids_are_unique():
 
 def test_official_sync_overwrites_screenshot_row_without_duplicates():
     index: dict = {}
-    assert apply_manual_cards(index) == 64
-    assert apply_manual_cards(index) == 64
+    assert apply_manual_cards(index) == 78
+    assert apply_manual_cards(index) == 78
     assert list(index).count("EB05-046") == 1
     assert index["EB05-046"]["name"] == "大和"
 

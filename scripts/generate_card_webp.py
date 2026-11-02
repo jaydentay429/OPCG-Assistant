@@ -65,7 +65,11 @@ from scripts.build_card_image_manifest import (  # noqa: E402
     is_generated_webp_name,
     normalize_card_id,
 )
-from scripts.copy_new_pack_images_to_r2 import is_card_png_filename, list_card_pngs  # noqa: E402
+from scripts.copy_new_pack_images_to_r2 import (  # noqa: E402
+    card_id_selected,
+    is_card_png_filename,
+    list_card_pngs,
+)
 
 THUMB_KINDS = ("w200", "w320")
 ALL_KINDS = ("w200", "w320", "full")
@@ -546,6 +550,16 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--force", action="store_true", help="Re-upload derivative WebP keys that already exist")
     parser.add_argument("--limit", type=int, default=None, help="Max source PNGs to consider")
     parser.add_argument("--workers", type=int, default=4)
+    parser.add_argument(
+        "--set-prefix",
+        default="",
+        help="Only cards whose id starts with this prefix, e.g. EB05",
+    )
+    parser.add_argument(
+        "--ids",
+        default="",
+        help="Comma-separated card ids. Combined with --set-prefix when both are set",
+    )
     args = parser.parse_args(argv)
 
     if bool(args.packs) == bool(args.from_r2):
@@ -579,6 +593,15 @@ def main(argv: list[str] | None = None) -> int:
         sources: Iterable[tuple[str, bytes]] = iter_r2_pngs(client, existing)
     else:
         sources = iter_pack_pngs(args.packs)
+    id_set = None
+    if str(args.ids or "").strip():
+        id_set = {part.strip() for part in str(args.ids).split(",") if part.strip()}
+    if args.set_prefix or id_set is not None:
+        sources = (
+            (card_id, png_bytes)
+            for card_id, png_bytes in sources
+            if card_id_selected(card_id, args.set_prefix, id_set)
+        )
 
     mode = "dry-run" if args.dry_run else "upload"
     _log(
