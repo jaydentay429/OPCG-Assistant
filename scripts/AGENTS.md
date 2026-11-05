@@ -8,6 +8,7 @@
 - 后台与运维：`admin_set_password.py`、`promote_forum_admin.py`、`configure_resend.py`、`send_daily_analytics_report.py`、`traffic_recount.py`。
 - 卡图：`build_card_image_manifest.py`、`copy_new_pack_images_to_r2.py`、`fill_missing_pack_images_from_r2.py`、`generate_card_webp.py`。
 - AI 评测：`build_ai_eval_pool.py`、`ai_selfplay_eval.py`、`ai_stuck_diagnose.py`，写出 `meta/ai_eval_*.json`。
+- 卡名：`compare_don_character_names.py` 只读比较咚卡译名和角色卡译名，不写索引。
 
 新增根目录 `sync_*.py` 时，改 `docs/INDEX.md` 的数据流，并在上面补一行分类。
 
