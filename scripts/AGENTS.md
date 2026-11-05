@@ -13,7 +13,7 @@
 
 ## 和别的目录的边界
 
-- 根目录 `sync_official_cards.py`、`sync_card_images.py`、`sync_yuyutei_prices.py`、`sync_limitless.py`、`sync_card_attributes.py`、`sync_don_cards.py`、`sync_limited_variants.py`、`sync_preview_cards.py`、`sync_topdecks.py` 由 `sync_daily_pipeline.py` 按日调用。
+- 根目录 `sync_official_cards.py`、`sync_card_images.py`、`sync_yuyutei_prices.py`、`sync_limitless.py`、`sync_card_attributes.py`、`sync_don_cards.py`、`sync_limited_variants.py`、`sync_preview_cards.py`、`sync_topdecks.py` 由 `sync_daily_pipeline.py` 按日调用。`sync_card_names_ja.py` 另写 `index/card_names_ja.json`，不在这条每日流水线里。
 - `patch_op17_*.py` 一类脚本改的是 `index/card_effect_overrides.json`。改完跑 `battle/tests` 里对应的测试，不要手改 `meta/*.json` 来“对上”结果。
 - 效果命令的完整列表只放在 `README_EFFECTS.md`。本文件只保留分类，避免两处说明漂移。
 

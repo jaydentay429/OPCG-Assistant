@@ -83,7 +83,7 @@ def test_normal_name_search_ranks_exact_name_before_a_substring():
 
     luffy = _search("魯夫")
     assert luffy[0] == "ST01-001"
-    assert len(luffy) == 246
+    assert len(luffy) == 252
     assert "OP18-076" not in luffy
     assert "P-160" not in luffy
     assert "OP02-107" not in luffy
@@ -144,7 +144,7 @@ def test_letter_digit_names_search_names_and_traits():
         "迷你梅利2號": (2, "OP18-078"),
         "OP18": (59, "OP18-001"),
         "EB05": (85, "EB05-001"),
-        "魯夫": (246, "ST01-001"),
+        "魯夫": (252, "ST01-001"),
     }
     for query, (count, first) in expected.items():
         ids = _search(query)
@@ -181,7 +181,7 @@ def test_search_reuses_precomputed_name_norms_and_cache_header():
     finally:
         app._opencc_convert = original
     assert ids[0] == "ST01-001"
-    assert len(ids) == 246
+    assert len(ids) == 252
     # Query-side conversion only. The old per-card loop was ~150k calls.
     assert calls["n"] < 100
 
