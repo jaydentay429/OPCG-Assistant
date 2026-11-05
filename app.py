@@ -25,6 +25,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from dotenv import dotenv_values, load_dotenv
+from card_nicknames import extra_query_texts, reload_card_nicknames, surface_forms_for_texts
 from official_restriction import official_restriction_error
 from opcg_attributes import normalize_attributes, resolve_card_attributes
 from filter_keywords import FILTER_KEYWORD_IDS, card_filter_keywords
@@ -541,8 +542,10 @@ card_search_name_norms_by_id: dict[str, tuple[str, ...]] = {}
 FILTER_CARDS_CACHE_CONTROL = "public, max-age=300, s-maxage=300"
 name_hans_by_en: dict[str, str] = {}
 name_aliases_by_en: dict[str, dict[str, Any]] = {}
+card_names_ja_by_id: dict[str, str] = {}
 NAME_HANS_BY_EN_PATH = BASE_DIR / "meta" / "name_hans_by_en.json"
 NAME_ALIASES_PATH = BASE_DIR / "meta" / "name_aliases.json"
+CARD_NAMES_JA_PATH = BASE_DIR / "index" / "card_names_ja.json"
 
 try:
     from opencc import OpenCC as _OpenCC
@@ -1364,13 +1367,60 @@ def expand_name_search_texts(*parts: str | None) -> list[str]:
     return out
 
 
-def _card_search_parts(card_basic: dict[str, Any] | None) -> tuple[str, tuple[str, ...]]:
+_PARALLEL_ID_RE = re.compile(r"^(.*)-[PR]\d+$")
+
+
+def _japanese_name_parts(basic: dict[str, Any] | None, card_id: str | None = None) -> list[str]:
+    """Official Japanese names: card fields, sidecar, then the base printing."""
+    row = basic if isinstance(basic, dict) else {}
+    texts: list[str] = []
+    seen: set[str] = set()
+
+    def add(value: object) -> None:
+        text = str(value or "").strip()
+        if text and text not in seen:
+            seen.add(text)
+            texts.append(text)
+
+    for key in ("name_ja", "name_jp"):
+        add(row.get(key))
+    cid = normalize_card_id(str(card_id or row.get("card_id") or ""))
+    if cid:
+        add(card_names_ja_by_id.get(cid))
+        parallel = _PARALLEL_ID_RE.match(cid)
+        if parallel:
+            add(card_names_ja_by_id.get(parallel.group(1)))
+    return texts
+
+
+def _name_search_texts(
+    basic: dict[str, Any] | None,
+    card_name: str,
+    name_en: str | None,
+    card_id: str | None = None,
+) -> list[str]:
+    """Traditional, simplified, English, Japanese, and nickname forms of one card."""
+    row = basic if isinstance(basic, dict) else {}
+    name = str(card_name or row.get("name") or "").strip()
+    en = normalize_en_card_name(name_en if name_en is not None else row.get("name_en"))
+    hans = str(row.get("name_hans") or "").strip()
+    if not hans and en:
+        hans = name_hans_by_en.get(en, "")
+    alias_parts = _alias_texts_for_en(en)
+    ja_parts = _japanese_name_parts(row, card_id)
+    nick_parts = surface_forms_for_texts(name, en, hans, *ja_parts, *alias_parts)
+    return [name, en, hans, *ja_parts, *alias_parts, *nick_parts]
+
+
+def _card_search_parts(
+    card_basic: dict[str, Any] | None,
+    card_id: str | None = None,
+) -> tuple[str, tuple[str, ...]]:
     """Blob plus per-name norms. OpenCC runs here, at index load, not per search."""
     basic = card_basic if isinstance(card_basic, dict) else {}
     name = str(basic.get("name") or "").strip()
     name_en = normalize_en_card_name(basic.get("name_en"))
-    hans = name_hans_by_en.get(name_en, "") if name_en else ""
-    alias_parts = _alias_texts_for_en(name_en)
+    name_texts = _name_search_texts(basic, name, name_en, card_id)
     trait_parts: list[str] = []
     for key in ("traits", "traits_en"):
         raw = basic.get(key)
@@ -1378,11 +1428,11 @@ def _card_search_parts(card_basic: dict[str, Any] | None) -> tuple[str, tuple[st
             trait_parts.extend(str(x).strip() for x in raw if str(x).strip())
         elif isinstance(raw, str) and raw.strip():
             trait_parts.extend(p.strip() for p in re.split(r"[,/|]", raw) if p.strip())
-    name_texts = expand_name_search_texts(name, name_en, hans, *alias_parts)
-    texts = expand_name_search_texts(name, name_en, hans, *alias_parts, *trait_parts)
+    name_texts_expanded = expand_name_search_texts(*name_texts)
+    texts = expand_name_search_texts(*name_texts, *trait_parts)
     name_norms: list[str] = []
     seen: set[str] = set()
-    for text in name_texts:
+    for text in name_texts_expanded:
         nn = normalize_name_for_match(text)
         if nn and nn not in seen:
             seen.add(nn)
@@ -1434,6 +1484,8 @@ def expand_query_match_norms(query: str) -> list[str]:
         ("矢龙", "矢龍"),
     ]
     expanded = list(variants)
+    for text in extra_query_texts(raw):
+        expanded.extend(expand_name_search_texts(text))
     for text in list(variants):
         for a, b in synonym_pairs:
             if a and a in text:
@@ -1612,12 +1664,19 @@ def card_text_query_rank(
     if cached_names is not None and passed_name == catalog_name and passed_en == catalog_en:
         name_norms = cached_names
     else:
-        en = passed_en or catalog_en
-        hans = name_hans_by_en.get(en, "") if en else ""
-        alias_parts = _alias_texts_for_en(en)
+        live_basic = dict(basic) if isinstance(basic, dict) else {}
+        if cid_norm and not live_basic.get("card_id"):
+            live_basic["card_id"] = cid_norm
         live: list[str] = []
         seen_live: set[str] = set()
-        for text in expand_name_search_texts(passed_name or catalog_name, en, hans, *alias_parts):
+        for text in expand_name_search_texts(
+            *_name_search_texts(
+                live_basic,
+                passed_name or catalog_name,
+                passed_en or catalog_en,
+                cid_norm,
+            )
+        ):
             nn = normalize_name_for_match(text)
             if nn and nn not in seen_live:
                 seen_live.add(nn)
@@ -1683,6 +1742,29 @@ def load_name_hans_by_en() -> None:
         name_hans_by_en = {}
 
 
+def load_card_names_ja() -> None:
+    """Japanese names keyed by card id. Missing file leaves search on name_ja/name_jp only."""
+    global card_names_ja_by_id
+    if not CARD_NAMES_JA_PATH.exists():
+        card_names_ja_by_id = {}
+        return
+    try:
+        payload = json.loads(CARD_NAMES_JA_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        card_names_ja_by_id = {}
+        return
+    if not isinstance(payload, dict):
+        card_names_ja_by_id = {}
+        return
+    loaded: dict[str, str] = {}
+    for raw_id, name in payload.items():
+        cid = normalize_card_id(str(raw_id))
+        text = str(name or "").strip()
+        if cid and text:
+            loaded[cid] = text
+    card_names_ja_by_id = loaded
+
+
 def load_name_aliases() -> None:
     global name_aliases_by_en
     if not NAME_ALIASES_PATH.exists():
@@ -1738,7 +1820,7 @@ def rebuild_card_search_index() -> None:
     blob_map: dict[str, str] = {}
     name_map: dict[str, tuple[str, ...]] = {}
     for cid, basic in cards_by_id.items():
-        blob, name_norms = _card_search_parts(basic if isinstance(basic, dict) else {})
+        blob, name_norms = _card_search_parts(basic if isinstance(basic, dict) else {}, cid)
         blob_map[str(cid)] = blob
         name_map[str(cid)] = name_norms
     card_search_norm_by_id = blob_map
@@ -6965,6 +7047,8 @@ def load_cards_index() -> None:
     rebuild_variant_id_map()
     load_name_hans_by_en()
     load_name_aliases()
+    load_card_names_ja()
+    reload_card_nicknames()
     rebuild_card_search_index()
     rebuild_leader_name_index()
 

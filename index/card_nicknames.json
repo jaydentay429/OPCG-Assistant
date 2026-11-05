@@ -1,0 +1,529 @@
+{
+  "note": "Search nicknames. Add a group to cover another character. match = official or distinctive names that attach the group (substring). equals = whole-name only, for short titles like King. aliases = extra queries, including short nicknames and alternate translations. Do not put one-character nicknames in match.",
+  "groups": [
+    {
+      "id": "rosinante",
+      "canonical": "羅希南特",
+      "match": ["唐吉訶德・羅希南特", "羅希南特", "羅西南迪", "罗西南迪", "Donquixote Rosinante", "ドンキホーテ・ロシナンテ", "ロシナンテ"],
+      "aliases": ["柯拉松", "柯拉遜", "可拉松", "Corazon", "コラソン", "罗西南特", "羅西南特", "罗西南迪", "Rosinante", "Cora-san", "克拉松"]
+    },
+    {
+      "id": "doflamingo",
+      "canonical": "多佛朗明哥",
+      "match": ["唐吉訶德・多佛朗明哥", "多佛朗明哥", "Donquixote Doflamingo", "ドンキホーテ・ドフラミンゴ", "ドフラミンゴ"],
+      "aliases": ["多弗朗明哥", "多弗拉门戈", "多弗拉門戈", "天夜叉", "明哥", "Doflamingo", "ドフラミンゴ"]
+    },
+    {
+      "id": "luffy",
+      "canonical": "蒙其・D・魯夫",
+      "match": ["蒙其・D・魯夫", "Monkey.D.Luffy", "モンキー・D・ルフィ", "魯夫太郎", "Luffy-Tarou"],
+      "aliases": ["路飞", "路飛", "鲁夫", "魯夫", "ルフィ", "Luffy", "草帽", "草帽小子", "蒙奇・D・路飞"]
+    },
+    {
+      "id": "zoro",
+      "canonical": "羅羅亞・索隆",
+      "match": ["羅羅亞・索隆", "Roronoa Zoro", "ロロノア・ゾロ", "索隆十郎", "Zoro-Juurou"],
+      "aliases": ["佐罗", "佐羅", "索隆", "索罗", "索羅", "ゾロ", "Zoro", "罗罗诺亚", "羅羅諾亞", "罗罗亚"]
+    },
+    {
+      "id": "nami",
+      "canonical": "娜美",
+      "match": ["娜美", "Nami", "O-Nami", "阿娜美"],
+      "equals": ["ナミ"],
+      "aliases": ["小贼猫", "小賊貓", "ナミ", "Nami"]
+    },
+    {
+      "id": "usopp",
+      "canonical": "騙人布",
+      "match": ["騙人布", "Usopp", "ウソップ", "烏索普", "狙击王", "狙擊王"],
+      "aliases": ["乌索普", "烏索普", "撒谎布", "說謊布", "ウソップ", "God Usopp"]
+    },
+    {
+      "id": "sanji",
+      "canonical": "香吉士",
+      "match": ["香吉士", "賓什莫克・香吉士", "Vinsmoke Sanji", "サンジ", "Sanji", "香吉五郎"],
+      "aliases": ["山治", "黑足", "黑腳", "文斯莫克", "サンジ", "Sanji"]
+    },
+    {
+      "id": "chopper",
+      "canonical": "多尼多尼・喬巴",
+      "match": ["多尼多尼・喬巴", "Tony Tony.Chopper", "トニートニー・チョッパー"],
+      "aliases": ["乔巴", "喬巴", "托尼托尼", "Chopper", "チョッパー", "乔巴君"]
+    },
+    {
+      "id": "robin",
+      "canonical": "妮可・羅賓",
+      "match": ["妮可・羅賓", "Nico Robin", "ニコ・ロビン"],
+      "aliases": ["罗宾", "羅賓", "Robin", "ロビン", "妮可罗宾"]
+    },
+    {
+      "id": "franky",
+      "canonical": "佛朗基",
+      "match": ["佛朗基", "Franky", "フランキー", "佛朗基將軍"],
+      "aliases": ["弗兰奇", "弗蘭奇", "铁人", "鐵人", "フランキー", "Franky"]
+    },
+    {
+      "id": "brook",
+      "canonical": "布魯克",
+      "match": ["布魯克", "Brook", "ブルック"],
+      "aliases": ["布鲁克", "靈魂之王", "灵魂之王", "鼻歌", "ブルック"]
+    },
+    {
+      "id": "jinbe",
+      "canonical": "吉貝爾",
+      "match": ["吉貝爾", "甚平", "Jinbe", "ジンベエ"],
+      "aliases": ["甚平", "吉贝尔", "海俠", "海侠", "ジンベエ", "Jinbei"]
+    },
+    {
+      "id": "law",
+      "canonical": "托拉法爾加・羅",
+      "match": ["托拉法爾加・羅", "Trafalgar Law", "トラファルガー・ロー"],
+      "aliases": ["罗", "羅", "Law", "ロー", "特拉法尔加", "特拉法爾加", "特拉男", "死亡外科医生", "死亡外科醫生"]
+    },
+    {
+      "id": "shanks",
+      "canonical": "香克斯",
+      "match": ["香克斯", "Shanks", "シャンクス"],
+      "aliases": ["红发", "紅髮", "紅发", "杰克斯", "傑克斯", "シャンクス", "Red-Haired"]
+    },
+    {
+      "id": "ace",
+      "canonical": "波特卡斯・D・艾斯",
+      "match": ["波特卡斯・D・艾斯", "Portgas.D.Ace", "ポートガス・D・エース"],
+      "aliases": ["艾斯", "火拳", "Ace", "エース", "艾斯"]
+    },
+    {
+      "id": "sabo",
+      "canonical": "薩波",
+      "match": ["薩波", "Sabo", "サボ"],
+      "aliases": ["萨波", "薩波", "サボ"]
+    },
+    {
+      "id": "kid",
+      "canonical": "尤斯塔斯・基德",
+      "match": ["尤斯塔斯・基德", "Eustass\"Captain\"Kid", "Eustass Kid", "ユースタス・キッド"],
+      "aliases": ["基德", "基德船长", "基德船長", "キッド", "Kid", "船长基德"]
+    },
+    {
+      "id": "killer",
+      "canonical": "奇拉",
+      "match": ["奇拉", "Killer", "キラー"],
+      "aliases": ["基拉", "殺手", "杀手", "キラー", "Killer"]
+    },
+    {
+      "id": "bonney",
+      "canonical": "珠寶・波妮",
+      "match": ["珠寶・波妮", "Jewelry Bonney", "ジュエリー・ボニー"],
+      "aliases": ["波妮", "珠宝波妮", "珠寶波妮", "ボニー", "Bonney"]
+    },
+    {
+      "id": "hancock",
+      "canonical": "波雅・漢考克",
+      "match": ["波雅・漢考克", "Boa Hancock", "ボア・ハンコック"],
+      "aliases": ["汉库克", "漢庫克", "女帝", "蛇姬", "ハンコック", "Hancock"]
+    },
+    {
+      "id": "mihawk",
+      "canonical": "喬拉可爾・密佛格",
+      "match": ["喬拉可爾・密佛格", "Dracule Mihawk", "ジュラキュール・ミホーク", "鷹眼密佛格"],
+      "aliases": ["米霍克", "鹰眼", "鷹眼", "密佛格", "ミホーク", "Mihawk"]
+    },
+    {
+      "id": "crocodile",
+      "canonical": "克洛克達爾",
+      "match": ["克洛克達爾", "Crocodile", "クロコダイル"],
+      "aliases": ["克洛克达尔", "沙鳄", "沙鱷", "沙鳄鱼", "クロコダイル", "Crocodile"]
+    },
+    {
+      "id": "buggy",
+      "canonical": "巴其",
+      "match": ["巴其", "巴基", "Buggy", "バギー"],
+      "aliases": ["巴基", "小丑", "巴其", "バギー", "Buggy"]
+    },
+    {
+      "id": "kaido",
+      "canonical": "海道",
+      "match": ["海道", "Kaido", "カイドウ"],
+      "aliases": ["凯多", "凱多", "百兽", "百獸", "カイドウ", "Kaido"]
+    },
+    {
+      "id": "linlin",
+      "canonical": "夏洛特・莉莉",
+      "match": ["夏洛特・莉莉", "夏洛特・玲玲", "Charlotte Linlin", "シャーロット・リンリン"],
+      "aliases": ["大妈", "大媽", "大妈", "玲玲", "莉莉", "ビッグ・マム", "Big Mom", "Linlin"]
+    },
+    {
+      "id": "katakuri",
+      "canonical": "夏洛特・卡塔克利",
+      "match": ["夏洛特・卡塔克利", "Charlotte Katakuri", "シャーロット・カタクリ"],
+      "aliases": ["卡塔库栗", "卡塔庫栗", "卡二", "カタクリ", "Katakuri"]
+    },
+    {
+      "id": "newgate",
+      "canonical": "艾德華・紐蓋特",
+      "match": ["艾德華・紐蓋特", "Edward.Newgate", "エドワード・ニューゲート", "白鬍子"],
+      "aliases": ["白胡子", "白鬍子", "纽盖特", "紐蓋特", "Newgate", "Whitebeard"]
+    },
+    {
+      "id": "teach",
+      "canonical": "馬歇爾・D・汀奇",
+      "match": ["馬歇爾・D・汀奇", "Marshall.D.Teach", "マーシャル・D・ティーチ"],
+      "aliases": ["黑胡子", "黑鬍子", "蒂奇", "汀奇", "Teach", "Blackbeard", "ティーチ"]
+    },
+    {
+      "id": "rayleigh",
+      "canonical": "席爾巴斯・雷利",
+      "match": ["席爾巴斯・雷利", "Silvers Rayleigh", "シルバーズ・レイリー"],
+      "aliases": ["雷利", "冥王", "雷利", "レイリー", "Rayleigh"]
+    },
+    {
+      "id": "garp",
+      "canonical": "蒙其・D・卡普",
+      "match": ["蒙其・D・卡普", "Monkey.D.Garp", "モンキー・D・ガープ"],
+      "aliases": ["卡普", "铁拳", "鐵拳", "卡普", "Garp", "ガープ"]
+    },
+    {
+      "id": "dragon",
+      "canonical": "蒙其・D・多拉格",
+      "match": ["蒙其・D・多拉格", "蒙其・D・龍", "Monkey.D.Dragon", "モンキー・D・ドラゴン"],
+      "aliases": ["龙", "龍", "革命军龙", "革命軍龍", "Dragon", "多拉格"]
+    },
+    {
+      "id": "roger",
+      "canonical": "哥爾・D・羅傑",
+      "match": ["哥爾・D・羅傑", "Gol.D.Roger", "ゴール・D・ロジャー"],
+      "aliases": ["罗杰", "羅傑", "海贼王罗杰", "海賊王羅傑", "Roger", "ロジャー"]
+    },
+    {
+      "id": "sengoku",
+      "canonical": "戰國",
+      "match": ["戰國", "Sengoku", "センゴク", "佛之戰國"],
+      "aliases": ["战国", "佛之战国", "大佛", "センゴク", "Sengoku"]
+    },
+    {
+      "id": "sakazuki",
+      "canonical": "赤犬",
+      "match": ["赤犬", "Sakazuki", "サカズキ"],
+      "equals": ["盃"],
+      "aliases": ["萨卡斯基", "薩卡斯基", "赤犬", "Akainu", "サカズキ"]
+    },
+    {
+      "id": "kuzan",
+      "canonical": "青雉",
+      "match": ["青雉", "庫山", "Kuzan", "クザン"],
+      "aliases": ["库赞", "庫贊", "青雉", "Aokiji", "クザン"]
+    },
+    {
+      "id": "borsalino",
+      "canonical": "黃猿",
+      "match": ["黃猿", "波爾薩利諾", "Borsalino", "ボルサリーノ"],
+      "aliases": ["黄猿", "黄辕", "黃轅", "波尔萨利诺", "Kizaru", "ボルサリーノ"]
+    },
+    {
+      "id": "issho",
+      "canonical": "藤虎",
+      "match": ["藤虎", "Issho", "イッショウ"],
+      "equals": ["一笑"],
+      "aliases": ["藤虎", "一笑", "Fujitora", "イッショウ"]
+    },
+    {
+      "id": "aramaki",
+      "canonical": "綠牛",
+      "match": ["綠牛", "荒卷", "Aramaki", "アラマキ"],
+      "aliases": ["绿牛", "綠牛", "荒巻", "Ryokugyu", "アラマキ"]
+    },
+    {
+      "id": "smoker",
+      "canonical": "斯摩格",
+      "match": ["斯摩格", "Smoker", "スモーカー"],
+      "aliases": ["斯摩格", "烟男", "煙男", "白猎", "白獵", "スモーカー", "Smoker"]
+    },
+    {
+      "id": "tashigi",
+      "canonical": "達絲琪",
+      "match": ["達絲琪", "Tashigi", "たしぎ"],
+      "aliases": ["达斯琪", "達斯琪", "达丝琪", "達絲琪", "Tashigi"]
+    },
+    {
+      "id": "koby",
+      "canonical": "克比",
+      "match": ["克比", "Koby", "コビー"],
+      "aliases": ["柯比", "克比", "コビー", "Coby"]
+    },
+    {
+      "id": "lucci",
+      "canonical": "羅布・路基",
+      "match": ["羅布・路基", "Rob Lucci", "ロブ・ルッチ"],
+      "aliases": ["路奇", "路基", "鲁奇", "ルッチ", "Lucci"]
+    },
+    {
+      "id": "enel",
+      "canonical": "艾涅爾",
+      "match": ["艾涅爾", "艾尼路", "Enel", "エネル"],
+      "aliases": ["艾尼路", "艾涅尔", "神艾尼路", "エネル", "Eneru"]
+    },
+    {
+      "id": "kuma",
+      "canonical": "巴索羅繆・大熊",
+      "match": ["巴索羅繆・大熊", "Bartholomew Kuma", "バーソロミュー・くま"],
+      "aliases": ["大熊", "熊", "巴索罗米", "巴索羅米", "くま", "Kuma"]
+    },
+    {
+      "id": "yamato",
+      "canonical": "大和",
+      "match": ["大和", "Yamato", "ヤマト"],
+      "aliases": ["大和", "小桃", "ヤマト", "Yamato"]
+    },
+    {
+      "id": "oden",
+      "canonical": "光月御田",
+      "match": ["光月御田", "Kouzuki Oden", "光月おでん"],
+      "aliases": ["御田", "光月御田", "おでん", "Oden"]
+    },
+    {
+      "id": "moria",
+      "canonical": "月光・摩利亞",
+      "match": ["月光・摩利亞", "Gecko Moria", "ゲッコー・モリア"],
+      "aliases": ["莫利亚", "摩利亚", "摩利亞", "月光莫利亚", "モリア", "Moria"]
+    },
+    {
+      "id": "perona",
+      "canonical": "培羅娜",
+      "match": ["培羅娜", "Perona", "ペローナ"],
+      "aliases": ["佩罗娜", "佩羅娜", "幽灵公主", "幽靈公主", "ペローナ", "Perona"]
+    },
+    {
+      "id": "uta",
+      "canonical": "烏塔",
+      "match": ["烏塔", "美音", "Uta"],
+      "equals": ["ウタ"],
+      "aliases": ["乌塔", "烏塔", "美音", "ウタ", "Uta"]
+    },
+    {
+      "id": "carrot",
+      "canonical": "凱洛特",
+      "match": ["凱洛特", "蘿蔔", "Carrot", "キャロット"],
+      "aliases": ["凯洛特", "凱洛特", "胡萝卜", "胡蘿蔔", "萝卜", "キャロット", "Carrot"]
+    },
+    {
+      "id": "vivi",
+      "canonical": "娜菲魯塔利・薇薇",
+      "match": ["娜菲魯塔利・薇薇", "納菲魯塔利・薇薇", "Nefeltari Vivi", "ネフェルタリ・ビビ"],
+      "aliases": ["薇薇", "薇薇公主", "奈菲特丽", "奈菲魯塔利", "ビビ", "Vivi"]
+    },
+    {
+      "id": "ivankov",
+      "canonical": "艾波利歐・伊凡科夫",
+      "match": ["艾波利歐・伊凡科夫", "艾波利歐・伊娃柯夫", "Emporio.Ivankov", "エンポリオ・イワンコフ"],
+      "aliases": ["伊万科夫", "伊娃柯夫", "人妖王", "イワンコフ", "Ivankov"]
+    },
+    {
+      "id": "magellan",
+      "canonical": "麥哲倫",
+      "match": ["麥哲倫", "Magellan", "マゼラン"],
+      "aliases": ["麦哲伦", "麥哲倫", "毒人", "マゼラン", "Magellan"]
+    },
+    {
+      "id": "marco",
+      "canonical": "馬可",
+      "match": ["馬可", "Marco", "マルコ"],
+      "aliases": ["马尔科", "馬爾科", "凤凰", "鳳凰", "マルコ", "Marco"]
+    },
+    {
+      "id": "rebecca",
+      "canonical": "蕾貝卡",
+      "match": ["蕾貝卡", "Rebecca", "レベッカ"],
+      "aliases": ["蕾贝卡", "雷贝卡", "レベッカ", "Rebecca"]
+    },
+    {
+      "id": "hawkins",
+      "canonical": "巴吉魯・霍金斯",
+      "match": ["巴吉魯・霍金斯", "Basil Hawkins", "バジル・ホーキンス"],
+      "aliases": ["霍金斯", "霍金斯", "ホーキンス", "Hawkins"]
+    },
+    {
+      "id": "apoo",
+      "canonical": "刮盤人・亞普",
+      "match": ["刮盤人・亞普", "Scratchmen Apoo", "スクラッチメン・アプー"],
+      "aliases": ["阿普", "亚普", "亞普", "刮盘人", "アプー", "Apoo"]
+    },
+    {
+      "id": "drake",
+      "canonical": "X・多雷古",
+      "match": ["X・多雷古", "X.Drake", "X・ドレーク"],
+      "aliases": ["德雷克", "多雷古", "ドレーク", "Drake"]
+    },
+    {
+      "id": "shiryu",
+      "canonical": "矢龍",
+      "match": ["矢龍", "Shiryu", "シリュウ"],
+      "aliases": ["希留", "雨之希留", "矢龙", "シリュウ", "Shiryu"]
+    },
+    {
+      "id": "zeff",
+      "canonical": "哲普",
+      "match": ["哲普", "Zeff"],
+      "equals": ["ゼフ"],
+      "aliases": ["哲夫", "红脚", "紅腳", "哲普", "ゼフ", "Zeff"]
+    },
+    {
+      "id": "hina",
+      "canonical": "希娜",
+      "match": ["希娜", "Hina", "ヒナ"],
+      "aliases": ["希娜", "黑槛", "黑檻", "ヒナ", "Hina"]
+    },
+    {
+      "id": "helmeppo",
+      "canonical": "貝魯梅柏",
+      "match": ["貝魯梅柏", "Helmeppo", "ヘルメッポ"],
+      "aliases": ["贝鲁梅伯", "貝魯梅伯", "赫尔梅波", "ヘルメッポ", "Helmeppo"]
+    },
+    {
+      "id": "sentomaru",
+      "canonical": "戰桃丸",
+      "match": ["戰桃丸", "Sentomaru", "戦桃丸"],
+      "aliases": ["战桃丸", "戰桃丸", "Sentomaru"]
+    },
+    {
+      "id": "pudding",
+      "canonical": "夏洛特・普琳",
+      "match": ["夏洛特・普琳", "夏洛特・布琳", "Charlotte Pudding", "シャーロット・プリン"],
+      "aliases": ["布琳", "普琳", "布丁", "プリン", "Pudding"]
+    },
+    {
+      "id": "reiju",
+      "canonical": "賓什莫克・麗珠",
+      "match": ["賓什莫克・麗珠", "文斯莫克・蕾玖", "Vinsmoke Reiju", "ヴィンスモーク・レイジュ"],
+      "aliases": ["蕾玖", "丽珠", "麗珠", "レイジュ", "Reiju"]
+    },
+    {
+      "id": "bege",
+      "canonical": "卡波涅・培基",
+      "match": ["卡波涅・培基", "Capone\"Gang\"Bege", "カポネ・ベッジ"],
+      "aliases": ["培基", "卡彭", "贝基", "ギャング・ベッジ", "Bege"]
+    },
+    {
+      "id": "caesar",
+      "canonical": "凱薩克勞恩",
+      "match": ["凱薩克勞恩", "凱薩", "Caesar Clown", "シーザー・クラウン"],
+      "aliases": ["凯撒", "凱薩", "凯萨", "小丑凯撒", "シーザー", "Caesar"]
+    },
+    {
+      "id": "vegapunk",
+      "canonical": "貝卡帕庫",
+      "match": ["貝卡帕庫", "貝加龐克", "Vegapunk", "ベガパンク"],
+      "aliases": ["贝加庞克", "貝加龐克", "贝卡帕克", "ベガパンク", "Vegapunk"]
+    },
+    {
+      "id": "kyros",
+      "canonical": "居魯士",
+      "match": ["居魯士", "居洛斯", "Kyros", "キュロス"],
+      "aliases": ["居洛斯", "基罗斯", "居鲁士", "キュロス", "Kyros"]
+    },
+    {
+      "id": "shirahoshi",
+      "canonical": "白星",
+      "match": ["白星", "白星公主", "Shirahoshi", "しらほし"],
+      "aliases": ["白星", "人鱼公主", "人魚公主", "しらほし", "Shirahoshi"]
+    },
+    {
+      "id": "momonosuke",
+      "canonical": "光月桃之助",
+      "match": ["光月桃之助", "Kouzuki Momonosuke", "光月モモの助"],
+      "aliases": ["桃之助", "桃之助", "モモの助", "Momonosuke"]
+    },
+    {
+      "id": "kinemon",
+      "canonical": "錦右衛門",
+      "match": ["錦右衛門", "Kin'emon", "錦えもん"],
+      "aliases": ["锦卫门", "錦衛門", "锦右卫门", "キンエモン", "Kinemon"]
+    },
+    {
+      "id": "king",
+      "canonical": "燼",
+      "match": ["咚卡・King"],
+      "equals": ["King", "KING", "キング"],
+      "aliases": ["烬", "燼", "炎灾", "炎災"]
+    },
+    {
+      "id": "queen",
+      "canonical": "奎因",
+      "match": ["咚卡・Queen"],
+      "equals": ["Queen", "QUEEN", "クイーン"],
+      "aliases": ["奎因", "疫灾", "疫災", "クイーン"]
+    },
+    {
+      "id": "jack",
+      "canonical": "JACK",
+      "equals": ["Jack", "JACK", "ジャック"],
+      "aliases": ["杰克", "旱灾", "旱災", "飢餓", "饥饿", "ジャック"]
+    },
+    {
+      "id": "bartolomeo",
+      "canonical": "巴特洛馬",
+      "match": ["巴特洛馬", "Bartolomeo", "バルトロメオ"],
+      "aliases": ["巴托洛米奥", "巴托洛米歐", "食人者", "バルトロメオ", "Bartolomeo"]
+    },
+    {
+      "id": "cavendish",
+      "canonical": "卡文迪許",
+      "match": ["卡文迪許", "Cavendish", "キャベンディッシュ"],
+      "aliases": ["卡文迪什", "白马", "白馬", "キャベンディッシュ", "Cavendish"]
+    },
+    {
+      "id": "bonclay",
+      "canonical": "Mr.2・馮・克雷",
+      "match": ["Mr.2.Bon.Kurei", "馮・克雷", "ボン・クレー", "Mr.2"],
+      "aliases": ["冯克雷", "馮克雷", "人妖", "ボンクレー", "Bon Clay", "Bonclay"]
+    },
+    {
+      "id": "koala",
+      "canonical": "可亞拉",
+      "match": ["可亞拉"],
+      "equals": ["Koala", "コアラ"],
+      "aliases": ["可娅", "可雅", "コアラ", "Koala"]
+    },
+    {
+      "id": "kaku",
+      "canonical": "卡古",
+      "match": ["卡古", "Kaku", "カク"],
+      "aliases": ["卡库", "卡庫", "カク", "Kaku"]
+    },
+    {
+      "id": "iceburg",
+      "canonical": "艾斯巴古",
+      "match": ["艾斯巴古", "冰山", "Iceburg", "アイスバーグ"],
+      "aliases": ["冰山", "アイスバーグ", "Iceburg"]
+    },
+    {
+      "id": "hody",
+      "canonical": "荷帝・瓊斯",
+      "match": ["荷帝・瓊斯", "Hody Jones", "ホーディ・ジョーンズ"],
+      "aliases": ["霍迪", "荷帝", "霍迪琼斯", "ホーディ", "Hody"]
+    },
+    {
+      "id": "foxy",
+      "canonical": "弗克西",
+      "match": ["弗克西", "佛克西", "Foxy", "フォクシー"],
+      "aliases": ["福克西", "佛克西", "银狐", "銀狐", "フォクシー", "Foxy"]
+    },
+    {
+      "id": "sugar",
+      "canonical": "砂糖",
+      "match": ["砂糖", "Sugar", "シュガー"],
+      "aliases": ["砂糖", "舒格", "シュガー", "Sugar"]
+    },
+    {
+      "id": "vista",
+      "canonical": "比斯塔",
+      "match": ["比斯塔", "Vista", "ビスタ"],
+      "aliases": ["花剑", "花劍", "比斯塔", "ビスタ", "Vista"]
+    },
+    {
+      "id": "jozu",
+      "canonical": "裘斯",
+      "match": ["裘斯", "Jozu", "ジョズ"],
+      "aliases": ["乔兹", "喬茲", "钻石乔兹", "鑽石喬茲", "ジョズ", "Jozu"]
+    }
+  ]
+}

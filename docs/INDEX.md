@@ -30,6 +30,8 @@ OPTCG 工具站：Python API 加 Next.js 前端，界面为繁中、简中、英
 
 效果文本另外走 `scripts/compile_card_effects.py` 与审计脚本，人工修正落在 `index/card_effect_overrides.json`，对战引擎从这里读。界面简中卡名由 `frontend/scripts/generate-hans-names.mjs` 写入 locale 生成文件和 `meta/name_hans_by_en.json`。
 
+卡名搜索的外号和外文别称在 `index/card_nicknames.json`（手改这份即可增加角色）。日文卡名在 `index/card_names_ja.json`，由 `sync_card_names_ja.py` 从日本官方卡表写入，不进每日流水线。搜索读取卡上的 `name_ja` / `name_jp` 和这份侧车。
+
 ## 关键文件
 
 - `app.py`：HTTP API
