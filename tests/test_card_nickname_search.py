@@ -6,6 +6,7 @@ nickname from ``index/card_nicknames.json`` ranks ahead of a substring.
 
 from __future__ import annotations
 
+import subprocess
 import sys
 from pathlib import Path
 
@@ -155,3 +156,56 @@ def test_japanese_card_names_are_searchable():
     luffy_ja = app.card_names_ja_by_id.get("ST01-001")
     assert luffy_ja and "ルフィ" in luffy_ja
     assert _en(_search("ルフィ")[0]).startswith("Monkey.D.Luffy") or "魯夫" in _name(_search("ルフィ")[0])
+
+
+HANNYABAL_DON = ("DONPRB02-10236", "DONPRB02-10237", "DONPRB02-10238")
+
+
+def test_hannyabal_names_return_character_cards_and_don_cards():
+    """Character cards say 般若拔. DON!! cards say 漢尼拔."""
+    for query in ("汉尼拔", "漢尼拔", "ハンニャバル"):
+        ids = set(_search(query))
+        assert "OP02-083" in ids, query
+        assert "OP11-076" in ids, query
+        assert "EB01-021" in ids, query
+        assert "EB01-021-P1" in ids, query
+        assert "EB01-021-P2" in ids, query
+        for don in HANNYABAL_DON:
+            assert don in ids, (query, don)
+    # The official character title also finds the DON!! printings.
+    brahma = set(_search("般若拔"))
+    assert "OP02-083" in brahma
+    assert "DONPRB02-10236" in brahma
+
+
+def test_other_don_translations_find_character_cards():
+    """Sample of the other wording gaps the DON!! comparison reported."""
+    ivankov = set(_search("艾波利奧・伊凡科夫"))
+    assert "OP05-004" in ivankov
+    assert "DONPRB01-10237" in ivankov
+    assert "DONPRB01-10239" in ivankov
+
+    shanks = set(_search("傑克"))
+    assert "OP14-027" in shanks
+    assert "DONPRB02-10206" in shanks
+    assert "DONPRB02-10208" in shanks
+
+
+def test_compare_don_character_names_is_read_only():
+    nick = ROOT / "index" / "card_nicknames.json"
+    index = ROOT / "index" / "cards_by_id.json"
+    before = (nick.read_bytes(), index.read_bytes())
+    proc = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "compare_don_character_names.py")],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stderr
+    assert (nick.read_bytes(), index.read_bytes()) == before
+    hannyabal = next(line for line in proc.stdout.splitlines() if "\tHannyabal\t" in line)
+    assert hannyabal.startswith("linked\t")
+    assert "漢尼拔" in hannyabal
+    assert "般若拔" in hannyabal
+    assert "missing\t" not in proc.stdout
