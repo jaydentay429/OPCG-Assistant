@@ -76,6 +76,8 @@ export type FilterOptions = {
   rarities: string[];
   blocks: number[];
   keywords?: string[];
+  /** Distinct printed powers from the catalog; used by the filter dropdown. */
+  powers?: number[];
 };
 
 export type LoginResponse = {
