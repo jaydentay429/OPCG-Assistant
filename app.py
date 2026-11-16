@@ -2539,7 +2539,8 @@ def _snapshot_to_card_fields(card_id: str) -> dict[str, Any]:
                 out["cost"] = int(lv)
             elif not is_leader and lv in {"-", "—", "－", ""}:
                 out["cost"] = 0
-    if fields.get("power"):
+    # Keep numeric 0. `if fields.get("power")` would drop it as falsy.
+    if fields.get("power") is not None:
         pv = str(fields.get("power")).replace(",", "").strip()
         out["power"] = int(pv) if pv.isdigit() else fields.get("power")
     if fields.get("counter"):
@@ -6982,6 +6983,11 @@ def build_filter_card_response(card_id: str, card_basic: dict[str, Any]) -> Filt
     power = _to_int(card_basic.get("power"))
     if power is None:
         power = _to_int(snapshot_card.get("power"))
+    # Same rule as build_card_response: a Character with printed "-" / blank
+    # power is 0. Events and stages have no power and must stay None.
+    type_hint_l = str(type_hint).lower()
+    if power is None and ("character" in type_hint_l or "角色" in type_hint_l):
+        power = 0
     counter = _to_int(card_basic.get("counter"))
     if counter is None:
         counter = _to_int(snapshot_card.get("counter"))
@@ -8190,12 +8196,16 @@ def get_filter_options() -> dict[str, list[Any]]:
         b = _to_int((basic or {}).get("block_number"))
         if b is not None:
             block_set.add(b)
+    # Powers come from the filter index so the Character 0-power fallback is
+    # included. Do not hard-code an upper bound (11000 / 12000 / 13000 exist).
+    power_set = {row.power for row in filter_index if row.power is not None}
     return {
         "series": sorted(series_set, key=series_sort_key),
         "rarities": sorted(rarity_set, key=rarity_sort_key),
         "blocks": sorted(block_set),
         "keywords": list(FILTER_KEYWORD_IDS),
         "card_types": ["Leader", "Character", "Event", "Stage", "Don"],
+        "powers": sorted(power_set),
     }
 
 

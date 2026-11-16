@@ -105,7 +105,11 @@ export function FilterBar({ options, value, onChange }: Props) {
     { key: "colors", label: t("filter.color"), items: COLORS },
     { key: "card_types", label: t("filter.type"), items: TYPES },
     { key: "costs", label: t("filter.cost"), items: COSTS },
-    { key: "powers", label: t("filter.power"), items: POWERS },
+    {
+      key: "powers",
+      label: t("filter.power"),
+      items: options?.powers?.length ? options.powers.map(String) : POWERS,
+    },
     { key: "counters", label: t("filter.counter"), items: COUNTERS },
     { key: "rarities", label: t("filter.rarity"), items: options?.rarities || [] },
     { key: "attributes", label: t("filter.attr"), items: ATTRS },
