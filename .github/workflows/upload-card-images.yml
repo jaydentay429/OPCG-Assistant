@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       set_prefix:
-        description: Card id prefix. EB05 uploads that set only.
+        description: Card id prefix. Use ALL with card_ids to upload mixed sets. EB05 uploads that set only.
         required: true
         default: EB05
         type: string
@@ -23,6 +23,11 @@ on:
         required: true
         default: false
         type: boolean
+      image_source:
+        description: Official image host. jp = Japanese cardlist only; default = asia-tc first, then JP, then EN.
+        required: false
+        default: default
+        type: string
 
 jobs:
   upload:
@@ -45,53 +50,96 @@ jobs:
         env:
           SET_PREFIX: ${{ inputs.set_prefix }}
           CARD_IDS: ${{ inputs.card_ids }}
+          IMAGE_SOURCE: ${{ inputs.image_source }}
         run: |
           set -euo pipefail
           python3 - << 'PY'
+          import hashlib
           import json
           import os
+          import time
           from pathlib import Path
 
           import requests
 
-          from sync_card_images import download_image, normalize_card_id, official_candidates
+          from sync_card_images import (
+              JP_IMAGE_HOST,
+              download_image,
+              jp_image_stems,
+              normalize_card_id,
+              official_candidates,
+          )
 
           prefix = os.environ.get("SET_PREFIX", "").strip().upper()
-          if not prefix:
-              raise SystemExit("set_prefix is required")
+          source = os.environ.get("IMAGE_SOURCE", "default").strip().lower()
           wanted = {
               normalize_card_id(part)
               for part in os.environ.get("CARD_IDS", "").split(",")
               if part.strip()
           }
           wanted.discard("")
+          if prefix in {"", "ALL", "*"} and not wanted:
+              raise SystemExit("set_prefix ALL requires card_ids")
           index = json.loads(Path("index/cards_by_id.json").read_text(encoding="utf-8"))
           selected = []
           for raw_id, row in index.items():
               card_id = normalize_card_id(raw_id)
-              if not card_id.startswith(prefix):
-                  continue
-              if wanted and card_id not in wanted:
-                  continue
+              if wanted:
+                  if card_id not in wanted:
+                      continue
+              else:
+                  if not prefix or not card_id.startswith(prefix):
+                      continue
               if not isinstance(row, dict):
                   continue
               selected.append(card_id)
           selected = sorted(set(selected))
           if not selected:
               raise SystemExit("no index cards matched set_prefix/card_ids")
+          if wanted and set(selected) != wanted:
+              missing = sorted(wanted - set(selected))
+              raise SystemExit("ids not in index: " + ",".join(missing))
           Path("packs").mkdir(exist_ok=True)
           session = requests.Session()
           session.trust_env = False
           failed = []
           for card_id in selected:
-              ok, url = download_image(card_id, official_candidates(index[card_id]), session)
+              if source == "jp":
+                  candidates = [
+                      f"{JP_IMAGE_HOST}images/cardlist/card/{stem}.png"
+                      for stem in jp_image_stems(card_id)
+                  ]
+              else:
+                  candidates = official_candidates(index[card_id])
+              ok, url = False, ""
+              for attempt in range(1, 4):
+                  ok, url = download_image(card_id, candidates, session)
+                  if ok:
+                      break
+                  time.sleep(2 * attempt)
               print(f"{card_id} {'ok' if ok else 'FAIL'} {url}", flush=True)
               if not ok:
                   failed.append(card_id)
           Path("selected-ids.txt").write_text(",".join(selected) + "\n", encoding="utf-8")
-          print(f"selected {len(selected)} failed {len(failed)}", flush=True)
+          print(f"selected {len(selected)} failed {len(failed)} source={source}", flush=True)
           if failed:
               raise SystemExit("download failed: " + ",".join(failed))
+          manifest = json.loads(
+              Path("frontend/src/generated/card-image-manifest.json").read_text(encoding="utf-8")
+          )
+          hash_mismatch = []
+          for card_id in selected:
+              fp = Path("packs") / f"{card_id}.png"
+              if not fp.is_file():
+                  hash_mismatch.append(f"{card_id}:missing")
+                  continue
+              got = hashlib.md5(fp.read_bytes()).hexdigest()[:8]
+              expected = str(manifest.get(card_id) or "")
+              if got != expected:
+                  hash_mismatch.append(f"{card_id}:{got}!={expected}")
+          if hash_mismatch:
+              raise SystemExit("downloaded hash mismatch: " + ",".join(hash_mismatch))
+          print("all downloaded hashes match the branch manifest", flush=True)
           PY
 
       - name: Set up SSH
@@ -143,6 +191,9 @@ jobs:
             "SET_PREFIX='$SET_PREFIX' OVERWRITE='$OVERWRITE' MANIFEST_ONLY='$MANIFEST_ONLY' bash -s" << 'REMOTE'
           set -euo pipefail
           cd /opt/opcg/app
+          case "$SET_PREFIX" in
+            ALL|all|'*'|'') SET_PREFIX="" ;;
+          esac
           remote="$(grep -E '^OPCG_R2_RCLONE_REMOTE=' .env | tail -n 1 | cut -d= -f2- | tr -d '"' | tr -d "'")"
           if [ -z "$remote" ]; then
             echo "OPCG_R2_RCLONE_REMOTE is empty"
@@ -151,9 +202,12 @@ jobs:
           webp_rc=0
           if [ "$MANIFEST_ONLY" != "true" ]; then
             ids="$(tr -d '\n' < /tmp/opcg-selected-ids.txt)"
-            copy_args=(scripts/copy_new_pack_images_to_r2.py --packs packs --rclone-remote "$remote" --set-prefix "$SET_PREFIX" --ids "$ids")
-            # R2_* may be unset. WebP then reads this remote's rclone config.
-            webp_args=(scripts/generate_card_webp.py --packs packs --rclone-remote "$remote" --set-prefix "$SET_PREFIX" --ids "$ids")
+            copy_args=(scripts/copy_new_pack_images_to_r2.py --packs packs --rclone-remote "$remote" --ids "$ids")
+            webp_args=(scripts/generate_card_webp.py --packs packs --rclone-remote "$remote" --ids "$ids")
+            if [ -n "$SET_PREFIX" ]; then
+              copy_args+=(--set-prefix "$SET_PREFIX")
+              webp_args+=(--set-prefix "$SET_PREFIX")
+            fi
             if [ "$OVERWRITE" = "true" ]; then
               copy_args+=(--overwrite)
               webp_args+=(--force)
