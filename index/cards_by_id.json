@@ -193846,11 +193846,6 @@
   },
   "OP18-021": {
     "card_id": "OP18-021",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/OP18-021.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/OP18-021.png",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "佛朗基",
     "name_en": "Franky",
     "card_type": "Leader",
@@ -193865,34 +193860,39 @@
       "Green",
       "Purple"
     ],
-    "cost": null,
-    "power": 5000,
-    "life": 4,
-    "counter": null,
-    "rarity": "L",
-    "attributes_en": [
-      "Strike"
-    ],
     "traits": [
       "W7",
-      "佛朗基一家",
+      "佛朗基家族",
       "草帽一行人"
     ],
     "traits_en": [
       "Water Seven",
-      "Franky Family",
+      "The Franky Family",
       "Straw Hat Crew"
     ],
+    "rarity": "L",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-021.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-021.png",
+    "cost": null,
+    "life": 4,
+    "power": 5000,
+    "counter": null,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
     "effect": "自己手牌中的舞台卡全部持有【反擊+3000】。【啟動主要】【每回合1次】咚‼−1：使最多1張自己手牌中費用5以下的舞台卡登場。",
-    "effect_en": "All Stage cards in your hand gain [Counter +3000]. [Activate: Main] [Once Per Turn] DON!! −1: Play up to 1 Stage card with a cost of 5 or less from your hand."
+    "effect_en": "All Stage cards in your hand have a +3000 Counter. [Activate: Main] [Once Per Turn] DON!! −1: Play up to 1 Stage card with a cost of 5 or less from your hand."
   },
   "OP18-031": {
     "card_id": "OP18-031",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/OP18-031.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/OP18-031.png",
-    "block_number": "X",
-    "pack_id": "OP-18",
     "name": "妮可・羅賓",
     "name_en": "Nico Robin",
     "card_type": "Character",
@@ -193905,14 +193905,6 @@
     "colors_en": [
       "Green"
     ],
-    "cost": 4,
-    "power": 5000,
-    "life": null,
-    "counter": 1000,
-    "rarity": "SR",
-    "attributes_en": [
-      "Wisdom"
-    ],
     "traits": [
       "W7",
       "草帽一行人"
@@ -193921,18 +193913,31 @@
       "Water Seven",
       "Straw Hat Crew"
     ],
+    "rarity": "SR",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-031.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-031.png",
+    "cost": 4,
+    "life": null,
+    "power": 5000,
+    "counter": 1000,
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
     "effect": "【對方回合中】自己的角色卡因對手的效果離開場上時，可以改為將這張角色卡置為休息狀態。【我方回合結束時】將最多1張自己持有《W7》特徵的卡片與最多1張咚‼卡置為活動狀態。",
-    "effect_en": "[Opponent's Turn] When one of your Characters would leave the field by an opponent's effect, you may rest this Character instead. [End of Your Turn] Set up to 1 of your {W7} type cards and up to 1 DON!! card as active."
+    "effect_en": "[Opponent's Turn] If your Character would be removed from the field by your opponent's effect, you may rest this Character instead. [End of Your Turn] Set up to 1 of your {Water Seven} type cards and up to 1 of your DON!! cards as active."
   },
   "OP18-060": {
     "card_id": "OP18-060",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/OP18-060.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/OP18-060.png",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "軍子宮",
-    "name_en": "Gunko",
+    "name_en": "Saint Gunko",
     "card_type": "Leader",
     "category": "Leader",
     "card_type_en": "Leader",
@@ -193945,34 +193950,39 @@
       "Purple",
       "Black"
     ],
-    "cost": null,
-    "power": 5000,
-    "life": 4,
-    "counter": null,
-    "rarity": "L",
-    "attributes_en": [
-      "Special"
-    ],
     "traits": [
       "天龍人",
       "神之騎士團"
     ],
     "traits_en": [
       "Celestial Dragons",
-      "Holy Knights"
+      "Holy Knights of God"
+    ],
+    "rarity": "L",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-060.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-060.png",
+    "cost": null,
+    "life": 4,
+    "power": 5000,
+    "counter": null,
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
     ],
     "effect": "【每回合1次】自己廢棄區的角色卡登場時，抽2張卡片，並廢棄1張自己的手牌。【啟動主要】【每回合1次】可以廢棄1張自己的手牌：若自己場上有原本力量值8000以上的角色卡時，從咚‼卡組將最多1張咚‼卡以活動狀態追加。",
-    "effect_en": "[Once Per Turn] When a Character is played from your Trash, draw 2 cards and trash 1 card from your hand. [Activate: Main] [Once Per Turn] You may trash 1 card from your hand: If you have a Character with a base power of 8000 or more, add up to 1 DON!! card from your DON!! deck and set it as active."
+    "effect_en": "[Once Per Turn] When a Character is played from your trash, draw 2 cards and trash 1 card from your hand. [Activate: Main] [Once Per Turn] You may trash 1 card from your hand: If you have a Character with 8000 base power or more, add up to 1 DON!! card as active from your DON!! deck."
   },
   "OP18-065": {
     "card_id": "OP18-065",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/OP18-065.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/OP18-065.png",
-    "block_number": "X",
-    "pack_id": "OP-18",
     "name": "軍子宮",
-    "name_en": "Gunko",
+    "name_en": "Saint Gunko",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -193983,37 +193993,39 @@
     "colors_en": [
       "Purple"
     ],
-    "cost": 10,
-    "power": 11000,
-    "life": null,
-    "counter": null,
-    "rarity": "SR",
-    "attributes_en": [
-      "Unknown"
-    ],
     "traits": [
       "天龍人",
       "神之騎士團"
     ],
     "traits_en": [
       "Celestial Dragons",
-      "Holy Knights"
+      "Holy Knights of God"
+    ],
+    "rarity": "SR",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-065.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-065.png",
+    "cost": 10,
+    "life": null,
+    "power": 11000,
+    "counter": null,
+    "attributes_en": [
+      "?"
     ],
     "effect": "【防禦】【登場時】咚‼−1：使最多1張自己廢棄區中力量值6000以下、擁有《天龍人》特徵的角色卡登場。",
-    "effect_en": "[Blocker] [On Play] DON!! −1: Play up to 1 Character card with a power of 6000 or less and the {Celestial Dragons} type from your Trash.",
+    "effect_en": "[Blocker] [On Play] DON!! −1: Play up to 1 {Celestial Dragons} type Character card with 6000 power or less from your trash.",
     "attributes": [
-      "？"
+      "?"
     ]
   },
   "OP18-078": {
     "card_id": "OP18-078",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/OP18-078.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/OP18-078.png",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "迷你梅利2號",
-    "name_en": "Mini-Merry No.2",
+    "name_en": "Mini-Merry",
     "card_type": "Stage",
     "category": "Stage",
     "card_type_en": "Stage",
@@ -194024,28 +194036,29 @@
     "colors_en": [
       "Purple"
     ],
-    "cost": 5,
-    "power": null,
-    "life": null,
-    "counter": null,
-    "rarity": "UC",
-    "attributes_en": [],
     "traits": [
       "草帽一行人"
     ],
     "traits_en": [
       "Straw Hat Crew"
     ],
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-078.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-078.png",
+    "cost": 5,
+    "life": null,
+    "power": null,
+    "counter": null,
     "effect": "【登場時】抽1張卡片，並從咚‼卡組將最多1張咚‼卡以休息狀態追加。【啟動主要】可將這張舞台卡置為休息狀態：對合計最多4張自己的領航卡與角色卡，各附加最多1張休息狀態的咚‼卡。",
-    "effect_en": "[On Play] Draw 1 card and add up to 1 DON!! card as rested from your DON!! deck. [Activate: Main] You may rest this Stage: Give up to a total of 4 of your Leader or Character cards 1 rested DON!! card each."
+    "effect_en": "[On Play] Draw 1 card, then add up to 1 DON!! card as rested from your DON!! deck. [Activate: Main] You may rest this Stage: Give up to a total of 4 of your Leader or Characters 1 rested DON!! Card each."
   },
   "OP18-119": {
     "card_id": "OP18-119",
-    "preview": true,
-    "img_url": "OP18-119.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/OP18-119.png",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "夏姆洛克聖",
     "name_en": "Saint Shamrock",
     "card_type": "Character",
@@ -194053,21 +194066,10 @@
     "card_type_en": "Character",
     "category_en": "Character",
     "colors": [
-      "黃"
+      "黑"
     ],
     "colors_en": [
-      "Yellow"
-    ],
-    "cost": 8,
-    "power": 9000,
-    "life": null,
-    "counter": null,
-    "rarity": "SEC",
-    "attributes": [
-      "斬"
-    ],
-    "attributes_en": [
-      "Slash"
+      "Black"
     ],
     "traits": [
       "天龍人",
@@ -194077,13 +194079,26 @@
       "Celestial Dragons",
       "Holy Knights of God"
     ],
-    "effect": "【KO時】可以廢棄1張自己的手牌：使這張角色卡從廢棄區登場。【啟動主要】【每回合1次】若這張角色卡是在這個回合登場時，使最多1張自己廢棄區中費用6以下、擁有《神之騎士團》特徵的角色卡登場。",
-    "effect_en": "[On K.O.] You may trash 1 card from your hand: Play this Character card from your trash. [Activate: Main] [Once Per Turn] If this Character was played on this turn, play up to 1 {Holy Knights of God} type Character card with a cost of 6 or less from your trash.",
+    "rarity": "SEC",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
+      "補充包 神之支配【OP-18】"
     ],
-    "trigger": null,
-    "trigger_en": null
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-119.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-119.png",
+    "cost": 8,
+    "life": null,
+    "power": 9000,
+    "counter": null,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "【KO時】可以廢棄1張自己的手牌：使這張角色卡從廢棄區登場。【啟動主要】【每回合1次】若這張角色卡是在這個回合登場時，使最多1張自己廢棄區中費用6以下、擁有《神之騎士團》特徵的角色卡登場。",
+    "effect_en": "[On K.O.] You may trash 1 card from your hand: Play this Character card from your trash. [Activate: Main] [Once Per Turn] If this Character was played on this turn, play up to 1 {Holy Knights of God} type Character card with a cost of 6 or less from your trash."
   },
   "EB05-010": {
     "card_id": "EB05-010",
@@ -194216,11 +194231,6 @@
   },
   "OP18-021-P1": {
     "card_id": "OP18-021-P1",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/OP18-021-P1.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/OP18-021-P1.png",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "佛朗基",
     "name_en": "Franky",
     "card_type": "Leader",
@@ -194235,36 +194245,43 @@
       "Green",
       "Purple"
     ],
-    "cost": null,
-    "power": 5000,
-    "life": 4,
-    "counter": null,
-    "rarity": "L",
-    "attributes_en": [
-      "Strike"
-    ],
     "traits": [
       "W7",
-      "佛朗基一家",
+      "佛朗基家族",
       "草帽一行人"
     ],
     "traits_en": [
       "Water Seven",
-      "Franky Family",
+      "The Franky Family",
       "Straw Hat Crew"
     ],
+    "rarity": "L",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://api.optcgassistant.com/packs/OP18-021-P1.png",
+    "img_full_url": "https://api.optcgassistant.com/packs/OP18-021-P1.png",
+    "cost": null,
+    "life": 4,
+    "power": 5000,
+    "counter": null,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
     "effect": "自己手牌中的舞台卡全部持有【反擊+3000】。【啟動主要】【每回合1次】咚‼−1：使最多1張自己手牌中費用5以下的舞台卡登場。",
-    "effect_en": "All Stage cards in your hand gain [Counter +3000]. [Activate: Main] [Once Per Turn] DON!! −1: Play up to 1 Stage card with a cost of 5 or less from your hand."
+    "effect_en": "All Stage cards in your hand have a +3000 Counter. [Activate: Main] [Once Per Turn] DON!! −1: Play up to 1 Stage card with a cost of 5 or less from your hand.",
+    "preview": true,
+    "manual_source": "screenshot"
   },
   "OP18-060-P1": {
     "card_id": "OP18-060-P1",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/OP18-060-P1.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/OP18-060-P1.png",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "軍子宮",
-    "name_en": "Gunko",
+    "name_en": "Saint Gunko",
     "card_type": "Leader",
     "category": "Leader",
     "card_type_en": "Leader",
@@ -194277,32 +194294,39 @@
       "Purple",
       "Black"
     ],
-    "cost": null,
-    "power": 5000,
-    "life": 4,
-    "counter": null,
-    "rarity": "L",
-    "attributes_en": [
-      "Special"
-    ],
     "traits": [
       "天龍人",
       "神之騎士團"
     ],
     "traits_en": [
       "Celestial Dragons",
-      "Holy Knights"
+      "Holy Knights of God"
+    ],
+    "rarity": "L",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://api.optcgassistant.com/packs/OP18-060-P1.png",
+    "img_full_url": "https://api.optcgassistant.com/packs/OP18-060-P1.png",
+    "cost": null,
+    "life": 4,
+    "power": 5000,
+    "counter": null,
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
     ],
     "effect": "【每回合1次】自己廢棄區的角色卡登場時，抽2張卡片，並廢棄1張自己的手牌。【啟動主要】【每回合1次】可以廢棄1張自己的手牌：若自己場上有原本力量值8000以上的角色卡時，從咚‼卡組將最多1張咚‼卡以活動狀態追加。",
-    "effect_en": "[Once Per Turn] When a Character is played from your Trash, draw 2 cards and trash 1 card from your hand. [Activate: Main] [Once Per Turn] You may trash 1 card from your hand: If you have a Character with a base power of 8000 or more, add up to 1 DON!! card from your DON!! deck and set it as active."
+    "effect_en": "[Once Per Turn] When a Character is played from your trash, draw 2 cards and trash 1 card from your hand. [Activate: Main] [Once Per Turn] You may trash 1 card from your hand: If you have a Character with 8000 base power or more, add up to 1 DON!! card as active from your DON!! deck.",
+    "preview": true,
+    "manual_source": "screenshot"
   },
   "OP18-119-P1": {
     "card_id": "OP18-119-P1",
-    "preview": true,
-    "img_url": "OP18-119-P1.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/OP18-119-P1.png",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "夏姆洛克聖",
     "name_en": "Saint Shamrock",
     "card_type": "Character",
@@ -194310,21 +194334,10 @@
     "card_type_en": "Character",
     "category_en": "Character",
     "colors": [
-      "黃"
+      "黑"
     ],
     "colors_en": [
-      "Yellow"
-    ],
-    "cost": 8,
-    "power": 9000,
-    "life": null,
-    "counter": null,
-    "rarity": "SEC",
-    "attributes": [
-      "斬"
-    ],
-    "attributes_en": [
-      "Slash"
+      "Black"
     ],
     "traits": [
       "天龍人",
@@ -194334,13 +194347,28 @@
       "Celestial Dragons",
       "Holy Knights of God"
     ],
+    "rarity": "SEC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "OP18-119-P1.png",
+    "img_full_url": "https://api.optcgassistant.com/packs/OP18-119-P1.png",
+    "cost": 8,
+    "life": null,
+    "power": 9000,
+    "counter": null,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
     "effect": "【KO時】可以廢棄1張自己的手牌：使這張角色卡從廢棄區登場。【啟動主要】【每回合1次】若這張角色卡是在這個回合登場時，使最多1張自己廢棄區中費用6以下、擁有《神之騎士團》特徵的角色卡登場。",
     "effect_en": "[On K.O.] You may trash 1 card from your hand: Play this Character card from your trash. [Activate: Main] [Once Per Turn] If this Character was played on this turn, play up to 1 {Holy Knights of God} type Character card with a cost of 6 or less from your trash.",
-    "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ],
-    "trigger": null,
-    "trigger_en": null
+    "preview": true,
+    "manual_source": "screenshot"
   },
   "EB05-010-P1": {
     "card_id": "EB05-010-P1",
@@ -203291,11 +203319,6 @@
   },
   "OP18-119-P2": {
     "card_id": "OP18-119-P2",
-    "preview": true,
-    "img_url": "OP18-119-P2.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/OP18-119-P2.png",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "夏姆洛克聖",
     "name_en": "Saint Shamrock",
     "card_type": "Character",
@@ -203303,21 +203326,10 @@
     "card_type_en": "Character",
     "category_en": "Character",
     "colors": [
-      "黃"
+      "黑"
     ],
     "colors_en": [
-      "Yellow"
-    ],
-    "cost": 8,
-    "power": 9000,
-    "life": null,
-    "counter": null,
-    "rarity": "SEC",
-    "attributes": [
-      "斬"
-    ],
-    "attributes_en": [
-      "Slash"
+      "Black"
     ],
     "traits": [
       "天龍人",
@@ -203327,13 +203339,28 @@
       "Celestial Dragons",
       "Holy Knights of God"
     ],
+    "rarity": "SEC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "OP18-119-P2.png",
+    "img_full_url": "https://api.optcgassistant.com/packs/OP18-119-P2.png",
+    "cost": 8,
+    "life": null,
+    "power": 9000,
+    "counter": null,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
     "effect": "【KO時】可以廢棄1張自己的手牌：使這張角色卡從廢棄區登場。【啟動主要】【每回合1次】若這張角色卡是在這個回合登場時，使最多1張自己廢棄區中費用6以下、擁有《神之騎士團》特徵的角色卡登場。",
     "effect_en": "[On K.O.] You may trash 1 card from your hand: Play this Character card from your trash. [Activate: Main] [Once Per Turn] If this Character was played on this turn, play up to 1 {Holy Knights of God} type Character card with a cost of 6 or less from your trash.",
-    "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ],
-    "trigger": null,
-    "trigger_en": null
+    "preview": true,
+    "manual_source": "screenshot"
   },
   "EB05-036": {
     "card_id": "EB05-036",
@@ -204787,11 +204814,6 @@
   },
   "OP18-001": {
     "card_id": "OP18-001",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/OP18-001.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/OP18-001.png",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "飛毛腿",
     "name_en": "Karoo",
     "card_type": "Leader",
@@ -204806,17 +204828,6 @@
       "Red",
       "Blue"
     ],
-    "cost": null,
-    "power": 5000,
-    "life": 4,
-    "counter": null,
-    "rarity": "L",
-    "attributes_en": [
-      "Strike"
-    ],
-    "attributes": [
-      "打"
-    ],
     "traits": [
       "動物",
       "阿拉巴斯坦王國"
@@ -204825,16 +204836,29 @@
       "Animal",
       "Alabasta"
     ],
+    "rarity": "L",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-001.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-001.png",
+    "cost": null,
+    "life": 4,
+    "power": 5000,
+    "counter": null,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
     "effect": "自己同時擁有《動物》和《阿拉巴斯坦王國》特徵的角色卡全部獲得【速攻】，力量值+1000。【每回合1次】自己擁有《阿拉巴斯坦王國》特徵的角色卡被KO時，抽1張卡片。",
-    "effect_en": "All of your Characters with both the {Animal} and {Alabasta} types gain Rush and +1000 power. [Once Per Turn] When your {Alabasta} type Character is K.O.'d, draw 1 card."
+    "effect_en": "All of your Characters with both the {Animal} and {Alabasta} types gain [Rush] and +1000 power. [Once Per Turn] When your {Alabasta} type Character is K.O.'d, draw 1 card."
   },
   "OP18-022": {
     "card_id": "OP18-022",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/OP18-022.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/OP18-022.png",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "蒙其・D・魯夫",
     "name_en": "Monkey.D.Luffy",
     "card_type": "Leader",
@@ -204847,17 +204871,6 @@
     "colors_en": [
       "Green"
     ],
-    "cost": null,
-    "power": 5000,
-    "life": 5,
-    "counter": null,
-    "rarity": "L",
-    "attributes_en": [
-      "Strike"
-    ],
-    "attributes": [
-      "打"
-    ],
     "traits": [
       "W7",
       "草帽一行人"
@@ -204866,16 +204879,29 @@
       "Water Seven",
       "Straw Hat Crew"
     ],
+    "rarity": "L",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-022.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-022.png",
+    "cost": null,
+    "life": 5,
+    "power": 5000,
+    "counter": null,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
     "effect": "【咚‼×3】【攻擊時】【每回合1次】可將這張領航卡置為活動狀態。若如此做，這張領航卡在下一個自己的重整階段無法為活動狀態。",
     "effect_en": "[DON!! x3] [When Attacking] [Once Per Turn] You may set this Leader as active. If you do, this Leader will not become active in your next Refresh Phase."
   },
   "OP18-041": {
     "card_id": "OP18-041",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/OP18-041.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/OP18-041.png",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "Miss All星期天",
     "name_en": "Ms. All Sunday",
     "card_type": "Leader",
@@ -204888,33 +204914,35 @@
     "colors_en": [
       "Blue"
     ],
-    "cost": null,
-    "power": 5000,
-    "life": 5,
-    "counter": null,
-    "rarity": "L",
-    "attributes_en": [
-      "Wisdom"
-    ],
-    "attributes": [
-      "知"
-    ],
     "traits": [
       "B・W"
     ],
     "traits_en": [
       "Baroque Works"
     ],
+    "rarity": "L",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-041.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-041.png",
+    "cost": null,
+    "life": 5,
+    "power": 5000,
+    "counter": null,
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
     "effect": "自己擁有包含「B・W」特徵、原本力量值3000以上的角色卡被KO時，抽1張卡片，對手廢棄1張自身的手牌。",
     "effect_en": "When your Character with a type including \"Baroque Works\" and 3000 base power or more is K.O.'d, draw 1 card, and your opponent trashes 1 card from their hand."
   },
   "OP18-079": {
     "card_id": "OP18-079",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/OP18-079.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/OP18-079.png",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "斯帕達姆",
     "name_en": "Spandam",
     "card_type": "Leader",
@@ -204922,27 +204950,36 @@
     "card_type_en": "Leader",
     "category_en": "Leader",
     "colors": [
+      "黑",
       "黃"
     ],
     "colors_en": [
+      "Black",
       "Yellow"
-    ],
-    "cost": null,
-    "power": 5000,
-    "life": 4,
-    "counter": null,
-    "rarity": "L",
-    "attributes_en": [
-      "Slash"
-    ],
-    "attributes": [
-      "斬"
     ],
     "traits": [
       "CP9"
     ],
     "traits_en": [
       "CP9"
+    ],
+    "rarity": "L",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-079.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-079.png",
+    "cost": null,
+    "life": 4,
+    "power": 5000,
+    "counter": null,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
     ],
     "effect": "【啟動主要】可將2張自己的咚‼卡和這張領航卡置為休息狀態，並廢棄1張自己手牌中特徵包含「CP」的卡片：從卡組上面將最多1張卡片加到自己生命值卡的上面。",
     "effect_en": "[Activate: Main] You may rest 2 of your DON!! cards and this Leader and trash 1 card with a type including \"CP\" from your hand: Add up to 1 card from the top of your deck to the top of your Life cards."
@@ -205077,11 +205114,6 @@
   },
   "OP18-003": {
     "card_id": "OP18-003",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/OP18-003.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/OP18-003.png",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "海貓",
     "name_en": "Sea Cat",
     "card_type": "Character",
@@ -205094,17 +205126,6 @@
     "colors_en": [
       "Red"
     ],
-    "cost": 5,
-    "power": 6000,
-    "life": null,
-    "counter": 2000,
-    "rarity": "C",
-    "attributes_en": [
-      "Wisdom"
-    ],
-    "attributes": [
-      "知"
-    ],
     "traits": [
       "動物",
       "阿拉巴斯坦王國"
@@ -205113,20 +205134,29 @@
       "Animal",
       "Alabasta"
     ],
-    "effect": "",
-    "effect_en": "",
-    "trigger": "",
-    "trigger_en": ""
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-003.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-003.png",
+    "cost": 5,
+    "life": null,
+    "power": 6000,
+    "counter": 2000,
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ]
   },
   "OP18-026": {
     "card_id": "OP18-026",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/OP18-026.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/OP18-026.png",
-    "block_number": 5,
-    "pack_id": "OP-18",
-    "name": "琪姆妮",
-    "name_en": "Chimney",
+    "name": "香吉士",
+    "name_en": "Sanji",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -205137,57 +205167,48 @@
     "colors_en": [
       "Green"
     ],
-    "cost": 2,
-    "power": 0,
-    "life": null,
-    "counter": 1000,
-    "rarity": "C",
-    "attributes_en": [
-      "Wisdom"
-    ],
-    "attributes": [
-      "知"
-    ],
     "traits": [
-      "W7"
+      "W7",
+      "草帽一行人"
     ],
     "traits_en": [
-      "Water Seven"
+      "Water Seven",
+      "Straw Hat Crew"
     ],
-    "effect": "【啟動主要】可將1張自己的「貢貝」與這張角色卡置為休息狀態：將自己的領航卡「蒙其・D・魯夫」置為活動狀態。",
-    "effect_en": "[Activate: Main] You may rest 1 of your [Gonbe] and this Character: Set your Leader [Monkey.D.Luffy] as active.",
-    "trigger": "",
-    "trigger_en": ""
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-026.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-026.png",
+    "cost": 2,
+    "life": null,
+    "power": 2000,
+    "counter": 2000,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "自己擁有《草帽一行人》特徵的角色卡因對手的效果而離開場上時，可以替換成將這張角色卡放置在廢棄區。",
+    "effect_en": "If your {Straw Hat Crew} type Character would be removed from the field by your opponent's effect, you may trash this Character instead."
   },
   "OP18-056": {
     "card_id": "OP18-056",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/OP18-056.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/OP18-056.png",
-    "block_number": 5,
-    "pack_id": "OP-18",
-    "name": "13號先生＆星期五小姐",
-    "name_en": "Mr.13 & Miss. Friday",
+    "name": "Mr.13&Miss星期五",
+    "name_en": "Mr.13 & Ms.Friday",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
     "category_en": "Character",
     "colors": [
-      "綠"
+      "藍"
     ],
     "colors_en": [
-      "Green"
-    ],
-    "cost": 2,
-    "power": 3000,
-    "life": null,
-    "counter": 1000,
-    "rarity": "C",
-    "attributes_en": [
-      "Wisdom"
-    ],
-    "attributes": [
-      "知"
+      "Blue"
     ],
     "traits": [
       "動物",
@@ -205197,18 +205218,29 @@
       "Animal",
       "Baroque Works"
     ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-056.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-056.png",
+    "cost": 2,
+    "life": null,
+    "power": 3000,
+    "counter": 1000,
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
     "effect": "【咚‼×1】這張角色卡力量值+1000。\n【登場時】可將1張這張角色卡以外自己擁有包含『B・W』特徵的角色卡放到卡組下面：對手廢棄自身的手牌1張。",
-    "effect_en": "[DON!! x1] This Character gains +1000 power.\n[On Play] You may place 1 of your Characters with a type including {Baroque Works} other than this Character at the bottom of your deck: Your opponent trashes 1 card from their hand.",
-    "trigger": "",
-    "trigger_en": ""
+    "effect_en": "[DON!! x1] This Character gains +1000 power. [On Play] You may place 1 of your Characters with a type including \"Baroque Works\" other than this Character at the bottom of your deck: Your opponent trashes 1 card from their hand."
   },
   "OP18-066": {
     "card_id": "OP18-066",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/OP18-066.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/OP18-066.png",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "贊拜",
     "name_en": "Zambai",
     "card_type": "Character",
@@ -205221,37 +205253,37 @@
     "colors_en": [
       "Purple"
     ],
-    "cost": 5,
-    "power": 6000,
-    "life": null,
-    "counter": 1000,
-    "rarity": "C",
-    "attributes_en": [
-      "Slash"
-    ],
-    "attributes": [
-      "斬"
-    ],
     "traits": [
       "W7",
-      "佛朗基一家"
+      "佛朗基家族"
     ],
     "traits_en": [
       "Water Seven",
-      "Franky Family"
+      "The Franky Family"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-066.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-066.png",
+    "cost": 5,
+    "life": null,
+    "power": 6000,
+    "counter": 1000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
     ],
     "effect": "【啟動主要】可將1張自己費用5以下的舞台卡KO：這張角色卡在這個回合獲得【速攻】。\n（這張卡登場的回合即可攻擊）",
-    "effect_en": "[Activate: Main] You may K.O. 1 of your Stage cards with a cost of 5 or less: This Character gains [Rush] during this turn.\n(This card can attack the turn it is played.)",
-    "trigger": "",
-    "trigger_en": ""
+    "effect_en": "[Activate: Main] You may K.O. 1 of your Stages with a cost of 5 or less: This Character gains [Rush] during this turn. (This card can attack on the turn in which it is played.)"
   },
   "OP18-086": {
     "card_id": "OP18-086",
-    "preview": true,
-    "img_url": "https://api.optcgassistant.com/packs/OP18-086.png",
-    "img_full_url": "https://api.optcgassistant.com/packs/OP18-086.png",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "戈爾德伯格",
     "name_en": "Goldberg",
     "card_type": "Character",
@@ -205264,31 +205296,36 @@
     "colors_en": [
       "Black"
     ],
-    "cost": 3,
-    "power": 4000,
-    "life": null,
-    "counter": 1000,
-    "rarity": "C",
-    "attributes_en": [
-      "Strike"
-    ],
-    "attributes": [
-      "打"
-    ],
     "traits": [
       "巨人族",
-      "艾爾巴夫",
+      "艾爾帕布",
       "新巨兵海賊團"
     ],
     "traits_en": [
       "Giant",
       "Elbaph",
-      "New Giant Warrior Pirates"
+      "New Giant Pirates"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-086.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-086.png",
+    "cost": 3,
+    "life": null,
+    "power": 4000,
+    "counter": 1000,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
     ],
     "effect": "這張角色卡的費用+12。\n【KO時】KO最多1張對手費用4以下的角色卡。",
-    "effect_en": "This Character gains +12 cost.\n[On K.O.] K.O. up to 1 of your opponent's Characters with a cost of 4 or less.",
-    "trigger": "",
-    "trigger_en": ""
+    "effect_en": "This Character gains +12 cost. [On K.O.] K.O. up to 1 of your opponent's Characters with a cost of 4 or less."
   },
   "EB05-046": {
     "card_id": "EB05-046",
@@ -205335,12 +205372,6 @@
   },
   "OP18-112": {
     "card_id": "OP18-112",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "火燒山",
     "name_en": "Yamakaji",
     "card_type": "Character",
@@ -205353,17 +205384,6 @@
     "colors_en": [
       "Yellow"
     ],
-    "cost": 7,
-    "power": 7000,
-    "life": null,
-    "counter": 2000,
-    "rarity": "C",
-    "attributes": [
-      "斬"
-    ],
-    "attributes_en": [
-      "Slash"
-    ],
     "traits": [
       "中將",
       "海軍"
@@ -205372,22 +205392,29 @@
       "Vice Admiral",
       "Navy"
     ],
-    "effect": "【防禦】(對手攻擊後，將這張卡片置為休息狀態即可使攻擊的對象換成這張卡片)",
-    "effect_en": "[Blocker] (After your opponent declares an attack, you may rest this card to make it the new target of the attack.)",
-    "trigger": "",
-    "trigger_en": "",
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-112.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-112.png",
+    "cost": 7,
+    "life": null,
+    "power": 7000,
+    "counter": 2000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "【防禦】(對手攻擊後，將這張卡片置為休息狀態即可使攻擊的對象換成這張卡片)",
+    "effect_en": "[Blocker] (After your opponent declares an attack, you may rest this card to make it the new target of the attack.)"
   },
   "OP18-016": {
     "card_id": "OP18-016",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "蒙其・D・魯夫",
     "name_en": "Monkey.D.Luffy",
     "card_type": "Character",
@@ -205400,17 +205427,6 @@
     "colors_en": [
       "Red"
     ],
-    "cost": 6,
-    "power": 7000,
-    "life": null,
-    "counter": 1000,
-    "rarity": "C",
-    "attributes": [
-      "打"
-    ],
-    "attributes_en": [
-      "Strike"
-    ],
     "traits": [
       "阿拉巴斯坦王國",
       "草帽一行人"
@@ -205419,22 +205435,29 @@
       "Alabasta",
       "Straw Hat Crew"
     ],
-    "effect": "【消失】 【KO時】使最多1張自己手牌中力量值6000以下、擁有《阿拉巴斯坦王國》特徵的角色卡登場。",
-    "effect_en": "[Banish] [On K.O.] Play up to 1 {Alabasta} type Character card with 6000 power or less from your hand.",
-    "trigger": "",
-    "trigger_en": "",
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-016.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-016.png",
+    "cost": 6,
+    "life": null,
+    "power": 7000,
+    "counter": 1000,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "【消失】 【KO時】使最多1張自己手牌中力量值6000以下、擁有《阿拉巴斯坦王國》特徵的角色卡登場。",
+    "effect_en": "[Banish] [On K.O.] Play up to 1 {Alabasta} type Character card with 6000 power or less from your hand."
   },
   "OP18-025": {
     "card_id": "OP18-025",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "貢貝",
     "name_en": "Gonbe",
     "card_type": "Character",
@@ -205447,17 +205470,6 @@
     "colors_en": [
       "Green"
     ],
-    "cost": 1,
-    "power": 0,
-    "life": null,
-    "counter": 1000,
-    "rarity": "C",
-    "attributes": [
-      "知"
-    ],
-    "attributes_en": [
-      "Wisdom"
-    ],
     "traits": [
       "動物",
       "W7"
@@ -205466,24 +205478,31 @@
       "Animal",
       "Water Seven"
     ],
-    "effect": "【我方回合結束時】若這張角色卡在休息狀態時，將自己的領航卡置為活動狀態。",
-    "effect_en": "[End of Your Turn] If this Character is rested, set your Leader as active.",
-    "trigger": "",
-    "trigger_en": "",
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-025.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-025.png",
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": 1000,
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "effect": "【我方回合結束時】若這張角色卡在休息狀態時，將自己的領航卡置為活動狀態。",
+    "effect_en": "[End of Your Turn] If this Character is rested, set your Leader as active."
   },
   "OP18-044": {
     "card_id": "OP18-044",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "Mr.賓茲&Miss凱瑟蓮娜",
-    "name_en": "Mr. Beans & Miss. Katherina",
+    "name_en": "Mr.Beans & Miss.Katherina",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -205494,41 +205513,37 @@
     "colors_en": [
       "Blue"
     ],
-    "cost": 3,
-    "power": 4000,
-    "life": null,
-    "counter": 1000,
-    "rarity": "C",
-    "attributes": [
-      "知"
-    ],
-    "attributes_en": [
-      "Wisdom"
-    ],
     "traits": [
       "B・W"
     ],
     "traits_en": [
       "Baroque Works"
     ],
-    "effect": "【咚‼×1】這張角色卡力量值+1000。\n【登場時】抽1張卡片，並廢棄1張自己的手牌。",
-    "effect_en": "[DON!! x1] This Character gains +1000 power.\n[On Play] Draw 1 card and trash 1 card from your hand.",
-    "trigger": "",
-    "trigger_en": "",
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-044.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-044.png",
+    "cost": 3,
+    "life": null,
+    "power": 4000,
+    "counter": 1000,
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "effect": "【咚‼×1】這張角色卡力量值+1000。\n【登場時】抽1張卡片，並廢棄1張自己的手牌。",
+    "effect_en": "[DON!! x1] This Character gains +1000 power. [On Play] Draw 1 card and trash 1 card from your hand."
   },
   "OP18-069": {
     "card_id": "OP18-069",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "索德姆&哥摩拉",
-    "name_en": "Sodom & Gomorrah",
+    "name_en": "Sodomu & Gomora",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -205539,43 +205554,39 @@
     "colors_en": [
       "Purple"
     ],
-    "cost": 1,
-    "power": 2000,
-    "life": null,
-    "counter": 2000,
+    "traits": [
+      "動物",
+      "W7",
+      "佛朗基家族"
+    ],
+    "traits_en": [
+      "Animal",
+      "Water Seven",
+      "The Franky Family"
+    ],
     "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-069.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-069.png",
+    "cost": 1,
+    "life": null,
+    "power": 2000,
+    "counter": 2000,
     "attributes": [
       "打"
     ],
     "attributes_en": [
       "Strike"
     ],
-    "traits": [
-      "動物",
-      "W7",
-      "佛朗基一家"
-    ],
-    "traits_en": [
-      "Animal",
-      "Water Seven",
-      "Franky Family"
-    ],
-    "effect": "若自己擁有《佛朗基一家》特徵的角色卡即將遭到KO時，可以替換成咚‼−1，並將這張角色卡置為休息狀態。",
-    "effect_en": "If your {Franky Family} type Character would be K.O.'d, you may DON!! −1 and rest this Character instead.",
-    "trigger": "",
-    "trigger_en": "",
-    "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+    "effect": "若自己擁有《佛朗基家族》特徵的角色卡即將遭到KO時，可以替換成咚‼−1，並將這張角色卡置為休息狀態。",
+    "effect_en": "If your {The Franky Family} type Character would be K.O.'d, you may DON!! −1 and rest this Character instead."
   },
   "OP18-091": {
     "card_id": "OP18-091",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "布洛基",
     "name_en": "Brogy",
     "card_type": "Character",
@@ -205588,17 +205599,6 @@
     "colors_en": [
       "Black"
     ],
-    "cost": 4,
-    "power": 5000,
-    "life": null,
-    "counter": 2000,
-    "rarity": "C",
-    "attributes": [
-      "斬"
-    ],
-    "attributes_en": [
-      "Slash"
-    ],
     "traits": [
       "巨人族",
       "艾爾帕布",
@@ -205609,22 +205609,29 @@
       "Elbaph",
       "Giant Pirates"
     ],
-    "effect": "這張角色卡的費用+12。\n【攻擊時】可以廢棄1張自己的手牌：將最多1張自己廢棄區中費用2以下的角色卡加入手牌。",
-    "effect_en": "This Character gains +12 cost.\n[When Attacking] You may trash 1 card from your hand: Add up to 1 Character card with a cost of 2 or less from your trash to your hand.",
-    "trigger": "",
-    "trigger_en": "",
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-091.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-091.png",
+    "cost": 4,
+    "life": null,
+    "power": 5000,
+    "counter": 2000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "這張角色卡的費用+12。\n【攻擊時】可以廢棄1張自己的手牌：將最多1張自己廢棄區中費用2以下的角色卡加入手牌。",
+    "effect_en": "This Character gains +12 cost. [When Attacking] You may trash 1 card from your hand: Add up to 1 of your Character cards with a cost of 2 or less from your trash to your hand."
   },
   "OP18-111": {
     "card_id": "OP18-111",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "飛鼠",
     "name_en": "Momonga",
     "card_type": "Character",
@@ -205637,17 +205644,6 @@
     "colors_en": [
       "Yellow"
     ],
-    "cost": 7,
-    "power": 7000,
-    "life": null,
-    "counter": 2000,
-    "rarity": "C",
-    "attributes": [
-      "斬"
-    ],
-    "attributes_en": [
-      "Slash"
-    ],
     "traits": [
       "中將",
       "海軍"
@@ -205656,13 +205652,26 @@
       "Vice Admiral",
       "Navy"
     ],
-    "effect": "【速攻】(這張卡片在登場的回合即可攻擊)",
-    "effect_en": "[Rush] (This card can attack the turn it is played.)",
-    "trigger": "",
-    "trigger_en": "",
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-111.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-111.png",
+    "cost": 7,
+    "life": null,
+    "power": 7000,
+    "counter": 2000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "【速攻】(這張卡片在登場的回合即可攻擊)",
+    "effect_en": "[Rush] (This card can attack on the turn in which it is played.)"
   },
   "EB05-059": {
     "card_id": "EB05-059",
@@ -205797,12 +205806,6 @@
   },
   "OP18-010": {
     "card_id": "OP18-010",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "多尼多尼・喬巴",
     "name_en": "Tony Tony.Chopper",
     "card_type": "Character",
@@ -205815,17 +205818,6 @@
     "colors_en": [
       "Red"
     ],
-    "cost": 4,
-    "power": 5000,
-    "life": null,
-    "counter": 2000,
-    "rarity": "UC",
-    "attributes": [
-      "打"
-    ],
-    "attributes_en": [
-      "Strike"
-    ],
     "traits": [
       "動物",
       "阿拉巴斯坦王國",
@@ -205836,22 +205828,29 @@
       "Alabasta",
       "Straw Hat Crew"
     ],
-    "effect": "【KO時】將最多1張自己廢棄區中力量值4000以下的角色卡，加入手牌。",
-    "effect_en": "[On K.O.] Add up to 1 Character card with 4000 power or less from your trash to your hand.",
-    "trigger": "",
-    "trigger_en": "",
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-010.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-010.png",
+    "cost": 4,
+    "life": null,
+    "power": 5000,
+    "counter": 2000,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "【KO時】將最多1張自己廢棄區中力量值4000以下的角色卡，加入手牌。",
+    "effect_en": "[On K.O.] Add up to 1 Character card with 4000 power or less from your trash to your hand."
   },
   "OP18-032": {
     "card_id": "OP18-032",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "巴其",
     "name_en": "Buggy",
     "card_type": "Character",
@@ -205864,17 +205863,6 @@
     "colors_en": [
       "Green"
     ],
-    "cost": 5,
-    "power": 6000,
-    "life": null,
-    "counter": 1000,
-    "rarity": "UC",
-    "attributes": [
-      "斬"
-    ],
-    "attributes_en": [
-      "Slash"
-    ],
     "traits": [
       "東方藍",
       "巴其海賊團"
@@ -205883,22 +205871,29 @@
       "East Blue",
       "Buggy Pirates"
     ],
-    "effect": "【登場時】/【KO時】最多1張對手休息狀態、力量值8000以下的角色卡，在下一個對手的重整階段無法為活動狀態。",
-    "effect_en": "[On Play]/[On K.O.] Up to 1 of your opponent's rested Characters with 8000 power or less will not become active in your opponent's next Refresh Phase.",
-    "trigger": "",
-    "trigger_en": "",
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-032.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-032.png",
+    "cost": 5,
+    "life": null,
+    "power": 6000,
+    "counter": 1000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "【登場時】/【KO時】最多1張對手休息狀態、力量值8000以下的角色卡，在下一個對手的重整階段無法為活動狀態。",
+    "effect_en": "[On Play]/[On K.O.] Up to 1 of your opponent's rested Characters with 8000 power or less will not become active in your opponent's next Refresh Phase."
   },
   "OP18-052": {
     "card_id": "OP18-052",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "Mr.5&Miss情人節",
     "name_en": "Mr.5 & Miss.Valentine",
     "card_type": "Character",
@@ -205911,41 +205906,37 @@
     "colors_en": [
       "Blue"
     ],
-    "cost": 5,
-    "power": 4000,
-    "life": null,
-    "counter": 2000,
-    "rarity": "UC",
-    "attributes": [
-      "打",
-      "特"
-    ],
-    "attributes_en": [
-      "Strike",
-      "Special"
-    ],
     "traits": [
       "B・W"
     ],
     "traits_en": [
       "Baroque Works"
     ],
-    "effect": "【咚‼×1】這張角色卡力量值+1000。\n【登場時】使最多1張自己手牌中費用3以下、擁有包含『B・W』特徵的角色卡登場。",
-    "effect_en": "[DON!! x1] This Character gains +1000 power.\n[On Play] Play up to 1 Character card with a cost of 3 or less and a type including \"Baroque Works\" from your hand.",
-    "trigger": "",
-    "trigger_en": "",
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-052.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-052.png",
+    "cost": 5,
+    "life": null,
+    "power": 4000,
+    "counter": 2000,
+    "attributes_en": [
+      "Strike",
+      "Special"
+    ],
+    "effect": "【咚‼×1】這張角色卡力量值+1000。\n【登場時】使最多1張自己手牌中費用3以下、擁有包含『B・W』特徵的角色卡登場。",
+    "effect_en": "[DON!! x1] This Character gains +1000 power. [On Play] Play up to 1 Character card with a type including \"Baroque Works\" and a cost of 3 or less from your hand.",
+    "attributes": [
+      "打",
+      "特"
     ]
   },
   "OP18-063": {
     "card_id": "OP18-063",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "基威&摩茲",
     "name_en": "Kiwi & Mozu",
     "card_type": "Character",
@@ -205958,32 +205949,34 @@
     "colors_en": [
       "Purple"
     ],
-    "cost": 3,
-    "power": 1000,
-    "life": null,
-    "counter": 2000,
+    "traits": [
+      "W7",
+      "佛朗基家族"
+    ],
+    "traits_en": [
+      "Water Seven",
+      "The Franky Family"
+    ],
     "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-063.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-063.png",
+    "cost": 3,
+    "life": null,
+    "power": 1000,
+    "counter": 2000,
     "attributes": [
       "斬"
     ],
     "attributes_en": [
       "Slash"
     ],
-    "traits": [
-      "W7",
-      "佛朗基一家"
-    ],
-    "traits_en": [
-      "Water Seven",
-      "Franky Family"
-    ],
     "effect": "【登場時】可將1張自己費用5以下的舞台卡KO：從咚‼卡組將最多1張咚‼卡以休息狀態追加。",
-    "effect_en": "[On Play] You may K.O. 1 of your Stage cards with a cost of 5 or less: Add up to 1 DON!! card as rested from your DON!! deck.",
-    "trigger": "",
-    "trigger_en": "",
-    "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+    "effect_en": "[On Play] You may K.O. 1 of your Stages with a cost of 5 or less: Add up to 1 DON!! card as rested from your DON!! deck."
   },
   "P-160": {
     "card_id": "P-160",
@@ -206032,12 +206025,6 @@
   },
   "OP18-089": {
     "card_id": "OP18-089",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "多利",
     "name_en": "Dorry",
     "card_type": "Character",
@@ -206050,17 +206037,6 @@
     "colors_en": [
       "Black"
     ],
-    "cost": 4,
-    "power": 5000,
-    "life": null,
-    "counter": 2000,
-    "rarity": "C",
-    "attributes": [
-      "斬"
-    ],
-    "attributes_en": [
-      "Slash"
-    ],
     "traits": [
       "巨人族",
       "艾爾帕布",
@@ -206071,24 +206047,31 @@
       "Elbaph",
       "Giant Pirates"
     ],
-    "effect": "這張角色卡的費用+12。 【登場時】可以廢棄1張自己的手牌：對手廢棄1張自身的手牌。",
-    "effect_en": "This Character gains +12 cost. [On Play] You may trash 1 card from your hand: Your opponent trashes 1 card from their hand.",
-    "trigger": "",
-    "trigger_en": "",
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-089.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-089.png",
+    "cost": 4,
+    "life": null,
+    "power": 5000,
+    "counter": 2000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "這張角色卡的費用+12。 【登場時】可以廢棄1張自己的手牌：對手廢棄1張自身的手牌。",
+    "effect_en": "This Character gains +12 cost. [On Play] You may trash 1 card from your hand: Your opponent trashes 1 card from their hand."
   },
   "OP18-076": {
     "card_id": "OP18-076",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "鯊魚潛水3號",
-    "name_en": "Shark Submerge No.3",
+    "name_en": "Shark Submerge 3",
     "card_type": "Stage",
     "category": "Stage",
     "card_type_en": "Stage",
@@ -206099,39 +206082,29 @@
     "colors_en": [
       "Purple"
     ],
-    "cost": 5,
-    "power": null,
-    "life": null,
-    "counter": null,
-    "rarity": "UC",
-    "attributes": [
-      "-"
-    ],
-    "attributes_en": [
-      "-"
-    ],
     "traits": [
       "草帽一行人"
     ],
     "traits_en": [
       "Straw Hat Crew"
     ],
-    "effect": "【登場時】抽1張卡片，並從咚‼卡組將最多1張咚‼卡以休息狀態追加。\n【對方攻擊時】可將這張舞台卡置為休息狀態：最多2張自己的角色卡，以及力量值5000以下的領航卡，在這個回合，力量值+1000。",
-    "effect_en": "[On Play] Draw 1 card and add up to 1 DON!! card as rested from your DON!! deck.\n[On Your Opponent's Attack] You may rest this Stage: Up to 2 of your Characters, and your Leader with a power of 5000 or less, gain +1000 power during this turn.",
-    "trigger": "",
-    "trigger_en": "",
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-076.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-076.png",
+    "cost": 5,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "【登場時】抽1張卡片，並從咚‼卡組將最多1張咚‼卡以休息狀態追加。\n【對方攻擊時】可將這張舞台卡置為休息狀態：最多2張自己的角色卡，以及力量值5000以下的領航卡，在這個回合，力量值+1000。",
+    "effect_en": "[On Play] Draw 1 card, then add up to 1 DON!! card as rested from your DON!! deck. [On Your Opponent's Attack] You may rest this Stage: Your Leader with 5000 power or less and up to 2 of your Characters gain +1000 power during this turn."
   },
   "OP18-106": {
     "card_id": "OP18-106",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "鬥犬",
     "name_en": "Doberman",
     "card_type": "Character",
@@ -206144,17 +206117,6 @@
     "colors_en": [
       "Yellow"
     ],
-    "cost": 7,
-    "power": 7000,
-    "life": null,
-    "counter": 2000,
-    "rarity": "C",
-    "attributes": [
-      "斬"
-    ],
-    "attributes_en": [
-      "Slash"
-    ],
     "traits": [
       "中將",
       "海軍"
@@ -206163,13 +206125,26 @@
       "Vice Admiral",
       "Navy"
     ],
-    "effect": "【雙重攻擊】(這張卡片造成的傷害為2)",
-    "effect_en": "[Double Attack] (This card deals 2 damage.)",
-    "trigger": "",
-    "trigger_en": "",
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-106.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-106.png",
+    "cost": 7,
+    "life": null,
+    "power": 7000,
+    "counter": 2000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "【雙重攻擊】(這張卡片造成的傷害為2)",
+    "effect_en": "[Double Attack] (This card deals 2 damage.)"
   },
   "EB05-049": {
     "card_id": "EB05-049",
@@ -206216,12 +206191,6 @@
   },
   "OP18-017": {
     "card_id": "OP18-017",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "羅羅亞・索隆",
     "name_en": "Roronoa Zoro",
     "card_type": "Character",
@@ -206234,17 +206203,6 @@
     "colors_en": [
       "Red"
     ],
-    "cost": 4,
-    "power": 4000,
-    "life": null,
-    "counter": 1000,
-    "rarity": "C",
-    "attributes": [
-      "斬"
-    ],
-    "attributes_en": [
-      "Slash"
-    ],
     "traits": [
       "阿拉巴斯坦王國",
       "草帽一行人"
@@ -206253,22 +206211,29 @@
       "Alabasta",
       "Straw Hat Crew"
     ],
-    "effect": "【每回合1次】若自己擁有《阿拉巴斯坦王國》特徵的角色卡因對手的效果即將離開場上時，可以替換成自己的領航卡，在這個回合，力量值-2000。\n【攻擊時】最多1張自己擁有《阿拉巴斯坦王國》特徵的角色卡，在這個回合，獲得【速攻】。",
-    "effect_en": "[Once Per Turn] If one of your {Alabasta} type Characters would be removed from the field by your opponent's effect, you may give your Leader −2000 power during this turn instead.\n[When Attacking] Up to 1 of your {Alabasta} type Characters gains [Rush] during this turn.",
-    "trigger": "",
-    "trigger_en": "",
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-017.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-017.png",
+    "cost": 4,
+    "life": null,
+    "power": 4000,
+    "counter": 1000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "【每回合1次】若自己擁有《阿拉巴斯坦王國》特徵的角色卡因對手的效果即將離開場上時，可以替換成自己的領航卡，在這個回合，力量值-2000。\n【攻擊時】最多1張自己擁有《阿拉巴斯坦王國》特徵的角色卡，在這個回合，獲得【速攻】。",
+    "effect_en": "[Once Per Turn] If your {Alabasta} type Character would be removed from the field by your opponent's effect, you may give your Leader −2000 power during this turn instead. [When Attacking] Up to 1 of your {Alabasta} type Characters gains [Rush] during this turn."
   },
   "OP18-024": {
     "card_id": "OP18-024",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "可可羅",
     "name_en": "Kokoro",
     "card_type": "Character",
@@ -206281,17 +206246,6 @@
     "colors_en": [
       "Green"
     ],
-    "cost": 2,
-    "power": 0,
-    "life": null,
-    "counter": 1000,
-    "rarity": "C",
-    "attributes": [
-      "知"
-    ],
-    "attributes_en": [
-      "Wisdom"
-    ],
     "traits": [
       "人魚族",
       "W7"
@@ -206300,24 +206254,31 @@
       "Merfolk",
       "Water Seven"
     ],
-    "effect": "【防禦】【我方回合結束時】可以將這張角色卡放置到廢棄區：將自己的領航卡置為活動狀態。",
-    "effect_en": "[Blocker] [End of Your Turn] You may trash this Character: Set your Leader as active.",
-    "trigger": "",
-    "trigger_en": "",
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-024.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-024.png",
+    "cost": 2,
+    "life": null,
+    "power": null,
+    "counter": 1000,
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "effect": "【防禦】【我方回合結束時】可以將這張角色卡放置到廢棄區：將自己的領航卡置為活動狀態。",
+    "effect_en": "[Blocker] (After your opponent declares an attack, you may rest this card to make it the new target of the attack.) [End of Your Turn] You may trash this Character: Set your Leader as active."
   },
   "OP18-055": {
     "card_id": "OP18-055",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "Mr.9&Miss星期三",
-    "name_en": "Mr.9 & Miss Wednesday",
+    "name_en": "Mr.9 & Ms. Wednesday",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -206328,41 +206289,37 @@
     "colors_en": [
       "Blue"
     ],
-    "cost": 3,
-    "power": 4000,
-    "life": null,
-    "counter": 1000,
-    "rarity": "C",
-    "attributes": [
-      "斬",
-      "打"
-    ],
-    "attributes_en": [
-      "Slash",
-      "Strike"
-    ],
     "traits": [
       "B・W"
     ],
     "traits_en": [
       "Baroque Works"
     ],
-    "effect": "【咚‼×1】這張角色卡力量值+1000。\n【登場時】將最多1張對手費用2以下的角色卡放回持有者的手牌。",
-    "effect_en": "[DON!! x1] This Character gains +1000 power.\n[On Play] Return up to 1 of your opponent's Characters with a cost of 2 or less to the owner's hand.",
-    "trigger": "",
-    "trigger_en": "",
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-055.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-055.png",
+    "cost": 3,
+    "life": null,
+    "power": 4000,
+    "counter": 1000,
+    "attributes_en": [
+      "Slash",
+      "Strike"
+    ],
+    "effect": "【咚‼×1】這張角色卡力量值+1000。\n【登場時】將最多1張對手費用2以下的角色卡放回持有者的手牌。",
+    "effect_en": "[DON!! x1] This Character gains +1000 power. [On Play] Return up to 1 of your opponent's Characters with a cost of 2 or less to the owner's hand.",
+    "attributes": [
+      "斬",
+      "打"
     ]
   },
   "OP18-011": {
     "card_id": "OP18-011",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "納菲魯塔利・薇薇",
     "name_en": "Nefeltari Vivi",
     "card_type": "Character",
@@ -206375,39 +206332,35 @@
     "colors_en": [
       "Red"
     ],
-    "cost": 2,
-    "power": 0,
-    "life": null,
-    "counter": 1000,
-    "rarity": "SR",
-    "attributes": [
-      "知"
-    ],
-    "attributes_en": [
-      "Wisdom"
-    ],
     "traits": [
       "阿拉巴斯坦王國"
     ],
     "traits_en": [
       "Alabasta"
     ],
-    "effect": "自己同時擁有《動物》和《阿拉巴斯坦王國》特徵的角色卡全部力量值+1000。\n【對方回合中】這張角色卡獲得【防禦】，力量值+6000。",
-    "effect_en": "All of your Characters with both the {Animal} and {Alabasta} types gain +1000 power.\n[Opponent's Turn] This Character gains [Blocker] and +6000 power.",
-    "trigger": "",
-    "trigger_en": "",
+    "rarity": "SR",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-011.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-011.png",
+    "cost": 2,
+    "life": null,
+    "power": null,
+    "counter": 1000,
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "effect": "自己同時擁有《動物》和《阿拉巴斯坦王國》特徵的角色卡全部力量值+1000。\n【對方回合中】這張角色卡獲得【防禦】，力量值+6000。",
+    "effect_en": "All of your Characters with both the {Animal} and {Alabasta} types gain +1000 power. [Opponent's Turn] This Character gains [Blocker] and +6000 power."
   },
   "OP18-034": {
     "card_id": "OP18-034",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "佛朗基",
     "name_en": "Franky",
     "card_type": "Character",
@@ -206420,45 +206373,41 @@
     "colors_en": [
       "Green"
     ],
-    "cost": 6,
-    "power": 7000,
-    "life": null,
-    "counter": null,
+    "traits": [
+      "W7",
+      "佛朗基家族",
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Water Seven",
+      "The Franky Family",
+      "Straw Hat Crew"
+    ],
     "rarity": "SR",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-034.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-034.png",
+    "cost": 6,
+    "life": null,
+    "power": 7000,
+    "counter": null,
     "attributes": [
       "打"
     ],
     "attributes_en": [
       "Strike"
     ],
-    "traits": [
-      "W7",
-      "佛朗基一家",
-      "草帽一行人"
-    ],
-    "traits_en": [
-      "Water Seven",
-      "Franky Family",
-      "Straw Hat Crew"
-    ],
-    "effect": "【登場時】使最多1張自己手牌中費用5以下、擁有《佛朗基一家》或《草帽一行人》特徵的卡片登場。之後，若自己有費用5以上的舞台卡時，將最多1張對手費用6以下的角色卡置為休息狀態。",
-    "effect_en": "[On Play] Play up to 1 card with a cost of 5 or less and the {Franky Family} or {Straw Hat Crew} type from your hand. Then, if you have a Stage with a cost of 5 or more, rest up to 1 of your opponent's Characters with a cost of 6 or less.",
-    "trigger": "",
-    "trigger_en": "",
-    "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+    "effect": "【登場時】使最多1張自己手牌中費用5以下、擁有《佛朗基家族》或《草帽一行人》特徵的卡片登場。之後，若自己有費用5以上的舞台卡時，將最多1張對手費用6以下的角色卡置為休息狀態。",
+    "effect_en": "[On Play] Play up to 1 {The Franky Family} or {Straw Hat Crew} type card with a cost of 5 or less from your hand. Then, if you have a Stage with a cost of 5 or more, rest up to 1 of your opponent's Characters with a cost of 6 or less."
   },
   "OP18-046": {
     "card_id": "OP18-046",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "Mr.0&Miss All星期天",
-    "name_en": "Mr.0 & Miss All Sunday",
+    "name_en": "Mr.0 & Ms. All Sunday",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -206469,19 +206418,6 @@
     "colors_en": [
       "Blue"
     ],
-    "cost": 9,
-    "power": 10000,
-    "life": null,
-    "counter": null,
-    "rarity": "SR",
-    "attributes": [
-      "特",
-      "知"
-    ],
-    "attributes_en": [
-      "Special",
-      "Wisdom"
-    ],
     "traits": [
       "王下七武海",
       "B・W"
@@ -206490,22 +206426,31 @@
       "The Seven Warlords of the Sea",
       "Baroque Works"
     ],
-    "effect": "【登場時】抽2張卡片，並附加最多各2張休息狀態的咚‼卡在自己的領航卡和自己全數的角色卡。\n【對方攻擊時】可以廢棄1張自己的手牌：自己擁有包含『B・W』特徵的領航卡原本的力量值，在這個回合變更成7000。",
-    "effect_en": "[On Play] Draw 2 cards and give your Leader and all of your Characters up to 2 rested DON!! cards each.\n[On Your Opponent's Attack] You may trash 1 card from your hand: Your Leader with a type including \"Baroque Works\" has its base power become 7000 during this turn.",
-    "trigger": "",
-    "trigger_en": "",
+    "rarity": "SR",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-046.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-046.png",
+    "cost": 9,
+    "life": null,
+    "power": 10000,
+    "counter": null,
+    "attributes_en": [
+      "Special",
+      "Wisdom"
+    ],
+    "effect": "【登場時】抽2張卡片，並附加最多各2張休息狀態的咚‼卡在自己的領航卡和自己全數的角色卡。\n【對方攻擊時】可以廢棄1張自己的手牌：自己擁有包含『B・W』特徵的領航卡原本的力量值，在這個回合變更成7000。",
+    "effect_en": "[On Play] Draw 2 cards and give your Leader and all of your Characters up to 2 rested DON!! cards each. [On Your Opponent's Attack] You may trash 1 card from your hand: The base power of your Leader with a type including \"Baroque Works\" becomes 7000 during this turn.",
+    "attributes": [
+      "特",
+      "知"
     ]
   },
   "OP18-048": {
     "card_id": "OP18-048",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "Mr.1&Miss雙手指",
     "name_en": "Mr.1 & Miss Doublefinger",
     "card_type": "Character",
@@ -206518,41 +206463,37 @@
     "colors_en": [
       "Blue"
     ],
-    "cost": 6,
-    "power": 6000,
-    "life": null,
-    "counter": null,
-    "rarity": "SR",
-    "attributes": [
-      "斬"
-    ],
-    "attributes_en": [
-      "Slash"
-    ],
     "traits": [
       "B・W"
     ],
     "traits_en": [
       "Baroque Works"
     ],
-    "effect": "【速攻】【登場時】使最多1張自己手牌中費用5以下、擁有包含『B・W』特徵的角色卡登場。",
-    "effect_en": "[Rush] [On Play] Play up to 1 Character card with a cost of 5 or less and a type including \"Baroque Works\" from your hand.",
-    "trigger": "",
-    "trigger_en": "",
+    "rarity": "SR",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-048.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-048.png",
+    "cost": 6,
+    "life": null,
+    "power": 6000,
+    "counter": null,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "【速攻】【登場時】使最多1張自己手牌中費用5以下、擁有包含『B・W』特徵的角色卡登場。",
+    "effect_en": "[Rush] (This card can attack on the turn in which it is played.) [On Play] Play up to 1 Character card with a type including \"Baroque Works\" and a cost of 5 or less from your hand."
   },
   "OP18-084": {
     "card_id": "OP18-084",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "軍子宮",
-    "name_en": "Gunko",
+    "name_en": "Saint Gunko",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -206563,41 +206504,37 @@
     "colors_en": [
       "Black"
     ],
-    "cost": 1,
-    "power": 2000,
-    "life": null,
-    "counter": null,
-    "rarity": "SR",
-    "attributes": [
-      "特"
-    ],
-    "attributes_en": [
-      "Special"
-    ],
     "traits": [
       "天龍人",
       "神之騎士團"
     ],
     "traits_en": [
       "Celestial Dragons",
-      "Holy Knights"
+      "Holy Knights of God"
+    ],
+    "rarity": "SR",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-084.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-084.png",
+    "cost": 1,
+    "life": null,
+    "power": 2000,
+    "counter": null,
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
     ],
     "effect": "【登場時】從自己的卡組上面查看4張卡片，公開最多1張擁有《神之騎士團》特徵的卡片，並加入手牌。之後，將其餘卡片放置到廢棄區。\n【啟動主要】可以將4張自己的咚‼卡置為休息狀態：使最多1張自己廢棄區中費用6以下、擁有《神之騎士團》特徵的角色卡登場。",
-    "effect_en": "[On Play] Look at 4 cards from the top of your deck; reveal up to 1 {Holy Knights} type card and add it to your hand. Then, trash the rest.\n[Activate: Main] You may rest 4 of your DON!! cards: Play up to 1 {Holy Knights} type Character card with a cost of 6 or less from your trash.",
-    "trigger": "",
-    "trigger_en": "",
-    "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+    "effect_en": "[On Play] Look at 4 cards from the top of your deck; reveal up to 1 {Holy Knights of God} type card and add it to your hand. Then, trash the rest. [Activate: Main] You may rest 4 of your DON!! cards: Play up to 1 {Holy Knights of God} type Character card with a cost of 6 or less from your trash."
   },
   "OP18-061": {
     "card_id": "OP18-061",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "艾斯巴古",
     "name_en": "Iceburg",
     "card_type": "Character",
@@ -206610,17 +206547,6 @@
     "colors_en": [
       "Purple"
     ],
-    "cost": 2,
-    "power": 0,
-    "life": null,
-    "counter": 1000,
-    "rarity": "SR",
-    "attributes": [
-      "知"
-    ],
-    "attributes_en": [
-      "Wisdom"
-    ],
     "traits": [
       "W7",
       "GC"
@@ -206629,22 +206555,29 @@
       "Water Seven",
       "Galley-La Company"
     ],
-    "effect": "【登場時】從自己的卡組上面查看5張卡片，公開合計最多2張舞台卡或擁有《W7》特徵的卡片，並加入手牌。之後，將其餘卡片依任意順序放到卡組下面。",
-    "effect_en": "[On Play] Look at 5 cards from the top of your deck; reveal up to a total of 2 Stage cards or {Water Seven} type cards and add them to your hand. Then, place the rest at the bottom of your deck in any order.",
-    "trigger": "",
-    "trigger_en": "",
+    "rarity": "SR",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-061.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-061.png",
+    "cost": 2,
+    "life": null,
+    "power": null,
+    "counter": 1000,
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "effect": "【登場時】從自己的卡組上面查看5張卡片，公開合計最多2張舞台卡或擁有《W7》特徵的卡片，並加入手牌。之後，將其餘卡片依任意順序放到卡組下面。",
+    "effect_en": "[On Play] Look at 5 cards from the top of your deck; reveal up to a total of 2 Stage cards or {Water Seven} type cards and add them to your hand. Then, place the rest at the bottom of your deck in any order."
   },
   "OP18-100": {
     "card_id": "OP18-100",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "卡莉法",
     "name_en": "Kalifa",
     "card_type": "Character",
@@ -206657,39 +206590,35 @@
     "colors_en": [
       "Yellow"
     ],
-    "cost": 6,
-    "power": 7000,
-    "life": null,
-    "counter": 1000,
-    "rarity": "SR",
-    "attributes": [
-      "特"
-    ],
-    "attributes_en": [
-      "Special"
-    ],
     "traits": [
       "CP9"
     ],
     "traits_en": [
       "CP9"
     ],
-    "effect": "【登場時】抽1張卡片，並將最多1張自己手牌中擁有包含『CP』特徵的卡片，以正面朝上加入自己的生命值區上面或下面。\n【觸發器】若自己的領航卡擁有包含『CP』特徵時，抽1張卡片，並將最多1張對手的領航卡或角色卡置為休息狀態。",
-    "effect_en": "[On Play] Draw 1 card and add up to 1 card with a type including \"CP\" from your hand to the top or bottom of your Life cards face-up.\n[Trigger] If your Leader has a type including \"CP\", draw 1 card and rest up to 1 of your opponent's Leader or Characters.",
-    "trigger": "【觸發器】若自己的領航卡擁有包含『CP』特徵時，抽1張卡片，並將最多1張對手的領航卡或角色卡置為休息狀態。",
-    "trigger_en": "[Trigger] If your Leader has a type including \"CP\", draw 1 card and rest up to 1 of your opponent's Leader or Characters.",
+    "rarity": "SR",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-100.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-100.png",
+    "cost": 6,
+    "life": null,
+    "power": 7000,
+    "counter": 1000,
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "effect": "【登場時】抽1張卡片，並將最多1張自己手牌中擁有包含『CP』特徵的卡片，以正面朝上加入自己的生命值區上面或下面。\n【觸發器】若自己的領航卡擁有包含『CP』特徵時，抽1張卡片，並將最多1張對手的領航卡或角色卡置為休息狀態。",
+    "effect_en": "[On Play] Draw 1 card, then add up to 1 card with a type including \"CP\" from your hand to the top or bottom of your Life cards face-up.\n[Trigger] If your Leader's type includes \"CP\", draw 1 card and rest up to 1 of your opponent's Leader or Characters."
   },
   "OP18-113": {
     "card_id": "OP18-113",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "羅布・路基",
     "name_en": "Rob Lucci",
     "card_type": "Character",
@@ -206702,30 +206631,32 @@
     "colors_en": [
       "Yellow"
     ],
-    "cost": 8,
-    "power": 10000,
-    "life": null,
-    "counter": null,
-    "rarity": "SR",
-    "attributes": [
-      "打"
-    ],
-    "attributes_en": [
-      "Strike"
-    ],
     "traits": [
       "CP9"
     ],
     "traits_en": [
       "CP9"
     ],
-    "effect": "【登場時】/【KO時】將最多1張對手生命值區上面的卡片放置到廢棄區。\n【觸發器】若自己的領航卡擁有包含『CP』特徵時，抽1張卡片，並將最多1張費用8以下的角色卡放置到持有者的卡組下面。",
-    "effect_en": "[On Play] / [On K.O.] Trash up to 1 card from the top of your opponent's Life cards.\n[Trigger] If your Leader has a type including \"CP\", draw 1 card and place up to 1 Character with a cost of 8 or less at the bottom of the owner's deck.",
-    "trigger": "【觸發器】若自己的領航卡擁有包含『CP』特徵時，抽1張卡片，並將最多1張費用8以下的角色卡放置到持有者的卡組下面。",
-    "trigger_en": "[Trigger] If your Leader has a type including \"CP\", draw 1 card and place up to 1 Character with a cost of 8 or less at the bottom of the owner's deck.",
+    "rarity": "SR",
+    "block_number": 5,
+    "pack_id": "OP-18",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-113.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-113.png",
+    "cost": 8,
+    "life": null,
+    "power": 10000,
+    "counter": null,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "【登場時】/【KO時】將最多1張對手生命值區上面的卡片放置到廢棄區。\n【觸發器】若自己的領航卡擁有包含『CP』特徵時，抽1張卡片，並將最多1張費用8以下的角色卡放置到持有者的卡組下面。",
+    "effect_en": "[On Play]/[On K.O.] Trash up to 1 card from the top of your opponent's Life cards.\n[Trigger] If your Leader's type includes \"CP\", draw 1 card and place up to 1 Character with a cost of 8 or less at the bottom of the owner's deck."
   },
   "EB05-030": {
     "card_id": "EB05-030",
@@ -208039,12 +207970,6 @@
   },
   "OP18-085": {
     "card_id": "OP18-085",
-    "preview": true,
-    "manual_source": "screenshot",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
     "name": "塞伯拉斯",
     "name_en": "Cerberus",
     "card_type": "Character",
@@ -208057,52 +207982,37 @@
     "colors_en": [
       "Black"
     ],
-    "cost": 1,
-    "power": 0,
-    "life": null,
-    "counter": 2000,
+    "traits": [
+      "神之騎士團"
+    ],
+    "traits_en": [
+      "Holy Knights of God"
+    ],
     "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-085.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-085.png",
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": 2000,
     "attributes": [
       "斬"
     ],
     "attributes_en": [
       "Slash"
     ],
-    "traits": [
-      "神之騎士團"
-    ],
-    "traits_en": [
-      "Holy Knights"
-    ],
     "effect": "【啟動主要】可以將這張角色卡放回持有者的手牌：最多1張自己的「夏姆洛克聖」，在這個回合，獲得【速攻】或【消失】或【防禦不可】。",
-    "effect_en": "[Activate: Main] You may return this Character to the owner's hand: Up to 1 of your [Saint Shamrock] Characters gains [Rush], [Banish], or [Unblockable] during this turn.",
-    "trigger": "",
-    "trigger_en": "",
-    "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ]
+    "effect_en": "[Activate: Main] You may return this Character to the owner's hand: Up to 1 of your [Saint Shamrock] Characters gains [Rush], [Banish] or [Unblockable] during this turn."
   },
   "OP18-004": {
-    "preview": true,
-    "manual_source": "screenshot",
-    "text_origin": "self_translated_temporary",
-    "img_url": "",
-    "img_full_url": "",
-    "block_number": 5,
-    "pack_id": "OP-18",
-    "life": null,
-    "trigger": "",
-    "trigger_en": "",
-    "trigger_ja": "",
-    "trigger_hans": "",
-    "card_sets": [
-      "補充包 OP-18【OP-18】"
-    ],
     "card_id": "OP18-004",
     "name": "飛毛腿",
-    "name_hans": "飞毛腿",
     "name_en": "Karoo",
-    "name_ja": "カルー",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -208113,16 +208023,6 @@
     "colors_en": [
       "Red"
     ],
-    "cost": 3,
-    "power": 4000,
-    "counter": 1000,
-    "rarity": "R",
-    "attributes": [
-      "打"
-    ],
-    "attributes_en": [
-      "Strike"
-    ],
     "traits": [
       "動物",
       "阿拉巴斯坦王國"
@@ -208131,32 +208031,31 @@
       "Animal",
       "Alabasta"
     ],
-    "effect": "依這張角色卡的力量分別適用以下效果。・力量5000以上時，這張角色卡獲得【速攻】。・力量6000以上時，這張角色卡獲得【消失】。・力量7000以上時，這張角色卡獲得【防禦不可】。",
-    "effect_hans": "依这张角色卡的力量分别适用以下效果。・力量5000以上时，这张角色卡获得【速攻】。・力量6000以上时，这张角色卡获得【消失】。・力量7000以上时，这张角色卡获得【防御不可】。",
-    "effect_en": "Apply each of the following effects according to this Character's power. • If it is 5000 or more, this Character gains [Rush]. • If it is 6000 or more, this Character gains [Banish]. • If it is 7000 or more, this Character gains [Unblockable].",
-    "effect_ja": "このキャラのパワーによって以下の効果をそれぞれ適用する。・5000以上の場合、このキャラは【速攻】を得る。・6000以上の場合、このキャラは【バニッシュ】を得る。・7000以上の場合、このキャラは【ブロック不可】を得る。"
-  },
-  "OP18-103": {
-    "preview": true,
-    "manual_source": "screenshot",
-    "text_origin": "self_translated_temporary",
-    "img_url": "",
-    "img_full_url": "",
+    "rarity": "R",
     "block_number": 5,
     "pack_id": "OP-18",
-    "life": null,
-    "trigger": "",
-    "trigger_en": "",
-    "trigger_ja": "",
-    "trigger_hans": "",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
+      "補充包 神之支配【OP-18】"
     ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-004.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-004.png",
+    "cost": 3,
+    "life": null,
+    "power": 4000,
+    "counter": 1000,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "依這張角色卡的力量分別適用以下效果。・力量5000以上時，這張角色卡獲得【速攻】。・力量6000以上時，這張角色卡獲得【消失】。・力量7000以上時，這張角色卡獲得【防禦不可】。",
+    "effect_en": "Apply each of the following effects based on this Character's power: • If it has 5000 power or more, this Character gains [Rush]. • If it has 6000 power or more, this Character gains [Banish]. • If it has 7000 power or more, this Character gains [Unblockable]."
+  },
+  "OP18-103": {
     "card_id": "OP18-103",
     "name": "賈布拉",
-    "name_hans": "贾布拉",
     "name_en": "Jabra",
-    "name_ja": "ジャブラ",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -208167,48 +208066,37 @@
     "colors_en": [
       "Yellow"
     ],
-    "cost": 6,
-    "power": 8000,
-    "counter": null,
-    "rarity": "R",
-    "attributes": [
-      "打"
-    ],
-    "attributes_en": [
-      "Strike"
-    ],
     "traits": [
       "CP9"
     ],
     "traits_en": [
       "CP9"
     ],
-    "effect": "【KO時】將自己卡組上面最多1張卡牌加入生命牌上方。之後，將對手生命牌上方最多1張卡牌放置到廢棄區。\n【觸發器】若自己的領袖擁有包含「CP」的特徵，抽1張卡，並將最多1張費用8以下的角色卡放到持有者的卡組下方。",
-    "effect_hans": "【KO时】将自己卡组上面最多1张卡牌加入生命牌上方。之后，将对手生命牌上方最多1张卡牌放置到废弃区。\n【触发器】若自己的领袖拥有包含「CP」的特征，抽1张卡，并将最多1张费用8以下的角色卡放到持有者的卡组下方。",
-    "effect_en": "[On K.O.] Add up to 1 card from the top of your deck to the top of your Life. Then, place up to 1 card from the top of your opponent's Life into the trash.\n[Trigger] If your Leader has a type including \"CP\", draw 1 card and place up to 1 Character with a cost of 8 or less at the bottom of the owner's deck.",
-    "effect_ja": "【KO時】自分のデッキの上から1枚までを、ライフの上に加える。その後、相手のライフの上から1枚までを、トラッシュに置く。\n【トリガー】自分のリーダーが『CP』を含む特徴を持つ場合、カード1枚を引き、コスト8以下のキャラ1枚までを、持ち主のデッキの下に置く。"
-  },
-  "OP18-088": {
-    "preview": true,
-    "manual_source": "screenshot",
-    "text_origin": "self_translated_temporary",
-    "img_url": "",
-    "img_full_url": "",
+    "rarity": "R",
     "block_number": 5,
     "pack_id": "OP-18",
-    "life": null,
-    "trigger": "",
-    "trigger_en": "",
-    "trigger_ja": "",
-    "trigger_hans": "",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
+      "補充包 神之支配【OP-18】"
     ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-103.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-103.png",
+    "cost": 6,
+    "life": null,
+    "power": 8000,
+    "counter": null,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "【KO時】將自己卡組上面最多1張卡牌加入生命牌上方。之後，將對手生命牌上方最多1張卡牌放置到廢棄區。\n【觸發器】若自己的領袖擁有包含「CP」的特徵，抽1張卡，並將最多1張費用8以下的角色卡放到持有者的卡組下方。",
+    "effect_en": "[On K.O.] Add up to 1 card from the top of your deck to the top of your Life cards. Then, trash up to 1 card from the top of your opponent's Life cards.\n[Trigger] If your Leader's type includes \"CP\", draw 1 card and place up to 1 Character with a cost of 8 or less at the bottom of the owner's deck."
+  },
+  "OP18-088": {
     "card_id": "OP18-088",
     "name": "索瑪茲聖",
-    "name_hans": "索玛兹圣",
     "name_en": "Saint Sommers",
-    "name_ja": "ソマーズ聖",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -208219,50 +208107,39 @@
     "colors_en": [
       "Black"
     ],
-    "cost": 6,
-    "power": 6000,
-    "counter": 2000,
-    "rarity": "R",
-    "attributes": [
-      "特"
-    ],
-    "attributes_en": [
-      "Special"
-    ],
     "traits": [
       "天龍人",
       "神之騎士團"
     ],
     "traits_en": [
       "Celestial Dragons",
-      "Holy Knights"
+      "Holy Knights of God"
     ],
-    "effect": "【我方回合中】【登場時】若自己場上的咚!!有6張以上，將最多1張對手原本費用4以下的角色卡KO。\n【KO時】可以將自己的2張手牌棄置：使這張角色卡從廢棄區登場。",
-    "effect_hans": "【我方回合中】【登场时】若自己场上的咚!!有6张以上，将最多1张对手原本费用4以下的角色卡KO。\n【KO时】可以将自己的2张手牌弃置：使这张角色卡从废弃区登场。",
-    "effect_en": "[During Your Turn] [On Play] If you have 6 or more DON!! cards on your field, K.O. up to 1 of your opponent's Characters with a base cost of 4 or less.\n[On K.O.] You may trash 2 cards from your hand: Play this Character card from your trash.",
-    "effect_ja": "【自分のターン中】【登場時】自分の場のドン!!が6枚以上ある場合、相手の元々のコスト4以下のキャラ1枚までを、KOする。\n【KO時】自分の手札2枚を捨てることができる：このキャラカードをトラッシュから登場させる。"
-  },
-  "OP18-064": {
-    "preview": true,
-    "manual_source": "screenshot",
-    "text_origin": "self_translated_temporary",
-    "img_url": "",
-    "img_full_url": "",
+    "rarity": "R",
     "block_number": 5,
     "pack_id": "OP-18",
-    "life": null,
-    "trigger": "",
-    "trigger_en": "",
-    "trigger_ja": "",
-    "trigger_hans": "",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
+      "補充包 神之支配【OP-18】"
     ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-088.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-088.png",
+    "cost": 6,
+    "life": null,
+    "power": 6000,
+    "counter": 2000,
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "effect": "【我方回合中】【登場時】若自己場上的咚!!有6張以上，將最多1張對手原本費用4以下的角色卡KO。\n【KO時】可以將自己的2張手牌棄置：使這張角色卡從廢棄區登場。",
+    "effect_en": "[Your Turn] [On Play] If you have 6 or more DON!! cards on your field, K.O. up to 1 of your opponent's Characters with a base cost of 4 or less. [On K.O.] You may trash 2 cards from your hand: Play this Character card from your trash."
+  },
+  "OP18-064": {
     "card_id": "OP18-064",
     "name": "基林甘聖",
-    "name_hans": "基林甘圣",
     "name_en": "Saint Killingham",
-    "name_ja": "キリンガム聖",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -208273,50 +208150,39 @@
     "colors_en": [
       "Purple"
     ],
-    "cost": 5,
-    "power": 6000,
-    "counter": 1000,
-    "rarity": "UC",
-    "attributes": [
-      "特"
-    ],
-    "attributes_en": [
-      "Special"
-    ],
     "traits": [
       "天龍人",
       "神之騎士團"
     ],
     "traits_en": [
       "Celestial Dragons",
-      "Holy Knights"
+      "Holy Knights of God"
     ],
-    "effect": "【我方回合中】【登場時】咚!!−1：對手原本力量7000以下與原本力量5000以下的角色卡各最多1張，直到下一個對手的結束階段結束前，不能攻擊。\n【KO時】咚!!−1：使這張角色卡從廢棄區登場。",
-    "effect_hans": "【我方回合中】【登场时】咚!!−1：对手原本力量7000以下与原本力量5000以下的角色卡各最多1张，直到下一个对手的结束阶段结束前，不能攻击。\n【KO时】咚!!−1：使这张角色卡从废弃区登场。",
-    "effect_en": "[During Your Turn] [On Play] DON!! −1: Up to 1 of your opponent's Characters with a base power of 7000 or less and up to 1 with a base power of 5000 or less cannot attack until the end of your opponent's next End Phase.\n[On K.O.] DON!! −1: Play this Character card from your trash.",
-    "effect_ja": "【自分のターン中】【登場時】ドン!!−1：相手の元々のパワー7000以下と5000以下のキャラ1枚ずつまでは、次の相手のエンドフェイズ終了時まで、アタックできない。\n【KO時】ドン!!−1：このキャラカードをトラッシュから登場させる。"
-  },
-  "OP18-051": {
-    "preview": true,
-    "manual_source": "screenshot",
-    "text_origin": "self_translated_temporary",
-    "img_url": "",
-    "img_full_url": "",
+    "rarity": "UC",
     "block_number": 5,
     "pack_id": "OP-18",
-    "life": null,
-    "trigger": "",
-    "trigger_en": "",
-    "trigger_ja": "",
-    "trigger_hans": "",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
+      "補充包 神之支配【OP-18】"
     ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-064.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-064.png",
+    "cost": 5,
+    "life": null,
+    "power": 6000,
+    "counter": 1000,
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "effect": "【我方回合中】【登場時】咚!!−1：對手原本力量7000以下與原本力量5000以下的角色卡各最多1張，直到下一個對手的結束階段結束前，不能攻擊。\n【KO時】咚!!−1：使這張角色卡從廢棄區登場。",
+    "effect_en": "[Your Turn] [On Play] DON!! −1: Up to 1 of your opponent's Characters with 7000 base power or less and up to 1 of your opponent's Characters with 5000 base power or less cannot attack until the end of your opponent's next End Phase. [On K.O.] DON!! −1: Play this Character card from your trash."
+  },
+  "OP18-051": {
     "card_id": "OP18-051",
     "name": "Mr.4&Miss聖誕節",
-    "name_hans": "Mr.4&Miss圣诞节",
-    "name_en": "Mr.4 & Miss Merry Christmas",
-    "name_ja": "Mr.4&ミス・メリークリスマス",
+    "name_en": "Mr.4 & Miss.MerryChristmas",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -208327,50 +208193,39 @@
     "colors_en": [
       "Blue"
     ],
-    "cost": 2,
-    "power": 3000,
-    "counter": 1000,
-    "rarity": "R",
-    "attributes": [
-      "斬",
-      "打"
-    ],
-    "attributes_en": [
-      "Slash",
-      "Strike"
-    ],
     "traits": [
       "B・W"
     ],
     "traits_en": [
       "Baroque Works"
     ],
-    "effect": "【咚!!×1】這張角色卡的力量+1000。\n【登場時】可以將自己的5張咚!!置為休息：將費用6以下與費用5以下的角色卡各最多1張，依持有者喜歡的順序放到卡組下方。",
-    "effect_hans": "【咚!!×1】这张角色卡的力量+1000。\n【登场时】可以将自己的5张咚!!置为休息：将费用6以下与费用5以下的角色卡各最多1张，依持有者喜欢的顺序放到卡组下方。",
-    "effect_en": "[DON!! x1] This Character gains +1000 power.\n[On Play] You may rest 5 of your DON!! cards: Place up to 1 Character with a cost of 6 or less and up to 1 Character with a cost of 5 or less at the bottom of the owner's deck in the order the owner chooses.",
-    "effect_ja": "【ドン!!×1】このキャラのパワー+1000。\n【登場時】自分のドン!!5枚をレストにできる：コスト6以下と5以下のキャラ1枚ずつまでを、持ち主が好きな順番でデッキの下に置く。"
-  },
-  "OP18-029": {
-    "preview": true,
-    "manual_source": "screenshot",
-    "text_origin": "self_translated_temporary",
-    "img_url": "",
-    "img_full_url": "",
+    "rarity": "R",
     "block_number": 5,
     "pack_id": "OP-18",
-    "life": null,
-    "trigger": "",
-    "trigger_en": "",
-    "trigger_ja": "",
-    "trigger_hans": "",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
+      "補充包 神之支配【OP-18】"
     ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-051.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-051.png",
+    "cost": 2,
+    "life": null,
+    "power": 3000,
+    "counter": 1000,
+    "attributes_en": [
+      "Slash",
+      "Strike"
+    ],
+    "effect": "【咚!!×1】這張角色卡的力量+1000。\n【登場時】可以將自己的5張咚!!置為休息：將費用6以下與費用5以下的角色卡各最多1張，依持有者喜歡的順序放到卡組下方。",
+    "effect_en": "[DON!! x1] This Character gains +1000 power. [On Play] You may rest 5 of your DON!! cards: Place up to 1 Character with a cost of 6 or less and up to 1 Character with a cost of 5 or less at the bottom of the owner's deck in any order of the owner's choosing.",
+    "attributes": [
+      "斬",
+      "打"
+    ]
+  },
+  "OP18-029": {
     "card_id": "OP18-029",
     "name": "多尼多尼・喬巴",
-    "name_hans": "多尼多尼・乔巴",
     "name_en": "Tony Tony.Chopper",
-    "name_ja": "トニートニー・チョッパー",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -208380,16 +208235,6 @@
     ],
     "colors_en": [
       "Green"
-    ],
-    "cost": 9,
-    "power": 6000,
-    "counter": 1000,
-    "rarity": "R",
-    "attributes": [
-      "打"
-    ],
-    "attributes_en": [
-      "Strike"
     ],
     "traits": [
       "動物",
@@ -208401,32 +208246,31 @@
       "Water Seven",
       "Straw Hat Crew"
     ],
-    "effect": "【速攻】\n【攻擊時】【每回合1次】將最多3張休息狀態的咚!!加到自己的領袖上，並將這張角色卡轉為活動。之後，這張角色卡在下一次自己的重整階段不會轉為活動。",
-    "effect_hans": "【速攻】\n【攻击时】【每回合1次】将最多3张休息状态的咚!!加到自己的领袖上，并将这张角色卡转为活动。之后，这张角色卡在下一次自己的重整阶段不会转为活动。",
-    "effect_en": "[Rush]\n[When Attacking] [Once Per Turn] Attach up to 3 of your rested DON!! cards to your Leader and set this Character as active. Then, this Character does not become active during your next Refresh Phase.",
-    "effect_ja": "【速攻】\n【アタック時】【ターン1回】自分のリーダーにレストのドン!!3枚までを、付与し、このキャラをアクティブにする。その後、このキャラは、次の自分のリフレッシュフェイズでアクティブにならない。"
-  },
-  "OP18-013": {
-    "preview": true,
-    "manual_source": "screenshot",
-    "text_origin": "self_translated_temporary",
-    "img_url": "",
-    "img_full_url": "",
+    "rarity": "R",
     "block_number": 5,
     "pack_id": "OP-18",
-    "life": null,
-    "trigger": "",
-    "trigger_en": "",
-    "trigger_ja": "",
-    "trigger_hans": "",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
+      "補充包 神之支配【OP-18】"
     ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-029.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-029.png",
+    "cost": 9,
+    "life": null,
+    "power": 6000,
+    "counter": 1000,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "【速攻】\n【攻擊時】【每回合1次】將最多3張休息狀態的咚!!加到自己的領袖上，並將這張角色卡轉為活動。之後，這張角色卡在下一次自己的重整階段不會轉為活動。",
+    "effect_en": "[Rush] [When Attacking] [Once Per Turn] Give up to 3 rested DON!! cards to your Leader and set this Character as active. Then, this Character will not become active in your next Refresh Phase."
+  },
+  "OP18-013": {
     "card_id": "OP18-013",
     "name": "貝爾",
-    "name_hans": "贝尔",
     "name_en": "Pell",
-    "name_ja": "ペル",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -208437,48 +208281,37 @@
     "colors_en": [
       "Red"
     ],
-    "cost": 5,
-    "power": 6000,
-    "counter": 1000,
-    "rarity": "R",
-    "attributes": [
-      "斬"
-    ],
-    "attributes_en": [
-      "Slash"
-    ],
     "traits": [
       "阿拉巴斯坦王國"
     ],
     "traits_en": [
       "Alabasta"
     ],
-    "effect": "若自己的領袖擁有特徵《阿拉巴斯坦王國》，這張角色卡獲得【速攻】。\n【登場時】可以從自己的手牌棄置1張力量5000以下的角色卡：抽2張卡，並將最多1張對手原本力量3000以下的角色卡放置到廢棄區。",
-    "effect_hans": "若自己的领袖拥有特征《阿拉巴斯坦王国》，这张角色卡获得【速攻】。\n【登场时】可以从自己的手牌弃置1张力量5000以下的角色卡：抽2张卡，并将最多1张对手原本力量3000以下的角色卡放置到废弃区。",
-    "effect_en": "If your Leader has the {Alabasta} type, this Character gains [Rush].\n[On Play] You may trash 1 Character card with 5000 power or less from your hand: Draw 2 cards, and trash up to 1 of your opponent's Characters with a base power of 3000 or less.",
-    "effect_ja": "自分のリーダーが特徴《アラバスタ王国》を持つ場合、このキャラは【速攻】を得る。\n【登場時】自分の手札からパワー5000以下のキャラカード1枚を捨てることができる：カード2枚を引き、相手の元々のパワー3000以下のキャラ1枚までを、トラッシュに置く。"
-  },
-  "OP18-108": {
-    "preview": true,
-    "manual_source": "screenshot",
-    "text_origin": "self_translated_temporary",
-    "img_url": "",
-    "img_full_url": "",
+    "rarity": "R",
     "block_number": 5,
     "pack_id": "OP-18",
-    "life": null,
-    "trigger": "",
-    "trigger_en": "",
-    "trigger_ja": "",
-    "trigger_hans": "",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
+      "補充包 神之支配【OP-18】"
     ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-013.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-013.png",
+    "cost": 5,
+    "life": null,
+    "power": 6000,
+    "counter": 1000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "若自己的領袖擁有特徵《阿拉巴斯坦王國》，這張角色卡獲得【速攻】。\n【登場時】可以從自己的手牌棄置1張力量5000以下的角色卡：抽2張卡，並將最多1張對手原本力量3000以下的角色卡放置到廢棄區。",
+    "effect_en": "If your Leader has the {Alabasta} type, this Character gains [Rush]. [On Play] You may trash 1 Character card with 5000 power or less from your hand: Draw 2 cards and trash up to 1 of your opponent's Characters with 3000 base power or less."
+  },
+  "OP18-108": {
     "card_id": "OP18-108",
     "name": "法古佛立德",
-    "name_hans": "法古佛立德",
     "name_en": "Funkfreed",
-    "name_ja": "ファンクフリード",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -208489,48 +208322,37 @@
     "colors_en": [
       "Yellow"
     ],
-    "cost": 1,
-    "power": 0,
-    "counter": 1000,
-    "rarity": "UC",
-    "attributes": [
-      "斬"
-    ],
-    "attributes_en": [
-      "Slash"
-    ],
     "traits": [
       "CP9"
     ],
     "traits_en": [
       "CP9"
     ],
-    "effect": "【登場時】可以從自己的手牌棄置1張擁有包含「CP」特徵的卡牌：抽2張卡。\n【啟動主要】可以將這張角色卡置為休息：自己的「斯帕達姆」最多1張，在這個回合中，力量+1000。",
-    "effect_hans": "【登场时】可以从自己的手牌弃置1张拥有包含「CP」特征的卡牌：抽2张卡。\n【启动主要】可以将这张角色卡置为休息：自己的「斯帕达姆」最多1张，在这个回合中，力量+1000。",
-    "effect_en": "[On Play] You may trash 1 card with a type including \"CP\" from your hand: Draw 2 cards.\n[Activate: Main] You may rest this Character: Up to 1 of your [Spandam] gains +1000 power during this turn.",
-    "effect_ja": "【登場時】自分の手札から『CP』を含む特徴を持つカード1枚を捨てることができる：カード2枚を引く。\n【起動メイン】このキャラをレストにできる：自分の「スパンダム」1枚までを、このターン中、パワー+1000。"
-  },
-  "OP18-092": {
-    "preview": true,
-    "manual_source": "screenshot",
-    "text_origin": "self_translated_temporary",
-    "img_url": "",
-    "img_full_url": "",
+    "rarity": "UC",
     "block_number": 5,
     "pack_id": "OP-18",
-    "life": null,
-    "trigger": "",
-    "trigger_en": "",
-    "trigger_ja": "",
-    "trigger_hans": "",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
+      "補充包 神之支配【OP-18】"
     ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-108.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-108.png",
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": 1000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "【登場時】可以從自己的手牌棄置1張擁有包含「CP」特徵的卡牌：抽2張卡。\n【啟動主要】可以將這張角色卡置為休息：自己的「斯帕達姆」最多1張，在這個回合中，力量+1000。",
+    "effect_en": "[On Play] You may trash 1 card with a type including \"CP\" from your hand: Draw 2 cards. [Activate: Main] You may rest this Character: Up to 1 of your [Spandam] gains +1000 power during this turn."
+  },
+  "OP18-092": {
     "card_id": "OP18-092",
     "name": "羅羅亞・索隆",
-    "name_hans": "罗罗亚・索隆",
     "name_en": "Roronoa Zoro",
-    "name_ja": "ロロノア・ゾロ",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -208541,16 +208363,6 @@
     "colors_en": [
       "Black"
     ],
-    "cost": 2,
-    "power": 2000,
-    "counter": 1000,
-    "rarity": "UC",
-    "attributes": [
-      "斬"
-    ],
-    "attributes_en": [
-      "Slash"
-    ],
     "traits": [
       "艾爾帕布",
       "草帽一行人"
@@ -208559,32 +208371,31 @@
       "Elbaph",
       "Straw Hat Crew"
     ],
-    "effect": "若場上有費用12以上的角色卡，這張角色卡的力量+3000。\n若自己的廢棄區有10張以上的卡牌，這張角色卡獲得【速攻】。",
-    "effect_hans": "若场上有费用12以上的角色卡，这张角色卡的力量+3000。\n若自己的废弃区有10张以上的卡牌，这张角色卡获得【速攻】。",
-    "effect_en": "If there is a Character with a cost of 12 or more, this Character gains +3000 power.\nIf you have 10 or more cards in your trash, this Character gains [Rush].",
-    "effect_ja": "コスト12以上のキャラがいる場合、このキャラのパワー+3000。\n自分のトラッシュが10枚以上ある場合、このキャラは【速攻】を得る。"
-  },
-  "OP18-077": {
-    "preview": true,
-    "manual_source": "screenshot",
-    "text_origin": "self_translated_temporary",
-    "img_url": "",
-    "img_full_url": "",
+    "rarity": "UC",
     "block_number": 5,
     "pack_id": "OP-18",
-    "life": null,
-    "trigger": "",
-    "trigger_en": "",
-    "trigger_ja": "",
-    "trigger_hans": "",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
+      "補充包 神之支配【OP-18】"
     ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-092.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-092.png",
+    "cost": 2,
+    "life": null,
+    "power": 2000,
+    "counter": 1000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "若場上有費用12以上的角色卡，這張角色卡的力量+3000。\n若自己的廢棄區有10張以上的卡牌，這張角色卡獲得【速攻】。",
+    "effect_en": "If there is a Character with a cost of 12 or more, this Character gains +3000 power. If you have 10 or more cards in your trash, this Character gains [Rush]. (This card can attack on the turn in which it is played.)"
+  },
+  "OP18-077": {
     "card_id": "OP18-077",
     "name": "白木馬1號",
-    "name_hans": "白木马1号",
-    "name_en": "Shiromokuba No.1",
-    "name_ja": "シロモクバ1号",
+    "name_en": "White Hobby Horse 1",
     "card_type": "Stage",
     "category": "Stage",
     "card_type_en": "Stage",
@@ -208595,48 +208406,31 @@
     "colors_en": [
       "Purple"
     ],
-    "cost": 5,
-    "power": null,
-    "counter": null,
-    "rarity": "UC",
-    "attributes": [
-      "-"
-    ],
-    "attributes_en": [
-      "-"
-    ],
     "traits": [
       "草帽一行人"
     ],
     "traits_en": [
       "Straw Hat Crew"
     ],
-    "effect": "【登場時】抽1張卡，並從咚!!卡組將最多1張咚!!以休息狀態加入。\n【啟動主要】可以將這個場地置為休息：自己擁有特徵《草帽一行人》的角色卡最多1張，在這個回合中，獲得【速攻：角色】。",
-    "effect_hans": "【登场时】抽1张卡，并从咚!!卡组将最多1张咚!!以休息状态加入。\n【启动主要】可以将这个场地置为休息：自己拥有特征《草帽一行人》的角色卡最多1张，在这个回合中，获得【速攻：角色】。",
-    "effect_en": "[On Play] Draw 1 card, and add up to 1 DON!! card from your DON!! deck rested.\n[Activate: Main] You may rest this Stage: Up to 1 of your Characters with the {Straw Hat Crew} type gains [Rush: Character] during this turn.",
-    "effect_ja": "【登場時】カード1枚を引き、ドン!!デッキからドン!!1枚までを、レストで追加する。\n【起動メイン】このステージをレストにできる：自分の特徴《麦わらの一味》を持つキャラ1枚までは、このターン中、【速攻：キャラ】を得る。"
-  },
-  "OP18-047": {
-    "preview": true,
-    "manual_source": "screenshot",
-    "text_origin": "self_translated_temporary",
-    "img_url": "",
-    "img_full_url": "",
+    "rarity": "UC",
     "block_number": 5,
     "pack_id": "OP-18",
-    "life": null,
-    "trigger": "",
-    "trigger_en": "",
-    "trigger_ja": "",
-    "trigger_hans": "",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
+      "補充包 神之支配【OP-18】"
     ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-077.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-077.png",
+    "cost": 5,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "【登場時】抽1張卡，並從咚!!卡組將最多1張咚!!以休息狀態加入。\n【啟動主要】可以將這個場地置為休息：自己擁有特徵《草帽一行人》的角色卡最多1張，在這個回合中，獲得【速攻：角色】。",
+    "effect_en": "[On Play] Draw 1 card, then add up to 1 DON!! card as rested from your DON!! deck. [Activate: Main] You may rest this Stage: Up to 1 of your {Straw Hat Crew} type Characters gains [Rush: Character] during this turn."
+  },
+  "OP18-047": {
     "card_id": "OP18-047",
-    "name": "Mr.1（達茲・波涅士）",
-    "name_hans": "Mr.1（达兹・波涅士）",
-    "name_en": "Mr.1 (Daz.Bonez)",
-    "name_ja": "Mr.1(ダズ・ボーネス)",
+    "name": "Mr.1(達茲・波涅士)",
+    "name_en": "Mr.1(Daz.Bonez)",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -208647,16 +208441,6 @@
     "colors_en": [
       "Blue"
     ],
-    "cost": 2,
-    "power": 3000,
-    "counter": 2000,
-    "rarity": "UC",
-    "attributes": [
-      "斬"
-    ],
-    "attributes_en": [
-      "Slash"
-    ],
     "traits": [
       "十字公會",
       "前B・W"
@@ -208665,32 +208449,31 @@
       "Cross Guild",
       "Former Baroque Works"
     ],
-    "effect": "【登場時】自己擁有特徵《十字公會》或包含「B・W」特徵的領袖，在這個回合中，獲得【防禦不可】。",
-    "effect_hans": "【登场时】自己拥有特征《十字公会》或包含「B・W」特征的领袖，在这个回合中，获得【防御不可】。",
-    "effect_en": "[On Play] Your Leader with the {Cross Guild} type or a type including \"B・W\" gains [Unblockable] during this turn.",
-    "effect_ja": "【登場時】自分の特徴《クロスギルド》か『B・W』を含む特徴を持つリーダーは、このターン中、【ブロック不可】を得る。"
-  },
-  "OP18-036": {
-    "preview": true,
-    "manual_source": "screenshot",
-    "text_origin": "self_translated_temporary",
-    "img_url": "",
-    "img_full_url": "",
+    "rarity": "UC",
     "block_number": 5,
     "pack_id": "OP-18",
-    "life": null,
-    "trigger": "",
-    "trigger_en": "",
-    "trigger_ja": "",
-    "trigger_hans": "",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
+      "補充包 神之支配【OP-18】"
     ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-047.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-047.png",
+    "cost": 2,
+    "life": null,
+    "power": 3000,
+    "counter": 2000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "【登場時】自己擁有特徵《十字公會》或包含「B・W」特徵的領袖，在這個回合中，獲得【防禦不可】。",
+    "effect_en": "[On Play] Your Leader with the {Cross Guild} type or a type including \"Baroque Works\" gains [Unblockable] during this turn. (This card cannot be blocked.)"
+  },
+  "OP18-036": {
     "card_id": "OP18-036",
     "name": "蒙其・D・魯夫",
-    "name_hans": "蒙其・D・鲁夫",
     "name_en": "Monkey.D.Luffy",
-    "name_ja": "モンキー・D・ルフィ",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -208701,16 +208484,6 @@
     "colors_en": [
       "Green"
     ],
-    "cost": 2,
-    "power": 0,
-    "counter": 2000,
-    "rarity": "UC",
-    "attributes": [
-      "打"
-    ],
-    "attributes_en": [
-      "Strike"
-    ],
     "traits": [
       "W7",
       "草帽一行人"
@@ -208719,32 +208492,31 @@
       "Water Seven",
       "Straw Hat Crew"
     ],
-    "effect": "【我方回合結束時】可以將這張角色卡放置到廢棄區：抽1張卡，並將自己的領袖轉為活動。",
-    "effect_hans": "【我方回合结束时】可以将这张角色卡放置到废弃区：抽1张卡，并将自己的领袖转为活动。",
-    "effect_en": "[End of Your Turn] You may trash this Character: Draw 1 card and set your Leader as active.",
-    "effect_ja": "【自分のターン終了時】このキャラをトラッシュに置くことができる：カード1枚を引き、自分のリーダーを、アクティブにする。"
-  },
-  "OP18-015": {
-    "preview": true,
-    "manual_source": "screenshot",
-    "text_origin": "self_translated_temporary",
-    "img_url": "",
-    "img_full_url": "",
+    "rarity": "UC",
     "block_number": 5,
     "pack_id": "OP-18",
-    "life": null,
-    "trigger": "",
-    "trigger_en": "",
-    "trigger_ja": "",
-    "trigger_hans": "",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
+      "補充包 神之支配【OP-18】"
     ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-036.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-036.png",
+    "cost": 2,
+    "life": null,
+    "power": null,
+    "counter": 2000,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "【我方回合結束時】可以將這張角色卡放置到廢棄區：抽1張卡，並將自己的領袖轉為活動。",
+    "effect_en": "[End of Your Turn] You may trash this Character: Draw 1 card and set your Leader as active."
+  },
+  "OP18-015": {
     "card_id": "OP18-015",
     "name": "馬茨格",
-    "name_hans": "马茨格",
-    "name_en": "Matsuge",
-    "name_ja": "マツゲ",
+    "name_en": "Eyelashes",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -208755,16 +208527,6 @@
     "colors_en": [
       "Red"
     ],
-    "cost": 1,
-    "power": 0,
-    "counter": 2000,
-    "rarity": "UC",
-    "attributes": [
-      "打"
-    ],
-    "attributes_en": [
-      "Strike"
-    ],
     "traits": [
       "動物",
       "阿拉巴斯坦王國"
@@ -208773,32 +208535,31 @@
       "Animal",
       "Alabasta"
     ],
-    "effect": "【對手攻擊時】可以將這張角色卡放置到廢棄區：若自己的領袖擁有特徵《阿拉巴斯坦王國》，對手的領袖或角色卡最多1張，在這個回合中，力量−3000。",
-    "effect_hans": "【对手攻击时】可以将这张角色卡放置到废弃区：若自己的领袖拥有特征《阿拉巴斯坦王国》，对手的领袖或角色卡最多1张，在这个回合中，力量−3000。",
-    "effect_en": "[When Opponent Attacks] You may trash this Character: If your Leader has the {Alabasta} type, up to 1 of your opponent's Leader or Characters gets −3000 power during this turn.",
-    "effect_ja": "【相手のアタック時】このキャラをトラッシュに置くことができる：自分のリーダーが特徴《アラバスタ王国》を持つ場合、相手のリーダーかキャラ1枚までを、このターン中、パワー-3000。"
-  },
-  "OP18-101": {
-    "preview": true,
-    "manual_source": "screenshot",
-    "text_origin": "self_translated_temporary",
-    "img_url": "",
-    "img_full_url": "",
+    "rarity": "UC",
     "block_number": 5,
     "pack_id": "OP-18",
-    "life": null,
-    "trigger": "",
-    "trigger_en": "",
-    "trigger_ja": "",
-    "trigger_hans": "",
     "card_sets": [
-      "補充包 OP-18【OP-18】"
+      "補充包 神之支配【OP-18】"
     ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-015.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-015.png",
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": 2000,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "【對手攻擊時】可以將這張角色卡放置到廢棄區：若自己的領袖擁有特徵《阿拉巴斯坦王國》，對手的領袖或角色卡最多1張，在這個回合中，力量−3000。",
+    "effect_en": "[On Your Opponent's Attack] You may trash this Character: If your Leader has the {Alabasta} type, give up to 1 of your opponent's Leader or Characters −3000 power during this turn."
+  },
+  "OP18-101": {
     "card_id": "OP18-101",
     "name": "隈取",
-    "name_hans": "隈取",
     "name_en": "Kumadori",
-    "name_ja": "クマドリ",
     "card_type": "Character",
     "category": "Character",
     "card_type_en": "Character",
@@ -208809,26 +208570,32 @@
     "colors_en": [
       "Yellow"
     ],
-    "cost": 4,
-    "power": 6000,
-    "counter": null,
-    "rarity": "UC",
-    "attributes": [
-      "打"
-    ],
-    "attributes_en": [
-      "Strike"
-    ],
     "traits": [
       "CP9"
     ],
     "traits_en": [
       "CP9"
     ],
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-101.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-101.png",
+    "cost": 4,
+    "life": null,
+    "power": 6000,
+    "counter": null,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
     "effect": "【KO時】從自己的手牌將最多1張擁有包含「CP」特徵的卡牌，正面朝上加入自己的生命牌上方或下方。\n【觸發器】若自己的領袖擁有包含「CP」的特徵，將最多1張對手費用6以下的角色卡KO，或置為休息。",
-    "effect_hans": "【KO时】从自己的手牌将最多1张拥有包含「CP」特征的卡牌，正面朝上加入自己的生命牌上方或下方。\n【触发器】若自己的领袖拥有包含「CP」的特征，将最多1张对手费用6以下的角色卡KO，或置为休息。",
-    "effect_en": "[On K.O.] Add up to 1 card with a type including \"CP\" from your hand face-up to the top or bottom of your Life.\n[Trigger] If your Leader has a type including \"CP\", K.O. or rest up to 1 of your opponent's Characters with a cost of 6 or less.",
-    "effect_ja": "【KO時】自分の手札から『CP』を含む特徴を持つカード1枚までを、自分のライフの上か下に表向きで加える。\n【トリガー】自分のリーダーが『CP』を含む特徴を持つ場合、相手のコスト6以下のキャラ1枚までを、KOするか、レストにする。"
+    "effect_en": "[On K.O.] Add up to 1 card with a type including \"CP\" from your hand to the top or bottom of your Life cards face-up.\n[Trigger] If your Leader's type includes \"CP\", K.O. or rest up to 1 of your opponent's Characters with a cost of 6 or less."
   },
   "EB05-003": {
     "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/EB05-003.png?261016",
@@ -209388,5 +209155,2597 @@
     "attributes": [
       "射"
     ]
+  },
+  "OP18-002": {
+    "card_id": "OP18-002",
+    "name": "尹卡蘭姆",
+    "name_en": "Igaram",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "traits": [
+      "阿拉巴斯坦王國"
+    ],
+    "traits_en": [
+      "Alabasta"
+    ],
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-002.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-002.png",
+    "cost": 1,
+    "life": null,
+    "power": 2000,
+    "counter": 1000,
+    "attributes": [
+      "射"
+    ],
+    "attributes_en": [
+      "Ranged"
+    ],
+    "effect": "【登場時】可以廢棄1張自己手牌中擁有《阿拉巴斯坦王國》特徵的卡片：抽2張卡片。",
+    "effect_en": "[On Play] You may trash 1 {Alabasta} type card from your hand: Draw 2 cards."
+  },
+  "OP18-005": {
+    "card_id": "OP18-005",
+    "name": "功夫海牛",
+    "name_en": "Kung Fu Jugon",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "traits": [
+      "動物",
+      "阿拉巴斯坦王國"
+    ],
+    "traits_en": [
+      "Animal",
+      "Alabasta"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-005.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-005.png",
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": 1000,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "【我方回合中】這張角色卡，每有1張自己的「功夫海牛」，力量值+1000。",
+    "effect_en": "[Your Turn] This Character gains +1000 power for every [Kung Fu Jugon]."
+  },
+  "OP18-006": {
+    "card_id": "OP18-006",
+    "name": "寇沙",
+    "name_en": "Koza",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "traits": [
+      "阿拉巴斯坦王國"
+    ],
+    "traits_en": [
+      "Alabasta"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-006.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-006.png",
+    "cost": 3,
+    "life": null,
+    "power": 4000,
+    "counter": 2000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "若自己擁有「納菲魯塔利・薇薇」時，這張角色卡獲得【速攻】，且力量值+1000。（這張卡片在登場的回合即可攻擊）",
+    "effect_en": "If you have [Nefeltari Vivi], this Character gains [Rush] and +1000 power. (This card can attack on the turn in which it is played.)"
+  },
+  "OP18-007": {
+    "card_id": "OP18-007",
+    "name": "斯摩格",
+    "name_en": "Smoker",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "traits": [
+      "阿拉巴斯坦王國",
+      "海軍"
+    ],
+    "traits_en": [
+      "Alabasta",
+      "Navy"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-007.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-007.png",
+    "cost": 4,
+    "life": null,
+    "power": 5000,
+    "counter": 1000,
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "effect": "若自己的領航卡擁有《海軍》特徵時，這張角色卡獲得【消失】，且力量值+1000。（若這張卡片造成傷害時，觸發器不會發動且該張卡片即放置到廢棄區）",
+    "effect_en": "If your Leader has the {Navy} type, this Character gains [Banish] and +1000 power. (When this card deals damage, the target card is trashed without activating its Trigger.)"
+  },
+  "OP18-008": {
+    "card_id": "OP18-008",
+    "name": "加卡",
+    "name_en": "Chaka",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "traits": [
+      "阿拉巴斯坦王國"
+    ],
+    "traits_en": [
+      "Alabasta"
+    ],
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-008.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-008.png",
+    "cost": 5,
+    "life": null,
+    "power": 6000,
+    "counter": 1000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "若自己的領航卡擁有《阿拉巴斯坦王國》特徵時，這張角色卡獲得【速攻】。【登場時】可以廢棄1張自己手牌中力量值5000以下的角色卡：抽2張卡片，這張角色卡在這個回合獲得【消失】。",
+    "effect_en": "If your Leader has the {Alabasta} type, this Character gains [Rush]. [On Play] You may trash 1 Character card with 5000 power or less from your hand: Draw 2 cards and this Character gains [Banish] during this turn."
+  },
+  "OP18-009": {
+    "card_id": "OP18-009",
+    "name": "超級飛毛腿鴨部隊",
+    "name_en": "Super Spot-Billed Duck Troops",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "traits": [
+      "動物",
+      "阿拉巴斯坦王國"
+    ],
+    "traits_en": [
+      "Animal",
+      "Alabasta"
+    ],
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-009.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-009.png",
+    "cost": 4,
+    "life": null,
+    "power": 5000,
+    "counter": null,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "【速攻】（這張卡片在登場的回合即可攻擊）【啟動主要】可將這張角色卡放置在廢棄區：若自己場上的咚‼卡有9張以上時，使最多1張自己手牌中的「飛毛腿」登場。",
+    "effect_en": "[Rush] (This card can attack on the turn in which it is played.) [Activate: Main] You may trash this Character: If you have 9 or more DON!! cards on your field, play up to 1 [Karoo] from your hand."
+  },
+  "OP18-012": {
+    "card_id": "OP18-012",
+    "name": "剪刀",
+    "name_en": "Pincers",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "traits": [
+      "動物",
+      "阿拉巴斯坦王國"
+    ],
+    "traits_en": [
+      "Animal",
+      "Alabasta"
+    ],
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-012.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-012.png",
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": 2000,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "【攻擊時】最多1張自己同時擁有《動物》與《阿拉巴斯坦王國》特徵的角色卡，在這個回合，力量值+1000。",
+    "effect_en": "[When Attacking] Up to 1 of your Characters with both the {Animal} and {Alabasta} types gains +1000 power during this turn."
+  },
+  "OP18-014": {
+    "card_id": "OP18-014",
+    "name": "波特卡斯・D・艾斯",
+    "name_en": "Portgas.D.Ace",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "traits": [
+      "阿拉巴斯坦王國",
+      "白鬍子海賊團"
+    ],
+    "traits_en": [
+      "Alabasta",
+      "Whitebeard Pirates"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-014.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-014.png",
+    "cost": 3,
+    "life": null,
+    "power": 5000,
+    "counter": null,
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "effect": "【攻擊時】最多1張自己擁有《阿拉巴斯坦王國》特徵的角色卡，在這個回合，獲得【速攻】。（這張卡片在登場的回合即可攻擊）",
+    "effect_en": "[When Attacking] Up to 1 of your {Alabasta} type Characters gains [Rush] during this turn. (This card can attack on the turn in which it is played.)"
+  },
+  "OP18-018": {
+    "card_id": "OP18-018",
+    "name": "走吧，飛毛腿!!!",
+    "name_en": "Let's Go, Karoo!!",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "traits": [
+      "阿拉巴斯坦王國"
+    ],
+    "traits_en": [
+      "Alabasta"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-018.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-018.png",
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "【主要】自己擁有《阿拉巴斯坦王國》特徵的角色卡全數，在這個回合，力量值+1000。\n【觸發器】最多1張自己的領航卡或角色卡，在這個回合，力量值+2000。",
+    "effect_en": "[Main] All of your {Alabasta} type Characters gain +1000 power during this turn.\n[Trigger] Up to 1 of your Leader or Characters gains +2000 power during this turn."
+  },
+  "OP18-019": {
+    "card_id": "OP18-019",
+    "name": "呱～!!!",
+    "name_en": "Quack!!!",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "traits": [
+      "動物",
+      "阿拉巴斯坦王國"
+    ],
+    "traits_en": [
+      "Animal",
+      "Alabasta"
+    ],
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-019.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-019.png",
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "【主要】若自己沒有原本力量值7000以上的角色卡時，最多1張對手的角色卡，在這個回合，力量值-3000。【反擊】自己的領航卡，在這場對戰中，力量值+3000。",
+    "effect_en": "[Main] If you have no Characters with 7000 base power or more, give up to 1 of your opponent's Characters −3000 power during this turn. [Counter] Your Leader gains +3000 power during this battle."
+  },
+  "OP18-020": {
+    "card_id": "OP18-020",
+    "name": "請停止戰鬥!!!",
+    "name_en": "Stop Fighting!!!",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "traits": [
+      "阿拉巴斯坦王國"
+    ],
+    "traits_en": [
+      "Alabasta"
+    ],
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-020.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-020.png",
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "【反擊】可以將自己生命值區的卡片全部加入手牌：若自己的領航卡為「納菲魯塔利・薇薇」時，對手的領航卡和角色卡全數，在這個回合，力量值-5000。",
+    "effect_en": "[Counter] You may add all of your Life cards to your hand: If your Leader is [Nefeltari Vivi], give your opponent's Leader and all of their Characters −5000 power during this turn."
+  },
+  "OP18-023": {
+    "card_id": "OP18-023",
+    "name": "卡蒙",
+    "name_en": "Gaimon",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "綠"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "traits": [
+      "東方藍"
+    ],
+    "traits_en": [
+      "East Blue"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-023.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-023.png",
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": 2000,
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "effect": "【登場時】最多1張自己擁有《東方藍》特徵的領航卡或角色卡，在這個回合，獲得【消失】。（若這張卡片造成傷害時，觸發器不會發動且該張卡片即放置到廢棄區）",
+    "effect_en": "[On Play] Up to 1 of your {East Blue} type Leader or Characters gains [Banish] during this turn. (When this card deals damage, the target card is trashed without activating its Trigger.)"
+  },
+  "OP18-027": {
+    "card_id": "OP18-027",
+    "name": "索隆＆狙擊王",
+    "name_en": "Zoro & Sogeking",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "綠"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "traits": [
+      "狙擊島",
+      "W7",
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Sniper Island",
+      "Water Seven",
+      "Straw Hat Crew"
+    ],
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-027.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-027.png",
+    "cost": 5,
+    "life": null,
+    "power": 6000,
+    "counter": null,
+    "attributes_en": [
+      "Slash",
+      "Ranged"
+    ],
+    "effect": "【對方回合中】自己被賦予3張以上咚‼卡、且處於活動狀態的領航卡「蒙其・D・魯夫」，原本力量值變為7000。【登場時】將最多2張自己的咚‼卡置為活動狀態。之後，最多1張對手費用6以下的角色卡，在下一個對手結束階段結束前，無法置為休息狀態。",
+    "effect_en": "[Opponent's Turn] The base power of your active [Monkey.D.Luffy] Leader with 3 or more DON!! cards given becomes 7000. [On Play] Set up to 2 of your DON!! cards as active. Then, up to 1 of your opponent's Characters with a cost of 6 or less cannot be rested until the end of your opponent's next End Phase.",
+    "attributes": [
+      "斬",
+      "射"
+    ]
+  },
+  "OP18-028": {
+    "card_id": "OP18-028",
+    "name": "琪姆妮",
+    "name_en": "Chimney",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "綠"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "traits": [
+      "W7"
+    ],
+    "traits_en": [
+      "Water Seven"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-028.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-028.png",
+    "cost": 2,
+    "life": null,
+    "power": null,
+    "counter": 1000,
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "effect": "【啟動主要】可以將1張自己的「貢貝」和這張角色卡置為休息狀態：將自己的領航卡「蒙其・D・魯夫」置為活動狀態。",
+    "effect_en": "[Activate: Main] You may rest 1 of your [Gonbe] and this Character: Set your [Monkey.D.Luffy] Leader as active."
+  },
+  "OP18-030": {
+    "card_id": "OP18-030",
+    "name": "娜美",
+    "name_en": "Nami",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "綠"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "traits": [
+      "W7",
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Water Seven",
+      "Straw Hat Crew"
+    ],
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-030.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-030.png",
+    "cost": 4,
+    "life": null,
+    "power": 6000,
+    "counter": 2000,
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "effect": "【對方回合中】若這張角色卡為休息狀態時，這張角色卡的力量值-2000。",
+    "effect_en": "[Opponent's Turn] If this Character is rested, give this Character −2000 power."
+  },
+  "OP18-033": {
+    "card_id": "OP18-033",
+    "name": "砰砰爺",
+    "name_en": "Banban",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "綠"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "traits": [
+      "W7"
+    ],
+    "traits_en": [
+      "Water Seven"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-033.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-033.png",
+    "cost": 2,
+    "life": null,
+    "power": null,
+    "counter": 1000,
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "effect": "【防禦】（對手攻擊後，將這張卡片置為休息狀態即可使攻擊的對象換成這張卡片）【我方回合結束時】可將這張角色卡放置在廢棄區：將最多1張自己的角色卡置為活動狀態。",
+    "effect_en": "[Blocker] (After your opponent declares an attack, you may rest this card to make it the new target of the attack.) [End of Your Turn] You may trash this Character: Set up to 1 of your Characters as active."
+  },
+  "OP18-035": {
+    "card_id": "OP18-035",
+    "name": "麥可＆霍伊克爾",
+    "name_en": "Michael & Hoichael",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "綠"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "traits": [
+      "W7"
+    ],
+    "traits_en": [
+      "Water Seven"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-035.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-035.png",
+    "cost": 3,
+    "life": null,
+    "power": 5000,
+    "counter": 1000,
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ]
+  },
+  "OP18-037": {
+    "card_id": "OP18-037",
+    "name": "橫綱",
+    "name_en": "Yokozuna",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "綠"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "traits": [
+      "動物",
+      "W7"
+    ],
+    "traits_en": [
+      "Animal",
+      "Water Seven"
+    ],
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-037.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-037.png",
+    "cost": 4,
+    "life": null,
+    "power": 2000,
+    "counter": 1000,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "【防禦】（對手攻擊後，將這張卡片置為休息狀態即可使攻擊的對象換成這張卡片）【KO時】將最多1張對手的卡片置為休息狀態。",
+    "effect_en": "[Blocker] (After your opponent declares an attack, you may rest this card to make it the new target of the attack.) [On K.O.] Rest up to 1 of your opponent's cards."
+  },
+  "OP18-038": {
+    "card_id": "OP18-038",
+    "name": "射穿那面旗",
+    "name_en": "Shoot Down That Flag.",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "綠"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "traits": [
+      "W7",
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Water Seven",
+      "Straw Hat Crew"
+    ],
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-038.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-038.png",
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "【主要】從自己的卡組上面查看5張卡片，公開最多1張「狙擊王」或擁有《草帽一行人》特徵的卡片，並加入手牌。之後，將其餘卡片依任意順序放到卡組下面。\n【觸發器】抽1張卡片。",
+    "effect_en": "[Main] Look at 5 cards from the top of your deck; reveal up to 1 [Sogeking] or {Straw Hat Crew} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order.\n[Trigger] Draw 1 card."
+  },
+  "OP18-039": {
+    "card_id": "OP18-039",
+    "name": "橡膠巨人斧",
+    "name_en": "Gum-Gum Giant Axe",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "綠"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "traits": [
+      "W7",
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Water Seven",
+      "Straw Hat Crew"
+    ],
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-039.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-039.png",
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "【反擊】最多1張自己的「蒙其・D・魯夫」，在這場對戰中，力量值+2000。之後，若自己的領航卡為活動狀態時，抽1張卡片。",
+    "effect_en": "[Counter] Up to 1 of your [Monkey.D.Luffy] gains +2000 power during this battle. Then, if your Leader is active, draw 1 card."
+  },
+  "OP18-040": {
+    "card_id": "OP18-040",
+    "name": "惡魔風腳 畫龍點睛射擊",
+    "name_en": "Diable Jambe Flambé Shot",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "綠"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "traits": [
+      "W7",
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Water Seven",
+      "Straw Hat Crew"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-040.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-040.png",
+    "cost": 4,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "【主要】KO最多1張對手處於休息狀態、費用7以下的角色卡。\n【觸發器】將最多1張對手費用7以下的角色卡置為休息狀態。",
+    "effect_en": "[Main] K.O. up to 1 of your opponent's rested Characters with a cost of 7 or less.\n[Trigger] Rest up to 1 of your opponent's Characters with a cost of 7 or less."
+  },
+  "OP18-042": {
+    "card_id": "OP18-042",
+    "name": "哈克",
+    "name_en": "Hack",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "藍"
+    ],
+    "colors_en": [
+      "Blue"
+    ],
+    "traits": [
+      "魚人族",
+      "多雷斯羅薩",
+      "革命軍"
+    ],
+    "traits_en": [
+      "Fish-Man",
+      "Dressrosa",
+      "Revolutionary Army"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-042.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-042.png",
+    "cost": 3,
+    "life": null,
+    "power": 4000,
+    "counter": null,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "【KO時】抽1張卡片。【啟動主要】【每回合1次】附加最多1張休息狀態的咚‼卡在1張自己擁有《多雷斯羅薩》特徵的領航卡或角色卡。",
+    "effect_en": "[On K.O.] Draw 1 card. [Activate: Main] [Once Per Turn] Give up to 1 rested DON!! card to 1 of your {Dressrosa} type Leader or Characters."
+  },
+  "OP18-043": {
+    "card_id": "OP18-043",
+    "name": "Ｆ-鱷魚",
+    "name_en": "Accelegator",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "藍"
+    ],
+    "colors_en": [
+      "Blue"
+    ],
+    "traits": [
+      "動物",
+      "阿拉巴斯坦王國",
+      "B・W"
+    ],
+    "traits_en": [
+      "Animal",
+      "Alabasta",
+      "Baroque Works"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-043.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-043.png",
+    "cost": 4,
+    "life": null,
+    "power": 6000,
+    "counter": 1000,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ]
+  },
+  "OP18-045": {
+    "card_id": "OP18-045",
+    "name": "Mr.王子",
+    "name_en": "Mr.Prince",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "藍"
+    ],
+    "colors_en": [
+      "Blue"
+    ],
+    "traits": [
+      "阿拉巴斯坦王國",
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Alabasta",
+      "Straw Hat Crew"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-045.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-045.png",
+    "cost": 3,
+    "life": null,
+    "power": 4000,
+    "counter": 2000,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "在規則上，這張卡片的卡片名稱也可視為「香吉士」。這張角色卡，自己廢棄區中每有5張事件卡，力量值+1000。",
+    "effect_en": "Also treat this card's name as [Sanji] according to the rules. This Character gains +1000 power for every 5 Events in your trash."
+  },
+  "OP18-049": {
+    "card_id": "OP18-049",
+    "name": "Mr.2・馮・克雷(班薩姆)",
+    "name_en": "Mr.2.Bon.Kurei(Bentham)",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "藍"
+    ],
+    "colors_en": [
+      "Blue"
+    ],
+    "traits": [
+      "B・W"
+    ],
+    "traits_en": [
+      "Baroque Works"
+    ],
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-049.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-049.png",
+    "cost": 5,
+    "life": null,
+    "power": 6000,
+    "counter": 1000,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "【登場時】從自己的卡組上面查看5張卡片，公開最多1張擁有包含『B・W』特徵的卡片並加入手牌，將其餘卡片依任意順序放到卡組下面。之後，附加最多1張休息狀態的咚‼卡在1張自己的領航卡或角色卡。",
+    "effect_en": "[On Play] Look at 5 cards from the top of your deck; reveal up to 1 card with a type including \"Baroque Works\", add it to your hand and place the rest at the bottom of your deck in any order. Then, give up to 1 rested DON!! card to your Leader or 1 of your Characters."
+  },
+  "OP18-050": {
+    "card_id": "OP18-050",
+    "name": "Mr.3&Miss黃金週",
+    "name_en": "Mr.3 & Miss.Goldenweek",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "藍"
+    ],
+    "colors_en": [
+      "Blue"
+    ],
+    "traits": [
+      "B・W"
+    ],
+    "traits_en": [
+      "Baroque Works"
+    ],
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-050.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-050.png",
+    "cost": 5,
+    "life": null,
+    "power": 6000,
+    "counter": 1000,
+    "attributes_en": [
+      "Special",
+      "Wisdom"
+    ],
+    "effect": "【防禦】【登場時】若自己的領航卡擁有包含『B・W』特徵時，最多1張對手費用7以下的角色卡，在下一個對手結束階段結束前，無法攻擊。",
+    "effect_en": "[Blocker] [On Play] If your Leader's type includes \"Baroque Works\", up to 1 of your opponent's Characters with a cost of 7 or less cannot attack until the end of your opponent's next End Phase.",
+    "attributes": [
+      "特",
+      "知"
+    ]
+  },
+  "OP18-053": {
+    "card_id": "OP18-053",
+    "name": "Mr.7&Miss父親節",
+    "name_en": "Mr.7 & Miss.Father'sDay",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "藍"
+    ],
+    "colors_en": [
+      "Blue"
+    ],
+    "traits": [
+      "B・W"
+    ],
+    "traits_en": [
+      "Baroque Works"
+    ],
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-053.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-053.png",
+    "cost": 2,
+    "life": null,
+    "power": 3000,
+    "counter": 2000,
+    "attributes": [
+      "射"
+    ],
+    "attributes_en": [
+      "Ranged"
+    ],
+    "effect": "【咚‼×1】這張角色卡的力量值+1000。【登場時】從自己的卡組上面查看3張卡片，依任意順序重新排列後，放到卡組上面或下面。",
+    "effect_en": "[DON!! x1] This Character gains +1000 power. [On Play] Look at 3 cards from the top of your deck, reorganize them in any order and place them at the top or bottom of your deck."
+  },
+  "OP18-054": {
+    "card_id": "OP18-054",
+    "name": "Mr.8&Miss星期一",
+    "name_en": "Mr.8 & Ms. Monday",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "藍"
+    ],
+    "colors_en": [
+      "Blue"
+    ],
+    "traits": [
+      "B・W"
+    ],
+    "traits_en": [
+      "Baroque Works"
+    ],
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-054.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-054.png",
+    "cost": 2,
+    "life": null,
+    "power": 3000,
+    "counter": 2000,
+    "attributes_en": [
+      "Strike",
+      "Ranged"
+    ],
+    "effect": "【咚‼×1】這張角色卡的力量值+1000。【對方回合中】【每回合1次】自己擁有包含『B・W』特徵的角色卡因對手的效果而離開場上時，可以替換成廢棄1張自己的手牌。",
+    "effect_en": "[DON!! x1] This Character gains +1000 power. [Opponent's Turn] [Once Per Turn] If your Character with a type including \"Baroque Works\" would be removed from the field by your opponent's effect, you may trash 1 card from your hand instead.",
+    "attributes": [
+      "打",
+      "射"
+    ]
+  },
+  "OP18-057": {
+    "card_id": "OP18-057",
+    "name": "微塵斬",
+    "name_en": "Atomic Dicer",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "藍"
+    ],
+    "colors_en": [
+      "Blue"
+    ],
+    "traits": [
+      "B・W"
+    ],
+    "traits_en": [
+      "Baroque Works"
+    ],
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-057.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-057.png",
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "【主要】可以將3張自己的咚‼卡置為休息狀態：將最多1張費用5以下的角色卡放回持有者的手牌。【反擊】自己的領航卡，在這場對戰中，力量值+3000。",
+    "effect_en": "[Main] You may rest 3 of your DON!! cards: Return up to 1 Character with a cost of 5 or less to the owner's hand. [Counter] Your Leader gains +3000 power during this battle."
+  },
+  "OP18-058": {
+    "card_id": "OP18-058",
+    "name": "這個國家你救不了",
+    "name_en": "This Kingdom is Doomed. You Can't Save It!",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "藍"
+    ],
+    "colors_en": [
+      "Blue"
+    ],
+    "traits": [
+      "王下七武海",
+      "B・W"
+    ],
+    "traits_en": [
+      "The Seven Warlords of the Sea",
+      "Baroque Works"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-058.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-058.png",
+    "cost": 3,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "【主要】可以將1張自己的角色卡放回持有者的手牌：將最多1張費用4以下的角色卡放到持有者的卡組下面。\n【觸發器】發動這張卡片的【主要】效果。",
+    "effect_en": "[Main] You may return 1 of your Characters to the owner's hand: Place up to 1 Character with a cost of 4 or less at the bottom of the owner's deck.\n[Trigger] Activate this card's [Main] effect."
+  },
+  "OP18-059": {
+    "card_id": "OP18-059",
+    "name": "祝你武運昌隆",
+    "name_en": "I Pray For Your Success.",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "藍"
+    ],
+    "colors_en": [
+      "Blue"
+    ],
+    "traits": [
+      "王下七武海",
+      "B・W"
+    ],
+    "traits_en": [
+      "The Seven Warlords of the Sea",
+      "Baroque Works"
+    ],
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-059.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-059.png",
+    "cost": 0,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "【主要】可以將1張自己的咚‼卡置為休息狀態，並廢棄1張自己手牌中擁有包含『B・W』特徵的卡片：抽2張卡片。【反擊】可以廢棄1張自己的手牌：最多1張自己的領航卡或角色卡，在這場對戰中，力量值+3000。",
+    "effect_en": "[Main] You may rest 1 of your DON!! cards and trash 1 card with a type including \"Baroque Works\" from your hand: Draw 2 cards. [Counter] You may trash 1 card from your hand: Up to 1 of your Leader or Characters gains +3000 power during this battle."
+  },
+  "OP18-062": {
+    "card_id": "OP18-062",
+    "name": "歐伊摩&卡西",
+    "name_en": "Oimo & Kashii",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紫"
+    ],
+    "colors_en": [
+      "Purple"
+    ],
+    "traits": [
+      "巨人族",
+      "世界政府"
+    ],
+    "traits_en": [
+      "Giant",
+      "World Government"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-062.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-062.png",
+    "cost": 8,
+    "life": null,
+    "power": 10000,
+    "counter": 1000,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ]
+  },
+  "OP18-067": {
+    "card_id": "OP18-067",
+    "name": "夏洛特・斯姆吉",
+    "name_en": "Charlotte Smoothie",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紫"
+    ],
+    "colors_en": [
+      "Purple"
+    ],
+    "traits": [
+      "BIG MOM海賊團"
+    ],
+    "traits_en": [
+      "Big Mom Pirates"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-067.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-067.png",
+    "cost": 1,
+    "life": null,
+    "power": 2000,
+    "counter": 1000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "【登場時】可以廢棄1張自己手牌中擁有《BIG MOM海賊團》特徵的卡片：抽2張卡片。",
+    "effect_en": "[On Play] You may trash 1 {Big Mom Pirates} type card from your hand: Draw 2 cards."
+  },
+  "OP18-068": {
+    "card_id": "OP18-068",
+    "name": "粉紅先生",
+    "name_en": "Senor Pink",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紫"
+    ],
+    "colors_en": [
+      "Purple"
+    ],
+    "traits": [
+      "唐吉訶德海賊團"
+    ],
+    "traits_en": [
+      "Donquixote Pirates"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-068.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-068.png",
+    "cost": 8,
+    "life": null,
+    "power": 9000,
+    "counter": null,
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "effect": "【每回合1次】這張角色卡將要被KO時，可以替換成咚‼-1。【登場時】咚‼-1：最多1張對手費用7以下的角色卡，在下一個對手結束階段結束前，無法置為休息狀態。",
+    "effect_en": "[Once Per Turn] If this Character would be K.O.'d, you may DON!! −1 instead. [On Play] DON!! −1: Up to 1 of your opponent's Characters with a cost of 7 or less cannot be rested until the end of your opponent's next End Phase."
+  },
+  "OP18-070": {
+    "card_id": "OP18-070",
+    "name": "湯姆",
+    "name_en": "Tom",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紫"
+    ],
+    "colors_en": [
+      "Purple"
+    ],
+    "traits": [
+      "魚人族",
+      "W7"
+    ],
+    "traits_en": [
+      "Fish-Man",
+      "Water Seven"
+    ],
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-070.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-070.png",
+    "cost": 1,
+    "life": null,
+    "power": 2000,
+    "counter": 2000,
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ],
+    "effect": "【登場時】咚‼-1，可以廢棄1張自己的手牌：將最多2張自己廢棄區中的舞台卡加入手牌。",
+    "effect_en": "[On Play] DON!! −1, you may trash 1 card from your hand: Add up to 2 Stage cards from your trash to your hand."
+  },
+  "OP18-071": {
+    "card_id": "OP18-071",
+    "name": "托雷波爾",
+    "name_en": "Trebol",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紫"
+    ],
+    "colors_en": [
+      "Purple"
+    ],
+    "traits": [
+      "唐吉訶德海賊團"
+    ],
+    "traits_en": [
+      "Donquixote Pirates"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-071.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-071.png",
+    "cost": 5,
+    "life": null,
+    "power": 6000,
+    "counter": 1000,
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "effect": "【每回合1次】自己擁有《唐吉訶德海賊團》特徵的角色卡因對手的效果而離開場上時，可以替換成咚‼-1。【對方回合中】若自己的領航卡為「砂糖」時，這張角色卡獲得【防禦】，且力量值+2000。",
+    "effect_en": "[Once Per Turn] If your {Donquixote Pirates} type Character would be removed from the field by your opponent's effect, you may DON!! −1 instead. [Opponent's Turn] If your Leader is {Sugar}, this Characters gains [Blocker] and +2000 power."
+  },
+  "OP18-072": {
+    "card_id": "OP18-072",
+    "name": "佛朗基家族",
+    "name_en": "The Franky Family",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紫"
+    ],
+    "colors_en": [
+      "Purple"
+    ],
+    "traits": [
+      "W7",
+      "佛朗基家族"
+    ],
+    "traits_en": [
+      "Water Seven",
+      "The Franky Family"
+    ],
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-072.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-072.png",
+    "cost": 5,
+    "life": null,
+    "power": 6000,
+    "counter": 1000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "【防禦】【啟動主要】【每回合1次】可以KO1張自己費用5以下的舞台卡：若這張角色卡是在這個回合登場時，最多1張對手的角色卡，在這個回合，力量值-3000。",
+    "effect_en": "[Blocker] [Activate: Main] [Once Per Turn] You may K.O. 1 of your Stages with a cost of 5 or less: If this Character was played on this turn, give up to 1 of your opponent's Characters −3000 power during this turn."
+  },
+  "OP18-073": {
+    "card_id": "OP18-073",
+    "name": "T彭恩",
+    "name_en": "T-Bone",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紫"
+    ],
+    "colors_en": [
+      "Purple"
+    ],
+    "traits": [
+      "W7",
+      "海軍"
+    ],
+    "traits_en": [
+      "Water Seven",
+      "Navy"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-073.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-073.png",
+    "cost": 5,
+    "life": null,
+    "power": 7000,
+    "counter": 1000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ]
+  },
+  "OP18-074": {
+    "card_id": "OP18-074",
+    "name": "請乘坐我打造的那艘船吧!!!?",
+    "name_en": "Can You Please Sail on the Ship I Made?!",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "紫"
+    ],
+    "colors_en": [
+      "Purple"
+    ],
+    "traits": [
+      "W7",
+      "佛朗基家族"
+    ],
+    "traits_en": [
+      "Water Seven",
+      "The Franky Family"
+    ],
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-074.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-074.png",
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "【反擊】若自己擁有費用5以上的舞台卡時，最多1張自己的領航卡或角色卡，在這場對戰中，力量值+4000。\n【觸發器】咚‼-1：將最多2張自己廢棄區中的舞台卡加入手牌。",
+    "effect_en": "[Counter] If you have a Stage with a cost of 5 or more, up to 1 of your Leader or Characters gains +4000 power during this battle.\n[Trigger] DON!! −1: Add up to 2 Stage cards from your trash to your hand."
+  },
+  "OP18-075": {
+    "card_id": "OP18-075",
+    "name": "千陽號",
+    "name_en": "Thousand Sunny",
+    "card_type": "Stage",
+    "category": "Stage",
+    "card_type_en": "Stage",
+    "category_en": "Stage",
+    "colors": [
+      "紫"
+    ],
+    "colors_en": [
+      "Purple"
+    ],
+    "traits": [
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Straw Hat Crew"
+    ],
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-075.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-075.png",
+    "cost": 5,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "【登場時】抽1張卡片，並從咚‼卡組追加最多1張休息狀態的咚‼卡。【啟動主要】咚‼-2，可以將這張舞台卡置為休息狀態：將最多1張自己力量值7000以下、擁有《草帽一行人》特徵的角色卡置為活動狀態。",
+    "effect_en": "[On Play] Draw 1 card, then add up to 1 DON!! card as rested from your DON!! deck. [Activate: Main] DON!! −2, you may rest this Stage: Set up to 1 of your {Straw Hat Crew} type Characters with 7000 power or less as active."
+  },
+  "OP18-080": {
+    "card_id": "OP18-080",
+    "name": "范・歐葛",
+    "name_en": "Van Augur",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黑"
+    ],
+    "colors_en": [
+      "Black"
+    ],
+    "traits": [
+      "蛋頭",
+      "黑鬍子海賊團"
+    ],
+    "traits_en": [
+      "Egghead",
+      "Blackbeard Pirates"
+    ],
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-080.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-080.png",
+    "cost": 4,
+    "life": null,
+    "power": 5000,
+    "counter": 1000,
+    "attributes": [
+      "射"
+    ],
+    "attributes_en": [
+      "Ranged"
+    ],
+    "effect": "【我方回合中】【每回合1次】因自己領航卡「馬歇爾・D・汀奇」的效果而廢棄自己的手牌時，若自己沒有其他的「范・歐葛」，抽1張卡片。【KO時】抽1張卡片。",
+    "effect_en": "[Your Turn] [Once Per Turn] When a card is trashed from your hand by your [Marshall.D.Teach] Leader's effect, if you have no other [Van Augur], draw 1 card. [On K.O.] Draw 1 Card."
+  },
+  "OP18-081": {
+    "card_id": "OP18-081",
+    "name": "歐斯",
+    "name_en": "Oars",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黑"
+    ],
+    "colors_en": [
+      "Black"
+    ],
+    "traits": [
+      "巨人族",
+      "恐怖三桅帆船海賊團"
+    ],
+    "traits_en": [
+      "Giant",
+      "Thriller Bark Pirates"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-081.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-081.png",
+    "cost": 10,
+    "life": null,
+    "power": 11000,
+    "counter": null,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "若自己擁有角色卡「月光・摩利亞」時，這張角色卡獲得【雙重攻擊】和【防禦】。\n【觸發器】使最多1張自己廢棄區中費用4以下、擁有《恐怖三桅帆船海賊團》特徵的角色卡，以休息狀態登場。",
+    "effect_en": "If you have a [Gecko Moria] Character, this Character gains [Double Attack] and [Blocker].\n[Trigger] Play up to 1 {Thriller Bark Pirates} type Character card with a cost of 4 or less from your trash rested."
+  },
+  "OP18-082": {
+    "card_id": "OP18-082",
+    "name": "卡達莉納・戴彭",
+    "name_en": "Catarina Devon",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黑"
+    ],
+    "colors_en": [
+      "Black"
+    ],
+    "traits": [
+      "蛋頭",
+      "黑鬍子海賊團"
+    ],
+    "traits_en": [
+      "Egghead",
+      "Blackbeard Pirates"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-082.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-082.png",
+    "cost": 5,
+    "life": null,
+    "power": 3000,
+    "counter": 2000,
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "effect": "【攻擊時】這張角色卡的原本力量值，在這個回合，變為與對手領航卡相同的力量值。【KO時】可以廢棄1張自己的手牌：若自己的領航卡擁有《黑鬍子海賊團》特徵時，使這張角色卡從廢棄區以休息狀態登場。",
+    "effect_en": "[When Attacking] This Character's base power becomes the same as your opponent's Leader's power during this turn. [On K.O.] You may trash 1 card from your hand: If your Leader has the {Blackbeard Pirates} type, play this Character card from your trash rested."
+  },
+  "OP18-083": {
+    "card_id": "OP18-083",
+    "name": "基林甘聖",
+    "name_en": "Saint Killingham",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黑"
+    ],
+    "colors_en": [
+      "Black"
+    ],
+    "traits": [
+      "天龍人",
+      "神之騎士團"
+    ],
+    "traits_en": [
+      "Celestial Dragons",
+      "Holy Knights of God"
+    ],
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-083.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-083.png",
+    "cost": 5,
+    "life": null,
+    "power": 6000,
+    "counter": 1000,
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "effect": "【我方回合中】【登場時】使最多1張自己廢棄區中的「MMA」登場。【KO時】可以廢棄2張自己的手牌：使這張角色卡從廢棄區登場。",
+    "effect_en": "[Your Turn] [On Play] Play up to 1 [Sleeptids] from your trash. [On K.O.] You may trash 2 cards from your hand: Play this Character card from your trash."
+  },
+  "OP18-087": {
+    "card_id": "OP18-087",
+    "name": "斯坦森",
+    "name_en": "Stansen",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黑"
+    ],
+    "colors_en": [
+      "Black"
+    ],
+    "traits": [
+      "巨人族",
+      "艾爾帕布",
+      "新巨兵海賊團"
+    ],
+    "traits_en": [
+      "Giant",
+      "Elbaph",
+      "New Giant Pirates"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-087.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-087.png",
+    "cost": 3,
+    "life": null,
+    "power": 4000,
+    "counter": 1000,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "這張角色卡的費用+12。若自己的角色卡全部都是費用12以上時，這張角色卡的力量值+2000。",
+    "effect_en": "This Character gains +12 cost. If you only have Characters with a cost of 12 or more, this Character gains +2000 power."
+  },
+  "OP18-090": {
+    "card_id": "OP18-090",
+    "name": "布魯克",
+    "name_en": "Brook",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黑"
+    ],
+    "colors_en": [
+      "Black"
+    ],
+    "traits": [
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Straw Hat Crew"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-090.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-090.png",
+    "cost": 7,
+    "life": null,
+    "power": 9000,
+    "counter": 1000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ]
+  },
+  "OP18-093": {
+    "card_id": "OP18-093",
+    "name": "MMA",
+    "name_en": "Sleeptids",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黑"
+    ],
+    "colors_en": [
+      "Black"
+    ],
+    "traits": [
+      "艾爾帕布"
+    ],
+    "traits_en": [
+      "Elbaph"
+    ],
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-093.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-093.png",
+    "cost": 9,
+    "life": null,
+    "power": 3000,
+    "counter": 2000,
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ],
+    "effect": "在規則上，這張卡片可不限張數放入卡組中。【防禦】（對手攻擊後，將這張卡片置為休息狀態即可使攻擊的對象換成這張卡片）",
+    "effect_en": "Under the rules of this game, you may have any number of this card in your deck. [Blocker] (After your opponent declares an attack, you may rest this card to make it the new target of the attack.)"
+  },
+  "OP18-094": {
+    "card_id": "OP18-094",
+    "name": "嘻嘻嘻!!充滿了冒險的味道!!",
+    "name_en": "Hee Hee Hee!! I Smell Adventure!!",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "黑"
+    ],
+    "colors_en": [
+      "Black"
+    ],
+    "traits": [
+      "艾爾帕布",
+      "四皇",
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Elbaph",
+      "The Four Emperors",
+      "Straw Hat Crew"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-094.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-094.png",
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "【主要】從自己的卡組上面查看5張卡片，公開最多1張擁有《艾爾帕布》特徵的卡片，並加入手牌。之後，將其餘卡片依任意順序放到卡組下面。\n【觸發器】抽1張卡片。",
+    "effect_en": "[Main] Look at 5 cards from the top of your deck; reveal up to 1 {Elbaph} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order.\n[Trigger] Draw 1 card."
+  },
+  "OP18-095": {
+    "card_id": "OP18-095",
+    "name": "遲到了遲到了～!!",
+    "name_en": "I'm Late, I'm Very Late!!",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "黑"
+    ],
+    "colors_en": [
+      "Black"
+    ],
+    "traits": [
+      "天龍人",
+      "神之騎士團"
+    ],
+    "traits_en": [
+      "Celestial Dragons",
+      "Holy Knights of God"
+    ],
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-095.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-095.png",
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "【主要】若自己的領航卡擁有《天龍人》特徵時，從自己的卡組上面查看5張卡片，公開最多1張「MMA」或擁有《神之騎士團》特徵的卡片，並加入手牌。之後，將其餘卡片依任意順序放到卡組下面。\n【觸發器】發動這張卡片的【主要】效果。",
+    "effect_en": "[Main] If your Leader has the {Celestial Dragons} type, look at 5 cards from the top of your deck; reveal up to 1 [Sleeptids] or {Holy Knights of God} type card and add it to your hand. Then, place the rest at the bottom of your deck in any order.\n[Trigger] Activate this card's [Main] effect."
+  },
+  "OP18-096": {
+    "card_id": "OP18-096",
+    "name": "我要呼叫了",
+    "name_en": "I'll Make the Call",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "黑"
+    ],
+    "colors_en": [
+      "Black"
+    ],
+    "traits": [
+      "天龍人",
+      "神之騎士團"
+    ],
+    "traits_en": [
+      "Celestial Dragons",
+      "Holy Knights of God"
+    ],
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-096.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-096.png",
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "【主要】可以將3張自己的咚‼卡置為休息狀態：使最多1張自己廢棄區中費用6以下、擁有《神之騎士團》特徵的角色卡登場。【反擊】若自己的廢棄區有10張以上卡片時，最多1張自己的領航卡或角色卡，在這場對戰中，力量值+4000。",
+    "effect_en": "[Main] You may rest 3 of your DON!! cards: Play up to 1 {Holy Knights of God} type Character card with a cost of 6 or less from your trash. [Counter] If you have 10 or more cards in your trash, up to 1 of your Leader or Characters gains +4000 power during this battle."
+  },
+  "OP18-097": {
+    "card_id": "OP18-097",
+    "name": "五芒星",
+    "name_en": "Abyss Pentagram",
+    "card_type": "Stage",
+    "category": "Stage",
+    "card_type_en": "Stage",
+    "category_en": "Stage",
+    "colors": [
+      "黑"
+    ],
+    "colors_en": [
+      "Black"
+    ],
+    "traits": [
+      "天龍人",
+      "神之騎士團",
+      "五老星"
+    ],
+    "traits_en": [
+      "Celestial Dragons",
+      "Holy Knights of God",
+      "Five Elders"
+    ],
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-097.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-097.png",
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "若自己的領航卡擁有《天龍人》特徵時，自己從手牌登場費用2以上、擁有《神之騎士團》或《五老星》特徵的角色卡，支付的費用減少1。【登場時】抽1張卡片，並將2張自己卡組上面的卡片放置在廢棄區。",
+    "effect_en": "If your Leader has the {Celestial Dragons} type, the cost of playing {Holy Knights of God} or {Five Elders} type Character cards with a cost of 2 or more from your hand will be reduced by 1. [On Play] Draw 1 card and trash 2 cards from the top of your deck."
+  },
+  "OP18-098": {
+    "card_id": "OP18-098",
+    "name": "鬼蜘蛛",
+    "name_en": "Onigumo",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黃"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "traits": [
+      "中將",
+      "海軍"
+    ],
+    "traits_en": [
+      "Vice Admiral",
+      "Navy"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-098.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-098.png",
+    "cost": 7,
+    "life": null,
+    "power": 7000,
+    "counter": 2000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "【防禦不可】（這張卡片不會遭到防禦）",
+    "effect_en": "[Unblockable] (This card cannot be blocked.)"
+  },
+  "OP18-099": {
+    "card_id": "OP18-099",
+    "name": "卡古",
+    "name_en": "Kaku",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黃"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "traits": [
+      "CP9"
+    ],
+    "traits_en": [
+      "CP9"
+    ],
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-099.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-099.png",
+    "cost": 7,
+    "life": null,
+    "power": 9000,
+    "counter": null,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "【登場時】將最多1張自己手牌中擁有包含『CP』特徵的卡片，以正面朝上加入自己生命值區上面或下面。\n【觸發器】若自己的領航卡擁有包含『CP』特徵時，抽1張卡片，並將最多1張費用8以下的角色卡放到持有者的卡組下面。",
+    "effect_en": "[On Play] Add up to 1 card with a type including \"CP\" from your hand to the top or bottom of your Life cards face-up.\n[Trigger] If your Leader's type includes \"CP\", draw 1 card and place up to 1 Character with a cost of 8 or less at the bottom of the owner's deck."
+  },
+  "OP18-102": {
+    "card_id": "OP18-102",
+    "name": "傑利",
+    "name_en": "Jerry",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黃"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "traits": [
+      "CP6"
+    ],
+    "traits_en": [
+      "CP6"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-102.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-102.png",
+    "cost": 4,
+    "life": null,
+    "power": 6000,
+    "counter": 1000,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ]
+  },
+  "OP18-104": {
+    "card_id": "OP18-104",
+    "name": "斯托洛貝里",
+    "name_en": "Strawberry",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黃"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "traits": [
+      "中將",
+      "海軍"
+    ],
+    "traits_en": [
+      "Vice Admiral",
+      "Navy"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-104.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-104.png",
+    "cost": 7,
+    "life": null,
+    "power": 7000,
+    "counter": 2000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "【消失】（若這張卡片造成傷害時，觸發器不會發動且該張卡片即放置到廢棄區）",
+    "effect_en": "[Banish] (When this card deals damage, the target card is trashed without activating its Trigger.)"
+  },
+  "OP18-105": {
+    "card_id": "OP18-105",
+    "name": "斯帕達姆",
+    "name_en": "Spandam",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黃"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "traits": [
+      "CP9"
+    ],
+    "traits_en": [
+      "CP9"
+    ],
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-105.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-105.png",
+    "cost": 1,
+    "life": null,
+    "power": 1000,
+    "counter": 2000,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "【觸發器】若自己的領航卡擁有包含『CP』特徵時，公開最多1張自己手牌中除了「斯帕達姆」以外、擁有包含『CP』特徵的卡片。發動公開卡片的【觸發器】效果。",
+    "effect_en": "[Trigger] If your Leader's type includes \"CP\", reveal up to 1 card with a type including \"CP\" other than [Spandam] from your hand. Activate the [Trigger] effect of the revealed card."
+  },
+  "OP18-107": {
+    "card_id": "OP18-107",
+    "name": "奈洛",
+    "name_en": "Nero",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黃"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "traits": [
+      "CP9"
+    ],
+    "traits_en": [
+      "CP9"
+    ],
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-107.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-107.png",
+    "cost": 4,
+    "life": null,
+    "power": 4000,
+    "counter": 1000,
+    "attributes": [
+      "射"
+    ],
+    "attributes_en": [
+      "Ranged"
+    ],
+    "effect": "【防禦】\n【觸發器】若自己的領航卡擁有包含『CP』特徵時，將最多1張費用5以下的角色卡放到持有者的卡組下面。",
+    "effect_en": "[Blocker]\n[Trigger] If your Leader's type includes \"CP\", place up to 1 Character with a cost of 5 or less at the bottom of the owner's deck."
+  },
+  "OP18-109": {
+    "card_id": "OP18-109",
+    "name": "梟",
+    "name_en": "Fukurou",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黃"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "traits": [
+      "CP9"
+    ],
+    "traits_en": [
+      "CP9"
+    ],
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-109.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-109.png",
+    "cost": 5,
+    "life": null,
+    "power": 4000,
+    "counter": 2000,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "【防禦】\n【觸發器】若自己的領航卡擁有包含『CP』特徵時，將最多1張對手費用6以下的角色卡KO，或置為休息狀態。",
+    "effect_en": "[Blocker]\n[Trigger] If your Leader's type includes \"CP\", K.O. or rest up to 1 of your opponent's Characters with a cost of 6 or less."
+  },
+  "OP18-110": {
+    "card_id": "OP18-110",
+    "name": "布魯諾",
+    "name_en": "Blueno",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黃"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "traits": [
+      "CP9"
+    ],
+    "traits_en": [
+      "CP9"
+    ],
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-110.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-110.png",
+    "cost": 1,
+    "life": null,
+    "power": 2000,
+    "counter": 1000,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "【登場時】從自己的卡組上面查看4張卡片，公開最多1張除了「布魯諾」以外、擁有包含『CP』特徵的卡片，並加入手牌。之後，將其餘卡片依任意順序放到卡組下面。\n【觸發器】抽1張卡片，並KO最多1張對手費用2以下的角色卡。",
+    "effect_en": "[On Play] Look at 4 cards from the top of your deck; reveal up to 1 card with a type including \"CP\" other than [Blueno] and add it to your hand. Then, place the rest at the bottom of your deck in any order.\n[Trigger] Draw 1 card and K.O. up to 1 of your opponent's Characters with a cost of 2 or less."
+  },
+  "OP18-114": {
+    "card_id": "OP18-114",
+    "name": "瓦傑",
+    "name_en": "Wanze",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黃"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "traits": [
+      "CP7"
+    ],
+    "traits_en": [
+      "CP7"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-114.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-114.png",
+    "cost": 3,
+    "life": null,
+    "power": 4000,
+    "counter": null,
+    "attributes": [
+      "斬"
+    ],
+    "attributes_en": [
+      "Slash"
+    ],
+    "effect": "【登場時】查看自己生命值區的全部卡片，並依任意順序放回生命值區。\n【觸發器】若自己的領航卡擁有包含『CP』特徵時，將最多1張費用5以下的角色卡放到持有者的卡組下面。",
+    "effect_en": "[On Play] Look at all of your Life cards and place them back in your Life area in any order.\n[Trigger] If your Leader's type includes \"CP\", place up to 1 Character with a cost of 5 or less at the bottom of the owner's deck."
+  },
+  "OP18-115": {
+    "card_id": "OP18-115",
+    "name": "十指槍",
+    "name_en": "Ten Finger Pistol",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "黃"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "traits": [
+      "CP9"
+    ],
+    "traits_en": [
+      "CP9"
+    ],
+    "rarity": "UC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-115.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-115.png",
+    "cost": 4,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "【主要】KO最多1張對手費用5以下的角色卡。\n【觸發器】若自己的領航卡擁有包含『CP』特徵時，抽1張卡片，並將最多1張費用7以下的角色卡放到持有者的卡組下面。",
+    "effect_en": "[Main] K.O. up to 1 of your opponent's Characters with a cost of 5 or less.\n[Trigger] If your Leader's type includes \"CP\", draw 1 card and place up to 1 Character with a cost of 7 or less at the bottom of the owner's deck."
+  },
+  "OP18-116": {
+    "card_id": "OP18-116",
+    "name": "鐵塊 空木",
+    "name_en": "Iron Body Empty Tree",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "黃"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "traits": [
+      "CP9"
+    ],
+    "traits_en": [
+      "CP9"
+    ],
+    "rarity": "C",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-116.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-116.png",
+    "cost": 0,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "【反擊】可以廢棄1張自己的手牌：最多1張自己的領航卡或角色卡，在這場對戰中，力量值+3000。\n【觸發器】若自己的領航卡擁有包含『CP』特徵時，將最多1張對手的角色卡置為休息狀態。",
+    "effect_en": "[Counter] You may trash 1 card from your hand: Up to 1 of your Leader or Characters gains +3000 power during this battle.\n[Trigger] If your Leader's type includes \"CP\", rest up to 1 of your opponent's Characters."
+  },
+  "OP18-117": {
+    "card_id": "OP18-117",
+    "name": "殲滅指令",
+    "name_en": "Buster Call",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "黃"
+    ],
+    "colors_en": [
+      "Yellow"
+    ],
+    "traits": [
+      "海軍",
+      "CP9"
+    ],
+    "traits_en": [
+      "Navy",
+      "CP9"
+    ],
+    "rarity": "R",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-117.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-117.png",
+    "cost": 10,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "effect": "【主要】可以將自己生命值區的卡片全部放置在廢棄區：若自己的領航卡為「斯帕達姆」時，將角色卡全部放置在廢棄區，並從自己的卡組或廢棄區使合計最多5張卡名不同、擁有《中將》特徵的角色卡登場。之後，將卡組洗牌。",
+    "effect_en": "[Main] You may trash all of your Life cards: If your Leader is [Spandam], trash all Characters and play up to a total of 5 {Vice Admiral} type Character cards with different card names from your deck or trash. Then, shuffle your deck."
+  },
+  "OP18-118": {
+    "card_id": "OP18-118",
+    "name": "蒙其・D・魯夫",
+    "name_en": "Monkey.D.Luffy",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "綠"
+    ],
+    "colors_en": [
+      "Green"
+    ],
+    "traits": [
+      "W7",
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Water Seven",
+      "Straw Hat Crew"
+    ],
+    "rarity": "SEC",
+    "block_number": 5,
+    "pack_id": "OP-18",
+    "card_sets": [
+      "補充包 神之支配【OP-18】"
+    ],
+    "img_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-118.png",
+    "img_full_url": "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-118.png",
+    "cost": 9,
+    "life": null,
+    "power": 10000,
+    "counter": null,
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ],
+    "effect": "【登場時】將最多3張自己的咚‼卡置為活動狀態。之後，最多1張對手的角色卡，在下一個對手結束階段結束前，無法置為休息狀態。【我方回合結束時】將最多1張自己擁有《W7》特徵的卡片置為活動狀態。",
+    "effect_en": "[On Play] Set up to 3 of your DON!! cards as active. Then, up to 1 of your opponent's Characters cannot be rested until the end of your opponent's next End Phase. [End of Your Turn] Set up to 1 of your {Water Seven} type cards as active."
   }
 }

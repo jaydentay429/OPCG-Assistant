@@ -75,11 +75,11 @@ describe("list card webp srcset", () => {
 
   it("returns nothing when the manifest has no png hash", () => {
     clearListWebpMisses();
-    assert.equal(cardImageUrl("OP18-112"), "");
-    assert.equal(listCardImageAttrs("OP18-112"), null);
-    assert.equal(listCardImageAttrs("OP18-112", true), null);
-    noteListWebpMiss("OP18-112");
-    assert.equal(listCardImageAttrs("OP18-112"), null);
+    assert.equal(cardImageUrl("OP18-021-P1"), "");
+    assert.equal(listCardImageAttrs("OP18-021-P1"), null);
+    assert.equal(listCardImageAttrs("OP18-021-P1", true), null);
+    noteListWebpMiss("OP18-021-P1");
+    assert.equal(listCardImageAttrs("OP18-021-P1"), null);
   });
 });
 
@@ -133,10 +133,10 @@ describe("card page hero webp", () => {
   });
 
   it("returns nothing when the manifest has no png hash", () => {
-    assert.equal(heroCardImageAttrs("OP18-112"), null);
-    assert.equal(heroCardImageAttrs("OP18-112", true), null);
-    assert.equal(heroPreloadHref("OP18-112"), "");
-    assert.equal(cardOgImage("OP18-112"), null);
+    assert.equal(heroCardImageAttrs("OP18-021-P1"), null);
+    assert.equal(heroCardImageAttrs("OP18-021-P1", true), null);
+    assert.equal(heroPreloadHref("OP18-021-P1"), "");
+    assert.equal(cardOgImage("OP18-021-P1"), null);
   });
 
   it("treats an image that already failed before mount as a miss", () => {
