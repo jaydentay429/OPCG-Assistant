@@ -26,7 +26,7 @@ on:
       image_source:
         description: Official image host. jp = Japanese cardlist only; default = asia-tc first, then JP, then EN.
         required: false
-        default: default
+        default: jp
         type: string
 
 jobs:
@@ -71,7 +71,7 @@ jobs:
           )
 
           prefix = os.environ.get("SET_PREFIX", "").strip().upper()
-          source = os.environ.get("IMAGE_SOURCE", "default").strip().lower()
+          source = os.environ.get("IMAGE_SOURCE", "jp").strip().lower() or "jp"
           wanted = {
               normalize_card_id(part)
               for part in os.environ.get("CARD_IDS", "").split(",")
