@@ -119,14 +119,14 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["EB05-009"]["rarity"] == "R"
     assert cards["EB05-029"]["rarity"] == "C"
     assert cards["OP18-112"]["name"] == "火燒山"
-    assert cards["OP18-112"]["manual_source"] == "screenshot"
+    assert "manual_source" not in cards["OP18-112"]
     assert cards["OP18-016"]["name"] == "蒙其・D・魯夫"
     assert cards["OP18-016"]["name_en"] == "Monkey.D.Luffy"
-    assert cards["OP18-016"]["manual_source"] == "screenshot"
+    assert "manual_source" not in cards["OP18-016"]
     assert "suppress_pack_image" not in cards["OP18-016"]
-    assert cards["OP18-016"]["img_url"] == ""
-    assert cards["OP18-016"]["img_full_url"] == ""
-    assert cards["OP18-016"]["preview"] is True
+    assert cards["OP18-016"]["img_url"] == "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-016.png"
+    assert cards["OP18-016"]["img_full_url"] == cards["OP18-016"]["img_url"]
+    assert "preview" not in cards["OP18-016"]
     assert cards["OP18-016"]["colors"] == ["紅"]
     assert cards["OP18-016"]["colors_en"] == ["Red"]
     assert cards["OP18-016"]["cost"] == 6
@@ -137,19 +137,19 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["OP18-016"]["attributes_en"] == ["Strike"]
     assert cards["OP18-016"]["traits"] == ["阿拉巴斯坦王國", "草帽一行人"]
     assert cards["OP18-016"]["traits_en"] == ["Alabasta", "Straw Hat Crew"]
-    assert cards["OP18-016"]["card_sets"] == ["補充包 OP-18【OP-18】"]
+    assert cards["OP18-016"]["card_sets"] == ["補充包 神之支配【OP-18】"]
     assert cards["OP18-016"]["pack_id"] == "OP-18"
     assert cards["OP18-025"]["name"] == "貢貝"
     assert cards["OP18-025"]["name_en"] == "Gonbe"
-    assert cards["OP18-025"]["manual_source"] == "screenshot"
+    assert "manual_source" not in cards["OP18-025"]
     assert "suppress_pack_image" not in cards["OP18-025"]
-    assert cards["OP18-025"]["img_url"] == ""
-    assert cards["OP18-025"]["img_full_url"] == ""
-    assert cards["OP18-025"]["preview"] is True
+    assert cards["OP18-025"]["img_url"] == "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-025.png"
+    assert cards["OP18-025"]["img_full_url"] == cards["OP18-025"]["img_url"]
+    assert "preview" not in cards["OP18-025"]
     assert cards["OP18-025"]["colors"] == ["綠"]
     assert cards["OP18-025"]["colors_en"] == ["Green"]
     assert cards["OP18-025"]["cost"] == 1
-    assert cards["OP18-025"]["power"] == 0
+    assert cards["OP18-025"]["power"] is None
     assert cards["OP18-025"]["counter"] == 1000
     assert cards["OP18-025"]["rarity"] == "C"
     assert cards["OP18-025"]["attributes"] == ["知"]
@@ -159,15 +159,15 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["OP18-025"]["card_type"] == "Character"
     assert cards["OP18-025"]["effect"].startswith("【我方回合結束時】")
     assert "rested" in cards["OP18-025"]["effect_en"]
-    assert cards["OP18-025"]["card_sets"] == ["補充包 OP-18【OP-18】"]
+    assert cards["OP18-025"]["card_sets"] == ["補充包 神之支配【OP-18】"]
     assert cards["OP18-025"]["pack_id"] == "OP-18"
     assert cards["OP18-044"]["name"] == "Mr.賓茲&Miss凱瑟蓮娜"
-    assert cards["OP18-044"]["name_en"] == "Mr. Beans & Miss. Katherina"
-    assert cards["OP18-044"]["manual_source"] == "screenshot"
+    assert cards["OP18-044"]["name_en"] == "Mr.Beans & Miss.Katherina"
+    assert "manual_source" not in cards["OP18-044"]
     assert "suppress_pack_image" not in cards["OP18-044"]
-    assert cards["OP18-044"]["img_url"] == ""
-    assert cards["OP18-044"]["img_full_url"] == ""
-    assert cards["OP18-044"]["preview"] is True
+    assert cards["OP18-044"]["img_url"] == "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-044.png"
+    assert cards["OP18-044"]["img_full_url"] == cards["OP18-044"]["img_url"]
+    assert "preview" not in cards["OP18-044"]
     assert cards["OP18-044"]["colors"] == ["藍"]
     assert cards["OP18-044"]["colors_en"] == ["Blue"]
     assert cards["OP18-044"]["cost"] == 3
@@ -181,15 +181,15 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["OP18-044"]["card_type"] == "Character"
     assert cards["OP18-044"]["effect"].startswith("【咚‼×1】")
     assert "trash 1 card from your hand" in cards["OP18-044"]["effect_en"]
-    assert cards["OP18-044"]["card_sets"] == ["補充包 OP-18【OP-18】"]
+    assert cards["OP18-044"]["card_sets"] == ["補充包 神之支配【OP-18】"]
     assert cards["OP18-044"]["pack_id"] == "OP-18"
     assert cards["OP18-069"]["name"] == "索德姆&哥摩拉"
-    assert cards["OP18-069"]["name_en"] == "Sodom & Gomorrah"
-    assert cards["OP18-069"]["manual_source"] == "screenshot"
+    assert cards["OP18-069"]["name_en"] == "Sodomu & Gomora"
+    assert "manual_source" not in cards["OP18-069"]
     assert "suppress_pack_image" not in cards["OP18-069"]
-    assert cards["OP18-069"]["img_url"] == ""
-    assert cards["OP18-069"]["img_full_url"] == ""
-    assert cards["OP18-069"]["preview"] is True
+    assert cards["OP18-069"]["img_url"] == "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-069.png"
+    assert cards["OP18-069"]["img_full_url"] == cards["OP18-069"]["img_url"]
+    assert "preview" not in cards["OP18-069"]
     assert cards["OP18-069"]["colors"] == ["紫"]
     assert cards["OP18-069"]["colors_en"] == ["Purple"]
     assert cards["OP18-069"]["cost"] == 1
@@ -199,18 +199,17 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["OP18-069"]["rarity"] == "C"
     assert cards["OP18-069"]["attributes"] == ["打"]
     assert cards["OP18-069"]["attributes_en"] == ["Strike"]
-    assert cards["OP18-069"]["traits"] == ["動物", "W7", "佛朗基一家"]
-    assert cards["OP18-069"]["traits_en"] == ["Animal", "Water Seven", "Franky Family"]
+    assert cards["OP18-069"]["traits"] == ["動物", "W7", "佛朗基家族"]
+    assert cards["OP18-069"]["traits_en"] == ["Animal", "Water Seven", "The Franky Family"]
     assert cards["OP18-069"]["card_type"] == "Character"
     assert cards["OP18-069"]["effect"] == (
-        "若自己擁有《佛朗基一家》特徵的角色卡即將遭到KO時，可以替換成咚‼−1，並將這張角色卡置為休息狀態。"
+        "若自己擁有《佛朗基家族》特徵的角色卡即將遭到KO時，可以替換成咚‼−1，並將這張角色卡置為休息狀態。"
     )
     assert cards["OP18-069"]["effect_en"] == (
-        "If your {Franky Family} type Character would be K.O.'d, you may DON!! −1 and rest this Character instead."
+        "If your {The Franky Family} type Character would be K.O.'d, you may DON!! −1 and rest this Character instead."
     )
-    assert cards["OP18-069"]["card_sets"] == ["補充包 OP-18【OP-18】"]
+    assert cards["OP18-069"]["card_sets"] == ["補充包 神之支配【OP-18】"]
     assert cards["OP18-069"]["pack_id"] == "OP-18"
-    assert cards["OP18-091"] == seed["OP18-091"]
     assert cards["OP18-091"]["name"] == "布洛基"
     assert cards["OP18-091"]["name_en"] == "Brogy"
     assert cards["OP18-091"]["colors"] == ["黑"]
@@ -222,7 +221,6 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["OP18-091"]["traits"] == ["巨人族", "艾爾帕布", "巨兵海賊團"]
     assert cards["OP18-091"]["effect"].startswith("這張角色卡的費用+12。")
     assert "cost of 2 or less from your trash" in cards["OP18-091"]["effect_en"]
-    assert cards["OP18-111"] == seed["OP18-111"]
     assert cards["OP18-111"]["name"] == "飛鼠"
     assert cards["OP18-111"]["name_en"] == "Momonga"
     assert cards["OP18-111"]["colors"] == ["黃"]
@@ -275,7 +273,6 @@ def test_seed_matches_index_and_ids_are_unique():
     assert "draw 3 cards" in cards["EB05-040"]["effect_en"]
     assert "preview" not in cards["EB05-040"]
     assert "manual_source" not in cards["EB05-040"]
-    assert cards["OP18-010"] == seed["OP18-010"]
     assert cards["OP18-010"]["name"] == "多尼多尼・喬巴"
     assert cards["OP18-010"]["name_en"] == "Tony Tony.Chopper"
     assert cards["OP18-010"]["colors"] == ["紅"]
@@ -287,7 +284,6 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["OP18-010"]["traits"] == ["動物", "阿拉巴斯坦王國", "草帽一行人"]
     assert cards["OP18-010"]["effect"].startswith("【KO時】")
     assert "4000 power or less from your trash" in cards["OP18-010"]["effect_en"]
-    assert cards["OP18-032"] == seed["OP18-032"]
     assert cards["OP18-032"]["name"] == "巴其"
     assert cards["OP18-032"]["name_en"] == "Buggy"
     assert cards["OP18-032"]["colors"] == ["綠"]
@@ -298,7 +294,6 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["OP18-032"]["traits"] == ["東方藍", "巴其海賊團"]
     assert cards["OP18-032"]["effect"].startswith("【登場時】/【KO時】")
     assert "Refresh Phase" in cards["OP18-032"]["effect_en"]
-    assert cards["OP18-052"] == seed["OP18-052"]
     assert cards["OP18-052"]["name"] == "Mr.5&Miss情人節"
     assert cards["OP18-052"]["name_en"] == "Mr.5 & Miss.Valentine"
     assert cards["OP18-052"]["colors"] == ["藍"]
@@ -310,7 +305,6 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["OP18-052"]["traits"] == ["B・W"]
     assert "【咚‼×1】" in cards["OP18-052"]["effect"]
     assert 'type including "Baroque Works"' in cards["OP18-052"]["effect_en"]
-    assert cards["OP18-063"] == seed["OP18-063"]
     assert cards["OP18-063"]["name"] == "基威&摩茲"
     assert cards["OP18-063"]["name_en"] == "Kiwi & Mozu"
     assert cards["OP18-063"]["colors"] == ["紫"]
@@ -318,7 +312,7 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["OP18-063"]["power"] == 1000
     assert cards["OP18-063"]["counter"] == 2000
     assert cards["OP18-063"]["attributes"] == ["斬"]
-    assert cards["OP18-063"]["traits"] == ["W7", "佛朗基一家"]
+    assert cards["OP18-063"]["traits"] == ["W7", "佛朗基家族"]
     assert "舞台卡KO" in cards["OP18-063"]["effect"]
     assert "as rested from your DON!! deck" in cards["OP18-063"]["effect_en"]
     for cid in (
@@ -329,10 +323,10 @@ def test_seed_matches_index_and_ids_are_unique():
         "OP18-091",
         "OP18-111",
     ):
-        assert cards[cid]["manual_source"] == "screenshot"
-        assert cards[cid]["preview"] is True
-        assert cards[cid]["img_url"] == ""
-        assert cards[cid]["img_full_url"] == ""
+        assert "manual_source" not in cards[cid]
+        assert "preview" not in cards[cid]
+        assert cards[cid]["img_url"] == f"https://www.onepiece-cardgame.com/images/cardlist/card/{cid}.png"
+        assert cards[cid]["img_full_url"] == cards[cid]["img_url"]
         assert "suppress_pack_image" not in cards[cid]
         assert cards[cid]["life"] is None
     for cid in ("EB05-059", "EB05-008", "EB05-040"):
@@ -367,9 +361,9 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["P-160"]["pack_id"] == "P"
     assert cards["OP18-089"]["name"] == "多利"
     assert cards["OP18-089"]["name_en"] == "Dorry"
-    assert cards["OP18-089"]["manual_source"] == "screenshot"
+    assert "manual_source" not in cards["OP18-089"]
     assert "suppress_pack_image" not in cards["OP18-089"]
-    assert cards["OP18-089"]["preview"] is True
+    assert "preview" not in cards["OP18-089"]
     assert cards["OP18-089"]["colors"] == ["黑"]
     assert cards["OP18-089"]["colors_en"] == ["Black"]
     assert cards["OP18-089"]["cost"] == 4
@@ -382,13 +376,13 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["OP18-089"]["traits_en"] == ["Giant", "Elbaph", "Giant Pirates"]
     assert cards["OP18-089"]["effect"].startswith("這張角色卡的費用+12。")
     assert "trashes 1 card from their hand" in cards["OP18-089"]["effect_en"]
-    assert cards["OP18-089"]["card_sets"] == ["補充包 OP-18【OP-18】"]
+    assert cards["OP18-089"]["card_sets"] == ["補充包 神之支配【OP-18】"]
     assert cards["OP18-089"]["pack_id"] == "OP-18"
     assert cards["OP18-076"]["name"] == "鯊魚潛水3號"
-    assert cards["OP18-076"]["name_en"] == "Shark Submerge No.3"
-    assert cards["OP18-076"]["manual_source"] == "screenshot"
+    assert cards["OP18-076"]["name_en"] == "Shark Submerge 3"
+    assert "manual_source" not in cards["OP18-076"]
     assert "suppress_pack_image" not in cards["OP18-076"]
-    assert cards["OP18-076"]["preview"] is True
+    assert "preview" not in cards["OP18-076"]
     assert cards["OP18-076"]["card_type"] == "Stage"
     assert cards["OP18-076"]["colors"] == ["紫"]
     assert cards["OP18-076"]["colors_en"] == ["Purple"]
@@ -396,18 +390,18 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["OP18-076"]["power"] is None
     assert cards["OP18-076"]["counter"] is None
     assert cards["OP18-076"]["rarity"] == "UC"
-    assert cards["OP18-076"]["attributes"] == ["-"]
+    assert "attributes" not in cards["OP18-076"]
     assert cards["OP18-076"]["traits"] == ["草帽一行人"]
     assert cards["OP18-076"]["traits_en"] == ["Straw Hat Crew"]
     assert "咚‼" in cards["OP18-076"]["effect"]
     assert "during this turn" in cards["OP18-076"]["effect_en"]
-    assert cards["OP18-076"]["card_sets"] == ["補充包 OP-18【OP-18】"]
+    assert cards["OP18-076"]["card_sets"] == ["補充包 神之支配【OP-18】"]
     assert cards["OP18-076"]["pack_id"] == "OP-18"
     assert cards["OP18-106"]["name"] == "鬥犬"
     assert cards["OP18-106"]["name_en"] == "Doberman"
-    assert cards["OP18-106"]["manual_source"] == "screenshot"
+    assert "manual_source" not in cards["OP18-106"]
     assert "suppress_pack_image" not in cards["OP18-106"]
-    assert cards["OP18-106"]["preview"] is True
+    assert "preview" not in cards["OP18-106"]
     assert cards["OP18-106"]["colors"] == ["黃"]
     assert cards["OP18-106"]["colors_en"] == ["Yellow"]
     assert cards["OP18-106"]["cost"] == 7
@@ -420,7 +414,7 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["OP18-106"]["traits_en"] == ["Vice Admiral", "Navy"]
     assert cards["OP18-106"]["effect"].startswith("【雙重攻擊】")
     assert "This card deals 2 damage." in cards["OP18-106"]["effect_en"]
-    assert cards["OP18-106"]["card_sets"] == ["補充包 OP-18【OP-18】"]
+    assert cards["OP18-106"]["card_sets"] == ["補充包 神之支配【OP-18】"]
     assert cards["OP18-106"]["pack_id"] == "OP-18"
     assert cards["EB05-049"]["name"] == "特大鬼魂"
     assert cards["EB05-049"]["name_en"] == "Special Hollow"
@@ -441,11 +435,11 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["EB05-049"]["card_sets"] == ["特殊補充包 ONE PIECE Heroines Edition【EB-05】"]
     assert cards["EB05-049"]["pack_id"] == "EB-05"
     assert cards["OP18-046"]["name"] == "Mr.0&Miss All星期天"
-    assert cards["OP18-046"]["name_en"] == "Mr.0 & Miss All Sunday"
+    assert cards["OP18-046"]["name_en"] == "Mr.0 & Ms. All Sunday"
     assert cards["OP18-046"]["counter"] is None
     assert cards["OP18-046"]["attributes"] == ["特", "知"]
     assert cards["OP18-046"]["life"] is None
-    assert cards["OP18-046"]["img_url"] == ""
+    assert cards["OP18-046"]["img_url"] == "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-046.png"
     assert cards["EB05-061"]["name"] == "娜美"
     assert cards["EB05-061"]["rarity"] == "SEC"
     assert cards["EB05-061"]["img_url"].endswith("/EB05-061.png?261016")
@@ -477,10 +471,10 @@ def test_seed_matches_index_and_ids_are_unique():
     assert cards["OP14-033-P2"]["img_url"] == "images/cardlist/card/OP14-033_p2.png"
     assert "manual_source" not in cards["OP14-033-P1"]
     assert cards["OP18-065"]["counter"] is None
-    assert cards["OP18-065"]["attributes"] == ["？"]
-    assert cards["OP18-065"]["attributes_en"] == ["Unknown"]
-    assert cards["OP18-065"]["img_url"] == "https://api.optcgassistant.com/packs/OP18-065.png"
-    assert cards["OP18-031"]["img_url"] == "https://api.optcgassistant.com/packs/OP18-031.png"
+    assert cards["OP18-065"]["attributes"] == ["?"]
+    assert cards["OP18-065"]["attributes_en"] == ["?"]
+    assert cards["OP18-065"]["img_url"] == "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-065.png"
+    assert cards["OP18-031"]["img_url"] == "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-031.png"
     # Base id stays EB05-016. Official marks the normal print and -P1 as SR.
     # The SP parallel is EB05-016-P2.
     assert cards["EB05-016"]["card_id"] == "EB05-016"
@@ -558,26 +552,25 @@ def test_seed_matches_index_and_ids_are_unique():
     hog_timings = {a["timing"] for a in overrides["cards"]["EB05-048"]["abilities"]}
     assert hog_timings == {"on_play", "counter_event"}
     cerb = cards["OP18-085"]
-    assert cerb == seed["OP18-085"]
     assert cerb["name"] == "塞伯拉斯"
     assert cerb["name_en"] == "Cerberus"
     assert cerb["colors"] == ["黑"]
     assert cerb["colors_en"] == ["Black"]
     assert cerb["cost"] == 1
-    assert cerb["power"] == 0
+    assert cerb["power"] is None
     assert cerb["counter"] == 2000
     assert cerb["rarity"] == "UC"
     assert cerb["attributes"] == ["斬"]
     assert cerb["attributes_en"] == ["Slash"]
     assert cerb["traits"] == ["神之騎士團"]
-    assert cerb["traits_en"] == ["Holy Knights"]
+    assert cerb["traits_en"] == ["Holy Knights of God"]
     assert cerb["effect"].startswith("【啟動主要】可以將這張角色卡放回持有者的手牌")
     assert "Saint Shamrock" in cerb["effect_en"]
-    assert "[Rush], [Banish], or [Unblockable]" in cerb["effect_en"]
-    assert cerb["manual_source"] == "screenshot"
-    assert cerb["preview"] is True
+    assert "[Rush], [Banish] or [Unblockable]" in cerb["effect_en"]
+    assert "manual_source" not in cerb
+    assert "preview" not in cerb
     assert cerb["life"] is None
-    assert cerb["img_url"] == ""
+    assert cerb["img_url"] == "https://www.onepiece-cardgame.com/images/cardlist/card/OP18-085.png"
     assert "OP18-085" in overrides["cards"]
 
 

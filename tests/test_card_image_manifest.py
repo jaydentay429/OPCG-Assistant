@@ -112,13 +112,13 @@ def test_first_rclone_run_can_replace_the_committed_snapshot(tmp_path: Path):
     snapshot = load_manifest(MANIFEST)
     assert snapshot["OP13-001"] == "870e05eb"
     write_manifest(path, snapshot)
-    extra = {"OP18-112": "4567abcd", "OP16-098-P2": "89abcdef"}
+    extra = {"OP18-021-P1": "4567abcd", "OP16-098-P2": "89abcdef"}
     assert all(key not in snapshot for key in extra)
     fresh = dict(snapshot)
     fresh.update(extra)
     write_manifest(path, fresh)
     saved = load_manifest(path)
-    assert saved["OP18-112"] == "4567abcd"
+    assert saved["OP18-021-P1"] == "4567abcd"
     assert saved["OP16-098-P2"] == "89abcdef"
     assert saved["OP13-001"] == "870e05eb"
     assert len(saved) == len(snapshot) + len(extra)
@@ -190,8 +190,8 @@ def test_committed_snapshot_matches_known_cdn_bytes():
     assert data["P-160"] == "aee899d7"
     assert data["OP18-106"] == "c6bb3598"
     assert data["EB05-049"] == "b5ea7367"
-    assert len(data) == 5292
-    for missing in ("OP18-112", "OP16-098-P2"):
+    assert len(data) == 5387
+    for missing in ("OP18-021-P1", "OP16-098-P2"):
         assert missing not in data
 
 

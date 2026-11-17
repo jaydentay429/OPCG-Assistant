@@ -122,7 +122,7 @@ describe("cardImageUrl", () => {
   });
 
   it("returns no URL and no og image when the manifest has no file", () => {
-    for (const id of ["OP18-112", "OP16-098-P2"]) {
+    for (const id of ["OP18-021-P1", "OP16-098-P2"]) {
       assert.equal(hasCardImage(id), false);
       assert.equal(cardImageHash(id), "");
       assert.equal(cardImageUrl(id), "");

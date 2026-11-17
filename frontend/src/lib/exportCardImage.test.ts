@@ -30,7 +30,7 @@ describe("exportCardImagePlan", () => {
   });
 
   it("leaves the packs fallback unchanged when the manifest has no hash", () => {
-    for (const id of ["OP18-112", "OP16-098-P2"]) {
+    for (const id of ["OP18-021-P1", "OP16-098-P2"]) {
       assert.equal(cardImageHash(id), "");
       const url = exportPacksFallbackUrl(id);
       assert.equal(url, cardImagePacksUrl(id));
@@ -40,8 +40,8 @@ describe("exportCardImagePlan", () => {
   });
 
   it("skips the API when cardImageUrl is empty", () => {
-    const plan = exportCardImagePlan("OP18-112");
-    assert.equal(cardImageUrl("OP18-112"), "");
+    const plan = exportCardImagePlan("OP18-021-P1");
+    assert.equal(cardImageUrl("OP18-021-P1"), "");
     assert.equal(plan.cdn, "");
     assert.deepEqual(plan.api, []);
   });
