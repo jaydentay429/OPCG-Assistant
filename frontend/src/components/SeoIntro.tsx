@@ -1,16 +1,34 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { fetchTopdecksMeta } from "@/lib/api";
 import { useI18n } from "@/lib/i18n";
+import { formatMetaLabel, latestTournamentMetaKeys, tournamentSetsFallback } from "@/lib/tournamentMeta";
 
 /** Brand + feature copy for crawlers; visually hidden (meta/JSON-LD already cover SEO). */
 export function HomeSeoIntro() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
+  const [sets, setSets] = useState(tournamentSetsFallback(lang));
+  useEffect(() => {
+    let cancelled = false;
+    fetchTopdecksMeta()
+      .then((res) => {
+        if (cancelled) return;
+        setSets(formatMetaLabel(latestTournamentMetaKeys(res.formats)) || tournamentSetsFallback(lang));
+      })
+      .catch(() => {
+        if (!cancelled) setSets(tournamentSetsFallback(lang));
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [lang]);
   return (
     <section className="home-seo-intro seo-only" aria-hidden="true">
       <h2>{t("landing.brand_heading")}</h2>
       <p>{t("landing.brand_aliases")}</p>
-      <p>{t("landing.intro")}</p>
+      <p>{t("landing.intro", { sets })}</p>
       <p>
         <Link href="/search">{t("nav.search")}</Link>
         {" · "}

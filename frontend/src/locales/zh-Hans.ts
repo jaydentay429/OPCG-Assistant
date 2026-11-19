@@ -42,7 +42,7 @@ const dict: Record<string, string> = {
   "landing.brand_aliases":
     "也称为 OPCG Assistant、OPCG Card Assistant、optcg assistant、opcg assistant。网址：optcgassistant.com。",
   "landing.intro":
-    "OPCG 卡牌助手（optcgassistant.com）是一个航海王集换式卡牌（ONE PIECE CARD GAME / OPCG / OPTCG）工具网站，提供完整卡牌资料库查询，可按卡号、卡名、颜色、费用、系列与效果关键字快速筛选。除了查卡，你还能在线构筑与检查牌组、浏览 OP17／OP16 等赛事卡组 deck list、追踪个人收藏进度、规划实体卡册排版，并查看市场价格与关注清单作为补牌参考。新增浏览器即时对战：可开房间与好友对战，或挑战 AI，载入自己的卡组练习回合、效果与赛前备牌。无论你是刚入坑整理卡池，还是赛前备牌与研究环境，这里都能一次完成查询、构筑、收藏管理与对战练习。",
+    "OPCG 卡牌助手（optcgassistant.com）是一个航海王集换式卡牌（ONE PIECE CARD GAME / OPCG / OPTCG）工具网站，提供完整卡牌资料库查询，可按卡号、卡名、颜色、费用、系列与效果关键字快速筛选。除了查卡，你还能在线构筑与检查牌组、浏览 {sets} 等赛事卡组 deck list、追踪个人收藏进度、规划实体卡册排版，并查看市场价格与关注清单作为补牌参考。新增浏览器即时对战：可开房间与好友对战，或挑战 AI，载入自己的卡组练习回合、效果与赛前备牌。无论你是刚入坑整理卡池，还是赛前备牌与研究环境，这里都能一次完成查询、构筑、收藏管理与对战练习。",
   "cover.aria": "欢迎页",
   "cover.kicker": "非官方粉丝工具",
   "cover.tagline": "搜卡、组牌、收藏与规则练习——非官方粉丝工具箱。",

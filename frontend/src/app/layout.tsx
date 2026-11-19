@@ -43,8 +43,6 @@ export const metadata: Metadata = {
     "opcg assistant",
     "optcg assistant",
     "optcgassistant.com",
-    "OP17 deck list",
-    "OP16 deck list",
     "即時對戰",
     "線上對戰",
     "OPCG 對戰",
