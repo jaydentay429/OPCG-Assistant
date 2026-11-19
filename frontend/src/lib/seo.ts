@@ -42,8 +42,6 @@ export const BRAND_KEYWORDS = [
   "optcgassistant.com",
   "OPCG deck builder",
   "OPCG deck list",
-  "OP17 deck list",
-  "OP16 deck list",
   "ONE PIECE TCG deck list",
   "卡組構築",
   "卡牌搜索",
@@ -267,7 +265,7 @@ export function rootJsonLd(): Record<string, unknown> {
         inLanguage: ["zh-HK", "zh-CN", "en"],
         isPartOf: { "@id": `${SITE_URL}/#website` },
         description:
-          "ONE PIECE CARD GAME（OPCG）工具網站 optcgassistant.com：卡牌資料庫、卡組構築、賽事卡組（OP17 / OP16 deck list）、收藏與卡冊、市場價格，以及瀏覽器即時對戰（房間對戰與 AI 對戰）。",
+          "ONE PIECE CARD GAME（OPCG）工具網站 optcgassistant.com：卡牌資料庫、卡組構築、賽事卡組（最新環境 deck list）、收藏與卡冊、市場價格，以及瀏覽器即時對戰（房間對戰與 AI 對戰）。",
         featureList: [
           "卡牌搜索與篩選",
           "卡組構築 / deck builder",

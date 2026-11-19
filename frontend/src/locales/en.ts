@@ -42,7 +42,7 @@ const dict: Record<string, string> = {
   "landing.brand_aliases":
     "Also known as OPCG Assistant, OPCG Card Assistant, optcg assistant, and opcg assistant. Domain: optcgassistant.com.",
   "landing.intro":
-    "OPCG Card Assistant (optcgassistant.com) is a ONE PIECE CARD GAME (OPCG / OPTCG) toolkit with a full card database you can filter by ID, name, color, cost, set, and effect keywords. Beyond search, you can build and check decks online, browse OP17 / OP16 tournament deck lists, track your collection, plan binder layouts, and review market prices and watchlists for restocking. Live browser battles are included: open a room with a friend or practice against AI using your own decks to rehearse turns, effects, and pre-event prep. Whether you are sorting the card pool or studying the meta before a tournament, you can search, build, collect, and practice in one place.",
+    "OPCG Card Assistant (optcgassistant.com) is a ONE PIECE CARD GAME (OPCG / OPTCG) toolkit with a full card database you can filter by ID, name, color, cost, set, and effect keywords. Beyond search, you can build and check decks online, browse {sets} tournament deck lists, track your collection, plan binder layouts, and review market prices and watchlists for restocking. Live browser battles are included: open a room with a friend or practice against AI using your own decks to rehearse turns, effects, and pre-event prep. Whether you are sorting the card pool or studying the meta before a tournament, you can search, build, collect, and practice in one place.",
   "cover.aria": "Welcome",
   "cover.kicker": "Unofficial fan tool",
   "cover.tagline": "Search, build, collect, and practice rules — an unofficial fan sandbox.",

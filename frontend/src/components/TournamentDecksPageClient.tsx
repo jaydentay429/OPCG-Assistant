@@ -21,31 +21,21 @@ import { copyTextToClipboard } from "@/lib/clipboard";
 import { buildDeckImage, downloadDeckImage } from "@/lib/deckExport";
 import { buildDeckShareUrl } from "@/lib/deckShare";
 import { useI18n } from "@/lib/i18n";
+import { usePinnedDocumentTitle } from "@/lib/pinnedDocumentTitle";
 import {
   displayAuthor,
   displayKeepingParens,
   pickFacetLabel,
 } from "@/lib/topdeckLocale";
+import {
+  compareMetaCategoryKeys,
+  formatMetaLabel,
+  latestTournamentMetaKeys,
+  metaCategoryKey,
+  tournamentDocumentTitle,
+} from "@/lib/tournamentMeta";
 import { isSearchCommitKey } from "./SearchBar";
 import { CardImg } from "./CardImg";
-
-/** Group JP/EN meta pages into short set labels like OP17, OP15+EB4. */
-function metaCategoryKey(slug: string): string {
-  const body = String(slug || "")
-    .toLowerCase()
-    .replace(/^(japan|japanese|english-format|english|en-format|jp-format)-/, "");
-  const parts: string[] = [];
-  let rest = body;
-  const re = /^(op|eb|st|prb)-?(\d+)/i;
-  while (true) {
-    const m = rest.match(re);
-    if (!m) break;
-    parts.push(`${m[1].toUpperCase()}${parseInt(m[2], 10)}`);
-    rest = rest.slice(m[0].length).replace(/^-/, "");
-    if (!/^(op|eb|st|prb)-?\d+/i.test(rest)) break;
-  }
-  return parts.length ? parts.join("+") : slug;
-}
 
 type MetaCategory = {
   key: string;
@@ -187,20 +177,8 @@ export function TournamentDecksPageClient({ hideTitle = false }: { hideTitle?: b
         order.push(key);
       }
     }
-    const rank = (k: string) => {
-      const m = k.match(/^(OP|EB|ST|PRB)(\d+)/);
-      if (!m) return [0, 0, k] as const;
-      const kind = { OP: 4, EB: 3, ST: 2, PRB: 1 }[m[1]] || 0;
-      return [parseInt(m[2], 10), kind, k] as const;
-    };
     return [...order]
-      .sort((a, b) => {
-        const ra = rank(a);
-        const rb = rank(b);
-        if (ra[0] !== rb[0]) return rb[0] - ra[0];
-        if (ra[1] !== rb[1]) return rb[1] - ra[1];
-        return String(ra[2]).localeCompare(String(rb[2]));
-      })
+      .sort(compareMetaCategoryKeys)
       .map((k) => byKey.get(k)!);
   }, [meta]);
 
@@ -209,6 +187,10 @@ export function TournamentDecksPageClient({ hideTitle = false }: { hideTitle?: b
     for (const c of categories) m.set(c.key, c);
     return m;
   }, [categories]);
+
+  const latestKeys = useMemo(() => latestTournamentMetaKeys(meta?.formats), [meta]);
+  const latestLabel = formatMetaLabel(latestKeys);
+  usePinnedDocumentTitle(meta ? tournamentDocumentTitle(lang, latestKeys) : "");
 
   const selectedMetaSlugs = useMemo(() => {
     if (!filters.env.length) return undefined;
@@ -538,7 +520,12 @@ export function TournamentDecksPageClient({ hideTitle = false }: { hideTitle?: b
 
   return (
     <div className="stack">
-      {!hideTitle ? <h1 className="page-title">{t("tournaments.title")}</h1> : null}
+      {!hideTitle ? (
+        <>
+          <h1 className="page-title">{t("tournaments.title")}</h1>
+          {latestLabel ? <p className="page-title-sub">{latestLabel}</p> : null}
+        </>
+      ) : null}
 
       <form
         className="tournaments-toolbar"

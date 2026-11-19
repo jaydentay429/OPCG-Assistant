@@ -540,6 +540,13 @@ img {
   margin-bottom: 0.65rem;
 }
 
+.page-title-sub {
+  margin: -0.35rem 0 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 650;
+  color: var(--muted, #94a3b8);
+}
+
 .home-seo-intro,
 .page-seo-intro {
   margin: 0 0 0.85rem;
