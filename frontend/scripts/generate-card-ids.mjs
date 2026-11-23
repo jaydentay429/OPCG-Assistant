@@ -77,7 +77,8 @@ if (raw) {
     const row = raw[id] || {};
     const name = String(row.name || id).trim() || id;
     if (!grouped.has(code)) grouped.set(code, []);
-    grouped.get(code).push({ id, name });
+    // Leaked pre-release rows keep an "unconfirmed" marker for the set page.
+    grouped.get(code).push(row.unconfirmed ? { id, name, unconfirmed: true } : { id, name });
   }
 }
 

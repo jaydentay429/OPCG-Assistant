@@ -592,6 +592,27 @@ export function CardDetailClient({
                   {banLabel}
                 </p>
               ) : null}
+              {card.unconfirmed ? (
+                <div className="detail-unconfirmed" role="note">
+                  <p className="detail-unconfirmed-badge">{t("detail.unconfirmed_badge")}</p>
+                  <p className="detail-unconfirmed-note">
+                    {t("detail.unconfirmed_note")}
+                    {card.reveal_source && /^https:\/\//.test(card.reveal_source) ? (
+                      <>
+                        {" "}
+                        <a href={card.reveal_source} target="_blank" rel="noopener noreferrer nofollow">
+                          {t("detail.unconfirmed_source")}
+                        </a>
+                      </>
+                    ) : null}
+                  </p>
+                  {card.temp_image ? <p className="detail-unconfirmed-note">{t("detail.temp_image_note")}</p> : null}
+                </div>
+              ) : card.temp_image ? (
+                <p className="detail-unconfirmed-note" role="note">
+                  {t("detail.temp_image_note")}
+                </p>
+              ) : null}
             </div>
             {isParallelArtId(shownId) ? (
               <p className="detail-base-link">

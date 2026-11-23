@@ -29,6 +29,8 @@ frontend/package-lock*.json
 !frontend/package-lock.json
 
 # --- large / CDN-hosted assets (keep on VPS + R2, do not push) ---
+# Queue written on the VPS by sync_card_images.py (temp art replaced).
+index/temp_images_replaced.json
 packs/
 preview/images/
 !preview/images/.gitkeep

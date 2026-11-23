@@ -301,6 +301,63 @@ def write_preview_ids(remaining: set[str]) -> None:
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+TEMP_IMAGE_REPLACED_PATH = BASE_DIR / "index" / "temp_images_replaced.json"
+MANUAL_CARDS_PATH = BASE_DIR / "index" / "manual_cards.json"
+TEMP_IMAGE_FIELDS = ("temp_image", "image_source")
+
+
+def is_temp_image_row(row: object) -> bool:
+    """Pre-release art from a non-official source (shop scan, stream capture)."""
+    return isinstance(row, dict) and bool(row.get("temp_image"))
+
+
+def temp_image_candidates(card_id: str) -> list[str]:
+    """Official files only, Japanese host first. Never Limitless or a shop."""
+    jp = [f"{JP_IMAGE_HOST}images/cardlist/card/{stem}.png" for stem in jp_image_stems(card_id)]
+    return dedupe(jp + direct_official_candidates(card_id))
+
+
+def clear_manual_temp_image(card_ids: list[str]) -> None:
+    """Drop the temp-image flag from the screenshot rows, so the daily
+    apply_manual_cards does not put it back after the official art landed."""
+    if not card_ids or not MANUAL_CARDS_PATH.exists():
+        return
+    try:
+        payload = json.loads(MANUAL_CARDS_PATH.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return
+    cards = payload.get("cards") if isinstance(payload, dict) else None
+    if not isinstance(cards, dict):
+        return
+    changed = False
+    for cid in card_ids:
+        row = cards.get(cid)
+        if not isinstance(row, dict):
+            continue
+        for key in TEMP_IMAGE_FIELDS:
+            if key in row:
+                row.pop(key, None)
+                changed = True
+    if changed:
+        MANUAL_CARDS_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def record_temp_images_replaced(card_ids: list[str]) -> None:
+    """Queue ids whose R2 object must be overwritten (R2 copy skips existing keys)."""
+    if not card_ids:
+        return
+    existing: list[str] = []
+    if TEMP_IMAGE_REPLACED_PATH.exists():
+        try:
+            raw = json.loads(TEMP_IMAGE_REPLACED_PATH.read_text(encoding="utf-8"))
+            if isinstance(raw, list):
+                existing = [str(x) for x in raw if str(x).strip()]
+        except (OSError, json.JSONDecodeError):
+            existing = []
+    merged = sorted(set(existing) | set(card_ids))
+    TEMP_IMAGE_REPLACED_PATH.write_text(json.dumps(merged, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
 def is_official_cdn_url(url: str) -> bool:
     host = (url or "").lower()
     return "onepiece-cardgame.com" in host and "/images/cardlist/card/" in host
@@ -436,6 +493,7 @@ def main() -> None:
     downloaded = 0
     failed = 0
     cleared_preview: list[str] = []
+    replaced_temp: list[str] = []
     index_dirty = False
 
     for card_id, card in work_items:
@@ -445,7 +503,10 @@ def main() -> None:
         # Known-bad packs file (printed number ≠ filename). Try the official
         # URL and replace the file only when that download succeeds.
         suppress_bad_art = bool(row.get("suppress_pack_image"))
-        force = bool(args.overwrite or args.overwrite_preview or suppress_bad_art)
+        # Temporary (non-official) art: retry the official file every run and
+        # replace the local file only when an official download succeeds.
+        temp_art = is_temp_image_row(row)
+        force = bool(args.overwrite or args.overwrite_preview or suppress_bad_art or temp_art)
         if args.fix_en_art:
             if not needs_en_art_fix(card_id, session):
                 skipped += 1
@@ -457,10 +518,14 @@ def main() -> None:
 
         # asia-tc (繁中) → JP official → EN last.
         # Suppressed ids only accept an official cardlist file, never Limitless.
-        candidates = list(direct_official_candidates(card_id))
-        candidates.extend(official_candidates(card if isinstance(card, dict) else {}))
-        candidates.extend(jp_map.get(card_id) or [])
-        if not args.overwrite_preview and not suppress_bad_art and not candidates:
+        if temp_art:
+            candidates = temp_image_candidates(card_id)
+            candidates.extend(u for u in (jp_map.get(card_id) or []) if is_official_cdn_url(u))
+        else:
+            candidates = list(direct_official_candidates(card_id))
+            candidates.extend(official_candidates(card if isinstance(card, dict) else {}))
+            candidates.extend(jp_map.get(card_id) or [])
+        if not args.overwrite_preview and not suppress_bad_art and not temp_art and not candidates:
             candidates.extend(limitless_page_candidates(card_id))
         candidates = dedupe(candidates)
         if not candidates:
@@ -476,6 +541,14 @@ def main() -> None:
                     row.pop("suppress_pack_image", None)
                     data[card_id] = row
                     index_dirty = True
+            if temp_art and is_official_cdn_url(used_url):
+                row = data.get(card_id)
+                if isinstance(row, dict):
+                    for key in TEMP_IMAGE_FIELDS:
+                        row.pop(key, None)
+                    data[card_id] = row
+                    index_dirty = True
+                replaced_temp.append(card_id)
             if args.overwrite_preview and is_official_cdn_url(used_url):
                 row = data.get(card_id)
                 if isinstance(row, dict) and row.get("preview"):
@@ -489,6 +562,10 @@ def main() -> None:
 
     if index_dirty:
         INDEX_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    if replaced_temp:
+        clear_manual_temp_image(replaced_temp)
+        record_temp_images_replaced(replaced_temp)
+        print(f"暂用卡图已换成官方图: {', '.join(sorted(replaced_temp))}")
     if args.overwrite_preview:
         write_preview_ids(preview_ids)
 
