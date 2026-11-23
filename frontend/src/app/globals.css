@@ -628,6 +628,50 @@ body.battle-active .play-seo-intro {
   overflow-wrap: anywhere;
 }
 
+.detail-unconfirmed {
+  margin: 0.6rem 0 0;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #f59e0b;
+  border-radius: 10px;
+  background: rgba(245, 158, 11, 0.12);
+}
+.detail-unconfirmed-badge {
+  display: inline-block;
+  margin: 0 0 0.35rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: #b45309;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+.detail-unconfirmed-note {
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.set-card-unconfirmed {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  margin-left: auto;
+  line-height: 1.5;
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  background: #b45309;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.set-unconfirmed-note .set-card-unconfirmed {
+  margin-left: 0;
+}
+.set-unconfirmed-note {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #f59e0b;
+  border-radius: 10px;
+  background: rgba(245, 158, 11, 0.12);
+}
 .detail-ban-badge {
   display: inline-block;
   margin: 0.55rem 0 0;

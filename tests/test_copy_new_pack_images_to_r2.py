@@ -240,9 +240,15 @@ def test_daily_sync_source_copies_before_manifest_and_does_not_sync():
     assert "rclone sync" not in text
     assert "continuing to card image manifest" in text
     assert "--ignore-existing" in text
-    assert between.count("--packs") == 3
-    assert between.count('"$APP_ROOT/packs"') == 3
-    assert between.count('"$remote"') == 3
+    # copy, temp-art overwrite, fill, webp.
+    assert between.count("--packs") == 4
+    assert between.count('"$APP_ROOT/packs"') == 4
+    assert between.count('"$remote"') == 4
+    # --overwrite only runs for the queued temp-art ids.
+    assert between.count("--overwrite") == 1
+    overwrite_at = between.index("--overwrite")
+    assert '--ids "$replaced_ids"' in between[:overwrite_at]
+    assert "temp_images_replaced.json" in between
     assert "--rclone-remote" in text[webp_at:manifest_at]
     assert "opcg-r2:" not in text
     assert "/opt/opcg/app/packs" not in text

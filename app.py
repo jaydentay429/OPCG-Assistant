@@ -281,6 +281,24 @@ class CardResponse(BaseModel):
     variant_card_sets: dict[str, list[str]] = {}
     market_price: dict[str, Any] | None = None
     life: int | None = None
+    # Pre-release leak entered by hand: text not on any official cardlist yet.
+    unconfirmed: bool = False
+    # Card art is from a non-official source until the official file lands.
+    temp_image: bool = False
+    reveal_source: str | None = None
+    image_source: str | None = None
+
+
+def _provisional_fields(card_basic: dict[str, Any]) -> dict[str, Any]:
+    """Labels for unconfirmed pre-release rows; empty for official rows."""
+    unconfirmed = bool(card_basic.get("unconfirmed"))
+    temp_image = bool(card_basic.get("temp_image"))
+    return {
+        "unconfirmed": unconfirmed,
+        "temp_image": temp_image,
+        "reveal_source": (str(card_basic.get("reveal_source") or "").strip() or None) if unconfirmed else None,
+        "image_source": (str(card_basic.get("image_source") or "").strip() or None) if temp_image else None,
+    }
 
 
 class AIAdvice(BaseModel):
@@ -4374,6 +4392,7 @@ def build_card_response(card_id: str, card_basic: dict[str, Any]) -> CardRespons
             type_hint,
             _first_int(card_basic.get("life"), full_card.get("life"), snapshot_card.get("life")),
         ),
+        **_provisional_fields(card_basic),
     )
 
 
@@ -4452,6 +4471,7 @@ def build_card_brief(card_id: str, card_basic: dict[str, Any]) -> CardResponse:
         effect=effect_text,
         effect_en=effect_en_text,
         card_sets=resolve_card_sets(card_id, card_basic, snapshot_card),
+        **_provisional_fields(card_basic),
     )
 
 

@@ -46,6 +46,12 @@ export type Card = {
   variant_card_sets?: Record<string, string[]>;
   market_price?: Record<string, unknown> | null;
   life?: number | null;
+  /** Pre-release leak entered by hand; not on any official cardlist yet. */
+  unconfirmed?: boolean;
+  /** Card art is from a non-official source until the official file lands. */
+  temp_image?: boolean;
+  reveal_source?: string | null;
+  image_source?: string | null;
 };
 
 export type CardDetailResponse = {

@@ -740,8 +740,14 @@ def merge_index(existing: dict[str, Any], parsed_cards: dict[str, ParsedCard], b
             # suppress_pack_image until an official image download replaces
             # a known-bad packs file (see sync_card_images.py).
             current.pop("manual_source", None)
+            # Leaked pre-release rows (ST37/ST38) carry an "unconfirmed" label
+            # and their reveal links; official text removes both. temp_image /
+            # image_source stay until sync_card_images gets the official art.
             for provisional in (
                 "text_origin",
+                "unconfirmed",
+                "reveal_source",
+                "reveal_announcement",
                 "name_ja",
                 "effect_ja",
                 "trigger_ja",

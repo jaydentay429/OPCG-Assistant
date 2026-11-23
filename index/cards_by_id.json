@@ -211747,5 +211747,427 @@
     ],
     "effect": "【登場時】將最多3張自己的咚‼卡置為活動狀態。之後，最多1張對手的角色卡，在下一個對手結束階段結束前，無法置為休息狀態。【我方回合結束時】將最多1張自己擁有《W7》特徵的卡片置為活動狀態。",
     "effect_en": "[On Play] Set up to 3 of your DON!! cards as active. Then, up to 1 of your opponent's Characters cannot be rested until the end of your opponent's next End Phase. [End of Your Turn] Set up to 1 of your {Water Seven} type cards as active."
+  },
+  "ST37-001": {
+    "preview": true,
+    "manual_source": "screenshot",
+    "text_origin": "self_translated_temporary",
+    "unconfirmed": true,
+    "temp_image": true,
+    "image_source": "https://akihabara-cardshop.com/ST-37/",
+    "reveal_source": "https://www.youtube.com/watch?v=JZFCeHhv_nY",
+    "reveal_announcement": "https://x.com/ONEPIECE_tcg/status/2124030779189833765",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "card_sets": [
+      "起始牌組 沙漠的王女與海賊們【ST-37】"
+    ],
+    "card_id": "ST37-001",
+    "name": "蒙其・D・魯夫",
+    "name_hans": "蒙奇・D・路飞",
+    "name_en": "Monkey.D.Luffy",
+    "name_ja": "モンキー・D・ルフィ",
+    "card_type": "Leader",
+    "category": "Leader",
+    "card_type_en": "Leader",
+    "category_en": "Leader",
+    "colors": [
+      "紅",
+      "藍"
+    ],
+    "colors_en": [
+      "Red",
+      "Blue"
+    ],
+    "cost": null,
+    "life": 3,
+    "power": 5000,
+    "counter": null,
+    "rarity": "L",
+    "traits": [
+      "阿拉巴斯坦王國",
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Alabasta",
+      "Straw Hat Crew"
+    ],
+    "effect": "在規則上，自己只可以將擁有《阿拉巴斯坦王國》特徵的卡片放入卡組。 【攻擊時】抽2張卡片。之後，在這個回合結束時，廢棄自己的手牌使手牌只有7張。",
+    "effect_hans": "在规则上，自己只可以将拥有《阿拉巴斯坦王国》特征的卡片放入卡组。 【攻击时】抽2张卡片。之后，在这个回合结束时，废弃自己的手牌使手牌只有7张。",
+    "effect_en": "Under the rules of this game, you may only include {Alabasta} type cards in your deck. [When Attacking] Draw 2 cards. Then, at the end of your turn, trash cards from your hand until you have 7 cards in your hand.",
+    "effect_ja": "ルール上、自分は特徴《アラバスタ王国》を持つカードしかデッキに入れることができない。 【アタック時】カード2枚を引く。その後、このターン終了時、自分の手札が7枚になるように手札を捨てる。",
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ]
+  },
+  "ST37-006": {
+    "preview": true,
+    "manual_source": "screenshot",
+    "text_origin": "self_translated_temporary",
+    "unconfirmed": true,
+    "temp_image": true,
+    "image_source": "https://akihabara-cardshop.com/ST-37/",
+    "reveal_source": "https://www.youtube.com/watch?v=JZFCeHhv_nY",
+    "reveal_announcement": "https://x.com/ONEPIECE_tcg/status/2124030779189833765",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "card_sets": [
+      "起始牌組 沙漠的王女與海賊們【ST-37】"
+    ],
+    "card_id": "ST37-006",
+    "name": "波特卡斯・D・艾斯",
+    "name_hans": "波特卡斯・D・艾斯",
+    "name_en": "Portgas.D.Ace",
+    "name_ja": "ポートガス・D・エース",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "cost": 8,
+    "life": null,
+    "power": 8000,
+    "counter": null,
+    "rarity": "C",
+    "traits": [
+      "阿拉巴斯坦王國",
+      "白鬍子海賊團"
+    ],
+    "traits_en": [
+      "Alabasta",
+      "Whitebeard Pirates"
+    ],
+    "effect": "【防禦】(對手攻擊後，將這張卡片置為休息狀態即可使攻擊的對象換成這張卡片) 【登場時】最多1張對手的角色卡，在這個回合，力量值-3000。",
+    "effect_hans": "【防御】(对手攻击后，将这张卡片置为休息状态即可使攻击的对象换成这张卡片) 【登场时】最多1张对手的角色卡，在这个回合，力量值-3000。",
+    "effect_en": "[Blocker] (After your opponent declares an attack, you may rest this card to make it the new target of the attack.) [On Play] Give up to 1 of your opponent's Characters −3000 power during this turn.",
+    "effect_ja": "【ブロッカー】(相手のアタックの後、このカードをレストにし、アタックの対象をこのカードにできる) 【登場時】相手のキャラ1枚までを、このターン中、パワー-3000。",
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ]
+  },
+  "ST37-007": {
+    "preview": true,
+    "manual_source": "screenshot",
+    "text_origin": "self_translated_temporary",
+    "unconfirmed": true,
+    "temp_image": true,
+    "image_source": "https://akihabara-cardshop.com/ST-37/",
+    "reveal_source": "https://www.youtube.com/watch?v=JZFCeHhv_nY",
+    "reveal_announcement": "https://x.com/ONEPIECE_tcg/status/2124030779189833765",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "card_sets": [
+      "起始牌組 沙漠的王女與海賊們【ST-37】"
+    ],
+    "card_id": "ST37-007",
+    "name": "蒙其・D・魯夫",
+    "name_hans": "蒙奇・D・路飞",
+    "name_en": "Monkey.D.Luffy",
+    "name_ja": "モンキー・D・ルフィ",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "cost": 7,
+    "life": null,
+    "power": 9000,
+    "counter": null,
+    "rarity": "SR",
+    "traits": [
+      "阿拉巴斯坦王國",
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Alabasta",
+      "Straw Hat Crew"
+    ],
+    "effect": "【速攻】(這張卡片在登場的回合即可攻擊) 【啟動主要】【每回合1次】可以廢棄1張自己的手牌：最多1張對手力量值10000以下的角色卡，在這個回合，效果無效。",
+    "effect_hans": "【速攻】(这张卡片在登场的回合即可攻击) 【启动主要】【每回合1次】可以废弃1张自己的手牌：最多1张对手力量值10000以下的角色卡，在这个回合，效果无效。",
+    "effect_en": "[Rush] (This card can attack on the turn in which it is played.) [Activate: Main] [Once Per Turn] You may trash 1 card from your hand: Negate the effects of up to 1 of your opponent's Characters with 10000 power or less during this turn.",
+    "effect_ja": "【速攻】(このカードは登場したターンにアタックできる) 【起動メイン】【ターン1回】自分の手札1枚を捨てることができる：相手のパワー10000以下のキャラ1枚までを、このターン中、効果を無効にする。",
+    "attributes": [
+      "打"
+    ],
+    "attributes_en": [
+      "Strike"
+    ]
+  },
+  "ST37-015": {
+    "preview": true,
+    "manual_source": "screenshot",
+    "text_origin": "self_translated_temporary",
+    "unconfirmed": true,
+    "temp_image": true,
+    "image_source": "https://akihabara-cardshop.com/ST-37/",
+    "reveal_source": "https://www.youtube.com/watch?v=JZFCeHhv_nY",
+    "reveal_announcement": "https://x.com/ONEPIECE_tcg/status/2124030779189833765",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "card_sets": [
+      "起始牌組 沙漠的王女與海賊們【ST-37】"
+    ],
+    "card_id": "ST37-015",
+    "name": "明明你才是小角色吧!!!",
+    "name_hans": "明明你才是小角色吧!!!",
+    "name_en": "Oh yeah?! You're the one who's a minnow!!",
+    "name_ja": "お前の方が 小物だろ!!!",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "紅"
+    ],
+    "colors_en": [
+      "Red"
+    ],
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "rarity": "C",
+    "traits": [
+      "阿拉巴斯坦王國",
+      "草帽一行人"
+    ],
+    "traits_en": [
+      "Alabasta",
+      "Straw Hat Crew"
+    ],
+    "effect": "【反擊】若自己場上的角色卡只有擁有《阿拉巴斯坦王國》特徵的角色卡時，最多1張自己的領航卡或角色卡，在這場對戰中，力量值+4000。\n【觸發器】將最多1張對手力量值5000以下的角色卡放置到廢棄區。",
+    "effect_hans": "【反击】若自己场上的角色卡只有拥有《阿拉巴斯坦王国》特征的角色卡时，最多1张自己的领航卡或角色卡，在这场对战中，力量值+4000。\n【触发器】将最多1张对手力量值5000以下的角色卡放置到废弃区。",
+    "effect_en": "[Counter] If the only Characters on your field are {Alabasta} type Characters, up to 1 of your Leader or Character cards gains +4000 power during this battle.\n[Trigger] Trash up to 1 of your opponent's Characters with 5000 power or less.",
+    "effect_ja": "【カウンター】自分のキャラが特徴《アラバスタ王国》を持つキャラのみの場合、自分のリーダーかキャラ1枚までを、このバトル中、パワー+4000。\n【トリガー】相手のパワー5000以下のキャラ1枚までを、トラッシュに置く。"
+  },
+  "ST38-001": {
+    "preview": true,
+    "manual_source": "screenshot",
+    "text_origin": "self_translated_temporary",
+    "unconfirmed": true,
+    "temp_image": true,
+    "image_source": "https://akihabara-cardshop.com/st-38/",
+    "reveal_source": "https://www.youtube.com/watch?v=JZFCeHhv_nY",
+    "reveal_announcement": "https://x.com/ONEPIECE_tcg/status/2124030779189833765",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "card_sets": [
+      "起始牌組 巴洛克工作社【ST-38】"
+    ],
+    "card_id": "ST38-001",
+    "name": "Mr.0(克洛克達爾)",
+    "name_hans": "Mr.0(克洛克达尔)",
+    "name_en": "Mr. 0 (Crocodile)",
+    "name_ja": "Mr.0(クロコダイル)",
+    "card_type": "Leader",
+    "category": "Leader",
+    "card_type_en": "Leader",
+    "category_en": "Leader",
+    "colors": [
+      "藍",
+      "黑"
+    ],
+    "colors_en": [
+      "Blue",
+      "Black"
+    ],
+    "cost": null,
+    "life": 4,
+    "power": 5000,
+    "counter": null,
+    "rarity": "L",
+    "traits": [
+      "王下七武海",
+      "B・W"
+    ],
+    "traits_en": [
+      "The Seven Warlords of the Sea",
+      "Baroque Works"
+    ],
+    "effect": "【攻擊時】可以廢棄1張自己的手牌：抽1張卡片。 【啟動主要】【每回合1次】可以KO1張自己原本費用3以上擁有包含『B・W』特徵的角色卡：抽1張卡片。",
+    "effect_hans": "【攻击时】可以废弃1张自己的手牌：抽1张卡片。 【启动主要】【每回合1次】可以KO1张自己原本费用3以上拥有包含『B・W』特征的角色卡：抽1张卡片。",
+    "effect_en": "[When Attacking] You may trash 1 card from your hand: Draw 1 card. [Activate: Main] [Once Per Turn] You may K.O. 1 of your Characters with a type including \"Baroque Works\" and a base cost of 3 or more: Draw 1 card.",
+    "effect_ja": "【アタック時】自分の手札1枚を捨てることができる：カード1枚を引く。 【起動メイン】【ターン1回】自分の元々のコスト3以上の『B・W』を含む特徴を持つキャラ1枚をKOできる：カード1枚を引く。",
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ]
+  },
+  "ST38-004": {
+    "preview": true,
+    "manual_source": "screenshot",
+    "text_origin": "self_translated_temporary",
+    "unconfirmed": true,
+    "temp_image": true,
+    "image_source": "https://akihabara-cardshop.com/st-38/",
+    "reveal_source": "https://www.youtube.com/watch?v=JZFCeHhv_nY",
+    "reveal_announcement": "https://x.com/ONEPIECE_tcg/status/2124030779189833765",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "card_sets": [
+      "起始牌組 巴洛克工作社【ST-38】"
+    ],
+    "card_id": "ST38-004",
+    "name": "Miss黃金週(瑪莉安奴)",
+    "name_hans": "Miss黄金周(玛莉安奴)",
+    "name_en": "Miss.Goldenweek(Marianne)",
+    "name_ja": "ミス・ゴールデンウィーク(マリアンヌ)",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "藍"
+    ],
+    "colors_en": [
+      "Blue"
+    ],
+    "cost": 4,
+    "life": null,
+    "power": 5000,
+    "counter": 1000,
+    "rarity": "C",
+    "traits": [
+      "B・W"
+    ],
+    "traits_en": [
+      "Baroque Works"
+    ],
+    "effect": "【登場時】/【KO時】將最多1張費用2以下的角色卡放回持有者的手牌。",
+    "effect_hans": "【登场时】/【KO时】将最多1张费用2以下的角色卡放回持有者的手牌。",
+    "effect_en": "[On Play]/[On K.O.] Return up to 1 Character with a cost of 2 or less to the owner's hand.",
+    "effect_ja": "【登場時】/【KO時】コスト2以下のキャラ1枚までを、持ち主の手札に戻す。",
+    "attributes": [
+      "知"
+    ],
+    "attributes_en": [
+      "Wisdom"
+    ]
+  },
+  "ST38-008": {
+    "preview": true,
+    "manual_source": "screenshot",
+    "text_origin": "self_translated_temporary",
+    "unconfirmed": true,
+    "temp_image": true,
+    "image_source": "https://akihabara-cardshop.com/st-38/",
+    "reveal_source": "https://www.youtube.com/watch?v=JZFCeHhv_nY",
+    "reveal_announcement": "https://x.com/ONEPIECE_tcg/status/2124030779189833765",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "card_sets": [
+      "起始牌組 巴洛克工作社【ST-38】"
+    ],
+    "card_id": "ST38-008",
+    "name": "Mr.0(克洛克達爾)",
+    "name_hans": "Mr.0(克洛克达尔)",
+    "name_en": "Mr. 0 (Crocodile)",
+    "name_ja": "Mr.0(クロコダイル)",
+    "card_type": "Character",
+    "category": "Character",
+    "card_type_en": "Character",
+    "category_en": "Character",
+    "colors": [
+      "黑"
+    ],
+    "colors_en": [
+      "Black"
+    ],
+    "cost": 7,
+    "life": null,
+    "power": 7000,
+    "counter": null,
+    "rarity": "SR",
+    "traits": [
+      "王下七武海",
+      "B・W"
+    ],
+    "traits_en": [
+      "The Seven Warlords of the Sea",
+      "Baroque Works"
+    ],
+    "effect": "【登場時】/【KO時】選擇下列其中一項。 ・使最多1張自己廢棄區中費用5以下擁有包含『B・W』特徵的角色卡登場。 ・KO最多1張對手費用5以下的角色卡。",
+    "effect_hans": "【登场时】/【KO时】选择下列其中一项。 ・使最多1张自己废弃区中费用5以下拥有包含『B・W』特征的角色卡登场。 ・KO最多1张对手费用5以下的角色卡。",
+    "effect_en": "[On Play]/[On K.O.] Choose one: • Play up to 1 Character card with a type including \"Baroque Works\" and a cost of 5 or less from your trash. • K.O. up to 1 of your opponent's Characters with a cost of 5 or less.",
+    "effect_ja": "【登場時】/【KO時】以下から1つを選ぶ。・自分のトラッシュからコスト5以下の『B・W』を含む特徴を持つキャラカード1枚までを、登場させる。・相手のコスト5以下のキャラ1枚までを、KOする。",
+    "attributes": [
+      "特"
+    ],
+    "attributes_en": [
+      "Special"
+    ]
+  },
+  "ST38-015": {
+    "preview": true,
+    "manual_source": "screenshot",
+    "text_origin": "self_translated_temporary",
+    "unconfirmed": true,
+    "temp_image": true,
+    "image_source": "https://akihabara-cardshop.com/st-38/",
+    "reveal_source": "https://www.youtube.com/watch?v=JZFCeHhv_nY",
+    "reveal_announcement": "https://x.com/ONEPIECE_tcg/status/2124030779189833765",
+    "img_url": "",
+    "img_full_url": "",
+    "block_number": 5,
+    "card_sets": [
+      "起始牌組 巴洛克工作社【ST-38】"
+    ],
+    "card_id": "ST38-015",
+    "name": "別自以為是了 小角色……",
+    "name_hans": "别自以为是了 小角色……",
+    "name_en": "Don't Be so Full of Yourself Fishbait",
+    "name_ja": "自惚れるなよ 小物が……",
+    "card_type": "Event",
+    "category": "Event",
+    "card_type_en": "Event",
+    "category_en": "Event",
+    "colors": [
+      "藍"
+    ],
+    "colors_en": [
+      "Blue"
+    ],
+    "cost": 1,
+    "life": null,
+    "power": null,
+    "counter": null,
+    "rarity": "C",
+    "traits": [
+      "王下七武海",
+      "B・W"
+    ],
+    "traits_en": [
+      "The Seven Warlords of the Sea",
+      "Baroque Works"
+    ],
+    "effect": "【主要】若自己的領航卡擁有包含『B・W』特徵時，將最多1張費用2以下的角色卡放回持有者的手牌或卡組下面。\n【反擊】自己的領航卡，在這場對戰中，力量值+3000。",
+    "effect_hans": "【主要】若自己的领航卡拥有包含『B・W』特征时，将最多1张费用2以下的角色卡放回持有者的手牌或卡组下面。\n【反击】自己的领航卡，在这场对战中，力量值+3000。",
+    "effect_en": "[Main] If your Leader's type includes \"Baroque Works\", return up to 1 Character with a cost of 2 or less to the owner's hand or the bottom of their deck.\n[Counter] Your Leader gains +3000 power during this battle.",
+    "effect_ja": "【メイン】自分のリーダーが『B・W』を含む特徴を持つ場合、コスト2以下のキャラ1枚までを、持ち主の手札かデッキの下に戻す。\n【カウンター】自分のリーダーを、このバトル中、パワー+3000。"
   }
 }

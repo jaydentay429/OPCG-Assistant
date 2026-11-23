@@ -45,6 +45,7 @@ export default async function SetPage({ params }: { params: Promise<{ code: stri
   const set = getSet(code);
   if (!set) notFound();
   const label = setLabel(code);
+  const unconfirmedCount = set.cards.filter((c) => c.unconfirmed).length;
   const collectionLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -91,12 +92,21 @@ export default async function SetPage({ params }: { params: Promise<{ code: stri
       <p>
         《ONE PIECE 卡牌對戰》{label}（{code}）全卡列表。點卡號可看效果、異畫、市場價格，並加入卡組或對戰練習。
       </p>
+      {unconfirmedCount ? (
+        <p className="set-unconfirmed-note" role="note">
+          <span className="set-card-unconfirmed">未確認 Unconfirmed</span>{" "}
+          官方卡表尚未公開本系列。標示「未確認」的 {unconfirmedCount}{" "}
+          張取自官方直播公開畫面與第三方發售前卡表，中文為本站暫譯，卡圖為暫用圖，官方公開後會更新。
+          Not on the official card list yet; these cards may change.
+        </p>
+      ) : null}
       <ul className="set-card-list">
         {set.cards.map((c) => (
           <li key={c.id}>
             <Link href={`/cards/${encodeURIComponent(c.id)}`}>
               <span className="set-card-id">{displayCardId(c.id)}</span>
               <span>{c.name}</span>
+              {c.unconfirmed ? <span className="set-card-unconfirmed">未確認</span> : null}
             </Link>
           </li>
         ))}

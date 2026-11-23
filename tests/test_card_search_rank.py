@@ -83,7 +83,7 @@ def test_normal_name_search_ranks_exact_name_before_a_substring():
 
     luffy = _search("魯夫")
     assert luffy[0] == "ST01-001"
-    assert len(luffy) == 253
+    assert len(luffy) == 255
     assert "OP18-076" not in luffy
     assert "P-160" not in luffy
     assert "OP02-107" not in luffy
@@ -101,7 +101,7 @@ def test_set_prefixes_and_fullwidth_card_numbers():
         "OP18-0": (101, "OP18-001"),
         "PRB": (41, "PRB01-001"),
         "PRB0": (41, "PRB01-001"),
-        "ST": (783, "ST01-001"),
+        "ST": (791, "ST01-001"),
         "ST1": (221, "ST10-001"),
         "EB": (481, "EB01-001"),
         "EB0": (481, "EB01-001"),
@@ -130,10 +130,10 @@ def test_letter_digit_names_search_names_and_traits():
         "Mr.3": (17, "ST30-014"),
         "GERMA 66": (61, "OP06-078"),
         "Germa66": (61, "OP06-078"),
-        "Don": (450, "ST03-009"),
-        "don": (450, "ST03-009"),
-        "DON": (450, "ST03-009"),
-        "DON!!": (450, "ST03-009"),
+        "Don": (451, "ST03-009"),
+        "don": (451, "ST03-009"),
+        "DON": (451, "ST03-009"),
+        "DON!!": (451, "ST03-009"),
         "P-160": (1, "P-160"),
         "OP18-076": (1, "OP18-076"),
         "EB05-049": (1, "EB05-049"),
@@ -144,7 +144,7 @@ def test_letter_digit_names_search_names_and_traits():
         "迷你梅利2號": (2, "OP18-078"),
         "OP18": (123, "OP18-001"),
         "EB05": (85, "EB05-001"),
-        "魯夫": (253, "ST01-001"),
+        "魯夫": (255, "ST01-001"),
     }
     for query, (count, first) in expected.items():
         ids = _search(query)
@@ -181,7 +181,7 @@ def test_search_reuses_precomputed_name_norms_and_cache_header():
     finally:
         app._opencc_convert = original
     assert ids[0] == "ST01-001"
-    assert len(ids) == 253
+    assert len(ids) == 255
     # Query-side conversion only. The old per-card loop was ~150k calls.
     assert calls["n"] < 100
 

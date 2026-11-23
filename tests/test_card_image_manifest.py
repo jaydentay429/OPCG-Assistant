@@ -190,7 +190,11 @@ def test_committed_snapshot_matches_known_cdn_bytes():
     assert data["P-160"] == "aee899d7"
     assert data["OP18-106"] == "d1808e60"
     assert data["EB05-049"] == "16be5f3f"
-    assert len(data) == 5387
+    # ST37 / ST38 unconfirmed previews: temporary shop scans until the
+    # official Japanese art is published (sync_card_images replaces them).
+    assert data["ST37-001"] == "01b96f26"
+    assert data["ST38-001"] == "095e52f6"
+    assert len(data) == 5395
     for missing in ("OP18-021-P1", "OP16-098-P2"):
         assert missing not in data
 

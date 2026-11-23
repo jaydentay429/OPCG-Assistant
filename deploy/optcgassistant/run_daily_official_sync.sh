@@ -61,6 +61,25 @@ read_env_value() {
     if [[ "$copy_rc" -ne 0 ]]; then
       echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] copy new pack images FAILED rc=$copy_rc; continuing to card image manifest"
     fi
+    # Temporary pre-release art (temp_image rows) that sync_card_images just
+    # replaced with the official file: overwrite only those R2 keys, then
+    # clear the queue. Nothing else is overwritten and nothing is deleted.
+    replaced_file="$APP_ROOT/index/temp_images_replaced.json"
+    if [[ -s "$replaced_file" ]]; then
+      replaced_ids="$("$PY" -c 'import json,sys; print(",".join(json.load(open(sys.argv[1]))))' "$replaced_file" 2>/dev/null || true)"
+      if [[ -n "$replaced_ids" ]]; then
+        echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] overwrite temp art on $remote: $replaced_ids"
+        if "$PY" -u scripts/copy_new_pack_images_to_r2.py \
+          --packs "$APP_ROOT/packs" \
+          --rclone-remote "$remote" \
+          --ids "$replaced_ids" \
+          --overwrite; then
+          rm -f "$replaced_file"
+        else
+          echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] overwrite temp art FAILED; queue kept for tomorrow"
+        fi
+      fi
+    fi
     echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] fill missing pack images from $remote"
     fill_rc=0
     "$PY" -u scripts/fill_missing_pack_images_from_r2.py \

@@ -96,6 +96,14 @@ def test_seed_matches_index_and_ids_are_unique():
         "OP18-101",
         "OP18-103",
         "OP18-108",
+        "ST37-001",
+        "ST37-006",
+        "ST37-007",
+        "ST37-015",
+        "ST38-001",
+        "ST38-004",
+        "ST38-008",
+        "ST38-015",
     }
     assert cards["EB05-046"]["name"] == "大和"
     assert cards["EB05-046"]["name_en"] == "Yamato"
@@ -576,8 +584,8 @@ def test_seed_matches_index_and_ids_are_unique():
 
 def test_official_sync_overwrites_screenshot_row_without_duplicates():
     index: dict = {}
-    assert apply_manual_cards(index) == 78
-    assert apply_manual_cards(index) == 78
+    assert apply_manual_cards(index) == 86
+    assert apply_manual_cards(index) == 86
     assert list(index).count("EB05-046") == 1
     assert index["EB05-046"]["name"] == "大和"
 

@@ -3,6 +3,8 @@ import setIndex from "@/generated/set-index.json";
 export type SetCardRow = {
   id: string;
   name: string;
+  /** Pre-release leak not yet on the official cardlist. */
+  unconfirmed?: boolean;
 };
 
 export type SetIndexEntry = {
