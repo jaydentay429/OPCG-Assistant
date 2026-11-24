@@ -16,6 +16,8 @@ const PAIRS = [
   ["OP07-115", "EB04-058"],
   ["OP11-040", "OP11-067"],
   ["OP11-040", "OP08-069"],
+  ["EB05-001", "OP13-001"],
+  ["EB05-001", "OP01-002"],
 ];
 const NOT_ON_LIST = [
   "OP07-045",
@@ -55,6 +57,22 @@ describe("official restriction data", () => {
     const mihawk = RESTRICTION_ENTRIES.find((entry) => entry.card_id === "OP14-020");
     assert.equal(mihawk?.effective_date, "2026-10-12");
     assert.equal(mihawk?.source_url, "https://en.onepiece-cardgame.com/news/restriction-261001.html");
+    const bonney = RESTRICTION_ENTRIES.filter(
+      (entry) => entry.type === "pair" && entry.card_ids?.includes("EB05-001"),
+    );
+    assert.deepEqual(
+      bonney.map((entry) => entry.card_ids),
+      [
+        ["EB05-001", "OP13-001"],
+        ["EB05-001", "OP01-002"],
+      ],
+    );
+    for (const entry of bonney) {
+      assert.equal(entry.effective_date, "2026-11-27");
+      assert.equal(entry.source_url, "https://en.onepiece-cardgame.com/news/restriction-2611.html");
+      assert.equal(entry.asia_effective_date, "2026-11-28");
+      assert.equal(entry.asia_source_url, "https://asia-en.onepiece-cardgame.com/news/restriction-2611.html");
+    }
     for (const entry of RESTRICTION_ENTRIES) {
       assert.match(entry.effective_date, /^\d{4}-\d{2}-\d{2}$/);
       assert.match(entry.source_url, /^https:\/\/(en|asia-en)\.onepiece-cardgame\.com\//);
@@ -119,6 +137,20 @@ describe("deck builder restriction warnings", () => {
       deckRestrictionWarnings("OP14-020", {}, "en", "2026-10-11").map((row) => row.kind),
       [],
     );
+
+    assert.deepEqual(deckRestrictionWarnings("OP13-001", { "EB05-001": 4 }, "en", "2026-11-26"), []);
+    const bonneyLuffy = deckRestrictionWarnings("OP13-001", { "EB05-001-P1": 1 }, "zh-Hant", "2026-11-27");
+    assert.equal(bonneyLuffy.length, 1);
+    assert.equal(bonneyLuffy[0]?.kind, "pair");
+    assert.match(bonneyLuffy[0]?.text || "", /EB05-001-P1/);
+    assert.match(bonneyLuffy[0]?.text || "", /OP13-001/);
+    assert.match(bonneyLuffy[0]?.text || "", /2026-11-27 起/);
+    const bonneyLaw = deckRestrictionWarnings("OP01-002", { "EB05-001": 4 }, "en", "2026-11-27");
+    assert.equal(bonneyLaw.length, 1);
+    assert.match(bonneyLaw[0]?.text || "", /OP01-002/);
+    assert.match(bonneyLaw[0]?.text || "", /EB05-001/);
+    assert.deepEqual(deckRestrictionWarnings("OP13-001", { "OP01-002": 1 }, "en", "2026-11-27"), []);
+    assert.deepEqual(deckRestrictionWarnings("ST01-001", { "EB05-001": 4 }, "en", "2026-11-27"), []);
   });
 
   it("warns when a restricted card would exceed one copy", () => {

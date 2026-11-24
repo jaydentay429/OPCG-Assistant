@@ -29,6 +29,8 @@ PAIRS = [
     ("OP07-115", "EB04-058"),
     ("OP11-040", "OP11-067"),
     ("OP11-040", "OP08-069"),
+    ("EB05-001", "OP13-001"),
+    ("EB05-001", "OP01-002"),
 ]
 NOT_ON_LIST = [
     "OP07-045",
@@ -71,10 +73,24 @@ def test_restriction_file_matches_the_current_official_list():
     law = next(row for row in entries if row.get("card_id") == "ST10-001")
     reject = next(row for row in entries if row.get("card_id") == "OP06-116")
     borsalino = next(row for row in entries if row.get("type") == "pair" and "EB04-058" in row["card_ids"])
+    bonney = [
+        row
+        for row in entries
+        if row.get("type") == "pair" and "EB05-001" in row["card_ids"]
+    ]
     assert law["asia_effective_date"] == "2024-09-01"
     assert reject["asia_effective_date"] == "2024-04-01"
     assert borsalino["effective_date"] == "2026-04-10"
     assert borsalino["asia_effective_date"] == "2026-05-01"
+    assert {tuple(row["card_ids"]) for row in bonney} == {
+        ("EB05-001", "OP13-001"),
+        ("EB05-001", "OP01-002"),
+    }
+    for row in bonney:
+        assert row["effective_date"] == "2026-11-27"
+        assert row["source_url"] == "https://en.onepiece-cardgame.com/news/restriction-2611.html"
+        assert row["asia_effective_date"] == "2026-11-28"
+        assert row["asia_source_url"] == "https://asia-en.onepiece-cardgame.com/news/restriction-2611.html"
 
 
 def test_variants_inherit_the_base_card_and_pairs_need_both_cards():
@@ -89,6 +105,13 @@ def test_variants_inherit_the_base_card_and_pairs_need_both_cards():
     assert official_restriction_error("ST01-001", {"OP11-067": 4}, on_date=TODAY) is None
     pudding = official_restriction_error("ST01-001", {"OP06-047": 4}, lang="zh", on_date=TODAY)
     assert pudding and "OP06-047" in pudding and "2026-04-01 起禁用" in pudding
+    assert official_restriction_error("OP13-001", {"EB05-001": 4}, on_date=date(2026, 11, 26)) is None
+    bonney = official_restriction_error("OP13-001", {"EB05-001-P1": 1}, lang="zh", on_date=date(2026, 11, 27))
+    assert bonney and "禁用组合" in bonney and "OP13-001" in bonney and "EB05-001-P1" in bonney and "2026-11-27" in bonney
+    law = official_restriction_error("OP01-002", {"EB05-001": 4}, lang="en", on_date=date(2026, 11, 27))
+    assert law and "Banned pair" in law and "OP01-002" in law and "EB05-001" in law
+    assert official_restriction_error("OP13-001", {"OP01-002": 1}, on_date=date(2026, 11, 27)) is None
+    assert official_restriction_error("ST01-001", {"EB05-001": 4}, on_date=date(2026, 11, 27)) is None
 
 
 def test_restricted_cap_counts_variants_together():
