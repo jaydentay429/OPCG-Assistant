@@ -5,7 +5,7 @@ inherit the base card number, the same way deck copy limits already do.
 
 ``effective_date`` is the English-site date and is what badges and checks use.
 ``asia_effective_date`` is recorded only when the Asia English site publishes
-a different date. Both regions are already in effect for every current entry.
+a different date. It is kept for reference and is not used for enforcement.
 """
 
 from __future__ import annotations

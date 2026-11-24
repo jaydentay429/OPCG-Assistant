@@ -63,6 +63,22 @@
       "type": "pair",
       "effective_date": "2025-08-30",
       "source_url": "https://en.onepiece-cardgame.com/topics/019.php"
+    },
+    {
+      "card_ids": ["EB05-001", "OP13-001"],
+      "type": "pair",
+      "effective_date": "2026-11-27",
+      "source_url": "https://en.onepiece-cardgame.com/news/restriction-2611.html",
+      "asia_effective_date": "2026-11-28",
+      "asia_source_url": "https://asia-en.onepiece-cardgame.com/news/restriction-2611.html"
+    },
+    {
+      "card_ids": ["EB05-001", "OP01-002"],
+      "type": "pair",
+      "effective_date": "2026-11-27",
+      "source_url": "https://en.onepiece-cardgame.com/news/restriction-2611.html",
+      "asia_effective_date": "2026-11-28",
+      "asia_source_url": "https://asia-en.onepiece-cardgame.com/news/restriction-2611.html"
     }
   ]
 }
