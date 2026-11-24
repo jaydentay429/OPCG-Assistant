@@ -2,10 +2,14 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
+import { CardImg } from "@/components/CardImg";
 import { CoverUpdates } from "@/components/CoverUpdates";
 import { useI18n } from "@/lib/i18n";
 import { homeDocumentTitle, usePinnedDocumentTitle } from "@/lib/pinnedDocumentTitle";
 import { markTabNavScrollReset } from "@/lib/scrollRestore";
+
+/** Real cards shown beside the cover copy; each links to its card page. */
+const COVER_CARDS = ["OP01-120", "OP05-119", "OP01-001"] as const;
 
 export function CoverLanding() {
   const { lang, t } = useI18n();
@@ -20,14 +24,6 @@ export function CoverLanding() {
 
   return (
     <section className="cover" aria-label={t("cover.aria")}>
-      <div className="cover-bg" aria-hidden="true">
-        <div className="cover-bg-wash" />
-        <div className="cover-bg-table" />
-        <div className="cover-bg-beam" />
-        <div className="cover-bg-dots" />
-        <div className="cover-bg-vignette" />
-      </div>
-
       <div className="cover-stage">
         <div className="cover-content">
           <p className="cover-kicker">{t("cover.kicker")}</p>
@@ -68,6 +64,13 @@ export function CoverLanding() {
             <Link href="/legal/disclaimer">{t("cover.unofficial")}</Link>
           </p>
           <CoverUpdates />
+        </div>
+        <div className="cover-fan">
+          {COVER_CARDS.map((id) => (
+            <Link key={id} href={`/cards/${id}`} className="cover-fan-card">
+              <CardImg cardId={id} alt={id} loading="eager" />
+            </Link>
+          ))}
         </div>
       </div>
     </section>
