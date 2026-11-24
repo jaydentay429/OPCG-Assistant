@@ -15,6 +15,14 @@
   --radius: 10px;
   --nav-h: 64px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
+  /* Space the floating bottom nav really takes: its offset (max(8px, safe area)) + its height + a gap. */
+  --nav-clearance: calc(max(8px, var(--safe-bottom)) + var(--nav-h) + 12px);
+}
+
+/* Focus moves, anchor jumps and scrollIntoView stop above the floating bottom nav instead of behind it
+   (e.g. tabbing to the builder's pager or a +1 button near the bottom of the screen on phones). */
+html {
+  scroll-padding-bottom: var(--nav-clearance);
 }
 
 * {
@@ -167,7 +175,8 @@ img {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + 28px);
+  /* The nav sits max(8px, safe area) above the bottom edge, so clear that plus its height. */
+  padding-bottom: calc(var(--nav-clearance) + 16px);
 }
 
 .top-bar {
