@@ -5,6 +5,7 @@ import { cardWallImageFetchPriority, cardWallImageLoading } from "@/lib/cardImag
 import { displayCardId, isDonCardId } from "@/lib/cardId";
 import { localizeCardName, localizeDonCardName } from "@/lib/cardLocale";
 import { useI18n } from "@/lib/i18n";
+import { localizedPath } from "@/lib/localeRouting";
 import { formatYen } from "@/lib/priceCalc";
 import { flushCurrentScroll } from "@/lib/scrollRestore";
 import { CardImg } from "../CardImg";
@@ -57,7 +58,7 @@ export function PriceWallTile({ card, price, lastChecked, watched, onToggleWatch
   return (
     <div className="price-tile-wrap" data-scroll-anchor={card.id}>
       <Link
-        href={`/cards/${encodeURIComponent(card.id)}?pickedVariant=${encodeURIComponent(card.id)}`}
+        href={localizedPath(`/cards/${encodeURIComponent(card.id)}?pickedVariant=${encodeURIComponent(card.id)}`, lang)}
         className="price-tile"
         title={t("prices.open_detail")}
         scroll={false}

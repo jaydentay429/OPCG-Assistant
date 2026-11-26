@@ -11,6 +11,7 @@ import { cardWallImageFetchPriority, cardWallImageLoading } from "@/lib/cardImag
 import { displayCardId, isDonCardId } from "@/lib/cardId";
 import type { FilterCard } from "@/lib/types";
 import { flushCurrentScroll } from "@/lib/scrollRestore";
+import { localizedPath } from "@/lib/localeRouting";
 import { CardImg } from "./CardImg";
 
 export function CardWallSkeleton({ n = 10 }: { n?: number }) {
@@ -94,7 +95,10 @@ export function CardWall({ cards }: { cards: FilterCard[] }) {
         return (
           <article key={c.id} className="card-tile" data-scroll-anchor={c.id}>
             <Link
-              href={`/cards/${encodeURIComponent(c.id)}?pickedVariant=${encodeURIComponent(pickedVariant)}`}
+              href={localizedPath(
+                `/cards/${encodeURIComponent(c.id)}?pickedVariant=${encodeURIComponent(pickedVariant)}`,
+                lang,
+              )}
               className="thumb"
               aria-label={displayName}
               scroll={false}

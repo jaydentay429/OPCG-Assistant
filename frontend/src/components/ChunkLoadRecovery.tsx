@@ -3,6 +3,7 @@
 import { attachChunkLoadRecovery } from "@/lib/chunkReload";
 import { useI18n } from "@/lib/i18n";
 import { usePathname } from "next/navigation";
+import { stripLangPrefix } from "@/lib/localeRouting";
 import { useEffect, useState } from "react";
 
 /**
@@ -11,7 +12,7 @@ import { useEffect, useState } from "react";
  */
 export function ChunkLoadRecovery() {
   const { t } = useI18n();
-  const pathname = usePathname();
+  const pathname = stripLangPrefix(usePathname() || "/");
   const [visible, setVisible] = useState(false);
   const aboveToolbar = pathname === "/builder" || pathname.startsWith("/builder/");
 

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { cardImageUrl } from "./api";
+import { hreflangAlternates, isLocalizedRoute, localizedPath, ogLocale, type UrlLang } from "./localeRouting";
 import {
   resolveCardImage,
   type CardImageInput,
@@ -90,6 +91,8 @@ type PageMetaInput = {
   twitterCard?: "summary" | "summary_large_image";
   noIndex?: boolean;
   absoluteTitle?: boolean;
+  /** UI language of this URL. Defaults to Traditional (the unprefixed URL). */
+  lang?: UrlLang;
 };
 
 export type CardSharePresentation = {
@@ -131,26 +134,33 @@ export function cardSharePresentation(
 export function buildPageMetadata(input: PageMetaInput): Metadata {
   const images =
     input.images === null ? [] : input.images?.length ? input.images : [defaultOgImage()];
-  const canonical = input.path.startsWith("http") ? input.path : input.path;
+  const lang: UrlLang = input.lang ?? "zh-Hant";
+  // Card pages pass an absolute URL; reduce it to the path for localization.
+  let pathOnly = input.path;
+  if (/^https?:\/\//i.test(pathOnly)) {
+    try {
+      const u = new URL(pathOnly);
+      pathOnly = `${u.pathname}${u.search}`;
+    } catch {
+      /* keep */
+    }
+  }
+  const localized = isLocalizedRoute(pathOnly);
+  // Every language URL is its own canonical; hreflang links the three copies.
+  const canonical = localized ? absoluteUrl(localizedPath(pathOnly, lang)) : input.path;
   return {
     title: input.absoluteTitle ? { absolute: input.title } : input.title,
     description: input.description,
     keywords: input.keywords,
-    alternates: {
-      canonical,
-      languages: {
-        "zh-HK": canonical,
-        "zh-CN": canonical,
-        en: canonical,
-        "x-default": canonical,
-      },
-    },
+    alternates: localized
+      ? { canonical, languages: hreflangAlternates(pathOnly, SITE_URL) }
+      : { canonical },
     openGraph: {
       title: input.title,
       description: input.description,
       url: canonical,
-      siteName: SITE_NAME,
-      locale: "zh_HK",
+      siteName: lang === "en" ? SITE_NAME_EN : SITE_NAME,
+      locale: ogLocale(lang),
       type: input.type || "website",
       // Always set `images`, including []. An omitted key lets the root
       // opengraph-image file fill in, which would put a site image on a card

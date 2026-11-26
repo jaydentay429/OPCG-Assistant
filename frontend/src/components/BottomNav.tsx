@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n";
 import { markTabNavScrollReset } from "@/lib/scrollRestore";
+import { useLocalizedHref } from "@/lib/langNav";
+import { stripLangPrefix } from "@/lib/localeRouting";
 
 const PRIMARY = [
   { href: "/search", key: "nav.search", icon: IconSearch },
@@ -20,9 +22,10 @@ const MORE = [
   { href: "/play", key: "nav.play", icon: IconPlay },
 ] as const;
 
-function tabRoot(pathname: string): string {
+function tabRoot(rawPathname: string): string {
+  const pathname = stripLangPrefix(rawPathname);
   if (pathname.startsWith("/builder")) return "/builder";
-  if (pathname.startsWith("/tournaments")) return "/tournaments";
+  if (pathname.startsWith("/tournaments") || pathname.startsWith("/leaders")) return "/tournaments";
   if (pathname.startsWith("/play")) return "/play";
   if (pathname.startsWith("/community")) return "/community";
   if (pathname.startsWith("/collector")) return "/collector";
@@ -137,6 +140,7 @@ function IconMore() {
 export function BottomNav() {
   const pathname = usePathname();
   const { t } = useI18n();
+  const href = useLocalizedHref();
   const current = tabRoot(pathname);
   const [moreOpen, setMoreOpen] = useState(false);
   const moreActive = MORE.some((tab) => tab.href === current);
@@ -158,7 +162,7 @@ export function BottomNav() {
             return (
               <Link
                 key={tab.href}
-                href={tab.href}
+                href={href(tab.href)}
                 role="menuitem"
                 className={active ? "active" : undefined}
                 onClick={() => {
@@ -180,7 +184,7 @@ export function BottomNav() {
           return (
             <Link
               key={tab.href}
-              href={tab.href}
+              href={href(tab.href)}
               scroll
               className={active ? "active" : undefined}
               onClick={() => {

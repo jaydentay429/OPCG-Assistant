@@ -26,5 +26,5 @@ node scripts/generate-hans-names.mjs
 - 不要只改一种语言。三个字典的 key 集合应相同。
 - 不要把卡名硬编码进 `en.ts` 来绕过生成表。卡名走 `cardLocale.ts`。
 - 不要整份打开 `index/cards_by_id.json` 来对卡名。需要单卡时用 `rg`。
-- 改完字典后看 `src/lib/i18n.tsx` 的 `DICTS` 是否仍指向这三份文件。不要在组件里另写一套文案表。
+- 改完字典后看 `src/lib/translate.ts` 的 `DICTS` 是否仍指向这三份文件。不要在组件里另写一套文案表。
 - 默认界面语言以 `i18n.tsx` 为准。本目录不决定路由。

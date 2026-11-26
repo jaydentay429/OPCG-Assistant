@@ -2178,11 +2178,20 @@ def select_sync_card_ids(
     priced_limit: int = 0,
     unique_needle_miss_cap: int = 400,
     done_bases: set[str] | None = None,
+    miss_recheck_days: float = 7.0,
+    now: datetime | None = None,
 ) -> tuple[list[str], str]:
     """
     Daily / catch-up ordering.
 
-    rotate_families: all families, miss/ghost first, skip bases already done today.
+    rotate_families: all families, skip bases already done today. Order:
+    new cards, soft errors, then ghost / miss rows not checked for
+    `miss_recheck_days`, then priced rows oldest-check first, and last the
+    ghost / miss rows checked recently.
+
+    The daily run stops on the first 429 (a few hundred cards). Putting every
+    miss ahead of every priced card meant ~900 misses used the whole budget
+    each day, so priced cards were not re-checked for months.
     """
     new_ids: list[str] = []
     retry_ids: list[str] = []
@@ -2253,17 +2262,33 @@ def select_sync_card_ids(
     if (not rotate_families) and priced_limit and priced_limit > 0:
         priced_keep = priced_keep[: int(priced_limit)]
 
+    miss_order = [
+        *[cid for _, cid in ghost_unique],
+        *[cid for _, cid in ghost_other],
+        *sp_unpriced,
+        *unique_ids,
+        *extra_miss,
+    ]
+    recent_miss: list[str] = []
+    if rotate_families and miss_recheck_days and miss_recheck_days > 0:
+        cutoff = (now or datetime.now(timezone.utc)).timestamp() - float(miss_recheck_days) * 86400.0
+        due_miss: list[str] = []
+        for cid in miss_order:
+            checked = parse_iso_ts((cards.get(cid) or {}).get("last_checked"))
+            if checked is not None and checked.timestamp() > cutoff:
+                recent_miss.append(cid)
+            else:
+                due_miss.append(cid)
+        miss_order = due_miss
+
     ordered = list(
         dict.fromkeys(
             [
                 *new_ids,
                 *retry_ids,
-                *[cid for _, cid in ghost_unique],
-                *[cid for _, cid in ghost_other],
-                *sp_unpriced,
-                *unique_ids,
-                *extra_miss,
+                *miss_order,
                 *priced_keep,
+                *recent_miss,
             ]
         )
     )
@@ -2273,7 +2298,8 @@ def select_sync_card_ids(
         f"（新卡 {len(new_ids)}，软错误 {len(retry_ids)}，"
         f"幽灵价 {len(ghost_unique) + len(ghost_other)}，SP/P无价 {len(sp_unpriced)}，"
         f"可对上套名miss {len(unique_ids)}，其他miss {len(extra_miss)}，"
-        f"刷新现价 {len(priced_keep)}，跳过已完成家族卡 {max(0, skipped)}）"
+        f"刷新现价 {len(priced_keep)}，近期已查 miss 排后 {len(recent_miss)}，"
+        f"跳过已完成家族卡 {max(0, skipped)}）"
     )
     return ordered, summary
 
@@ -2324,6 +2350,12 @@ def main() -> None:
         "--priced-or-new",
         action="store_true",
         help="每日补漏模式：优先新卡/429/无价 SP·P/套名 miss，再刷新一部分现价",
+    )
+    parser.add_argument(
+        "--miss-recheck-days",
+        type=float,
+        default=7.0,
+        help="--rotate-families：近 N 天已查过的无价/幽灵价卡排到现价刷新之后（默认 7，0=旧顺序）",
     )
     parser.add_argument(
         "--rotate-families",
@@ -2455,6 +2487,7 @@ def main() -> None:
             miss_limit=int(args.miss_limit or 0),
             priced_limit=int(args.priced_limit or 0),
             done_bases=done_bases if args.rotate_families else None,
+            miss_recheck_days=float(args.miss_recheck_days or 0),
         )
         print(summary, flush=True)
         if not card_ids:

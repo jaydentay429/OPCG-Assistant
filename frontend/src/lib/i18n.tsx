@@ -9,26 +9,20 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import en from "@/locales/en";
-import zhHans from "@/locales/zh-Hans";
-import zhHant from "@/locales/zh-Hant";
+import { translate } from "@/lib/translate";
+import { usePathname } from "next/navigation";
 import { OPENCC_READY_EVENT } from "@/lib/openccEvents";
+import { htmlLangAttr, langFromPathname } from "@/lib/localeRouting";
+import type { Lang } from "@/lib/translate";
 
-export type Lang = "zh-Hant" | "zh-Hans" | "en";
+export type { Lang };
+export { translate };
 
 export const LANG_OPTIONS: { id: Lang; labelKey: string }[] = [
   { id: "zh-Hant", labelKey: "lang.zh_hant" },
   { id: "zh-Hans", labelKey: "lang.zh_hans" },
   { id: "en", labelKey: "lang.en" },
 ];
-
-type Dict = Record<string, string>;
-
-const DICTS: Record<Lang, Dict> = {
-  "zh-Hant": zhHant,
-  "zh-Hans": zhHans,
-  en,
-};
 
 const LANG_KEY = "opcg_lang";
 const DEFAULT_LANG: Lang = "zh-Hant";
@@ -52,22 +46,6 @@ type I18nCtx = {
 
 const Ctx = createContext<I18nCtx | null>(null);
 
-/** Same lookup the provider uses, so error UI can render without the provider. */
-export function translate(lang: Lang, key: string, vars?: Record<string, string | number>): string {
-  // English must never fall back to Chinese chrome strings.
-  let s =
-    DICTS[lang][key] ??
-    (lang === "zh-Hans" ? DICTS["zh-Hant"][key] : undefined) ??
-    (lang === "en" ? undefined : DICTS.en[key]) ??
-    key;
-  if (vars) {
-    for (const [k, v] of Object.entries(vars)) {
-      s = s.replaceAll(`{${k}}`, String(v));
-    }
-  }
-  return s;
-}
-
 export function readStoredLang(): Lang {
   if (typeof window === "undefined") return DEFAULT_LANG;
   try {
@@ -77,8 +55,21 @@ export function readStoredLang(): Lang {
   }
 }
 
-export function I18nProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>(DEFAULT_LANG);
+/**
+ * `initialLang` comes from the server (the URL prefix), so the first render and
+ * the SSR HTML are in the page's language. A prefixed URL (/en, /zh-hans) pins
+ * the language and is remembered. An unprefixed URL keeps the old behaviour:
+ * Traditional on the server, then the saved choice on the client.
+ */
+export function I18nProvider({
+  children,
+  initialLang = DEFAULT_LANG,
+}: {
+  children: ReactNode;
+  initialLang?: Lang;
+}) {
+  const [lang, setLangState] = useState<Lang>(initialLang);
+  const pathname = usePathname();
   // Bumps when an OpenCC dictionary finishes loading so visible text can replace
   // the original string. The provider does not import the dictionaries themselves.
   const [openccRev, setOpenccRev] = useState(0);
@@ -90,17 +81,28 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    const fromUrl =
+      typeof window !== "undefined" ? langFromPathname(window.location.pathname) : null;
+    if (fromUrl) {
+      setLangState(fromUrl);
+      try {
+        localStorage.setItem(LANG_KEY, fromUrl);
+      } catch {
+        /* ignore */
+      }
+      return;
+    }
     try {
       const saved = normalizeLang(localStorage.getItem(LANG_KEY));
       if (saved) setLangState(saved);
     } catch {
       /* ignore */
     }
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     if (typeof document !== "undefined") {
-      document.documentElement.lang = lang === "en" ? "en" : lang === "zh-Hans" ? "zh-CN" : "zh-HK";
+      document.documentElement.lang = htmlLangAttr(lang);
     }
   }, [lang]);
 

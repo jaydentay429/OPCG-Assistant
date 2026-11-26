@@ -14,9 +14,10 @@ import { markCardPageUnavailable } from "@/lib/cardPageStatus";
 import { cardNotFoundMetadata } from "@/lib/cardNotFoundMetadata";
 import { tournamentFaqAnswer } from "@/lib/cardTournamentFaq";
 import { cardEditorNote } from "@/lib/cardEditorNotes";
-import { cardDocumentTitle, printedCostOrLife, shownCardId } from "@/lib/cardPageView";
+import { cardDocumentTitle, isLeaderCardType, printedCostOrLife, shownCardId } from "@/lib/cardPageView";
 import { displayCardId, isDonCardId, normalizeCardId, setCodeFromCardId, toBaseCardId } from "@/lib/cardId";
 import {
+  CARD_PAGE_ORIGIN,
   cardCanonicalUrl,
   cardMetaDescription,
   presentMetaText,
@@ -30,6 +31,8 @@ import {
   visibleCardEffect,
 } from "@/lib/seo";
 import type { Card } from "@/lib/types";
+import { serverCopy, type ServerCopy } from "@/lib/serverCopy";
+import { localizeCardName } from "@/lib/cardLocale";
 
 function pickText(...values: Array<string | null | undefined>): string {
   for (const value of values) {
@@ -39,17 +42,54 @@ function pickText(...values: Array<string | null | undefined>): string {
   return "";
 }
 
-function cardSeoFields(card: Card, fallbackId: string) {
+function cardSeoFields(card: Card, fallbackId: string, copy?: ServerCopy) {
   const id = displayCardId(card.id || fallbackId);
-  const name = presentMetaText(pickText(card.name, card.name_en)) || id;
+  const lang = copy?.lang ?? "zh-Hant";
   const nameEn = pickText(card.name_en);
   const rarity = pickText(card.rarity, "-");
   const series = setCodeFromCardId(id) || "-";
-  const cardType = pickText(card.card_type, card.card_type_en, "-");
-  const effect = visibleCardEffect(pickText(card.effect, card.effect_en));
-  const colors = (card.colors?.length ? card.colors : card.colors_en || []).join(" / ") || "-";
-  const traits = (card.traits?.length ? card.traits : card.traits_en || []).join(" / ");
+  if (lang === "en") {
+    const name = presentMetaText(pickText(card.name_en, card.name)) || id;
+    const cardType = pickText(card.card_type_en, card.card_type, "-");
+    const effect = visibleCardEffect(pickText(card.effect_en, card.effect));
+    const colors = (card.colors_en?.length ? card.colors_en : card.colors || []).join(" / ") || "-";
+    const traits = (card.traits_en?.length ? card.traits_en : card.traits || []).join(" / ");
+    return { id, name, nameEn, rarity, series, cardType, effect, colors, traits };
+  }
+  const h = copy?.hans ?? ((text: string) => text);
+  const baseName = presentMetaText(pickText(card.name, card.name_en)) || id;
+  const name =
+    lang === "zh-Hans" ? h(localizeCardName(card.name, card.name_en, "zh-Hans") || baseName) : baseName;
+  const cardType = h(pickText(card.card_type, card.card_type_en, "-"));
+  const effect = h(visibleCardEffect(pickText(card.effect, card.effect_en)));
+  const colors = h((card.colors?.length ? card.colors : card.colors_en || []).join(" / ") || "-");
+  const traits = h((card.traits?.length ? card.traits : card.traits_en || []).join(" / "));
   return { id, name, nameEn, rarity, series, cardType, effect, colors, traits };
+}
+
+function cardDescriptionFor(copy: ServerCopy, seo: ReturnType<typeof cardSeoFields>): string {
+  if (copy.lang !== "en") {
+    return copy.hans(
+      cardMetaDescription({
+        name: seo.name,
+        id: seo.id,
+        series: seo.series,
+        rarity: seo.rarity,
+        cardType: seo.cardType,
+        effect: seo.effect,
+      }),
+    );
+  }
+  const parts = [
+    presentMetaText(seo.series) ? `set ${seo.series}` : "",
+    presentMetaText(seo.rarity) ? `rarity ${seo.rarity}` : "",
+    presentMetaText(seo.cardType) ? `type ${seo.cardType}` : "",
+  ].filter(Boolean);
+  const effect = presentMetaText(seo.effect).replace(/\s+/g, " ");
+  const snippet = effect.slice(0, 140);
+  return `${seo.name} (${seo.id}) is a ONE PIECE CARD GAME card${parts.length ? `: ${parts.join(", ")}` : ""}.${
+    effect ? ` Effect: ${snippet}${effect.length > 140 ? "…" : ""}` : ""
+  }`;
 }
 
 const lastSuccessfulCards = new Map<string, Card>();
@@ -123,22 +163,17 @@ export async function generateMetadata({
   if (loaded.kind === "missing") return cardNotFoundMetadata;
   const card = loaded.card;
   const share = cardSharePresentation(card);
+  const copy = await serverCopy();
 
-  const seo = cardSeoFields(card, cardId);
-  const description = cardMetaDescription({
-    name: seo.name,
-    id: seo.id,
-    series: seo.series,
-    rarity: seo.rarity,
-    cardType: seo.cardType,
-    effect: seo.effect,
-  });
+  const seo = cardSeoFields(card, cardId, copy);
+  const description = cardDescriptionFor(copy, seo);
 
   return buildPageMetadata({
-    title: cardDocumentTitle(seo.name, shownId),
+    title: cardDocumentTitle(seo.name, shownId, copy.lang),
     description,
     path: canonicalUrl,
     absoluteTitle: true,
+    lang: copy.lang,
     type: "article",
     keywords: [
       seo.name,
@@ -206,7 +241,9 @@ export default async function CardPage({
       if (baseCard) detailCard = baseCard;
     }
   }
-  const seo = card ? cardSeoFields(card, cardId) : null;
+  const copy = await serverCopy();
+  const { L, href } = copy;
+  const seo = card ? cardSeoFields(card, cardId, copy) : null;
   const share = cardSharePresentation(card);
   const editorNote = cardEditorNote(cardId);
   const printedStat = printedCostOrLife(card);
@@ -228,25 +265,25 @@ export default async function CardPage({
   const faqItems: Array<{ question: string; answer: string }> = [];
   if (seo) {
     faqItems.push({
-      question: `這張卡的卡號是什麼？`,
+      question: L(`這張卡的卡號是什麼？`, "What is this card's number?"),
       answer: seo.id,
     });
     if (seo.effect) {
       faqItems.push({
-        question: `${seo.name}（${seo.id}）的效果原文寫了什麼？`,
+        question: L(`${seo.name}（${seo.id}）的效果原文寫了什麼？`, `What does ${seo.name} (${seo.id}) do?`),
         answer: seo.effect,
       });
     }
-    if (appearances.length) {
+    if (appearances.length && copy.lang !== "en") {
       faqItems.push({
-        question: `${seo.name}（${seo.id}）常見於哪些賽事卡組？`,
-        answer: tournamentFaqAnswer(appearances),
+        question: L(`${seo.name}（${seo.id}）常見於哪些賽事卡組？`, ""),
+        answer: L(tournamentFaqAnswer(appearances), ""),
       });
     }
   }
 
   const faqLd = faqPageJsonLd(faqItems);
-  const canonicalUrl = cardCanonicalUrl(cardId);
+  const canonicalUrl = `${CARD_PAGE_ORIGIN}${href(new URL(cardCanonicalUrl(cardId)).pathname)}`;
   const structured = seo
     ? [
         cardJsonLd({
@@ -260,21 +297,32 @@ export default async function CardPage({
           url: canonicalUrl,
         }),
         breadcrumbJsonLd([
-          { name: "首頁", path: "/" },
-          { name: "卡牌搜索", path: "/search" },
-          { name: `${seo.name}（${seo.id}）`, path: canonicalUrl },
+          { name: L("首頁", "Home"), path: href("/") },
+          { name: L("卡牌搜索", "Card search"), path: href("/search") },
+          { name: L(`${seo.name}（${seo.id}）`, `${seo.name} (${seo.id})`), path: canonicalUrl },
         ]),
         ...(faqLd ? [faqLd] : []),
       ]
     : null;
 
   const summary = seo
-    ? [
-        `${seo.id} ${seo.name} 是${seo.colors !== "-" ? ` ${seo.colors} 色、` : ""}${printedStat ? `${printedStat.kind === "life" ? "生命" : "費用"} ${printedStat.value} 的` : ""}${seo.cardType}。`,
-        card?.power != null && String(card.power) !== "" ? `力量 ${card.power}。` : "",
-      ]
-        .filter(Boolean)
-        .join(" ")
+    ? copy.lang === "en"
+      ? [
+          `${seo.id} ${seo.name} is a${seo.colors !== "-" ? ` ${seo.colors}` : ""} ${seo.cardType}${
+            printedStat ? ` with ${printedStat.kind === "life" ? "life" : "cost"} ${printedStat.value}` : ""
+          }.`,
+          card?.power != null && String(card.power) !== "" ? `Power ${card.power}.` : "",
+        ]
+          .filter(Boolean)
+          .join(" ")
+      : copy.hans(
+          [
+            `${seo.id} ${seo.name} 是${seo.colors !== "-" ? ` ${seo.colors} 色、` : ""}${printedStat ? `${printedStat.kind === "life" ? "生命" : "費用"} ${printedStat.value} 的` : ""}${seo.cardType}。`,
+            card?.power != null && String(card.power) !== "" ? `力量 ${card.power}。` : "",
+          ]
+            .filter(Boolean)
+            .join(" "),
+        )
     : "";
 
   const cardSupplement = seo ? (
@@ -283,53 +331,60 @@ export default async function CardPage({
       <dl className="card-seo-facts">
         {printedStat ? (
           <>
-            <dt>{printedStat.kind === "life" ? "生命" : "費用"}</dt>
+            <dt>{printedStat.kind === "life" ? L("生命", "Life") : L("費用", "Cost")}</dt>
             <dd>{printedStat.value}</dd>
           </>
         ) : null}
         {card?.power != null && String(card.power) !== "" ? (
           <>
-            <dt>力量</dt>
+            <dt>{L("力量", "Power")}</dt>
             <dd>{card.power}</dd>
           </>
         ) : null}
         {card?.counter != null && String(card.counter) !== "" ? (
           <>
-            <dt>反擊</dt>
+            <dt>{L("反擊", "Counter")}</dt>
             <dd>{card.counter}</dd>
           </>
         ) : null}
         {seo.colors !== "-" ? (
           <>
-            <dt>顏色</dt>
+            <dt>{L("顏色", "Color")}</dt>
             <dd>{seo.colors}</dd>
           </>
         ) : null}
         {seo.traits ? (
           <>
-            <dt>特徵</dt>
+            <dt>{L("特徵", "Traits")}</dt>
             <dd>{seo.traits}</dd>
           </>
         ) : null}
         {seo.series !== "-" ? (
           <>
-            <dt>系列</dt>
+            <dt>{L("系列", "Set")}</dt>
             <dd>{seo.series}</dd>
           </>
         ) : null}
-        <dt>稀有度</dt>
+        <dt>{L("稀有度", "Rarity")}</dt>
         <dd>{seo.rarity}</dd>
       </dl>
-      {editorNote ? (
+      {isLeaderCardType(card.card_type_en || card.card_type) && appearances.length ? (
+        <p>
+          <Link href={href(`/leaders/${encodeURIComponent(toBaseCardId(cardId))}`)}>
+            {L("這個領袖的賽事統計：上榜次數、冠軍卡組與常用卡 →", "Leader stats: tournament decks, champion lists and common cards →")}
+          </Link>
+        </p>
+      ) : null}
+      {editorNote && copy.lang !== "en" ? (
         <section>
-          <h2>編輯說明</h2>
-          <p>{editorNote}</p>
+          <h2>{L("編輯說明", "Editor note")}</h2>
+          <p>{copy.lang === "zh-Hans" ? copy.hans(editorNote) : editorNote}</p>
         </section>
       ) : null}
       {faqItems.length ? (
         <details className="card-seo-faq">
           <summary>
-            <h2>常見問題</h2>
+            <h2>{L("常見問題", "FAQ")}</h2>
           </summary>
           {faqItems.map((item) => (
             <div key={item.question}>

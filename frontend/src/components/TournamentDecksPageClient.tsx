@@ -728,7 +728,7 @@ export function TournamentDecksPageClient({ hideTitle = false }: { hideTitle?: b
                     <td className="tournament-col-leader">
                       <span className="tournament-leader-cell">
                         <span className="tournament-leader-art">
-                          {row.leader ? <CardImg cardId={row.leader} alt={leaderName} /> : null}
+                          {row.leader ? <CardImg cardId={row.leader} alt={leaderName} listThumb imageSizes="40px" /> : null}
                         </span>
                         <span className="tournament-leader-name">{leaderName}</span>
                       </span>
@@ -832,7 +832,13 @@ export function TournamentDecksPageClient({ hideTitle = false }: { hideTitle?: b
                   <div className="tournament-preview-fallback">
                     {detail.leader ? (
                       <div className="tournament-preview-leader">
-                        <CardImg cardId={detail.leader} alt={detail.leader_name || displayCardId(detail.leader)} loading="eager" />
+                        <CardImg
+                          cardId={detail.leader}
+                          alt={detail.leader_name || displayCardId(detail.leader)}
+                          loading="eager"
+                          listThumb
+                          imageSizes="160px"
+                        />
                       </div>
                     ) : null}
                     <div className="tournament-preview-grid">
@@ -841,7 +847,7 @@ export function TournamentDecksPageClient({ hideTitle = false }: { hideTitle?: b
                         .slice(0, 30)
                         .map((c) => (
                           <div key={c.id} className="tournament-preview-tile" title={`${displayCardId(c.id)}×${c.qty}`}>
-                            <CardImg cardId={c.id} alt={displayCardId(c.id)} />
+                            <CardImg cardId={c.id} alt={displayCardId(c.id)} listThumb imageSizes="100px" />
                             <span>×{c.qty}</span>
                           </div>
                         ))}

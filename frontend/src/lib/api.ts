@@ -1342,3 +1342,33 @@ export async function fetchCommunityAdminThreads(token: string): Promise<Communi
   const { data } = await apiGet<CommunityThreadListResult>("/community/admin/threads", { token });
   return data;
 }
+
+export type CardAlertSettings = {
+  feature_enabled: boolean;
+  email_verified: boolean;
+  new_cards: boolean;
+  price_watch: boolean;
+  lang: string;
+  watch_count: number;
+  threshold_pct: number;
+};
+
+export async function fetchCardAlertSettings(token: string): Promise<CardAlertSettings> {
+  const { data } = await apiGet<CardAlertSettings>("/alerts/settings", { token });
+  return data;
+}
+
+export async function saveCardAlertSettings(
+  token: string,
+  body: { new_cards: boolean; price_watch: boolean; lang: string },
+): Promise<CardAlertSettings> {
+  return apiSend<CardAlertSettings>("/alerts/settings", "PUT", body, token);
+}
+
+export async function syncCardAlertWatchlist(token: string, cardIds: string[]): Promise<{ watch_count: number }> {
+  return apiSend<{ watch_count: number }>("/alerts/watchlist", "PUT", { card_ids: cardIds }, token);
+}
+
+export async function unsubscribeCardAlerts(token: string): Promise<{ ok: boolean }> {
+  return apiSend<{ ok: boolean }>("/alerts/unsubscribe", "POST", { token, kind: "all" });
+}

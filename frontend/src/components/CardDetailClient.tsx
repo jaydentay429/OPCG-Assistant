@@ -43,6 +43,8 @@ import {
   requestScrollRestore,
 } from "@/lib/scrollRestore";
 import { DETAIL_THUMB_IMAGE_SIZES, prefetchHeroImage } from "@/lib/cardImageSrcSet";
+import { chartHistory } from "@/lib/priceHistory";
+import { localizedPath } from "@/lib/localeRouting";
 import { CardImg } from "./CardImg";
 import { CardDetailExtras } from "./CardDetailExtras";
 
@@ -280,7 +282,7 @@ export function CardDetailClient({
       router.back();
       return;
     }
-    router.push("/search");
+    router.push(localizedPath("/search", lang));
   }
 
   // From search wall: start at top. Returning from tournaments: restore saved Y.
@@ -617,7 +619,7 @@ export function CardDetailClient({
             {isParallelArtId(shownId) ? (
               <p className="detail-base-link">
                 <a
-                  href={cardVariantHref(baseId)}
+                  href={cardVariantHref(baseId, lang)}
                   onClick={(event) => onVariantClick(event, baseId)}
                   onKeyDown={(event) => {
                     if (event.key !== "Enter") return;
@@ -652,7 +654,7 @@ export function CardDetailClient({
                 return (
                   <a
                     key={id}
-                    href={cardVariantHref(id)}
+                    href={cardVariantHref(id, lang)}
                     className={`detail-thumb${selected ? " active" : ""}`}
                     aria-current={selected ? "true" : undefined}
                     aria-label={thumbText}
@@ -794,13 +796,27 @@ export function CardDetailClient({
             <p className="price-disclaimer">{t("detail.price_disclaimer")}</p>
             {price && price.history.length > 0 ? (
               <>
-                <PriceChart history={price.history} lang={lang} />
+                <PriceChart
+                  history={chartHistory(price.history, price.current_price, price.last_seen)}
+                  lang={lang}
+                />
                 {price.history.length === 1 ? (
-                  <p className="price-note">{t("detail.price_one_point")}</p>
+                  <p className="price-note">
+                    {t("detail.price_unchanged_since", {
+                      date: formatChartDate(new Date(price.history[0].ts), lang),
+                    })}
+                  </p>
                 ) : null}
               </>
             ) : !priceLoading ? (
               <p className="price-note">{t("detail.price_no_history")}</p>
+            ) : null}
+            {price?.last_checked && Number.isFinite(Date.parse(price.last_checked)) ? (
+              <p className="price-note">
+                {t("detail.price_last_checked", {
+                  date: formatChartDate(new Date(price.last_checked), lang),
+                })}
+              </p>
             ) : null}
           </section>
         </div>
