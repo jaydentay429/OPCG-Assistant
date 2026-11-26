@@ -2,7 +2,7 @@
 
 import { AuthProvider, useAuth } from "@/lib/auth";
 import { DeckProvider } from "@/lib/deck";
-import { I18nProvider } from "@/lib/i18n";
+import { I18nProvider, type Lang } from "@/lib/i18n";
 import { applyTabNavScrollTopIfNeeded, enableManualScrollRestoration } from "@/lib/scrollRestore";
 import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, type ReactNode } from "react";
@@ -41,9 +41,9 @@ function AuthModalHost() {
   return <AuthModal onClose={closeAuth} />;
 }
 
-export function Providers({ children }: { children: ReactNode }) {
+export function Providers({ children, initialLang }: { children: ReactNode; initialLang?: Lang }) {
   return (
-    <I18nProvider>
+    <I18nProvider initialLang={initialLang}>
       <AuthProvider>
         <DeckProvider>
           <ScrollRestorationSetup />

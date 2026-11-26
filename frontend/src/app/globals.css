@@ -352,23 +352,12 @@ img {
   border: 0;
 }
 
-.sponsor {
-  padding: 0.4rem 0.75rem;
-  background: var(--bg);
-  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
-  font-size: 0.78rem;
-  color: var(--text-muted);
-}
-
-.sponsor a {
-  color: #cbd5e1;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  /* break-all split the address mid-word (ja / ydentay429@gmail.com).
-     Keep the address intact and move the whole link to the next line. */
-  white-space: nowrap;
-  word-break: normal;
-  overflow-wrap: normal;
+/* Client-loaded lists (search, tournaments) grow after hydration. Keeping the
+   route at least one viewport tall leaves the footer below the fold, so the
+   growth does not shift anything on screen. */
+.route-fill {
+  min-height: 100vh;
+  min-height: 100svh;
 }
 
 .main {
@@ -9543,3 +9532,81 @@ a.community-nav-btn:active {
   justify-content: center;
 }
 
+
+/* Leader stats pages (/leaders, /leaders/[id]) */
+.leader-table-wrap {
+  overflow-x: auto;
+}
+
+.leader-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.leader-table th,
+.leader-table td {
+  padding: 0.45rem 0.5rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+  text-align: left;
+  vertical-align: top;
+}
+
+.leader-table th {
+  color: var(--text-muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.leader-table td:not(:nth-child(2)) {
+  white-space: nowrap;
+}
+
+.leaders-page .leader-table td:nth-child(2) {
+  white-space: normal;
+}
+
+.leader-head {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.leader-head-img .card-img {
+  width: 120px;
+  height: auto;
+  aspect-ratio: 5 / 7;
+  border-radius: 6px;
+}
+
+.leader-stats {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem 0.75rem;
+  margin: 0.5rem 0;
+}
+
+.leader-stats dt {
+  color: var(--text-muted);
+}
+
+.leader-stats dd {
+  margin: 0;
+}
+
+@media (max-width: 560px) {
+  .leader-head {
+    grid-template-columns: 88px 1fr;
+    gap: 0.75rem;
+  }
+
+  .leader-head-img .card-img {
+    width: 88px;
+  }
+}
+
+/* Email alerts (prices → watchlist) */
+.card-alerts { display: grid; gap: 0.5rem; }
+.card-alerts-row { display: flex; gap: 0.5rem; align-items: flex-start; cursor: pointer; }
+.card-alerts-row input { margin-top: 0.2rem; }

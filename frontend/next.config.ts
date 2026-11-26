@@ -32,6 +32,13 @@ const nextConfig: NextConfig = {
   // card case + slash collapse to a single 301, and /search/ /sets/ 308
   // without ever reading Host / request.url.
   skipTrailingSlashRedirect: true,
+  // opcg-web.service listens on HOSTNAME=127.0.0.1. Next's URL normalisation
+  // rewrites that to "localhost" in a middleware rewrite, the router then sees a
+  // different origin and proxies /en and /zh-hans as an external request, which
+  // drops the x-opcg-lang header. Keep the rewrite URL as middleware built it
+  // (see internalRewriteUrl in src/lib/localeRouting.ts). App Router only, so
+  // the Pages-only _next/data normalisation this also skips is unused.
+  skipMiddlewareUrlNormalize: true,
   images: {
     unoptimized: true,
   },

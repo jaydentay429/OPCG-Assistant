@@ -194,3 +194,14 @@ HTTPS 与反代
   验收：curl -sI https://img.optcgassistant.com/OP14-079.png | grep -i cf-cache
     第二次请求期望 HIT 或 STALE（非 DYNAMIC）。
 
+卡牌邮件提醒（opt-in；默认关闭）
+  登录用户在 /prices 的关注清单里开启「新卡」或「关注卡价格变动」。每封信带一键退订链接
+  （$OPCG_SITE_URL/alerts/unsubscribe?token=...）。CARD_ALERTS_ENABLED 不为 1 时，设置面板不显示，
+  脚本直接退出，不发信。
+  开启：.env 加 CARD_ALERTS_ENABLED=1（可选 CARD_ALERTS_PRICE_PCT=10、OPCG_SITE_URL=https://optcgassistant.com），
+  重启 opcg-api，再加 crontab（官方和价格同步之后，例如 10:30 UTC）：
+    30 10 * * * /opt/opcg/app/deploy/optcgassistant/run_daily_card_alerts.sh >> /opt/opcg/logs/daily_card_alerts_cron.log 2>&1
+  发信沿用 RESEND_API_KEY / RESEND_FROM。只发给已验证邮箱的用户。
+  第一次运行只记下现有卡号（meta/card_alerts_state.json），不会把全部卡当成新卡寄出。
+  试跑不发信：cd /opt/opcg/app && CARD_ALERTS_ENABLED=1 .venv/bin/python scripts/send_card_alerts.py --dry-run
+  日志：/opt/opcg/logs/daily_card_alerts_latest.log

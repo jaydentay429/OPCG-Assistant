@@ -7,12 +7,14 @@ import { CoverUpdates } from "@/components/CoverUpdates";
 import { useI18n } from "@/lib/i18n";
 import { homeDocumentTitle, usePinnedDocumentTitle } from "@/lib/pinnedDocumentTitle";
 import { markTabNavScrollReset } from "@/lib/scrollRestore";
+import { useLocalizedHref } from "@/lib/langNav";
 
 /** Real cards shown beside the cover copy; each links to its card page. */
 const COVER_CARDS = ["OP01-120", "OP05-119", "OP01-001"] as const;
 
 export function CoverLanding() {
   const { lang, t } = useI18n();
+  const href = useLocalizedHref();
   usePinnedDocumentTitle(homeDocumentTitle(lang));
 
   useEffect(() => {
@@ -32,14 +34,14 @@ export function CoverLanding() {
           <p className="cover-tagline">{t("cover.tagline")}</p>
           <div className="cover-ctas">
             <Link
-              href="/search"
+              href={href("/search")}
               className="cover-cta cover-cta-primary"
               onClick={() => markTabNavScrollReset()}
             >
               {t("cover.cta_search")}
             </Link>
             <Link
-              href="/builder"
+              href={href("/builder")}
               className="cover-cta cover-cta-secondary"
               onClick={() => markTabNavScrollReset()}
             >
@@ -67,7 +69,7 @@ export function CoverLanding() {
         </div>
         <div className="cover-fan">
           {COVER_CARDS.map((id) => (
-            <Link key={id} href={`/cards/${id}`} className="cover-fan-card">
+            <Link key={id} href={href(`/cards/${id}`)} className="cover-fan-card">
               <CardImg cardId={id} alt={id} loading="eager" />
             </Link>
           ))}

@@ -5,6 +5,7 @@ import { type BatchPriceFields } from "@/lib/api";
 import { useI18n } from "@/lib/i18n";
 import { formatYen, loadUnitPrices, sumPricedCopies } from "@/lib/priceCalc";
 import { clearWatchlist, isOnWatchlist, removeFromWatchlist, WATCHLIST_MAX } from "@/lib/priceWatchlist";
+import { CardAlertSettings } from "./CardAlertSettings";
 import { PriceWallTile } from "./PriceWallTile";
 
 type Props = {
@@ -83,6 +84,8 @@ export function WatchlistPanel({ watchlist, onWatchlistChange }: Props) {
           </div>
         </div>
       </div>
+
+      <CardAlertSettings watchlist={watchlist} />
 
       {error ? (
         <p className="error" style={{ color: "#fca5a5" }}>

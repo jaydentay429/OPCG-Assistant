@@ -1,3 +1,4 @@
+import { stripLangPrefix } from "./localeRouting";
 const SKIP_KEY = "opcg_skip_scroll_restore";
 const SEARCH_STATE_KEY = "opcg_search_state_v1";
 const BUILDER_SCROLL_KEY = "opcg_builder_scroll_v1";
@@ -276,7 +277,9 @@ export function scrollYForPersist(pendingY: number, currentY: number): number {
 }
 
 export function readPathScrollTarget(pathname?: string): ScrollTarget {
-  const path = pathname || (typeof window !== "undefined" ? window.location.pathname : "/") || "/";
+  const path = stripLangPrefix(
+    pathname || (typeof window !== "undefined" ? window.location.pathname : "/") || "/",
+  );
   try {
     if (path === "/" || path === "") {
       const raw = sessionStorage.getItem(SEARCH_STATE_KEY);
@@ -413,7 +416,7 @@ export function enableManualScrollRestoration() {
 }
 
 function writeScrollForCurrentPath(y: number, anchor?: string) {
-  const path = window.location.pathname || "/";
+  const path = stripLangPrefix(window.location.pathname || "/");
   try {
     if (path === "/" || path === "") {
       const raw = sessionStorage.getItem(SEARCH_STATE_KEY);

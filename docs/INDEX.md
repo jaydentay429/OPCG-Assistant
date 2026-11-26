@@ -8,10 +8,11 @@ OPTCG 工具站：Python API 加 Next.js 前端，界面为繁中、简中、英
 
 | 路径 | 内容 |
 |---|---|
-| `app.py` | FastAPI：卡牌、卡组、价格、图片 |
+| `app.py` | FastAPI：卡牌、卡组、价格、图片、领袖统计（`/topdecks/leaders`）、邮件提醒设置（`/alerts/*`） |
+| `card_alerts.py` | 新卡、关注卡价格邮件提醒（opt-in，`CARD_ALERTS_ENABLED` 关时不发信），表在 `meta/auth.db` |
 | `sync_*.py`、`sync_daily_pipeline.py` | 每日数据同步（在仓库根目录） |
 | `battle/` | 对战引擎，见 `battle/AGENTS.md` |
-| `frontend/` | Next.js 15，见 `frontend/AGENTS.md`。另有不索引的 `/internal/exclude-me`。对战在 `/play`（noindex，不进 sitemap） |
+| `frontend/` | Next.js 15，见 `frontend/AGENTS.md`。主要页面另有 `/en`、`/zh-hans` 网址（hreflang），领袖页在 `/leaders`。另有不索引的 `/internal/exclude-me`。对战在 `/play`（noindex，不进 sitemap） |
 | `frontend/src/locales/` | 三语文案，见该目录 `AGENTS.md` |
 | `scripts/` | 效果审计、后台、卡图脚本，见 `scripts/AGENTS.md` |
 | `meta/` | 报告和评测产物，见 `meta/AGENTS.md` |
@@ -29,6 +30,12 @@ OPTCG 工具站：Python API 加 Next.js 前端，界面为繁中、简中、英
 卡图 WebP 由 `scripts/generate_card_webp.py` 从 PNG 另存到 R2（不覆盖原 PNG）。列表页和单卡页异画缩略图用 manifest 里同一个 `?h=` 拼缩略图地址；单卡页主图用全尺寸 WebP。WebP 还没有时回退到 PNG。sitemap、og:image、twitter:image、JSON-LD 仍用 PNG。
 
 效果文本另外走 `scripts/compile_card_effects.py` 与审计脚本，人工修正落在 `index/card_effect_overrides.json`，对战引擎从这里读。界面简中卡名由 `frontend/scripts/generate-hans-names.mjs` 写入 locale 生成文件和 `meta/name_hans_by_en.json`。
+
+sitemap 的单卡 `<lastmod>` 来自 `index/card_lastmod.json`：`scripts/update_card_lastmod.py` 对每张卡的索引行加图片 hash 取指纹，指纹变了才更新日期。改了 `index/cards_by_id.json` 或卡图 manifest 之后在仓库根跑一次再提交；`tests/test_card_lastmod_fresh.py` 会在过期时失败。构建时 `frontend/scripts/generate-card-ids.mjs` 把它写成 `frontend/src/generated/card-lastmod.json`。
+
+价格同步 `sync_yuyutei_prices.py` 的轮转模式先查新卡和重试，再查 7 天内没查过的 miss，然后按最久未查排已有价格的卡，最近查过的 miss 放最后（`--miss-recheck-days`）。
+
+邮件提醒：登录用户在价格页关注清单里开启，`scripts/send_card_alerts.py` 每日发信（`deploy/optcgassistant/run_daily_card_alerts.sh`）。
 
 卡名搜索的外号和外文别称在 `index/card_nicknames.json`（手改这份即可增加角色）。日文卡名在 `index/card_names_ja.json`，由 `sync_card_names_ja.py` 从日本官方卡表写入，不进每日流水线。搜索读取卡上的 `name_ja` / `name_jp` 和这份侧车。
 

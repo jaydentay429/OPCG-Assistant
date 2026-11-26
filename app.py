@@ -43,6 +43,7 @@ from topdecks_normalize import (
 )
 import topdecks_likes
 import card_comments
+import card_alerts
 from pydantic import BaseModel
 
 # OpenAI SDK import can block for a long time on some networks; load lazily.
@@ -9501,6 +9502,200 @@ def _deck_contains_card_base(row: dict[str, Any], base: str) -> tuple[bool, int,
     return (is_leader or qty > 0, qty, is_leader)
 
 
+# --- Leader pages (/leaders, /leaders/{id}) -------------------------------------------
+
+LEADER_COMMON_SAMPLE = 120  # newest decks per leader used for "common cards"
+LEADER_CHAMPION_LIMIT = 12
+LEADER_RECENT_LIMIT = 10
+LEADER_COMMON_LIMIT = 40
+_TOP_FINISH_KEYS = {"1st", "2nd", "3rd", "4th", "top_4", "top_8"}
+
+_topdeck_leader_cache: dict[str, Any] = {"mtime": None, "stats": {}}
+
+
+def _leader_names(base: str) -> dict[str, str]:
+    basic = cards_by_id.get(base) or {}
+    return {
+        "name": card_display_name_zh(basic, hans=False) or str(basic.get("name_en") or ""),
+        "name_hans": card_display_name_zh(basic, hans=True) or str(basic.get("name_en") or ""),
+        "name_en": str(basic.get("name_en") or "").strip(),
+        "colors_en": list(basic.get("colors_en") or []),
+    }
+
+
+def _date_iso(raw: Any) -> str:
+    year, month, day = _parse_topdeck_date(raw)
+    return f"{year:04d}-{month:02d}-{day:02d}" if year else ""
+
+
+def compute_topdeck_leader_stats(decks: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    """Per base leader id: deck counts, wins, champion deck ids, common cards.
+
+    `decks` must be newest first (topdecks_decks_sorted order).
+    """
+    stats: dict[str, dict[str, Any]] = {}
+    for row in decks:
+        if not isinstance(row, dict):
+            continue
+        lid = normalize_card_id(str(row.get("leader") or ""))
+        if not lid:
+            continue
+        base = _base_card_id(lid)
+        did = str(row.get("id") or "").strip()
+        if not did:
+            continue
+        st = stats.get(base)
+        if st is None:
+            st = stats[base] = {
+                "leader": base,
+                "decks": 0,
+                "wins": 0,
+                "top_finishes": 0,
+                "formats": {},
+                "last_date": "",
+                "first_date": "",
+                "champion_ids": [],
+                "recent_ids": [],
+                "sample": 0,
+                "card_decks": {},
+                "card_qty": {},
+            }
+        st["decks"] += 1
+        fmt = str(row.get("format") or "").strip() or "other"
+        st["formats"][fmt] = int(st["formats"].get(fmt) or 0) + 1
+        iso = _date_iso(row.get("date"))
+        if iso:
+            if not st["last_date"] or iso > st["last_date"]:
+                st["last_date"] = iso
+            if not st["first_date"] or iso < st["first_date"]:
+                st["first_date"] = iso
+        placement = norm_placement(row.get("placement"))
+        if placement == "1st":
+            st["wins"] += 1
+            if len(st["champion_ids"]) < LEADER_CHAMPION_LIMIT:
+                st["champion_ids"].append(did)
+        if placement in _TOP_FINISH_KEYS:
+            st["top_finishes"] += 1
+        if len(st["recent_ids"]) < LEADER_RECENT_LIMIT:
+            st["recent_ids"].append(did)
+        if st["sample"] >= LEADER_COMMON_SAMPLE:
+            continue
+        cards = row.get("cards") if isinstance(row.get("cards"), dict) else {}
+        if not cards:
+            continue
+        st["sample"] += 1
+        per_deck: dict[str, int] = {}
+        for raw_id, raw_qty in cards.items():
+            cid = normalize_card_id(str(raw_id))
+            if not cid:
+                continue
+            cbase = _base_card_id(cid)
+            if cbase == base:
+                continue
+            try:
+                qty = max(0, int(raw_qty or 0))
+            except (TypeError, ValueError):
+                qty = 0
+            if qty > 0:
+                per_deck[cbase] = per_deck.get(cbase, 0) + qty
+        for cbase, qty in per_deck.items():
+            st["card_decks"][cbase] = int(st["card_decks"].get(cbase) or 0) + 1
+            st["card_qty"][cbase] = int(st["card_qty"].get(cbase) or 0) + qty
+    return stats
+
+
+def _topdeck_leader_stats() -> dict[str, dict[str, Any]]:
+    cache = _topdeck_leader_cache
+    if cache.get("mtime") == topdecks_mtime and cache.get("stats"):
+        return cache["stats"]
+    decks = topdecks_decks_sorted or (
+        topdecks_payload.get("decks") if isinstance(topdecks_payload.get("decks"), list) else []
+    )
+    stats = compute_topdeck_leader_stats([r for r in decks if isinstance(r, dict)])
+    cache["mtime"] = topdecks_mtime
+    cache["stats"] = stats
+    return stats
+
+
+def _leader_summary(st: dict[str, Any]) -> dict[str, Any]:
+    out = {
+        "leader": st["leader"],
+        "decks": st["decks"],
+        "wins": st["wins"],
+        "top_finishes": st["top_finishes"],
+        "formats": dict(st["formats"]),
+        "first_date": st["first_date"],
+        "last_date": st["last_date"],
+    }
+    out.update(_leader_names(st["leader"]))
+    return out
+
+
+@app.get("/topdecks/leaders")
+def topdecks_leaders(
+    response: Response,
+    min_decks: int = Query(1, ge=1, le=1000),
+) -> dict[str, Any]:
+    """Every tournament leader with deck and win counts (most decks first)."""
+    ensure_topdecks_data_fresh()
+    stats = _topdeck_leader_stats()
+    rows = [_leader_summary(st) for st in stats.values() if st["decks"] >= min_decks]
+    rows.sort(key=lambda r: (-int(r["decks"]), -int(r["wins"]), str(r["leader"])))
+    response.headers["Cache-Control"] = "public, max-age=300, stale-while-revalidate=600"
+    return {
+        "synced_at": topdecks_payload.get("synced_at"),
+        "total_decks": len(topdecks_decks_sorted),
+        "items": rows,
+    }
+
+
+@app.get("/topdecks/leaders/{leader_id}")
+def topdecks_leader_detail(response: Response, leader_id: str) -> dict[str, Any]:
+    """One leader: champion decks, recent decks, and the most played cards."""
+    ensure_topdecks_data_fresh()
+    nid = normalize_card_id(leader_id)
+    if not nid:
+        raise HTTPException(status_code=422, detail="leader_id 不能为空")
+    base = _base_card_id(nid)
+    st = _topdeck_leader_stats().get(base)
+    if not st:
+        raise HTTPException(status_code=404, detail="这个领袖没有比赛卡组")
+    out = _leader_summary(st)
+
+    def _briefs(ids: list[str]) -> list[dict[str, Any]]:
+        items: list[dict[str, Any]] = []
+        for did in ids:
+            row = topdecks_by_id.get(did)
+            if isinstance(row, dict):
+                items.append(_topdeck_brief(row))
+        return items
+
+    sample = int(st["sample"] or 0)
+    common: list[dict[str, Any]] = []
+    for cbase, n in st["card_decks"].items():
+        basic = cards_by_id.get(cbase) or {}
+        common.append(
+            {
+                "id": cbase,
+                "name": card_display_name_zh(basic, hans=False) or cbase,
+                "name_hans": card_display_name_zh(basic, hans=True) or cbase,
+                "name_en": str(basic.get("name_en") or "").strip(),
+                "card_type_en": str(basic.get("card_type_en") or basic.get("category_en") or ""),
+                "decks": int(n),
+                "rate": round(n / sample, 4) if sample else 0.0,
+                "avg_qty": round(int(st["card_qty"].get(cbase) or 0) / n, 2) if n else 0.0,
+            }
+        )
+    common.sort(key=lambda c: (-c["decks"], -c["avg_qty"], c["id"]))
+    out["sample_decks"] = sample
+    out["common_cards"] = common[:LEADER_COMMON_LIMIT]
+    out["champion_decks"] = _briefs(st["champion_ids"])
+    out["recent_decks"] = _briefs(st["recent_ids"])
+    out["synced_at"] = topdecks_payload.get("synced_at")
+    response.headers["Cache-Control"] = "public, max-age=300, stale-while-revalidate=600"
+    return out
+
+
 @app.get("/cards/{card_id}/tournaments")
 def card_recent_tournaments(
     response: Response,
@@ -9676,6 +9871,92 @@ def batch_card_prices(payload: CardThumbnailBatchRequest, exact: bool = False) -
             "last_checked": info.get("last_checked") or "",
         }
     return out
+
+
+# --- Email alerts (card_alerts.py) -------------------------------------------------------
+
+
+class CardAlertSettingsRequest(BaseModel):
+    new_cards: bool = False
+    price_watch: bool = False
+    lang: str | None = None
+
+
+class CardAlertWatchlistRequest(BaseModel):
+    card_ids: list[str] = []
+
+
+class CardAlertUnsubscribeRequest(BaseModel):
+    token: str
+    kind: str = "all"
+
+
+def _card_alerts_payload(user: Any, settings: dict[str, Any]) -> dict[str, Any]:
+    email_verified = bool(user["email_verified"]) if "email_verified" in user.keys() else False
+    return {
+        "feature_enabled": card_alerts.feature_enabled(),
+        "email_verified": email_verified,
+        **settings,
+    }
+
+
+@app.get("/alerts/settings")
+def card_alert_settings(request: Request) -> dict[str, Any]:
+    user = _require_auth_user(request)
+    with auth_db_lock:
+        conn = _auth_db()
+        try:
+            settings = card_alerts.get_settings(conn, int(user["id"]))
+        finally:
+            conn.close()
+    return _card_alerts_payload(user, settings)
+
+
+@app.put("/alerts/settings")
+def update_card_alert_settings(request: Request, payload: CardAlertSettingsRequest) -> dict[str, Any]:
+    user = _require_auth_user(request)
+    if not card_alerts.feature_enabled() and (payload.new_cards or payload.price_watch):
+        raise HTTPException(status_code=503, detail="郵件提醒尚未開放。")
+    with auth_db_lock:
+        conn = _auth_db()
+        try:
+            settings = card_alerts.set_settings(
+                conn,
+                int(user["id"]),
+                new_cards=payload.new_cards,
+                price_watch=payload.price_watch,
+                lang=payload.lang,
+            )
+        finally:
+            conn.close()
+    return _card_alerts_payload(user, settings)
+
+
+@app.put("/alerts/watchlist")
+def update_card_alert_watchlist(request: Request, payload: CardAlertWatchlistRequest) -> dict[str, Any]:
+    user = _require_auth_user(request)
+    ids = [normalize_card_id(str(x)) for x in (payload.card_ids or [])[: card_alerts.WATCH_MAX * 2]]
+    with auth_db_lock:
+        conn = _auth_db()
+        try:
+            count = card_alerts.set_watchlist(conn, int(user["id"]), [x for x in ids if x])
+        finally:
+            conn.close()
+    return {"watch_count": count}
+
+
+@app.post("/alerts/unsubscribe")
+def card_alert_unsubscribe(payload: CardAlertUnsubscribeRequest) -> dict[str, Any]:
+    kind = payload.kind if payload.kind in {"all", "new_cards", "price_watch"} else "all"
+    with auth_db_lock:
+        conn = _auth_db()
+        try:
+            result = card_alerts.unsubscribe(conn, payload.token, kind)
+        finally:
+            conn.close()
+    if result is None:
+        raise HTTPException(status_code=404, detail="退訂連結無效或已過期。")
+    return {"ok": True, **result}
 
 
 def _battle_user_dict(row: Any) -> dict[str, Any]:

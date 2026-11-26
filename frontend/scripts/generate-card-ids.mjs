@@ -76,9 +76,13 @@ if (raw) {
     if (!code) continue;
     const row = raw[id] || {};
     const name = String(row.name || id).trim() || id;
+    const en = String(row.name_en || "").trim();
     if (!grouped.has(code)) grouped.set(code, []);
+    const entry = { id, name };
+    if (en && en !== name) entry.en = en;
     // Leaked pre-release rows keep an "unconfirmed" marker for the set page.
-    grouped.get(code).push(row.unconfirmed ? { id, name, unconfirmed: true } : { id, name });
+    if (row.unconfirmed) entry.unconfirmed = true;
+    grouped.get(code).push(entry);
   }
 }
 
@@ -91,6 +95,29 @@ const sets = [...grouped.entries()]
   }));
 
 writeFileSync(join(destDir, "set-index.json"), `${JSON.stringify(sets)}\n`);
+
+// Per-card content dates for sitemap <lastmod> (scripts/update_card_lastmod.py).
+const lastmodCandidates = source
+  ? [join(dirname(source), "card_lastmod.json")]
+  : [join(frontendRoot, "..", "index", "card_lastmod.json")];
+const lastmod = {};
+for (const file of lastmodCandidates) {
+  try {
+    if (!existsSync(file)) continue;
+    const parsed = JSON.parse(readFileSync(file, "utf8"));
+    const cards = parsed && typeof parsed === "object" ? parsed.cards : null;
+    if (!cards || typeof cards !== "object") continue;
+    for (const id of ids) {
+      const value = cards[id] && typeof cards[id].lastmod === "string" ? cards[id].lastmod : "";
+      if (value) lastmod[id] = value;
+    }
+    break;
+  } catch (err) {
+    console.warn(`[generate-card-ids] skip ${file}: ${err instanceof Error ? err.message : err}`);
+  }
+}
+writeFileSync(join(destDir, "card-lastmod.json"), `${JSON.stringify(lastmod)}\n`);
+console.log(`[generate-card-ids] lastmod for ${Object.keys(lastmod).length}/${ids.length} cards`);
 console.log(`[generate-card-ids] ${sets.length} sets`);
 if (!ids.length) {
   console.warn("[generate-card-ids] wrote empty list — sitemap will omit /cards/{id}");

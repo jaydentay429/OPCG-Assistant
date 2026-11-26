@@ -1,3 +1,4 @@
+import { langFromPathname, localizedPath, type UrlLang } from "./localeRouting";
 import { displayCardId, normalizeCardId, toBaseCardId } from "./cardId";
 import { isParallelArtId } from "./parallelArts";
 import type { CardPriceResponse, PriceHistoryPoint } from "./types";
@@ -146,8 +147,9 @@ export function variantThumbAlt(name: string, cardId: string): string {
   return `${label}（${id}）`;
 }
 
-export function cardVariantHref(cardId: string): string {
-  return `/cards/${encodeURIComponent(normalizeCardId(cardId))}`;
+export function cardVariantHref(cardId: string, lang?: UrlLang | null): string {
+  const path = `/cards/${encodeURIComponent(normalizeCardId(cardId))}`;
+  return lang ? localizedPath(path, lang) : path;
 }
 
 /**
@@ -160,7 +162,8 @@ export function variantClickPlan(
   currentPathname: string,
   nextCardId: string,
 ): { kind: "stay" } | { kind: "router"; href: string; scroll: false } {
-  const href = cardVariantHref(nextCardId);
+  // Stay on the URL's language copy (/en/cards/…, /zh-hans/cards/…).
+  const href = cardVariantHref(nextCardId, langFromPathname(currentPathname));
   if (!nextCardId || currentPathname === href) return { kind: "stay" };
   return { kind: "router", href, scroll: false };
 }

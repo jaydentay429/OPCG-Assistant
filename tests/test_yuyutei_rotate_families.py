@@ -92,6 +92,39 @@ def test_hard_miss_includes_detail_status():
     assert not is_hard_miss_status("ok_exact")
 
 
+def test_rotate_puts_recently_checked_miss_after_stale_priced():
+    from datetime import datetime, timezone
+
+    now = datetime(2026, 11, 26, 12, 0, tzinfo=timezone.utc)
+    cards = {
+        # Priced, last checked in September: must be refreshed before misses checked this week.
+        "OP01-001": {"current_price": 120, "status": "ok_exact", "last_checked": "2026-09-14T04:30:02+00:00"},
+        "EB05-001": {"current_price": None, "status": "price_not_found", "last_checked": "2026-11-25T04:00:00+00:00"},
+        "OP01-006-R1": {
+            "current_price": None,
+            "status": "variant_not_found_strict",
+            "last_checked": "2026-10-07T04:00:00+00:00",
+        },
+    }
+    ordered, summary = select_sync_card_ids(
+        ["OP01-001", "EB05-001", "OP01-006-R1"],
+        cards,
+        rotate_families=True,
+        now=now,
+    )
+    assert ordered == ["OP01-006-R1", "OP01-001", "EB05-001"]
+    assert "近期已查 miss 排后 1" in summary
+
+    legacy, _ = select_sync_card_ids(
+        ["OP01-001", "EB05-001", "OP01-006-R1"],
+        cards,
+        rotate_families=True,
+        miss_recheck_days=0,
+        now=now,
+    )
+    assert legacy[-1] == "OP01-001"
+
+
 if __name__ == "__main__":
     class _Dummy:
         def setattr(self, *args, **kwargs):

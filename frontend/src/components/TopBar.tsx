@@ -5,9 +5,12 @@ import { useEffect, useRef, useState } from "react";
 import { submitBattleBugReport } from "@/lib/api";
 import { useI18n, type Lang } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
+import { useLocalizedHref, useSwitchLang } from "@/lib/langNav";
 
 export function TopBar() {
-  const { t, lang, setLang } = useI18n();
+  const { t, lang } = useI18n();
+  const setLang = useSwitchLang();
+  const href = useLocalizedHref();
   const { isLoggedIn, username, token, logout, requestLogin } = useAuth();
   const [zhMenuOpen, setZhMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -81,7 +84,7 @@ export function TopBar() {
   return (
     <>
       <header className="top-bar">
-        <Link href="/" className="brand">
+        <Link href={href("/")} className="brand">
           {t("app.page_title")}
         </Link>
         <div className="actions">
@@ -156,10 +159,6 @@ export function TopBar() {
           )}
         </div>
       </header>
-      <div className="sponsor">
-        <strong>{t("sponsor.title")}</strong> · {t("sponsor.desc")}{" "}
-        <a href="mailto:jaydentay429@gmail.com">jaydentay429@gmail.com</a>
-      </div>
 
       {bugOpen ? (
         <div

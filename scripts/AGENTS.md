@@ -5,7 +5,8 @@
 ## 分类
 
 - 效果审计与编译：`audit_*`、`compile_*`、`fix_*`、`review_*`、`run_full_effect_scan.py`、`build_effect_problem_queue.py`。命令和产物路径见 `README_EFFECTS.md`，不要在这里重抄。
-- 后台与运维：`admin_set_password.py`、`promote_forum_admin.py`、`configure_resend.py`、`send_daily_analytics_report.py`、`traffic_recount.py`。
+- 后台与运维：`admin_set_password.py`、`promote_forum_admin.py`、`configure_resend.py`、`send_daily_analytics_report.py`、`send_card_alerts.py`（opt-in 邮件提醒，`CARD_ALERTS_ENABLED` 关时直接退出）、`traffic_recount.py`。
+- SEO：`update_card_lastmod.py` 维护 `index/card_lastmod.json`（sitemap 单卡 lastmod）。`--check` 只检查，过期时退出码 1；`--bootstrap-git` 用 git 历史重建首版日期。
 - 卡图：`build_card_image_manifest.py`、`copy_new_pack_images_to_r2.py`、`fill_missing_pack_images_from_r2.py`、`generate_card_webp.py`。
 - AI 评测：`build_ai_eval_pool.py`、`ai_selfplay_eval.py`、`ai_stuck_diagnose.py`，写出 `meta/ai_eval_*.json`。
 - 卡名：`compare_don_character_names.py` 只读比较咚卡译名和角色卡译名，不写索引。

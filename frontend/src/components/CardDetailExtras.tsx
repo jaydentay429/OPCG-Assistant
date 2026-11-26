@@ -260,7 +260,7 @@ export function CardDetailExtras({
                   }}
                 >
                   <span className="card-tourney-art">
-                    {row.leader ? <CardImg cardId={row.leader} alt={leaderName} /> : null}
+                    {row.leader ? <CardImg cardId={row.leader} alt={leaderName} listThumb imageSizes="40px" /> : null}
                   </span>
                   <span className="card-tourney-main">
                     <strong>{leaderName}</strong>

@@ -3,6 +3,8 @@ import setIndex from "@/generated/set-index.json";
 export type SetCardRow = {
   id: string;
   name: string;
+  /** English name (omitted when the same as `name`). */
+  en?: string;
   /** Pre-release leak not yet on the official cardlist. */
   unconfirmed?: boolean;
 };
@@ -47,4 +49,27 @@ export function setPageTitle(code: string): string {
 export function setPageDescription(code: string, count: number): string {
   const label = setLabel(code);
   return `查看《ONE PIECE 卡牌對戰》${label}（${code}）全部 ${count} 張卡：卡號、卡名、效果與價格。可從 OPCG 卡牌助手搜尋、組牌或練牌。`;
+}
+
+/** English set label (Traditional label is `setLabel`). */
+export function setLabelEn(code: string): string {
+  const c = String(code || "").toUpperCase();
+  if (c === "P") return "Promo (P)";
+  return setLabel(c);
+}
+
+export function setPageTitleEn(code: string): string {
+  const c = String(code || "").toUpperCase();
+  const label = setLabelEn(c);
+  if (c === "P") return "Promo (P) Card List | ONE PIECE CARD GAME";
+  if (c === "DON") return "DON!! Card List | ONE PIECE CARD GAME";
+  if (/^OP\d+$/.test(c)) return `${label} Card List | OPCG ${c} Booster Pack - All Cards`;
+  if (/^EB\d+$/.test(c)) return `${label} Card List | OPCG Extra Booster - All Cards`;
+  if (/^ST\d+$/.test(c)) return `${label} Card List | OPCG Starter Deck - All Cards`;
+  return `${label} Card List | OPCG`;
+}
+
+export function setPageDescriptionEn(code: string, count: number): string {
+  const label = setLabelEn(code);
+  return `All ${count} ONE PIECE CARD GAME cards in ${label} (${code}): card numbers, names, effects and prices. Search, build decks or practise on OPCG Card Assistant.`;
 }
