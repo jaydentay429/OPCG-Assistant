@@ -83,6 +83,17 @@ export const BEGINNER_GUIDE: GuideSection[] = [
     ],
   },
   {
+    id: "multicolor",
+    title: { hant: "多種顏色的卡", en: "Multicolor cards" },
+    kind: "p",
+    items: [
+      {
+        hant: "有些卡同時有兩種以上的顏色（例如「紅・綠」），視為擁有它的所有顏色。",
+        en: "Some cards have more than one color (for example red and green). Such a card is treated as having all of its colors.",
+      },
+    ],
+  },
+  {
     id: "setup",
     title: { hant: "對戰準備（按順序）", en: "Setting up" },
     kind: "ol",
@@ -121,6 +132,25 @@ export const BEGINNER_GUIDE: GuideSection[] = [
       {
         hant: "角色登場、舞台登場、發動事件時，要把費用區裡指定張數的咚!!卡轉為休息狀態來支付費用。",
         en: "To play a Character, play a Stage or activate an Event, rest the required number of DON!! cards in your Cost area.",
+      },
+    ],
+  },
+  {
+    id: "don",
+    title: { hant: "咚!!卡牌", en: "DON!! cards" },
+    kind: "ul",
+    items: [
+      {
+        hant: "使用卡牌時，作為費用所需要的卡牌。",
+        en: "DON!! cards are the cards you use to pay costs when playing cards.",
+      },
+      {
+        hant: "也可以依附在角色卡或領袖卡上。被依附咚!!卡的卡，在我方回合中每依附 1 張，力量增加 1000。",
+        en: "They can also be attached to Character or Leader cards. During your turn, a card gets +1000 power for each DON!! card attached to it.",
+      },
+      {
+        hant: "依附咚!!卡的角色被 KO，或因回到手牌的效果等離開場上時，依附在卡上的咚!!卡會以休息狀態回到費用區。",
+        en: "When a Character with attached DON!! cards is KO'd or leaves the field (for example by returning to the hand), its attached DON!! cards return to the Cost area rested.",
       },
     ],
   },
@@ -219,6 +249,27 @@ export const BEGINNER_GUIDE: GuideSection[] = [
         hant: "領袖受到傷害時，如果確認到的生命卡有【觸發】效果，可以公開該卡並發動其【觸發】效果來代替加入手牌，也可以選擇不發動，不公開該卡，直接加入手牌。受到 2 點以上傷害（如【雙重攻擊】）時，逐點重複處理。",
         en: "When your Leader takes damage and the Life card has a [Trigger] effect, you may reveal it and activate the [Trigger] instead of adding it to your hand, or choose not to and add it to your hand without revealing it. With 2 or more damage (such as [Double Attack]), this repeats for each point.",
       },
+    ],
+  },
+  {
+    id: "keywords",
+    title: { hant: "常見效果用語", en: "Common effect keywords" },
+    kind: "ul",
+    items: [
+      { hant: "【登場時】：擁有此效果的角色登場至場上時發動。", en: "[On Play]: activates when a Character with this effect is played onto the field." },
+      { hant: "【啟動主要】：可以在我方的主要階段中發動。", en: "[Activate: Main]: can be activated during your Main Phase." },
+      { hant: "【我方的回合中】：在我方的回合中發動。", en: "[Your Turn]: activates during your turn." },
+      { hant: "【我方的回合結束時】：在我方回合的結束階段發動。", en: "[End of Your Turn]: activates in the End Phase of your turn." },
+      { hant: "【主要】：事件卡的效果，可以在我方的主要階段使用。", en: "[Main]: an Event effect you can use during your Main Phase." },
+      { hant: "【反擊】：事件卡的效果，可在對方回合的反擊步驟打出。", en: "[Counter]: an Event effect you can play during the Counter step of the opponent's turn." },
+      { hant: "【每回合1次】：每回合只能發動 1 次。", en: "[Once Per Turn]: can be activated only once per turn." },
+      { hant: "【咚!!×N】：當該角色依附有 N 張以上咚!!卡時（可以）發動的效果。", en: "[DON!! xN]: an effect that applies when the Character has N or more DON!! cards attached." },
+      { hant: "①：把我方費用區的 1 張咚!!卡轉為休息狀態來發動，張數依數字而不同。", en: "①: activated by resting 1 DON!! card in your Cost area; the number of cards depends on the number shown." },
+      { hant: "【咚!!−N】：把我方場上（領袖、角色區、費用區）的 N 張咚!!卡放回咚!!卡組來發動。依附的咚!!卡不論活躍或休息，都可以放回咚!!卡組。", en: "[DON!! −N]: activated by returning N DON!! cards from your field (Leader, Character area, Cost area) to the DON!! deck. Attached DON!! cards can be returned whether active or rested." },
+      { hant: "【阻擋者】：可以在阻擋步驟發動，代替被對方攻擊的領袖或角色接受攻擊。", en: "[Blocker]: can be activated in the Block step to take the attack in place of the attacked Leader or Character." },
+      { hant: "【速攻】：可以在登場的回合中進行攻擊。", en: "[Rush]: the Character can attack on the turn it is played." },
+      { hant: "【雙重攻擊】：擁有此效果的角色攻擊給予對方領袖傷害時，給予 2 點傷害。", en: "[Double Attack]: when this Character's attack damages the opponent's Leader, it deals 2 damage." },
+      { hant: "【流放】：擁有此效果的角色攻擊給予對方領袖傷害時，不會發動觸發效果，直接將該卡置於廢棄區。", en: "[Banish]: when this Character's attack damages the opponent's Leader, the [Trigger] does not activate and that card is placed in the Trash." },
     ],
   },
   {
