@@ -84,6 +84,7 @@ const dict: Record<string, string> = {
   "nav.more": "更多",
   "nav.more_close": "關閉更多選單",
   "nav.leaders": "領袖統計",
+  "nav.beginner": "新手入門",
   "nav.sets": "系列卡表",
   "nav.main": "主導航",
   "sponsor.title": "贊助支持",

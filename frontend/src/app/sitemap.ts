@@ -107,6 +107,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: tournamentsDate ?? BUILD_TIME,
       localized: true,
     },
+    { path: "/beginner", priority: 0.85, changeFrequency: "monthly", lastModified: BUILD_TIME, localized: true },
     { path: "/collector", priority: 0.8, changeFrequency: "weekly", lastModified: BUILD_TIME, localized: false },
     { path: "/binder", priority: 0.8, changeFrequency: "weekly", lastModified: BUILD_TIME, localized: false },
     { path: "/prices", priority: 0.9, changeFrequency: "daily", lastModified: BUILD_TIME, localized: true },

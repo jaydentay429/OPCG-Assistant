@@ -84,6 +84,7 @@ const dict: Record<string, string> = {
   "nav.more": "More",
   "nav.more_close": "Close more menu",
   "nav.leaders": "Leader stats",
+  "nav.beginner": "Beginner guide",
   "nav.sets": "Set lists",
   "nav.main": "Main navigation",
   "sponsor.title": "Sponsorship",

@@ -34,6 +34,7 @@ const LOCALIZED_EXACT = new Set([
   "/prices",
   "/sets",
   "/leaders",
+  "/beginner",
 ]);
 const LOCALIZED_PREFIXES = ["/cards/", "/sets/", "/leaders/"];
 
