@@ -91,3 +91,6 @@ frontend/package-lock 2.json
 
 # --- personal Claude Code overrides (not team-wide) ---
 .claude/settings.local.json
+
+# itchyme 和 OPCG 要完全分开，不提交
+itchyme-content-agents/
