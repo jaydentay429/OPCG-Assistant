@@ -14,6 +14,7 @@ export function FooterNote() {
         <Link href={href("/builder")}>{t("nav.builder")}</Link>
         <Link href={href("/tournaments")}>{t("nav.tournaments")}</Link>
         <Link href={href("/leaders")}>{t("nav.leaders")}</Link>
+        <Link href={href("/beginner")}>{t("nav.beginner")}</Link>
         <Link href={href("/prices")}>{t("nav.prices")}</Link>
         <Link href={href("/play")}>{t("nav.play")}</Link>
         <Link href={href("/sets")}>{t("nav.sets")}</Link>
